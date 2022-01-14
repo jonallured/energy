@@ -9,16 +9,46 @@ import { SelectPartnerScreen } from "@Scenes/SelectPartner/SelectPartner"
 import { SettingsScreenStack } from "@Scenes/Settings/Settings"
 import { ShowsScreen } from "@Scenes/Shows/Shows"
 import { OrdersScreen } from "@Scenes/Orders/Orders"
-import { useColor, useTheme } from "palette"
+import { Button, Flex, useColor, useTheme } from "palette"
 import React from "react"
 import { GlobalStore } from "@store/GlobalStore"
+import { ProfileScreen } from "../Scenes/Profile/Profile"
+import { HomeScreen } from "../Scenes/Home/Home"
+import { TouchableOpacity } from "react-native-gesture-handler"
+import { SettingsIcon } from "../palette/svgs/SettingsIcon"
+
+// tslint:disable-next-line:interface-over-type-literal
+export type HomeStackNavigator = {
+  Albums: undefined
+  Artists: undefined
+  Artist: { id: string }
+  Artwork: { id: string }
+  Home: undefined
+  Shows: undefined
+}
+
+export const HomeStackNavigator = createStackNavigator<HomeStackNavigator>()
+
+export const HomeStack = () => {
+  return (
+    <HomeStackNavigator.Navigator>
+      <HomeStackNavigator.Screen name="Home" component={HomeScreen} />
+
+      <HomeStackNavigator.Screen name="Artist" component={ArtistScreen} />
+      <HomeStackNavigator.Screen name="Artists" component={ArtistsScreen} />
+      <HomeStackNavigator.Screen name="Artwork" component={ArtworkScreen} />
+      <HomeStackNavigator.Screen name="Shows" component={ShowsScreen} />
+      <HomeStackNavigator.Screen name="Albums" component={AlbumsScreen} />
+    </HomeStackNavigator.Navigator>
+  )
+}
 
 // tslint:disable-next-line:interface-over-type-literal
 export type TabNavigatorStack = {
-  Artists: undefined
-  Shows: undefined
-  Albums: undefined
+  Home: undefined
   Orders: undefined
+  Profile: undefined
+  Settings: undefined
 }
 
 const Tab = createBottomTabNavigator<TabNavigatorStack>()
@@ -29,44 +59,55 @@ export const TabNavigatorStack = () => {
     theme: { fonts },
   } = useTheme()
 
+  const activeMode = GlobalStore.useAppState((state) => state.activeMode)
+
+  const screenOptions: BottomTabNavigationOptions = {
+    tabBarItemStyle: {
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    tabBarIconStyle: { display: "none" },
+    tabBarLabelStyle: {
+      fontFamily: fonts.sans.medium,
+      fontSize: 14,
+    },
+    tabBarActiveTintColor: color("blue100"),
+    tabBarInactiveTintColor: color("black60"),
+  }
+
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => {
-        let routeSpecificOptions: BottomTabNavigationOptions = {}
-
-        switch (route.name) {
-          case "Artists":
-            routeSpecificOptions = { tabBarAccessibilityLabel: "Artists", tabBarLabel: "Artists" }
-            break
-          case "Albums":
-            routeSpecificOptions = { tabBarAccessibilityLabel: "Albums", tabBarLabel: "Albums" }
-            break
-          case "Shows":
-            routeSpecificOptions = { tabBarAccessibilityLabel: "Shows", tabBarLabel: "Shows" }
-            break
-          default:
-            break
-        }
-        return {
-          tabBarItemStyle: {
-            alignItems: "center",
-            justifyContent: "center",
-          },
-          tabBarIconStyle: { display: "none" },
-          tabBarLabelStyle: {
-            fontFamily: fonts.sans.medium,
-            fontSize: 14,
-          },
-          tabBarActiveTintColor: color("blue100"),
-          tabBarInactiveTintColor: color("black60"),
-          ...routeSpecificOptions,
-        }
+      screenOptions={() => {
+        return screenOptions
       }}
     >
-      <Tab.Screen name="Artists" component={ArtistsScreen} />
-      <Tab.Screen name="Shows" component={ShowsScreen} />
-      <Tab.Screen name="Albums" component={AlbumsScreen} />
-      <Tab.Screen name="Orders" component={OrdersScreen} />
+      <Tab.Screen name="Home" component={HomeStack} options={{ headerShown: false }} />
+      {activeMode === "manager" && <Tab.Screen name="Orders" component={OrdersScreen} />}
+
+      {activeMode === "manager" && (
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={({ navigation }) => {
+            return {
+              headerRight: () => (
+                <Flex pr={1}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Settings")
+                    }}
+                  >
+                    <SettingsIcon />
+                  </TouchableOpacity>
+                </Flex>
+              ),
+            }
+          }}
+        />
+      )}
+      {activeMode === "viewer" && (
+        <Tab.Screen name="Settings" component={SettingsScreenStack} options={{ headerShown: false }} />
+      )}
     </Tab.Navigator>
   )
 }
@@ -81,20 +122,9 @@ export type MainAuthenticatedStackProps = {
 
 export const MainAuthenticatedStackNavigator = createStackNavigator<MainAuthenticatedStackProps>()
 
-const linking: LinkingOptions<ReactNavigation.RootParamList> = {
-  // TODO: Consolidate deep linking infra
-  prefixes: ["folio://"],
-  config: {
-    screens: {
-      Artwork: "artwork/:id",
-      Artist: "artist/:id",
-    },
-  },
-}
-
 export const MainAuthenticatedStack = () => {
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer>
       <MainAuthenticatedStackNavigator.Navigator>
         <MainAuthenticatedStackNavigator.Screen
           name="TabNavigatorStack"
@@ -106,8 +136,6 @@ export const MainAuthenticatedStack = () => {
           component={SettingsScreenStack}
           options={{ headerShown: false }}
         />
-        <MainAuthenticatedStackNavigator.Screen name="Artist" component={ArtistScreen} />
-        <MainAuthenticatedStackNavigator.Screen name="Artwork" component={ArtworkScreen} />
       </MainAuthenticatedStackNavigator.Navigator>
     </NavigationContainer>
   )

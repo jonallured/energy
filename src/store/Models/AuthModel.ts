@@ -36,7 +36,7 @@ export interface AuthModel extends AuthModelState {
     ReturnType<typeof fetch>
   >
   signInUsingEmail: Thunk<this, { email: string; password: string }>
-  signOut: Thunk<this>
+  signOut: Thunk<this, void, {}, GlobalStoreModel>
 }
 
 export const AuthModel: AuthModel = {
@@ -162,7 +162,8 @@ export const AuthModel: AuthModel = {
     }
   }),
 
-  signOut: thunk(async (actions) => {
+  signOut: thunk(async (actions, _, context) => {
+    context.getStoreActions().reset()
     actions.setState(authModelInitialState)
   }),
 }

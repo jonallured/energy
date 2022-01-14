@@ -4,7 +4,7 @@ import { sendEmail } from "@helpers/utils/sendEmail"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Button, Flex, Join, Separator } from "palette"
 import React from "react"
-import { Alert, Linking } from "react-native"
+import { Alert, Linking, ScrollView } from "react-native"
 import { SettingsScreenStack } from "../Settings"
 import { GlobalStore } from "../../../store/GlobalStore"
 
@@ -13,7 +13,7 @@ interface SettingsScreenProps extends StackScreenProps<SettingsScreenStack, "Set
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const enableDarkMode = false
   return (
-    <Flex flex={1} backgroundColor="white">
+    <ScrollView contentContainerStyle={{ paddingBottom: 40, backgroundColor: "white" }}>
       {/* Reset The Relay  */}
       <Join separator={<Separator />}>
         <MenuItem
@@ -25,14 +25,26 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         <MenuItem
           title="Change Partner"
           onPress={() => {
-            GlobalStore.actions.setActivePartnerID(null)
+            Alert.alert("Change Parnter", "Are you sure you want to change partner", [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Change partner",
+                style: "destructive",
+                onPress: () => {
+                  GlobalStore.actions.setActivePartnerID(null)
+                },
+              },
+            ])
           }}
         />
-        <Separator mb={5} />
+        <Separator mb={3} />
         <MenuItem
           title="Presentation Mode"
           onPress={() => {
-            // Navigate to presentation mode screen
+            navigation.navigate("SettingsPresenterMode")
           }}
         />
 
@@ -48,7 +60,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
           />
         </Flex>
 
-        <Separator mb={5} />
+        <Separator mb={3} />
 
         <MenuItem
           title="Support"
@@ -88,7 +100,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 text: "Log out",
                 style: "destructive",
                 onPress: () => {
-                  // GlobalStore.actions.auth.signOut()
+                  GlobalStore.actions.auth.signOut()
                 },
               },
             ])
@@ -98,6 +110,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
           Log out
         </Button>
       </Flex>
-    </Flex>
+    </ScrollView>
   )
 }

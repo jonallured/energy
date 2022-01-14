@@ -190,7 +190,7 @@ export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
 
 const initialValues: LoginSchema = { email: "", password: "" }
 
-export const LoginScreen: React.FC<LoginScreenProps> = () => {
+export const LoginScreen: React.FC<{}> = () => {
   const formik = useFormik<LoginSchema>({
     enableReinitialize: true,
     validateOnChange: false,

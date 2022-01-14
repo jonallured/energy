@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { MainAuthenticatedStackProps } from "@routes/AuthenticatedNavigationStacks"
-import { Flex, Text, useColor } from "palette"
+import { Flex, Separator, Text, useColor } from "palette"
 import React from "react"
 import { ActivityIndicator, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -37,16 +37,19 @@ export const Artwork: React.FC<ArtworkProps> = ({ id }) => {
   return (
     <ScrollView contentContainerStyle={{ backgroundColor: "white", flexGrow: 1, paddingBottom: 50 }}>
       <ArtworkHeader artwork={data.artwork} />
+      <Separator mt={1} />
       <Flex mt={2} alignItems="center">
         <QRCode
-          size={250}
+          size={150}
           value={"test"}
-          logo={require("images/short-black-logo.png")}
-          logoSize={40}
-          color={color("black60")}
+          logo={require("images/short-purple-logo.png")}
+          color={color("devpurple")}
           logoBackgroundColor="white"
         />
       </Flex>
+      <Text mt={1} textAlign={"center"} variant="xs" color={color("black60")}>
+        Scan to open in the Artsy App
+      </Text>
     </ScrollView>
   )
 }
