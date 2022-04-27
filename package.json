@@ -9,6 +9,8 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "setup:artsy": "./scripts/setup-env-for-artsy",
+    "install:all": "yarn install",
+    "pod-install": "cd ios && bundle exec pod install && cd ..",
     "postinstall": "patch-package",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "relay": "yarn run relay-compiler --watch"
