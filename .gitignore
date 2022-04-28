@@ -66,3 +66,7 @@ ios/Assets/Fonts/*
 # Ignore env files
 **/.env*
 !.env.example
+
+# Keep this rule last.
+# Keep these, so we can keep the folders these appear in.
+!.gitkeep
