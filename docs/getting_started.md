@@ -42,6 +42,8 @@ cd energy
   ```
   yarn setup:artsy
   yarn install:all
+  yarn install
+  pod install
   ```
 
 </details>
