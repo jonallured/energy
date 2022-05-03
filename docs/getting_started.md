@@ -82,6 +82,10 @@ yarn android
 # make sure you already have an emulator set up
 ```
 
+## Account
+If you need an account, make a non-artsymail account, and contact mobile-platform team.
+Alternatively, use the shared account. Search for `Shared Partner (folio)` on 1Password.
+
 ## Read more
 
 Check out our [blog.](http://artsy.github.io/blog/categories/energy/) for more in-depth discussions on Folio.
