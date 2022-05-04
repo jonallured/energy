@@ -36,19 +36,31 @@ cd energy
 
 ### Install the dependencies
 
-<details><summary>Work at Artsy?</summary>
+1. Install dependencies
 
-1. Run
-  ```
-  yarn setup:artsy
-  yarn install:all
-  yarn install
-  
-  cd ios
-  pod install
-  ```
+```
+yarn setup:artsy
+yarn install
 
-</details>
+cd ios
+pod install
+```
+
+2. Run the app
+
+```sh
+// Start the react-native bundler
+yarn start
+
+// Run the iOS app
+yarn ios
+
+// Run the Android app
+// (first make sure you already have an emulator set up)
+
+yarn android
+
+```
 
 <details><summary>Independent Contributor?</summary>
 WIP
@@ -58,31 +70,8 @@ WIP
 
 We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle) [Pavlos Vinieratos](https://github.com/pvinis) [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/energy#meta).
 
-
-## Run the app
-
-Start the react-native bundler:
-
-```sh
-yarn start
-```
-
-### Run the iOS app
-
-
-```sh
-yarn ios
-```
-
-### Run the Android app
-
-
-```sh
-yarn android
-# make sure you already have an emulator set up
-```
-
 ## Account
+
 If you need an account, make a non-artsymail account, and contact mobile-platform team.
 Alternatively, use the shared account. Search for `Shared Partner (folio)` on 1Password.
 
