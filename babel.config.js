@@ -20,6 +20,7 @@ const plugins = [
         }
       }
   ],
+  'react-native-reanimated/plugin',
 ]
 
 if (process.env.CI) {
