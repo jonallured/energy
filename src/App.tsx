@@ -7,7 +7,8 @@ import { RelayEnvironmentProvider } from "react-relay/hooks"
 import { NavigationContainer } from "@react-navigation/native"
 import { defaultEnvironment } from "@relay/defaultEnvironent"
 import { MainNavigationStack } from "@routes/MainNavigationStack"
-
+import { HomeTabs } from "@Scenes/HomeTabs"
+import ScrollableTabBarExample from "@Scenes/HomeTabs-1"
 LogBox.ignoreLogs(["Expected style "])
 
 const AppProviders = ({ children }: { children: ReactNode }) => (
@@ -23,7 +24,8 @@ const AppProviders = ({ children }: { children: ReactNode }) => (
 export const App = () => {
   return (
     <AppProviders>
-      <MainNavigationStack />
+      <HomeTabs />
+      {/* <ScrollableTabBarExample /> */}
     </AppProviders>
   )
 }
