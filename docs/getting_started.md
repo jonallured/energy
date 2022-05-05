@@ -41,9 +41,8 @@ cd energy
 ```
 yarn setup:artsy
 yarn install
+yarn pod-install
 
-cd ios
-pod install
 ```
 
 2. Run the app
