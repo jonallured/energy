@@ -1,8 +1,8 @@
+import { HomeTabs } from "@Scenes/HomeTabs/HomeTabs"
 import { LoginScreen } from "@Scenes/Login/Login"
 import { GlobalStore } from "@store/GlobalStore"
 import { useStoreRehydrated } from "easy-peasy"
 import React, { useEffect } from "react"
-import { AuthenticatedStack } from "./AuthenticatedNavigationStacks"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type MainNavigationStack = {
@@ -28,5 +28,5 @@ export const MainNavigationStack = () => {
     return <LoginScreen />
   }
 
-  return <AuthenticatedStack />
+  return <HomeTabs />
 }

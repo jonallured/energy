@@ -1,23 +1,13 @@
-// import { Flex, Text } from "palette"
 import React from "react"
-import { Text, View } from "react-native"
+import { Text } from "palette"
 import { Tabs } from "react-native-collapsible-tab-view"
 
-export const ShowsScreen = () => {
+export const Shows = () => {
   return (
     <Tabs.ScrollView>
       <Text>Shows</Text>
-      <Text>wowoww</Text>
-      <Text>wowoww</Text>
-      <Text>wowoww</Text>
-      <Text>wowoww</Text>
-      <Text>wowoww</Text>
-      <Text>wowoiiiiiww</Text>
+      <Text>Shows</Text>
+      <Text>Shows</Text>
     </Tabs.ScrollView>
-  )
-  return (
-    <Flex>
-      <Text>Shows Screen</Text>
-    </Flex>
   )
 }
