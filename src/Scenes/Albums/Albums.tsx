@@ -1,14 +1,7 @@
-import { Flex, Text } from "palette"
+import { View, Text } from "react-native"
 import React from "react"
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
-import { TabNavigatorStack } from "@routes/AuthenticatedNavigationStacks"
+import { Tabs } from "react-native-collapsible-tab-view"
 
-export interface AlbumsScreenProps extends BottomTabScreenProps<TabNavigatorStack, "Albums"> {}
-
-export const AlbumsScreen = () => {
-  return (
-    <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white">
-      <Text>Albums Screen</Text>
-    </Flex>
-  )
+export const Albums = () => {
+  return <Tabs.FlatList data={[1, 2, 3, 4, 5]} renderItem={({ item }) => <Text>Album {item}</Text>} />
 }
