@@ -1,13 +1,11 @@
 import { SelectPartnerScreen } from "@Scenes/SelectPartner/SelectPartner"
 import React from "react"
 import { GlobalStore } from "@store/GlobalStore"
-import { Tabs } from "react-native-collapsible-tab-view"
+import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
 import { Artists } from "@Scenes/Artists/Artists"
 import { Shows } from "@Scenes/Shows/Shows"
 import { Albums } from "@Scenes/Albums/Albums"
-
-const HEADER_HEIGHT = 250
 
 const Header = () => {
   return (
@@ -25,14 +23,34 @@ export const HomeTabs = () => {
   }
 
   return (
-    <Tabs.Container renderHeader={Header} headerHeight={HEADER_HEIGHT}>
-      <Tabs.Tab name="Artists">
+    <Tabs.Container
+      renderHeader={Header}
+      headerContainerStyle={{
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0,
+      }}
+      containerStyle={{ paddingTop: 20 }}
+      TabBarComponent={(props) => (
+        <MaterialTabBar
+          {...props}
+          scrollEnabled
+          indicatorStyle={{
+            backgroundColor: "black",
+            maxWidth: 40,
+            height: 1,
+            marginHorizontal: 14,
+          }}
+        />
+      )}
+    >
+      <Tabs.Tab name="Artists" label="Artists">
         <Artists />
       </Tabs.Tab>
-      <Tabs.Tab name="Shows">
+      <Tabs.Tab name="Shows" label="Shows">
         <Shows />
       </Tabs.Tab>
-      <Tabs.Tab name="Ablums">
+      <Tabs.Tab name="Ablums" label="Ablums">
         <Albums />
       </Tabs.Tab>
     </Tabs.Container>
