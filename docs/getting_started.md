@@ -6,6 +6,8 @@ You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and 
 
 > The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/main/package.json).
 
+You'll also need to have aws set up.
+
 ### Set up iOS
 
 Download Xcode version 13. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
@@ -25,12 +27,10 @@ Check that Command Line Tools version is added in the Locations tab. Xcode>Prefe
 
 1. [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
 
-## Run Eigen
-
 ### Get energy
 
 ```
-git clone https://github.com/MounirDhahri/energy.git # TODO: Replace MounirDhahri with artsy
+git clone https://github.com/artsy/energy.git
 cd energy
 ```
 
