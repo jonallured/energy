@@ -51,6 +51,6 @@ This PR resolves []
 
 </details>
 
-Need help with something? Have a look on our [docs], or get in touch with us.
+Need help with something? Have a look at our [docs], or get in touch with us.
 
 [docs]: /docs/README.md
