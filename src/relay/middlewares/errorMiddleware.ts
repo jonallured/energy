@@ -1,8 +1,4 @@
-import {
-  createRequestError,
-  MiddlewareNextFn,
-  RelayNetworkLayerResponse,
-} from "react-relay-network-modern/node8"
+import { createRequestError, MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"

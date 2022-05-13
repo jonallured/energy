@@ -36,6 +36,10 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Use a custom, cached location for Jest to save transpiling
+# on every PR
+.jest/cache
+
 # BUCK
 buck-out/
 \.buckd/
