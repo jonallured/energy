@@ -12,7 +12,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ProfileTopWorksQuery } from "__generated__/ProfileTopWorksQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
 import { extractNodes } from "helpers/utils/extractNodes"
-import { ArtworkThumbnail } from "Scenes/Artist/Artist"
+import { ArtworkThumbnail } from "Screens/Artist/Artist"
 
 const TopWorks: React.FC = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!

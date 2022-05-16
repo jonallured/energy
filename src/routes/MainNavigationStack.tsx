@@ -1,5 +1,5 @@
-import { HomeTabs } from "Scenes/HomeTabs/HomeTabs"
-import { LoginScreen } from "Scenes/Login/Login"
+import { HomeTabs } from "Screens/HomeTabs/HomeTabs"
+import { LoginScreen } from "Screens/Login/Login"
 import { GlobalStore } from "store/GlobalStore"
 import { useStoreRehydrated } from "easy-peasy"
 import React, { useEffect } from "react"

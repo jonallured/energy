@@ -3,7 +3,7 @@ const list = [
   "shared",
   "storybook",
   "__generated__",
-  "Scenes",
+  "Screens",
   "store",
   "routes",
   "relay",
