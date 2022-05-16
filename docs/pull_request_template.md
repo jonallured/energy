@@ -20,37 +20,6 @@ This PR resolves []
 
 - [ ] I would like **at least one** of the reviewers to run this PR on the simulator or device.
 
-<details><summary>Changelog updates</summary>
-
-### Changelog updates
-
-<!-- 📝 Please fill out at least one of these sections. -->
-<!-- ⓘ 'User-facing' changes will be published as release notes. -->
-<!-- ⌫ Feel free to remove sections that don't apply. -->
-<!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
-<!-- 📖 eg. `Enable lotsByFollowedArtists - john` or `Fix phone input misalignment - mary`. -->
-<!-- 🤷‍♂️ Replace this entire block with the hashtag `#nochangelog` to avoid updating the changelog. -->
-
-#### Cross-platform user-facing changes
-
--
-
-#### iOS user-facing changes
-
--
-
-#### Android user-facing changes
-
--
-
-#### Dev changes
-
--
-
-<!-- end_changelog_updates -->
-
-</details>
-
 Need help with something? Have a look at our [docs], or get in touch with us.
 
 [docs]: /docs/README.md
