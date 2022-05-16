@@ -1,5 +1,5 @@
-import { createGeminiUrl } from "@helpers/utils/createGeminiUrl"
-import { useSizeToFitScreen } from "@helpers/utils/useSizeToFit"
+import { createGeminiUrl } from "helpers/utils/createGeminiUrl"
+import { useSizeToFitScreen } from "helpers/utils/useSizeToFit"
 import { compact } from "lodash"
 import { Flex } from "palette"
 import React, { useRef } from "react"

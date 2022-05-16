@@ -1,14 +1,14 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
-import { MainAuthenticatedStackProps } from "@routes/AuthenticatedNavigationStacks"
+import { MainAuthenticatedStackProps } from "routes/AuthenticatedNavigationStacks"
 import { Avatar, Flex, Message, Separator, Text, Touchable } from "palette"
 import { ActivityIndicator, FlatList, Image } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
 import React from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistScreenQuery } from "__generated__/ArtistScreenQuery.graphql"
-import { GlobalStore } from "@store/GlobalStore"
-import { extractNodes } from "@helpers/utils/extractNodes"
+import { GlobalStore } from "store/GlobalStore"
+import { extractNodes } from "helpers/utils/extractNodes"
 
 interface ArtistHeaderProps {
   artist: NonNullable<ArtistScreenQuery["response"]["artist"]>

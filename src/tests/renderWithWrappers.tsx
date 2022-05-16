@@ -1,10 +1,10 @@
-import { GlobalStoreProvider } from "@store/GlobalStore"
+import { GlobalStoreProvider } from "store/GlobalStore"
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
 import { ReactElement, Suspense } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
-import { combineProviders } from "@utils/combineProviders"
+import { combineProviders } from "utils/combineProviders"
 
 const Wrappers: React.FC = ({ children }) =>
   combineProviders(

@@ -1,11 +1,11 @@
-import { deviceLocale } from "@helpers/utils/deviceLocale"
+import { deviceLocale } from "helpers/utils/deviceLocale"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { Box, Flex, Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import { MainAuthenticatedStackProps } from "@routes/AuthenticatedNavigationStacks"
+import { MainAuthenticatedStackProps } from "routes/AuthenticatedNavigationStacks"
 
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
 

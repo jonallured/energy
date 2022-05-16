@@ -1,11 +1,11 @@
-import { SelectPartnerScreen } from "@Scenes/SelectPartner/SelectPartner"
+import { SelectPartnerScreen } from "Scenes/SelectPartner/SelectPartner"
 import React from "react"
-import { GlobalStore } from "@store/GlobalStore"
+import { GlobalStore } from "store/GlobalStore"
 import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
-import { Artists } from "@Scenes/Artists/Artists"
-import { Shows } from "@Scenes/Shows/Shows"
-import { Albums } from "@Scenes/Albums/Albums"
+import { Artists } from "Scenes/Artists/Artists"
+import { Shows } from "Scenes/Shows/Shows"
+import { Albums } from "Scenes/Albums/Albums"
 
 const Header = () => {
   return (

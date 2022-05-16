@@ -1,14 +1,14 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
-import { TabNavigatorStack } from "@routes/AuthenticatedNavigationStacks"
+import { TabNavigatorStack } from "routes/AuthenticatedNavigationStacks"
 import { Flex, Message, Separator, Pill, Text, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Image } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, FetchPolicy } from "react-relay"
 import { OrdersScreenQuery } from "__generated__/OrdersScreenQuery.graphql"
-import { GlobalStore } from "@store/GlobalStore"
-import { extractNodes } from "@helpers/utils/extractNodes"
-import { calculateTimeRemaining } from "@helpers/utils/time"
+import { GlobalStore } from "store/GlobalStore"
+import { extractNodes } from "helpers/utils/extractNodes"
+import { calculateTimeRemaining } from "helpers/utils/time"
 import { StatusBadge } from "./components/StatusBadge"
 
 // TYPES

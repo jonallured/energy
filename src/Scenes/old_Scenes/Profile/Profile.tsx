@@ -1,8 +1,8 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
-import { TabNavigatorStack } from "@routes/AuthenticatedNavigationStacks"
+import { TabNavigatorStack } from "routes/AuthenticatedNavigationStacks"
 import { useNavigation } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { MainAuthenticatedStackProps } from "@routes/AuthenticatedNavigationStacks"
+import { MainAuthenticatedStackProps } from "routes/AuthenticatedNavigationStacks"
 import { BarChart, LineChart } from "react-native-chart-kit"
 import { Flex, Separator, SettingsIcon, Text, Touchable } from "palette"
 import { ActivityIndicator, ScrollView } from "react-native"
@@ -10,9 +10,9 @@ import { useSafeAreaFrame } from "react-native-safe-area-context"
 import React from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ProfileTopWorksQuery } from "__generated__/ProfileTopWorksQuery.graphql"
-import { GlobalStore } from "@store/GlobalStore"
-import { extractNodes } from "@helpers/utils/extractNodes"
-import { ArtworkThumbnail } from "@Scenes/Artist/Artist"
+import { GlobalStore } from "store/GlobalStore"
+import { extractNodes } from "helpers/utils/extractNodes"
+import { ArtworkThumbnail } from "Scenes/Artist/Artist"
 
 const TopWorks: React.FC = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!

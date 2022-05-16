@@ -1,11 +1,11 @@
-import { GlobalStore } from "@store/GlobalStore"
+import { GlobalStore } from "store/GlobalStore"
 import { Button, Flex, Spacer, Separator, Text } from "palette"
 import React, { useState, useEffect, useRef } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
-import { SearchInput } from "@helpers/components/SearchInput/SearchInput"
+import { SearchInput } from "helpers/components/SearchInput/SearchInput"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 

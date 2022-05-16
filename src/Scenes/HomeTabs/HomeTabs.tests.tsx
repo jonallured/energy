@@ -1,8 +1,8 @@
 import React from "react"
-import { renderWithWrappersTL } from "@tests/renderWithWrappers"
+import { renderWithWrappersTL } from "tests/renderWithWrappers"
 import { HomeTabs } from "./HomeTabs"
 import { RelayEnvironmentProvider } from "react-relay"
-import { defaultEnvironment } from "@relay/defaultEnvironent"
+import { defaultEnvironment } from "relay/defaultEnvironent"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")

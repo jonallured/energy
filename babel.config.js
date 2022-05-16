@@ -1,3 +1,5 @@
+const moduleResolverAlias = require("./alias").babelModuleResolverAlias
+
 const presets = [
   [
     "module:metro-react-native-babel-preset",
@@ -12,22 +14,7 @@ const plugins = [
   // the relay plugin should run before other plugins or presets
   // to ensure the graphql template literals are correctly transformed
   "relay",
-  [
-    "module-resolver",
-    {
-      root: ["./"],
-      alias: {
-        "@Scenes": "./src/Scenes",
-        "@store": "./src/store",
-        "@relay": "./src/relay",
-        "@routes": "./src/routes",
-        "@helpers": "./src/helpers",
-        "@assets": "./src/assets",
-        "@tests": "./src/tests",
-        "@utils": "./src/utils",
-      },
-    },
-  ],
+  ["module-resolver", { alias: moduleResolverAlias }],
   "import-graphql", // to enabling import syntax for .graphql and .gql files.
   "react-native-reanimated/plugin", // This has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
 ]

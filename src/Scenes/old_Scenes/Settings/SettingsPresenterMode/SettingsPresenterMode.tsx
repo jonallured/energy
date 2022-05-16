@@ -1,5 +1,5 @@
-import { LinkText } from "@helpers/components/LinkText"
-import { GlobalStore } from "@store/GlobalStore"
+import { LinkText } from "helpers/components/LinkText"
+import { GlobalStore } from "store/GlobalStore"
 import { Box, Button, Flex, Join, RadioButton, Sans, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { Alert } from "react-native"
