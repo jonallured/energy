@@ -7,7 +7,7 @@ import { Shows } from "Screens/Shows/Shows"
 import { Albums } from "Screens/Albums/Albums"
 
 const Header = () => (
-  <Flex px={2} pt={4}>
+  <Flex px={2} pt={6}>
     <Text variant="lg">Folio</Text>
   </Flex>
 )
@@ -30,14 +30,12 @@ export const HomeTabs = () => {
       containerStyle={{ paddingTop: 20 }}
       TabBarComponent={(props) => (
         <MaterialTabBar
-          {...props}
           scrollEnabled
-          indicatorStyle={{
-            backgroundColor: "black",
-            maxWidth: 40,
-            height: 1,
-            marginHorizontal: 14,
-          }}
+          {...props}
+          style={{ marginHorizontal: 10 }}
+          labelStyle={{ margin: -10 }} // only way to match the design without patching the library
+          tabStyle={{ margin: 10 }}
+          indicatorStyle={{ backgroundColor: "black", width: "20%", height: 1 }}
         />
       )}
     >
@@ -47,7 +45,7 @@ export const HomeTabs = () => {
       <Tabs.Tab name="Shows" label="Shows">
         <Shows />
       </Tabs.Tab>
-      <Tabs.Tab name="Ablums" label="Ablums">
+      <Tabs.Tab name="Albums" label="Albums">
         <Albums />
       </Tabs.Tab>
     </Tabs.Container>
