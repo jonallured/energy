@@ -6,6 +6,7 @@ import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { SearchInput } from "helpers/components/SearchInput/SearchInput"
+import { SelectPartnerOldQuery } from "__generated__/SelectPartnerOldQuery.graphql"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 
@@ -32,10 +33,10 @@ export const SelectPartnerHeader: React.FC<SelectPartnerHeaderProps> = ({
   )
 }
 
-export const SelectPartner: React.FC<{}> = ({}) => {
-  const data = useLazyLoadQuery<SelectPartnerQuery>(
+export const SelectPartnerOld: React.FC<{}> = ({}) => {
+  const data = useLazyLoadQuery<SelectPartnerOldQuery>(
     graphql`
-      query SelectPartnerQuery {
+      query SelectPartnerOldQuery {
         me {
           partners {
             name
@@ -112,7 +113,7 @@ export const SelectPartnerScreen = () => {
           backgroundColor: "white",
         }}
       >
-        <SelectPartner />
+        <SelectPartnerOld />
       </SafeAreaView>
     </React.Suspense>
   )
