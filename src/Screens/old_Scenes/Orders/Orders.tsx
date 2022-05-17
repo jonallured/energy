@@ -16,14 +16,12 @@ const stateFilters = {
   SUBMITTED: "Open",
   APPROVED: "Ready to ship",
   FULFILLED: "Complete",
-  CANCELED: "Canceled"
+  CANCELED: "Canceled",
 }
 
 export type OrderType = NonNullable<
   NonNullable<
-    NonNullable<
-      NonNullable<OrdersScreenQuery["response"]["commerceOrders"]>["edges"]
-    >[0]
+    NonNullable<NonNullable<OrdersScreenQuery["response"]["commerceOrders"]>["edges"]>[0]
   >["node"]
 >
 
@@ -37,7 +35,7 @@ interface RefreshQueryState {
 interface OrderRowProps {
   order: OrderType
 }
-export const OrderRow: React.FC<OrderRowProps> = ({order}) => {
+export const OrderRow: React.FC<OrderRowProps> = ({ order }) => {
   const lineItem = extractNodes(order?.lineItems)[0]
   const artwork = lineItem?.artwork
 
@@ -45,17 +43,32 @@ export const OrderRow: React.FC<OrderRowProps> = ({order}) => {
 
   return (
     <Touchable onPress={() => {}}>
-      <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between" width={width} p={1}>
+      <Flex
+        flexDirection="row"
+        alignItems="flex-start"
+        justifyContent="space-between"
+        width={width}
+        p={1}
+      >
         <Flex flexDirection="row">
-          <Image source={{uri: artwork?.image?.resized?.url!}} style={{ width: 50, height: 50, marginRight: 10 }}/>
+          <Image
+            source={{ uri: artwork?.image?.resized?.url! }}
+            style={{ width: 50, height: 50, marginRight: 10 }}
+          />
           <Flex>
             <Text variant="xs">{artwork?.artistNames!}</Text>
-            <Text variant="xs" color="black60">#{order?.code}</Text>
+            <Text variant="xs" color="black60">
+              #{order?.code}
+            </Text>
           </Flex>
         </Flex>
         <Flex>
-          <StatusBadge order={order}/>
-          {!!order?.stateExpiresAt && <Text variant="xs" textAlign="right">Expires: {calculateTimeRemaining(order?.stateExpiresAt!)}</Text>}
+          <StatusBadge order={order} />
+          {!!order?.stateExpiresAt && (
+            <Text variant="xs" textAlign="right">
+              Expires: {calculateTimeRemaining(order?.stateExpiresAt!)}
+            </Text>
+          )}
         </Flex>
       </Flex>
     </Touchable>
@@ -71,10 +84,29 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({ active, onChange }) 
   const { width } = useSafeAreaFrame()
   return (
     <>
-      <Flex flexDirection="row" alignItems="center" justifyContent="center" bg="white" width={width} p={1}>
-        {(Object.keys(stateFilters) as Array<StateNameType>).map(state => <Pill onPress={() => { onChange(state) }} key={state} rounded selected={active === state} mx={0.5}>{stateFilters[state]}</Pill>)}
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+        bg="white"
+        width={width}
+        p={1}
+      >
+        {(Object.keys(stateFilters) as Array<StateNameType>).map((state) => (
+          <Pill
+            onPress={() => {
+              onChange(state)
+            }}
+            key={state}
+            rounded
+            selected={active === state}
+            mx={0.5}
+          >
+            {stateFilters[state]}
+          </Pill>
+        ))}
       </Flex>
-      <Separator/>
+      <Separator />
     </>
   )
 }
@@ -85,7 +117,7 @@ interface OrdersProps {
   refresh: () => void
   queryOptions: RefreshQueryState | {}
 }
-export const Orders: React.FC<OrdersProps> = ({refresh, queryOptions}) => {
+export const Orders: React.FC<OrdersProps> = ({ refresh, queryOptions }) => {
   const [filterState, setFilterState] = useState<StateNameType>("SUBMITTED")
   useEffect(() => {
     refresh()
@@ -94,8 +126,13 @@ export const Orders: React.FC<OrdersProps> = ({refresh, queryOptions}) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const data = useLazyLoadQuery<OrdersScreenQuery>(
     graphql`
-      query OrdersScreenQuery($partnerID: String!, $states: [CommerceOrderStateEnum!], $sort: CommerceOrderConnectionSortEnum) {
-        commerceOrders(sellerId: $partnerID, states: $states, first: 10, sort: $sort) @optionalField {
+      query OrdersScreenQuery(
+        $partnerID: String!
+        $states: [CommerceOrderStateEnum!]
+        $sort: CommerceOrderConnectionSortEnum
+      ) {
+        commerceOrders(sellerId: $partnerID, states: $states, first: 10, sort: $sort)
+          @optionalField {
           totalCount
           edges {
             node {
@@ -130,7 +167,11 @@ export const Orders: React.FC<OrdersProps> = ({refresh, queryOptions}) => {
         }
       }
     `,
-    { partnerID, states: [filterState], sort: filterState == 'APPROVED' ? 'STATE_EXPIRES_AT_ASC' : 'STATE_UPDATED_AT_DESC' },
+    {
+      partnerID,
+      states: [filterState],
+      sort: filterState == "APPROVED" ? "STATE_EXPIRES_AT_ASC" : "STATE_UPDATED_AT_DESC",
+    },
     queryOptions
   )
 
@@ -143,10 +184,14 @@ export const Orders: React.FC<OrdersProps> = ({refresh, queryOptions}) => {
         renderItem={({ item: order }) => <OrderRow order={order} />}
         keyExtractor={(item) => item?.internalID!}
         stickyHeaderIndices={[0]}
-        ListHeaderComponent={<FilterHeader active={filterState} onChange={setFilterState}/>}
+        ListHeaderComponent={<FilterHeader active={filterState} onChange={setFilterState} />}
         ItemSeparatorComponent={Separator}
-        ListFooterComponent={!!orders.length ? <Separator/> : null}
-        ListEmptyComponent={<Message p={2} textAlign="center" alignItems="center">There are no {stateFilters[filterState].toLowerCase()} orders</Message>}
+        ListFooterComponent={!!orders.length ? <Separator /> : null}
+        ListEmptyComponent={
+          <Message p={2} textAlign="center" alignItems="center">
+            There are no {stateFilters[filterState].toLowerCase()} orders
+          </Message>
+        }
       />
     </Flex>
   )
@@ -156,23 +201,20 @@ export const Orders: React.FC<OrdersProps> = ({refresh, queryOptions}) => {
 export const OrdersScreen: React.FC<OrdersScreenProps> = () => {
   const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryState | null>(null)
   const refresh = useCallback(() => {
-    setRefreshedQueryOptions(prev => ({
+    setRefreshedQueryOptions((prev) => ({
       fetchKey: (prev?.fetchKey ?? 0) + 1,
-      fetchPolicy: 'network-only',
+      fetchPolicy: "network-only",
     }))
-  }, []);
+  }, [])
   return (
     <React.Suspense
-    fallback={() => (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <ActivityIndicator />
-      </Flex>
-    )}
+      fallback={() => (
+        <Flex flex={1} justifyContent="center" alignItems="center">
+          <ActivityIndicator />
+        </Flex>
+      )}
     >
-      <Orders
-        refresh={refresh}
-        queryOptions={refreshedQueryOptions ?? {}}
-      />
+      <Orders refresh={refresh} queryOptions={refreshedQueryOptions ?? {}} />
     </React.Suspense>
   )
 }

@@ -17,7 +17,11 @@ export const ArtistHeader: React.FC<ArtistHeaderProps> = ({ artist }) => {
   return (
     <Flex backgroundColor="white" mb={2} justifyContent="center">
       <Flex p={1} flexDirection="row" alignItems="center">
-        <Avatar src={artist?.imageUrl!} size="md" initials={artist?.imageUrl ? "" : artist?.initials!} />
+        <Avatar
+          src={artist?.imageUrl!}
+          size="md"
+          initials={artist?.imageUrl ? "" : artist?.initials!}
+        />
         <Flex ml={1}>
           <Text variant="sm">{artist?.displayLabel}</Text>
           <Text variant="sm" color="black60">
@@ -35,7 +39,9 @@ interface ArtworkThumbnailProps {
   artwork: NonNullable<
     NonNullable<
       NonNullable<
-        NonNullable<NonNullable<ArtistScreenQuery["response"]["artist"]>["filterArtworksConnection"]>["edges"]
+        NonNullable<
+          NonNullable<ArtistScreenQuery["response"]["artist"]>["filterArtworksConnection"]
+        >["edges"]
       >[0]
     >["node"]
   >
@@ -114,7 +120,11 @@ export const Artist: React.FC<Artist> = ({ id }) => {
         columnWrapperStyle={{ flex: 1, justifyContent: "space-around", width, marginBottom: 20 }}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={<ArtistHeader artist={data?.artist!} />}
-        ListEmptyComponent={<Message p={2} textAlign="center" alignItems="center">No artworks available</Message>}
+        ListEmptyComponent={
+          <Message p={2} textAlign="center" alignItems="center">
+            No artworks available
+          </Message>
+        }
       />
     </Flex>
   )

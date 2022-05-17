@@ -76,7 +76,10 @@ export const Button: React.FC<ButtonProps> = ({
 
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
 
-  const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({ width: 0, height: 0 })
+  const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({
+    width: 0,
+    height: 0,
+  })
 
   const displayState =
     testOnly_state ?? // if we use the test prop, use that

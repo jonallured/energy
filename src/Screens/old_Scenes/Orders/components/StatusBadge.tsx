@@ -13,13 +13,7 @@ type StatusLabel =
   | "In transit"
   | "Shipping cancelled"
 
-type StatusEnum =
-  | "SUBMITTED"
-  | "APPROVED"
-  | "PROCESSING"
-  | "IN_TRANSIT"
-  | "FULFILLED"
-  | "CANCELED"
+type StatusEnum = "SUBMITTED" | "APPROVED" | "PROCESSING" | "IN_TRANSIT" | "FULFILLED" | "CANCELED"
 
 interface StatusLabelData {
   label: StatusLabel
@@ -33,19 +27,18 @@ export const statusLabelData = (order: OrderType): StatusLabelData => {
   const offer = mode === "OFFER"
 
   const getSubmittedState = (): StatusLabelData => {
-    const awaitingBuyerOfferResponse: boolean =
-      offer && order.awaitingResponseFrom === "BUYER"
+    const awaitingBuyerOfferResponse: boolean = offer && order.awaitingResponseFrom === "BUYER"
 
     if (awaitingBuyerOfferResponse) {
       return {
         label: "Offer sent",
-        color: "black10"
+        color: "black10",
       }
     }
     return {
       label: offer ? "Review offer" : "Confirm order",
       color: "blue10",
-      dotColor: "blue100"
+      dotColor: "blue100",
     }
   }
 
@@ -54,13 +47,13 @@ export const statusLabelData = (order: OrderType): StatusLabelData => {
       return {
         label: "Ship order",
         color: "blue10",
-        dotColor: "blue100"
+        dotColor: "blue100",
       }
     }
     return {
       label: "Hold for collector",
       color: "copper10",
-      dotColor: "copper100"
+      dotColor: "copper100",
     }
   }
 
@@ -69,13 +62,13 @@ export const statusLabelData = (order: OrderType): StatusLabelData => {
       return {
         label: "Ship order",
         color: "blue10",
-        dotColor: "blue100"
+        dotColor: "blue100",
       }
     } else {
       return {
         label: "Hold for ARTA",
         color: "copper10",
-        dotColor: "copper100"
+        dotColor: "copper100",
       }
     }
   }
@@ -87,17 +80,17 @@ export const statusLabelData = (order: OrderType): StatusLabelData => {
     IN_TRANSIT: {
       label: "In transit",
       color: "green10",
-      dotColor: "green100"
+      dotColor: "green100",
     } as StatusLabelData,
     FULFILLED: {
       label: "Complete",
-      color: "black10"
+      color: "black10",
     } as StatusLabelData,
     CANCELED: {
       label: "Shipping cancelled",
       color: "red10",
-      dotColor: "red100"
-    } as StatusLabelData
+      dotColor: "red100",
+    } as StatusLabelData,
   }
 
   const orderState: StatusLabelData = orderDisplayStatesMap[displayState as StatusEnum]
@@ -105,7 +98,7 @@ export const statusLabelData = (order: OrderType): StatusLabelData => {
   return {
     label: orderState.label,
     color: orderState.color,
-    dotColor: orderState.dotColor || null
+    dotColor: orderState.dotColor || null,
   }
 }
 
@@ -116,11 +109,11 @@ interface StatusBadgeProps {
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ order }) => {
   const { label, color, dotColor } = statusLabelData(order)
   return (
-    <Flex bg={color} flexDirection="row" p={0.5} borderRadius="2" alignItems="center" >
-      {!!dotColor && <Flex bg={dotColor} mr={0.5} style={{width: 5, height: 5}} borderRadius={100}/>}
-      <Text variant="xs">
-        {label}
-      </Text>
+    <Flex bg={color} flexDirection="row" p={0.5} borderRadius="2" alignItems="center">
+      {!!dotColor && (
+        <Flex bg={dotColor} mr={0.5} style={{ width: 5, height: 5 }} borderRadius={100} />
+      )}
+      <Text variant="xs">{label}</Text>
     </Flex>
   )
 }

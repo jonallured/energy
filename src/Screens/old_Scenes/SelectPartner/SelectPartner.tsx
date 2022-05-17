@@ -13,13 +13,20 @@ interface SelectPartnerHeaderProps {
   onSearchChange: (term: string) => void
   searchValue: string
 }
-export const SelectPartnerHeader: React.FC<SelectPartnerHeaderProps> = ({ onSearchChange, searchValue }) => {
+export const SelectPartnerHeader: React.FC<SelectPartnerHeaderProps> = ({
+  onSearchChange,
+  searchValue,
+}) => {
   return (
     <Flex backgroundColor="white" mb={2} flexDirection="column" alignItems="center">
       <Text variant="md" textAlign="center">
         Select a partner to continue
       </Text>
-      <SearchInput placeholder="Type to search..." onChangeText={onSearchChange} value={searchValue} />
+      <SearchInput
+        placeholder="Type to search..."
+        onChangeText={onSearchChange}
+        value={searchValue}
+      />
       <Separator mt={2} />
     </Flex>
   )
@@ -97,7 +104,14 @@ export const SelectPartnerScreen = () => {
         </Flex>
       )}
     >
-      <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+        }}
+      >
         <SelectPartner />
       </SafeAreaView>
     </React.Suspense>

@@ -1,9 +1,6 @@
 import moment from "moment"
 
-export const calculateTimeRemaining = (
-  stateExpiresAt: string,
-  now = moment()
-): string => {
+export const calculateTimeRemaining = (stateExpiresAt: string, now = moment()): string => {
   const expiresAt = moment(stateExpiresAt)
   const diff = expiresAt.diff(now)
 

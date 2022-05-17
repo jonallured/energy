@@ -13,7 +13,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   onCancelPress,
   ...props
 }) => {
-
   return (
     <Flex flexDirection="row" justifyContent="center">
       <Input

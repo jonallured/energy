@@ -213,7 +213,10 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <Flex flexDirection="row" alignItems="center">
-          <Text variant="md" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase", ...titleStyle }}>
+          <Text
+            variant="md"
+            style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase", ...titleStyle }}
+          >
             {title}
             {!!required && (
               <Text variant="md" color={color("blue100")}>
@@ -280,14 +283,18 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 onChangeText={localOnChangeText}
                 onFocus={(e) => {
                   if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                    )
                   }
                   setFocused(true)
                   rest.onFocus?.(e)
                 }}
                 onBlur={(e) => {
                   if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                    )
                   }
                   setFocused(false)
                   rest.onBlur?.(e)

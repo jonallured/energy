@@ -35,7 +35,9 @@ export const Artwork: React.FC<ArtworkProps> = ({ id }) => {
     )
   }
   return (
-    <ScrollView contentContainerStyle={{ backgroundColor: "white", flexGrow: 1, paddingBottom: 50 }}>
+    <ScrollView
+      contentContainerStyle={{ backgroundColor: "white", flexGrow: 1, paddingBottom: 50 }}
+    >
       <ArtworkHeader artwork={data.artwork} />
       <Separator mt={1} />
       <Flex mt={2} alignItems="center">

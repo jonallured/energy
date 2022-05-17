@@ -23,7 +23,14 @@ export const MenuItem: React.FC<{
   const color = useColor()
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={2} px="2" pr="15px">
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        py={2}
+        px="2"
+        pr="15px"
+      >
         <Flex flexDirection="row" mr="2">
           <Sans size="4">{title}</Sans>
         </Flex>

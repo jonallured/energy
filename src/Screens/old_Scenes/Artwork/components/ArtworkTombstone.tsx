@@ -53,7 +53,9 @@ const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
     const artistNames = truncatedArtists!.map((artist, index) => {
       const artistNameWithComma = index !== artists!.length - 1 ? artist!.name + ", " : artist!.name
       return (
-        <React.Fragment key={artist!.href}>{renderArtistName(artistNameWithComma!, artist!.internalID)}</React.Fragment>
+        <React.Fragment key={artist!.href}>
+          {renderArtistName(artistNameWithComma!, artist!.internalID)}
+        </React.Fragment>
       )
     })
 
@@ -75,13 +77,20 @@ const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
 
   const addedComma = artwork.date ? ", " : ""
   const displayAuctionLotLabel =
-    artwork.isInAuction && artwork.saleArtwork && artwork.saleArtwork.lotLabel && artwork.sale && !artwork.sale.isClosed
+    artwork.isInAuction &&
+    artwork.saleArtwork &&
+    artwork.saleArtwork.lotLabel &&
+    artwork.sale &&
+    !artwork.sale.isClosed
   const firstArtistName = artwork.artists![0]
   return (
     <Box textAlign="left">
       <Flex flexDirection="row" flexWrap="wrap">
-        {artwork.artists!.length === 1 ? renderSingleArtist(firstArtistName!) : renderMultipleArtists()}
-        {!!(artwork.artists!.length === 0 && artwork.cultural_maker) && renderArtistName(artwork.cultural_maker, null)}
+        {artwork.artists!.length === 1
+          ? renderSingleArtist(firstArtistName!)
+          : renderMultipleArtists()}
+        {!!(artwork.artists!.length === 0 && artwork.cultural_maker) &&
+          renderArtistName(artwork.cultural_maker, null)}
       </Flex>
       <Spacer mb={1} />
       {!!displayAuctionLotLabel && (
@@ -123,7 +132,9 @@ const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
               // Navigate to classification page
             }}
           >
-            <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
+            <Text style={{ textDecorationLine: "underline" }}>
+              {artwork.attribution_class.shortDescription}
+            </Text>
           </TouchableWithoutFeedback>
           .
         </Sans>

@@ -1,7 +1,15 @@
 import { stringify } from "qs"
 import { Linking, Alert } from "react-native"
 
-export const sendEmail = ({ toAddress, subject, body }: { toAddress: string; subject?: string; body?: string }) => {
+export const sendEmail = ({
+  toAddress,
+  subject,
+  body,
+}: {
+  toAddress: string
+  subject?: string
+  body?: string
+}) => {
   const mailString = `mailto:${toAddress}?${stringify({ subject, body })}`
   Linking.canOpenURL(mailString)
     .then((res) => {

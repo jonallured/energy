@@ -29,8 +29,17 @@ export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
   const space = useSpace()
   const insets = useSafeAreaInsets()
 
-  const { values, handleSubmit, handleChange, validateForm, errors, isValid, dirty, isSubmitting, setErrors } =
-    useFormikContext<LoginSchema>()
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    validateForm,
+    errors,
+    isValid,
+    dirty,
+    isSubmitting,
+    setErrors,
+  } = useFormikContext<LoginSchema>()
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
@@ -144,7 +153,12 @@ export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
           }}
         >
           {/* eslint-disable-next-line react-native/no-inline-styles */}
-          <Text variant="sm" color="white" style={{ textDecorationLine: "underline" }} textAlign="right">
+          <Text
+            variant="sm"
+            color="white"
+            style={{ textDecorationLine: "underline" }}
+            textAlign="right"
+          >
             Forgot password?
           </Text>
         </TouchableOpacity>
@@ -166,8 +180,8 @@ export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
         <Spacer mt={2} />
 
         <Text variant="xs" color="white" textAlign={"center"}>
-          Once you log in. Artsy Folio will begin downloading your artworks. We recommend using a stable Wifi
-          connection.
+          Once you log in. Artsy Folio will begin downloading your artworks. We recommend using a
+          stable Wifi connection.
         </Text>
       </ScrollView>
       <Flex px={2} paddingBottom={20}>

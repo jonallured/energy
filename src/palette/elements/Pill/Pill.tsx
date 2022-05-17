@@ -125,7 +125,13 @@ export const Pill: React.FC<PillProps> = ({
                 <Spacer mr={iconSpacerMargin} />
               </>
             )}
-            {!!imageUrl && <Image source={{ uri: imageUrl }} resizeMode="contain" style={{ height: 30, width: 30 }} />}
+            {!!imageUrl && (
+              <Image
+                source={{ uri: imageUrl }}
+                resizeMode="contain"
+                style={{ height: 30, width: 30 }}
+              />
+            )}
             <AnimatedText numberOfLines={1} style={[textStyle, { color: springProps.textColor }]}>
               {children}
             </AnimatedText>
@@ -142,7 +148,9 @@ export const Pill: React.FC<PillProps> = ({
   )
 }
 
-const useStyleForState = (state: DisplayState): { textColor: string; borderColor: string; backgroundColor: string } => {
+const useStyleForState = (
+  state: DisplayState
+): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>

@@ -1,7 +1,10 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps, useNavigation } from "@react-navigation/native"
 import { StackScreenProps, StackNavigationProp } from "@react-navigation/stack"
-import { MainAuthenticatedStackProps, TabNavigatorStack } from "@routes/AuthenticatedNavigationStacks"
+import {
+  MainAuthenticatedStackProps,
+  TabNavigatorStack,
+} from "@routes/AuthenticatedNavigationStacks"
 import { Avatar, Button, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList } from "react-native"
@@ -17,7 +20,9 @@ interface ArtistThumbnailProps {
   artist: NonNullable<
     NonNullable<
       NonNullable<
-        NonNullable<NonNullable<ArtistsScreenQuery["response"]["partner"]>["allArtistsConnection"]>["edges"]
+        NonNullable<
+          NonNullable<ArtistsScreenQuery["response"]["partner"]>["allArtistsConnection"]
+        >["edges"]
       >[0]
     >["node"]
   >
@@ -28,7 +33,11 @@ export const ArtistThumbnail: React.FC<ArtistThumbnailProps> = ({ artist }) => {
   return (
     <Touchable onPress={() => navigation.navigate("Artist", { id: artist.internalID })}>
       <Flex m={1} alignItems="center" flexDirection="column" width={ARTIST_CARD_WIDTH}>
-        <Avatar src={artist.imageUrl!} size="md" initials={artist.imageUrl ? "" : artist.initials!} />
+        <Avatar
+          src={artist.imageUrl!}
+          size="md"
+          initials={artist.imageUrl ? "" : artist.initials!}
+        />
         <Text variant="sm">{artist.displayLabel}</Text>
         <Text variant="sm" color="black60">
           {artist.formattedNationalityAndBirthday || "-"}
