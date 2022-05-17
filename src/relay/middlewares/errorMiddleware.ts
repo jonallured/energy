@@ -28,7 +28,6 @@ const trackError = (
 }
 
 export const errorMiddleware = () => {
-  console.log("ARGH ", __DEV__)
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const res = await next(req)
     const resJson = res?.json as GraphQLResponse

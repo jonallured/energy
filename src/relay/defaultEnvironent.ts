@@ -20,7 +20,7 @@ const network = new RelayNetworkLayer(
     metaphysicsUrlMiddleware(),
     // @ts-ignore
     errorMiddleware(),
-    __DEV__ ? loggerMiddleware() : null,
+    __DEV__ && !__TEST__ ? loggerMiddleware() : null,
     // __DEV__ ? relayErrorMiddleware() : null,
     __DEV__ ? perfMiddleware() : null,
     authMiddleware(),

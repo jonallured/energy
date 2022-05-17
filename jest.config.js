@@ -3,21 +3,17 @@ const moduleNameMap = require("./alias").jestModuleNameMap
 module.exports = {
   preset: "react-native",
   moduleFileExtensions: ["ts", "tsx", "js"],
-  rootDir: "./",
-  moduleNameMapper: moduleNameMap,
   testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",
-  testURL: "http://localhost/",
-  setupFilesAfterEnv: ["jest-extended", "@testing-library/jest-native/extend-expect", "./src/setupJest.ts"],
-  cacheDirectory: ".jest/cache",
+  globals: { __TEST__: true },
+  moduleNameMapper: moduleNameMap,
   transform: {
-    "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
-      "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
-    ".*(ts|tsx|js|jsx)$": "babel-jest",
+    ".*[jt]sx?$": "babel-jest",
     "\\.graphql$": "jest-raw-loader",
   },
+  setupFilesAfterEnv: ["jest-extended/all", "./src/setupJest.ts"],
   transformIgnorePatterns: [
-    "node_modules/(?!(react-native(-.*)?/(@react-native-community/.*))?|react-navigation|@react-navigation/.*)",
+    "node_modules/(?!(@react-native|react-native|react-native-reanimated|@babel|react-native-safe-area-context)/)",
   ],
   watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
 }

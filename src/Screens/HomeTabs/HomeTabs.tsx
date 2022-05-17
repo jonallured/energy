@@ -1,5 +1,4 @@
 import { SelectPartnerScreen } from "Screens/SelectPartner/SelectPartner"
-import React from "react"
 import { GlobalStore } from "store/GlobalStore"
 import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
@@ -7,13 +6,11 @@ import { Artists } from "Screens/Artists/Artists"
 import { Shows } from "Screens/Shows/Shows"
 import { Albums } from "Screens/Albums/Albums"
 
-const Header = () => {
-  return (
-    <Flex px={2} pt={4}>
-      <Text variant="lg">Folio</Text>
-    </Flex>
-  )
-}
+const Header = () => (
+  <Flex px={2} pt={4}>
+    <Text variant="lg">Folio</Text>
+  </Flex>
+)
 
 export const HomeTabs = () => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)

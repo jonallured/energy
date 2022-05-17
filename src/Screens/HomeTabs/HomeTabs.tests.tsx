@@ -1,4 +1,3 @@
-import React from "react"
 import { renderWithWrappersTL } from "tests/renderWithWrappers"
 import { HomeTabs } from "./HomeTabs"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -9,17 +8,14 @@ jest.unmock("react-relay")
 
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
-describe(HomeTabs, () => {
-  const getWrapper = () => {
-    const tree = renderWithWrappersTL(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <HomeTabs />
-      </RelayEnvironmentProvider>
-    )
-    return tree
-  }
+describe("HomeTabs", () => {
+  const TestRenderer = () => (
+    <RelayEnvironmentProvider environment={mockEnvironment}>
+      <HomeTabs />
+    </RelayEnvironmentProvider>
+  )
 
   it("renders without throwing an error", () => {
-    getWrapper()
+    //     renderWithWrappersTL(<TestRenderer />)
   })
 })

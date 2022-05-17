@@ -1,9 +1,8 @@
 import { GlobalStoreProvider } from "store/GlobalStore"
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
-import { ReactElement, Suspense } from "react"
+import { ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { Environment, RelayEnvironmentProvider } from "react-relay"
 import { combineProviders } from "utils/combineProviders"
 
 const Wrappers: React.FC = ({ children }) =>
@@ -36,13 +35,4 @@ export const renderWithWrappersTL = (component: ReactElement) => {
       throw new Error(error.stack)
     }
   }
-}
-
-export const renderWithHookWrappersTL = (component: ReactElement, environment: Environment) => {
-  const jsx = (
-    <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback="Loading...">{component}</Suspense>
-    </RelayEnvironmentProvider>
-  )
-  return renderWithWrappersTL(jsx)
 }
