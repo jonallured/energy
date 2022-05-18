@@ -1,7 +1,6 @@
 import { Suspense } from "react"
-import { Tab, Tabs } from "react-native-collapsible-tab-view"
 import { Avatar, Flex, Text } from "palette"
-import { ActivityIndicator, FlatList } from "react-native"
+import { ActivityIndicator } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
