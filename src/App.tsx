@@ -4,7 +4,7 @@ import { LogBox } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { GlobalStoreProvider } from "./store/GlobalStore"
 import { RelayEnvironmentProvider } from "react-relay/hooks"
-import { defaultEnvironment } from "relay/defaultEnvironent"
+import { defaultEnvironment } from "relay/environment/defaultEnvironent"
 import { MainNavigationStack } from "routes/MainNavigationStack"
 LogBox.ignoreLogs(["Expected style "])
 

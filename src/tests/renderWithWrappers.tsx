@@ -1,19 +1,31 @@
 import { GlobalStoreProvider } from "store/GlobalStore"
+import { defaultEnvironment } from "relay/environment/defaultEnvironent"
+import { Suspense } from "react"
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
 import { ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { combineProviders } from "utils/combineProviders"
+import { RelayEnvironmentProvider } from "react-relay"
 
 const Wrappers: React.FC = ({ children }) =>
   combineProviders(
     [
+      RelayMockEnvProvider,
+      SuspenseProvider,
       GlobalStoreProvider,
       SafeAreaProvider,
       Theme, // uses: GlobalStoreProvider
     ],
     children
   )
+
+const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => (
+  <RelayEnvironmentProvider environment={defaultEnvironment}>{children}</RelayEnvironmentProvider>
+)
+const SuspenseProvider = ({ children }: { children?: React.ReactNode }) => (
+  <Suspense fallback="Loading...">{children}</Suspense>
+)
 
 /**
  * Renders a React Component with our page wrappers

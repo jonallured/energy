@@ -6,9 +6,9 @@ import {
   perfMiddleware,
   RelayNetworkLayer,
 } from "react-relay-network-modern/node8"
-import { metaphysicsUrlMiddleware } from "./middlewares/metaphysicsUrlMiddleware"
-import { authMiddleware } from "./middlewares/authMiddleware"
-import { errorMiddleware } from "./middlewares/errorMiddleware"
+import { metaphysicsUrlMiddleware } from "../middlewares/metaphysicsUrlMiddleware"
+import { authMiddleware } from "../middlewares/authMiddleware"
+import { errorMiddleware } from "../middlewares/errorMiddleware"
 
 const network = new RelayNetworkLayer(
   [
@@ -32,7 +32,8 @@ const network = new RelayNetworkLayer(
   }
 ) // as second arg you may pass advanced options for RRNL
 
-export const defaultEnvironment = new Environment({
-  network: network,
-  store: new Store(new RecordSource()),
-})
+export const createEnvironment = () =>
+  new Environment({
+    network: network,
+    store: new Store(new RecordSource()),
+  })

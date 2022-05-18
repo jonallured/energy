@@ -68,3 +68,14 @@ jest.mock("react-native-gesture-handler", () => {
     TouchableWithoutFeedback,
   }
 })
+
+// MARK: - Internal stuff mocks
+
+jest.mock("relay/environment/createEnvironment", () => ({
+  createEnvironment: require("relay-test-utils").createMockEnvironment,
+}))
+
+import { resetEnvironment } from "relay/environment/resetEnvironment"
+beforeEach(() => {
+  resetEnvironment()
+})

@@ -2,7 +2,7 @@ import { SelectPartnerScreen } from "Screens/SelectPartner/SelectPartner"
 import { GlobalStore } from "store/GlobalStore"
 import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
-import { Artists } from "Screens/Artists/Artists"
+import { ArtistsScreen } from "Screens/Artists/Artists"
 import { Shows } from "Screens/Shows/Shows"
 import { Albums } from "Screens/Albums/Albums"
 
@@ -40,7 +40,7 @@ export const HomeTabs = () => {
       )}
     >
       <Tabs.Tab name="Artists" label="Artists">
-        <Artists />
+        <ArtistsScreen />
       </Tabs.Tab>
       <Tabs.Tab name="Shows" label="Shows">
         <Shows />
