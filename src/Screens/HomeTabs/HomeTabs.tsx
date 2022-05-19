@@ -3,8 +3,8 @@ import { GlobalStore } from "store/GlobalStore"
 import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
 import { ArtistsScreen } from "Screens/Artists/Artists"
-import { Shows } from "Screens/Shows/Shows"
-import { Albums } from "Screens/Albums/Albums"
+import { Shows } from "./Shows/Shows"
+import { Albums } from "./Albums/Albums"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const Header = () => (
