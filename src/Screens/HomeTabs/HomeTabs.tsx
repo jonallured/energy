@@ -2,10 +2,13 @@ import { SelectPartnerScreen } from "Screens/SelectPartner/SelectPartner"
 import { GlobalStore } from "store/GlobalStore"
 import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
-import { ArtistsScreen } from "Screens/Artists/Artists"
+import { Suspense } from "react"
+import { TabsFlatList } from "helpers/components/TabsWrapper"
+import { ActivityIndicator } from "react-native"
 import { Shows } from "./Shows/Shows"
 import { Albums } from "./Albums/Albums"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Artists } from "Screens/HomeTabs/Artists/Artists"
 
 const Header = () => (
   <Flex px={2} mt={2}>
@@ -45,13 +48,25 @@ export const HomeTabs = () => {
           )}
         >
           <Tabs.Tab name="Artists" label="Artists">
-            <ArtistsScreen />
+            <Suspense
+              fallback={<TabsFlatList data={[0]} renderItem={() => <ActivityIndicator />} />}
+            >
+              <Artists />
+            </Suspense>
           </Tabs.Tab>
           <Tabs.Tab name="Shows" label="Shows">
-            <Shows />
+            <Suspense
+              fallback={<TabsFlatList data={[0]} renderItem={() => <ActivityIndicator />} />}
+            >
+              <Shows />
+            </Suspense>
           </Tabs.Tab>
           <Tabs.Tab name="Albums" label="Albums">
-            <Albums />
+            <Suspense
+              fallback={<TabsFlatList data={[0]} renderItem={() => <ActivityIndicator />} />}
+            >
+              <Albums />
+            </Suspense>
           </Tabs.Tab>
         </Tabs.Container>
       </Flex>

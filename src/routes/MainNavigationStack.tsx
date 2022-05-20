@@ -1,13 +1,7 @@
-import { HomeTabs } from "Screens/HomeTabs/HomeTabs"
 import { LoginScreen } from "Screens/Login/Login"
 import { GlobalStore } from "store/GlobalStore"
 import { useStoreRehydrated } from "easy-peasy"
-
-// tslint:disable-next-line:interface-over-type-literal
-export type MainNavigationStack = {
-  Home: undefined
-  Login: undefined
-}
+import { HomeTabsNavigationStack } from "./HomeTabsNavigationStack"
 
 export const MainNavigationStack = () => {
   const isRehydrated = useStoreRehydrated()
@@ -21,5 +15,5 @@ export const MainNavigationStack = () => {
     return <LoginScreen />
   }
 
-  return <HomeTabs />
+  return <HomeTabsNavigationStack />
 }

@@ -6,6 +6,7 @@ import { GlobalStoreProvider } from "./store/GlobalStore"
 import { RelayEnvironmentProvider } from "react-relay/hooks"
 import { defaultEnvironment } from "relay/environment/defaultEnvironent"
 import { MainNavigationStack } from "routes/MainNavigationStack"
+
 LogBox.ignoreLogs(["Expected style "])
 
 const AppProviders = ({ children }: { children: ReactNode }) => (

@@ -1,5 +1,3 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { MainNavigationStack } from "routes/MainNavigationStack"
 import { GlobalStore } from "store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Spacer, Text, useColor, useSpace } from "palette"

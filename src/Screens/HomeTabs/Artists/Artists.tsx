@@ -1,13 +1,14 @@
-import { Suspense } from "react"
-import { Avatar, Flex, Text } from "palette"
-import { ActivityIndicator } from "react-native"
+import { Avatar, Flex, Text, Touchable } from "palette"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
 import { extractNodes } from "helpers/utils/extractNodes"
 import { TabsFlatList } from "helpers/components/TabsWrapper"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 
 export const Artists = () => {
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
 
   const data = useLazyLoadQuery<ArtistsQuery>(
@@ -39,7 +40,17 @@ export const Artists = () => {
   return (
     <TabsFlatList
       data={artists}
-      renderItem={({ item: artist }) => <ArtistThumbnail artist={artist} />}
+      renderItem={({ item: artist }) => (
+        <Touchable
+          onPress={() => {
+            navigation.navigate("ArtistTabs", {
+              artistName: artist.name || "",
+            })
+          }}
+        >
+          <ArtistThumbnail artist={artist} />
+        </Touchable>
+      )}
       keyExtractor={(item) => item?.internalID!}
     />
   )
@@ -70,9 +81,3 @@ export const ArtistThumbnail: React.FC<ArtistThumbnailProps> = ({ artist }) => {
     </Flex>
   )
 }
-
-export const ArtistsScreen = () => (
-  <Suspense fallback={<TabsFlatList data={[0]} renderItem={() => <ActivityIndicator />} />}>
-    <Artists />
-  </Suspense>
-)
