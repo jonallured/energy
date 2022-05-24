@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useTheme, Flex } from "palette"
+import { CssTransition, Flex, FlexProps, Text, useTheme } from "palette"
 import React, { useState } from "react"
 import {
   PixelRatio,
@@ -8,8 +8,6 @@ import {
   TouchableWithoutFeedbackProps,
 } from "react-native"
 import styled from "styled-components/native"
-
-import { CssTransition } from "./CssTransition"
 
 const CHECKBOX_SIZE = 20
 const DURATION = 250
@@ -86,13 +84,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onPress?.(event)
       }}
     >
-      <Flex {...restProps} flex={1}>
+      <Flex flex={1} {...restProps}>
         <Flex flexDirection="row">
           <Flex mt="2px">
             <CssTransition
               style={[
                 styles(fontScale).container,
-                { marginRight: space("1") * fontScale },
+                text || subtitle || children ? { marginRight: space("1") * fontScale } : {},
                 checkboxStyle,
               ]}
               animate={["backgroundColor", "borderColor"]}
@@ -117,13 +115,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           </Flex>
         </Flex>
 
-        <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
-          {!!subtitle && (
+        {!!subtitle && (
+          <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
-          )}
-        </Flex>
+          </Flex>
+        )}
       </Flex>
     </TouchableWithoutFeedback>
   )

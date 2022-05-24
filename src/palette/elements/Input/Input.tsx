@@ -13,10 +13,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+import { MeasuredView } from "shared/utils"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
-import { MeasuredView } from "../MeasuredView"
+import { InputTitle } from "./InputTitle"
 
+const DEFAULT_FONT_SIZE = 16
 export const INPUT_HEIGHT = 50
 export const INPUT_HEIGHT_MULTILINE = 100
 
@@ -29,14 +31,20 @@ export const emitInputClearEvent = () => {
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
   description?: string
+  descriptionColor?: Color
   error?: string
   icon?: JSX.Element
   loading?: boolean
   disabled?: boolean
+  optional?: boolean
   required?: boolean
   title?: string
-  titleStyle?: React.ComponentProps<typeof Flex>["style"]
   showLimit?: boolean
+  fontSize?: number
+  /**
+   * This placeholder is fixed to the right side of the input
+   */
+  fixedRightPlaceholder?: string
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -61,6 +69,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   enableClearButton?: boolean
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
+  addClearListener?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -74,23 +83,27 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     {
       containerStyle,
       description,
+      descriptionColor,
       disabled,
       error,
       icon,
       loading,
+      optional,
       required,
       enableClearButton,
       title,
-      titleStyle,
       renderLeftHandSection,
       secureTextEntry = false,
       textContentType,
       canHidePassword,
       inputTextStyle,
+      fixedRightPlaceholder,
       placeholder,
       multiline,
       maxLength,
       showLimit,
+      addClearListener = false,
+      fontSize = DEFAULT_FONT_SIZE,
       ...rest
     },
     ref
@@ -112,7 +125,12 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const fontFamily = theme.fonts.sans.regular
 
     useEffect(() => {
+      if (!addClearListener) {
+        return
+      }
+
       inputEvents.addListener("clear", localClear)
+
       return () => {
         inputEvents.removeListener("clear", localClear)
       }
@@ -136,6 +154,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             onPress={() => {
               setShowPassword(!showPassword)
             }}
+            accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
             {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
@@ -213,17 +232,9 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <Flex flexDirection="row" alignItems="center">
-          <Text
-            variant="md"
-            style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase", ...titleStyle }}
-          >
+          <InputTitle optional={optional} required={required}>
             {title}
-            {!!required && (
-              <Text variant="md" color={color("blue100")}>
-                *
-              </Text>
-            )}
-          </Text>
+          </InputTitle>
           {!!maxLength && !!showLimit && (
             <Text color="black60" variant="xs" marginLeft="auto">
               {maxLength - value.length}
@@ -232,7 +243,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         </Flex>
 
         {!!description && (
-          <Text color="black60" variant="xs" mb={0.5}>
+          <Text color={descriptionColor ?? "black60"} variant="xs" mb={0.5}>
             {description}
           </Text>
         )}
@@ -273,7 +284,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
+                style={{ flex: 1, fontSize, ...inputTextStyle }}
                 numberOfLines={multiline ? undefined : 1}
                 secureTextEntry={!showPassword}
                 textAlignVertical={multiline ? "top" : "center"}
@@ -301,6 +312,13 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
               />
             </Flex>
+            {!!fixedRightPlaceholder && value === "" && (
+              <Flex pr={1} justifyContent="center" alignItems="center">
+                <Text variant="sm" color="black60">
+                  {fixedRightPlaceholder}
+                </Text>
+              </Flex>
+            )}
             {renderShowPasswordIcon()}
             {loading ? (
               <Flex pr="3" justifyContent="center" flexGrow={0}>
@@ -327,7 +345,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           </View>
         </TouchableWithoutFeedback>
         {!!error && (
-          <Text color="red100" mt={1} variant="xs">
+          <Text color="red100" mt={1} variant="xs" testID="input-error">
             {error}
           </Text>
         )}

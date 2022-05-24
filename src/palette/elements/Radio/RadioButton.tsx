@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useTheme, Flex, FlexProps } from "palette"
-import React, { useState } from "react"
+import { Flex, FlexProps, CssTransition, Text, useTheme } from "palette"
 import {
   PixelRatio,
   StyleSheet,
@@ -8,10 +7,9 @@ import {
   TouchableWithoutFeedbackProps,
 } from "react-native"
 import styled from "styled-components/native"
-import { CssTransition } from "../Checkbox/CssTransition"
 
 const RADIOBUTTON_SIZE = 20
-const DURATION = 250
+const DURATION = 150
 
 export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexProps {
   selected?: boolean
@@ -20,10 +18,11 @@ export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexPro
   error?: boolean
   text?: React.ReactElement | string
   subtitle?: React.ReactElement | string
+  accessibilityState?: { checked: boolean }
 }
 
 export const RadioButton: React.FC<RadioButtonProps> = ({
-  selected: selectedProp,
+  selected,
   disabled,
   error,
   onPress,
@@ -31,15 +30,13 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   text,
   subtitle,
   children,
+  accessibilityState,
   ...restProps
 }) => {
   const { color, space } = useTheme()
 
   const fontScale = PixelRatio.getFontScale()
   const radioButtonSize = RADIOBUTTON_SIZE * fontScale
-
-  const [selected, setSelected] = useState(selectedProp)
-  const isSelected = selectedProp ?? selected
 
   const defaultRadioButtonStyle = {
     backgroundColor: color("white100"),
@@ -69,19 +66,19 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
   const radioButtonStyle = disabled
     ? disabledRadioButtonStyle
-    : radioButtonStyles[error ? "error" : "default"][isSelected ? "selected" : "notSelected"]
+    : radioButtonStyles[error ? "error" : "default"][selected ? "selected" : "notSelected"]
 
   const textColor = error ? color("red100") : disabled ? color("black30") : color("black100")
   const subtitleColor = error ? color("red100") : color("black30")
 
   return (
     <TouchableWithoutFeedback
+      accessibilityState={accessibilityState}
       onPress={(event) => {
         if (disabled) {
           return
         }
 
-        setSelected(!selected)
         onPress?.(event)
       }}
     >
@@ -94,10 +91,10 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
                 { marginRight: space("1") * fontScale },
                 radioButtonStyle,
               ]}
-              animate={["backgroundColor", "borderColor"]}
+              animate={["borderColor"]}
               duration={DURATION}
             >
-              {!!isSelected &&
+              {!!selected &&
                 (!!disabled ? (
                   <DisabledDot size={radioButtonSize} />
                 ) : (

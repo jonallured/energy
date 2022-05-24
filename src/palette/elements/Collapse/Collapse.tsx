@@ -7,7 +7,7 @@ const AnimatedView = animated(View)
 
 export interface CollapseProps {
   /** Determines whether content is expanded or collapsed */
-  open: boolean
+  opened: boolean
   /**
    * If we're rendering within a statically-sized component (e.g. FlatList), we need
    * to propagate a sentinel value in order to trigger re-render or re-measure.
@@ -65,10 +65,10 @@ export class Collapse extends React.Component<CollapseProps, State> {
   }
 
   handleLayout = (ev: any) => {
-    const { open } = this.props
+    const { opened } = this.props
     const { hasMeasured, isMeasuring, measuredHeight, isAnimating } = this.state
     const height = ev.nativeEvent.layout.height
-    if (!hasMeasured || !open || isMeasuring || measuredHeight === height || isAnimating) {
+    if (!hasMeasured || !opened || isMeasuring || measuredHeight === height || isAnimating) {
       return
     }
     this.setState({
@@ -83,8 +83,8 @@ export class Collapse extends React.Component<CollapseProps, State> {
   }
 
   componentWillReceiveProps(nextProps: CollapseProps) {
-    const willExpand = nextProps.open && !this.props.open
-    if (nextProps.open !== this.props.open) {
+    const willExpand = nextProps.opened && !this.props.opened
+    if (nextProps.opened !== this.props.opened) {
       this.setState({ isAnimating: true }, () => {
         if (willExpand && !this.measureRef && this.state.hasMeasured) {
           // We've previously measured children and can animate without further work.
@@ -105,7 +105,7 @@ export class Collapse extends React.Component<CollapseProps, State> {
 
   render() {
     const { isMeasuring, isMounted, measuredHeight } = this.state
-    const { open, children } = this.props
+    const { opened, children } = this.props
 
     // We must render children once in order to measure and derive a static height for animation.
     if (isMeasuring) {
@@ -117,7 +117,7 @@ export class Collapse extends React.Component<CollapseProps, State> {
         native
         immediate={!isMounted}
         from={{ height: 0 }}
-        to={{ height: open && measuredHeight ? measuredHeight : 0 }}
+        to={{ height: opened && measuredHeight ? measuredHeight : 0 }}
         onRest={() => {
           this.setState({ isAnimating: false })
         }}

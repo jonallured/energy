@@ -1,4 +1,5 @@
 import React from "react"
+import { flattenChildren } from "shared/utils"
 
 interface JoinProps {
   separator: React.ReactElement
@@ -47,19 +48,4 @@ export const Join: React.FC<JoinProps> = ({ separator, children, flatten = false
 
     return acc
   }, [] as any)
-}
-
-/**
- * Convert a fragment or nested fragment into an array of elements
- */
-const flattenChildren = (children: React.ReactNode): React.ReactElement[] => {
-  const xs = React.Children.toArray(children).filter(React.isValidElement)
-
-  return xs.reduce((acc: React.ReactElement[], child: React.ReactElement) => {
-    if (child.type === React.Fragment) {
-      return [...acc, ...flattenChildren(child.props.children)]
-    }
-
-    return [...acc, child]
-  }, [])
 }

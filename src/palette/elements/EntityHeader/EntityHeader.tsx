@@ -1,8 +1,8 @@
 import { bullet } from "palette/helpers"
 import React from "react"
+import { SpacerProps } from "../../atoms/Spacer"
 import { Avatar } from "../Avatar"
 import { Flex } from "../Flex"
-import { SpacerProps } from "../Spacer"
 import { Sans } from "../Text"
 
 interface EntityHeaderProps extends SpacerProps {
@@ -42,7 +42,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
     </Sans>
   )
 
-  const headerMeta = meta && (
+  const headerMeta = !!meta && (
     <Sans ellipsizeMode="tail" numberOfLines={1} size="2" color="black60" style={{ flexShrink: 1 }}>
       {meta}
     </Sans>

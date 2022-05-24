@@ -5,8 +5,8 @@ import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
 import { ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { combineProviders } from "utils/combineProviders"
 import { RelayEnvironmentProvider } from "react-relay"
+import { combineProviders } from "utils/combineProviders"
 
 const Wrappers: React.FC = ({ children }) =>
   combineProviders(
