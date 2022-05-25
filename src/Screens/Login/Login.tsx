@@ -1,7 +1,7 @@
 import { GlobalStore } from "store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Spacer, Text, useColor, useSpace } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { Alert, Image, Linking, Platform, ScrollView, TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"

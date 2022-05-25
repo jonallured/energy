@@ -1,5 +1,4 @@
 import { View, Text } from "react-native"
-import React from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 
 export const Albums = () => {

@@ -1,5 +1,4 @@
 import { Flex, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { HomeUser_me$key } from "__generated__/HomeUser_me.graphql"
 

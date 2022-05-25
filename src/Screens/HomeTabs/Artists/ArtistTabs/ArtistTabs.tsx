@@ -1,7 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Flex, Text, Touchable, ArrowLeftIcon } from "palette"
-import React from "react"
 import { MaterialTabBar, TabBarProps, Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"

@@ -1,5 +1,4 @@
 import { Color, Flex, Text } from "palette"
-import React from "react"
 import { OrderType } from "../Orders"
 
 type StatusLabel =

@@ -1,4 +1,3 @@
-import React from "react"
 import { Flex, Button, Text, Join, Spacer } from "palette"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { graphql, useLazyLoadQuery } from "react-relay"

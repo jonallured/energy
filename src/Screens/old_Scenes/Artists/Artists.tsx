@@ -6,7 +6,6 @@ import {
   TabNavigatorStack,
 } from "@routes/AuthenticatedNavigationStacks"
 import { Avatar, Button, Flex, Text, Touchable } from "palette"
-import React from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"

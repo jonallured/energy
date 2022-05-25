@@ -1,4 +1,4 @@
-import React from "react"
+import { Component } from "react";
 import { View, ViewProps } from "react-native"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
@@ -24,7 +24,7 @@ interface State {
 }
 
 /** Collapses content with animation when open is not true */
-export class Collapse extends React.Component<CollapseProps, State> {
+export class Collapse extends Component<CollapseProps, State> {
   measureRef: View | null = null
 
   state: State = {

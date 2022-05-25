@@ -1,5 +1,4 @@
-import { ChevronIcon, Flex, Sans, SansProps, Touchable, useColor } from "palette"
-import React from "react"
+import { ChevronIcon, Flex, Sans, Touchable, useColor } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
 
 export const MenuItem: React.FC<{

@@ -1,6 +1,5 @@
 import { LinkText } from "helpers/components/LinkText"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
-import React from "react"
 
 export const SettingsPrivacyDataRequestScreen = () => {
   return (
