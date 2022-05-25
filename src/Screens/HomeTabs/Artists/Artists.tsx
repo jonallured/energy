@@ -3,7 +3,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
 import { extractNodes } from "helpers/utils/extractNodes"
-import { TabsFlatList } from "helpers/components/TabsWrapper"
+import { TabsFlatList } from "helpers/components/TabsTestWrappers"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 
