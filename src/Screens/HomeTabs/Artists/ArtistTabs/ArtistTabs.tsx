@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Flex, Text, Touchable, ArrowLeftIcon } from "palette"
 import React from "react"
@@ -31,8 +32,12 @@ const Header = ({ artistName, navigation }: TabBarProps & HeaderProps) => {
   )
 }
 
-export const ArtistTabs = ({ route, navigation }: ArtistTabsProps) => {
+export const ArtistTabs = () => {
   const insets = useSafeAreaInsets()
+
+  const route = useRoute<ArtistTabsProps["route"]>()
+  const navigation = useNavigation<ArtistTabsProps["navigation"]>()
+
   const { artistName } = route.params
 
   return (

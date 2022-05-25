@@ -19,6 +19,13 @@ jest.mock("react-native-config", () => {
   return { ...mockConfig, Config: mockConfig }
 })
 
+jest.mock("@react-navigation/native", () => {
+  return {
+    useNavigation: jest.fn(),
+    useRoute: jest.fn(),
+  }
+})
+
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
