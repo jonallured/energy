@@ -2,7 +2,7 @@ import { createGeminiUrl } from "helpers/utils/createGeminiUrl"
 import { useSizeToFitScreen } from "helpers/utils/useSizeToFit"
 import { compact } from "lodash"
 import { Flex } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { Dimensions, FlatList, Image } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import {

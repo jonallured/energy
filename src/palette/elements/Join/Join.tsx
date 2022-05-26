@@ -1,4 +1,3 @@
-import React from "react"
 import { flattenChildren } from "shared/utils"
 
 interface JoinProps {

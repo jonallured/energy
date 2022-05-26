@@ -1,5 +1,5 @@
 import { Flex, FlexProps, Text, TextProps, useColor } from "palette"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Animated, Easing, Image, TouchableOpacity } from "react-native"
 
 export interface BannerProps {

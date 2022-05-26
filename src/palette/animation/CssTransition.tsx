@@ -1,4 +1,4 @@
-import React from "react"
+import { Component } from "react"
 import { Animated, StyleProp, ViewProps, ViewStyle } from "react-native"
 
 interface CssTransitionProps extends ViewProps {
@@ -10,7 +10,7 @@ interface CssTransitionState {
   previousStyle: StyleProp<ViewStyle>
 }
 
-export class CssTransition extends React.Component<CssTransitionProps, CssTransitionState> {
+export class CssTransition extends Component<CssTransitionProps, CssTransitionState> {
   private animatedValue: Animated.Value = new Animated.Value(0)
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -1,5 +1,4 @@
 import { Flex, Input, InputProps, MagnifyingGlassIcon } from "palette"
-import React from "react"
 
 export interface SearchInputProps extends InputProps {
   enableCancelButton?: boolean

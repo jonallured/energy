@@ -4,7 +4,6 @@ import { MainAuthenticatedStackProps } from "routes/AuthenticatedNavigationStack
 import { Avatar, Flex, Message, Separator, Text, Touchable } from "palette"
 import { ActivityIndicator, FlatList, Image } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
-import React from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistScreenQuery } from "__generated__/ArtistScreenQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"

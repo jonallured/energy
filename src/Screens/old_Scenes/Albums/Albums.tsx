@@ -1,5 +1,4 @@
 import { Flex, Text } from "palette"
-import React from "react"
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import { TabNavigatorStack } from "routes/AuthenticatedNavigationStacks"
 

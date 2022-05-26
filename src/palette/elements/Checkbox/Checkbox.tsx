@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { CssTransition, Flex, FlexProps, Text, useTheme } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   PixelRatio,
   StyleSheet,

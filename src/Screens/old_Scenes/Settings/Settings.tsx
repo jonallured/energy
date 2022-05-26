@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import React from "react"
 import { SettingsScreen } from "./Settings/Settings"
 import { SettingsPresenterModeScreen } from "./SettingsPresenterMode/SettingsPresenterMode"
 import { SettingsPrivacyDataRequestScreen } from "./SettingsPrivacyDataRequest/SettingsPrivacyDataRequest"

@@ -1,7 +1,6 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import { TabNavigatorStack } from "routes/AuthenticatedNavigationStacks"
 import { Flex, Text } from "palette"
-import React from "react"
 
 export interface ShowsScreenProps extends BottomTabScreenProps<TabNavigatorStack, "Shows"> {}
 

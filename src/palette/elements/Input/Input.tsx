@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { EventEmitter } from "events"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,

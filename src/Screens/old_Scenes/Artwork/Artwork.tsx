@@ -1,7 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { MainAuthenticatedStackProps } from "routes/AuthenticatedNavigationStacks"
 import { Flex, Separator, Text, useColor } from "palette"
-import React from "react"
 import { ActivityIndicator, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkScreenQuery } from "__generated__/ArtworkScreenQuery.graphql"

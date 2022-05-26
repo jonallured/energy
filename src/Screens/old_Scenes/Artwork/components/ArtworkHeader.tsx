@@ -1,5 +1,4 @@
 import { Box, Spacer } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkHeader_artwork$key } from "__generated__/ArtworkHeader_artwork.graphql"
 import { ArtworkImagesCarousel } from "./ArtworkImagesCarousel"
