@@ -1,5 +1,5 @@
 import { Theme } from "palette"
-import { ReactNode } from "react";
+import { ReactNode } from "react"
 import { LogBox } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { GlobalStoreProvider } from "./store/GlobalStore"
