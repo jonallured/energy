@@ -1,6 +1,6 @@
 import { GlobalStore } from "store/GlobalStore"
 import { Button, Flex, Spacer, Separator, Text } from "palette"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -97,7 +97,7 @@ const PartnerRow: React.FC<PartnerRow> = ({ partner }) => (
 
 export const SelectPartnerScreen = () => {
   return (
-    <React.Suspense
+    <Suspense
       fallback={() => (
         <Flex flex={1} justifyContent="center" alignItems="center">
           <ActivityIndicator />
@@ -114,6 +114,6 @@ export const SelectPartnerScreen = () => {
       >
         <SelectPartner />
       </SafeAreaView>
-    </React.Suspense>
+    </Suspense>
   )
 }

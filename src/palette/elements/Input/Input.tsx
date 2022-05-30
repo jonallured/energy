@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { EventEmitter } from "events"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
-import { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { useEffect, useImperativeHandle, useRef, useState, forwardRef } from "react"
 import {
   LayoutAnimation,
   Platform,
@@ -78,7 +78,7 @@ export type Input = TextInput
 /**
  * Input component
  */
-export const Input = React.forwardRef<TextInput, InputProps>(
+export const Input = forwardRef<TextInput, InputProps>(
   (
     {
       containerStyle,

@@ -1,3 +1,4 @@
+import { Children } from "react"
 import {
   GestureResponderEvent,
   TouchableHighlight,
@@ -32,8 +33,7 @@ export const Touchable: React.FC<TouchableProps> = ({
   ...props
 }) => {
   const color = useColor()
-  const inner =
-    React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
+  const inner = Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
   const onPressWrapped = (evt: GestureResponderEvent) => {
     if (onPress === undefined) {

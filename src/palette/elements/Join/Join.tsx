@@ -1,3 +1,4 @@
+import { Children, cloneElement } from "react"
 import { flattenChildren } from "shared/utils"
 
 interface JoinProps {
@@ -27,11 +28,11 @@ interface JoinProps {
  * <child3/>
  */
 export const Join: React.FC<JoinProps> = ({ separator, children, flatten = false }) => {
-  const childArray = flatten ? flattenChildren(children) : React.Children.toArray(children)
+  const childArray = flatten ? flattenChildren(children) : Children.toArray(children)
 
   return childArray.reduce((acc, curr, currentIndex) => {
     acc.push(
-      React.cloneElement(curr as React.ReactElement<any>, {
+      cloneElement(curr as React.ReactElement<any>, {
         key: `join-${currentIndex}`,
       })
     )
@@ -39,7 +40,7 @@ export const Join: React.FC<JoinProps> = ({ separator, children, flatten = false
     if (currentIndex !== childArray.length - 1) {
       acc.push(
         separator &&
-          React.cloneElement(separator, {
+          cloneElement(separator, {
             key: `join-sep-${currentIndex}`,
           })
       )
