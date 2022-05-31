@@ -3,55 +3,50 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
-export type ArtistsQueryVariables = {
-    partnerID: string;
+export type WorksQueryVariables = {
+    slug: string;
 };
-export type ArtistsQueryResponse = {
-    readonly partner: {
-        readonly allArtistsConnection: {
-            readonly totalCount: number | null;
+export type WorksQueryResponse = {
+    readonly artist: {
+        readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly internalID: string;
-                    readonly name: string | null;
-                    readonly slug: string;
-                    readonly imageUrl: string | null;
-                    readonly initials: string | null;
-                    readonly counts: {
-                        readonly artworks: unknown | null;
+                    readonly title: string | null;
+                    readonly date: string | null;
+                    readonly image: {
+                        readonly url: string | null;
+                        readonly aspectRatio: number;
                     } | null;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
 };
-export type ArtistsQuery = {
-    readonly response: ArtistsQueryResponse;
-    readonly variables: ArtistsQueryVariables;
+export type WorksQuery = {
+    readonly response: WorksQueryResponse;
+    readonly variables: WorksQueryVariables;
 };
 
 
 
 /*
-query ArtistsQuery(
-  $partnerID: String!
+query WorksQuery(
+  $slug: String!
 ) {
-  partner(id: $partnerID) {
-    allArtistsConnection {
-      totalCount
+  artist(id: $slug) {
+    artworksConnection(first: 100) {
       edges {
         node {
           internalID
-          name
-          slug
-          imageUrl
-          initials
-          counts {
-            artworks
+          title
+          date
+          image {
+            url
+            aspectRatio
           }
           id
         }
-        id
       }
     }
     id
@@ -64,23 +59,23 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "partnerID"
+    "name": "slug"
   }
 ],
 v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "partnerID"
+    "variableName": "slug"
   }
 ],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "totalCount",
-  "storageKey": null
-},
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 100
+  }
+],
 v3 = {
   "alias": null,
   "args": null,
@@ -92,49 +87,42 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "title",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "date",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "imageUrl",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "initials",
-  "storageKey": null
-},
-v8 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "ArtistCounts",
+  "concreteType": "Image",
   "kind": "LinkedField",
-  "name": "counts",
+  "name": "image",
   "plural": false,
   "selections": [
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "artworks",
+      "name": "url",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "aspectRatio",
       "storageKey": null
     }
   ],
   "storageKey": null
 },
-v9 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -146,29 +134,28 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtistsQuery",
+    "name": "WorksQuery",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "Partner",
+        "concreteType": "Artist",
         "kind": "LinkedField",
-        "name": "partner",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
             "alias": null,
-            "args": null,
-            "concreteType": "ArtistPartnerConnection",
+            "args": (v2/*: any*/),
+            "concreteType": "ArtworkConnection",
             "kind": "LinkedField",
-            "name": "allArtistsConnection",
+            "name": "artworksConnection",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "ArtistPartnerEdge",
+                "concreteType": "ArtworkEdge",
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
@@ -176,7 +163,7 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Artist",
+                    "concreteType": "Artwork",
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
@@ -184,9 +171,7 @@ return {
                       (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -194,7 +179,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": null
+            "storageKey": "artworksConnection(first:100)"
           }
         ],
         "storageKey": null
@@ -207,29 +192,28 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArtistsQuery",
+    "name": "WorksQuery",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "Partner",
+        "concreteType": "Artist",
         "kind": "LinkedField",
-        "name": "partner",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
             "alias": null,
-            "args": null,
-            "concreteType": "ArtistPartnerConnection",
+            "args": (v2/*: any*/),
+            "concreteType": "ArtworkConnection",
             "kind": "LinkedField",
-            "name": "allArtistsConnection",
+            "name": "artworksConnection",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "ArtistPartnerEdge",
+                "concreteType": "ArtworkEdge",
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
@@ -237,7 +221,7 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Artist",
+                    "concreteType": "Artwork",
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
@@ -246,34 +230,31 @@ return {
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/),
-                      (v9/*: any*/)
+                      (v7/*: any*/)
                     ],
                     "storageKey": null
-                  },
-                  (v9/*: any*/)
+                  }
                 ],
                 "storageKey": null
               }
             ],
-            "storageKey": null
+            "storageKey": "artworksConnection(first:100)"
           },
-          (v9/*: any*/)
+          (v7/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "a030ce0621cde8ae805e2d2fb0310257",
+    "cacheID": "b07c220d61113f44b7bd8c4b63b39667",
     "id": null,
     "metadata": {},
-    "name": "ArtistsQuery",
+    "name": "WorksQuery",
     "operationKind": "query",
-    "text": "query ArtistsQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    allArtistsConnection {\n      totalCount\n      edges {\n        node {\n          internalID\n          name\n          slug\n          imageUrl\n          initials\n          counts {\n            artworks\n          }\n          id\n        }\n        id\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query WorksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          title\n          date\n          image {\n            url\n            aspectRatio\n          }\n          id\n        }\n      }\n    }\n    id\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '0034d136be03787fc58f99c3885e7538';
+(node as any).hash = 'c3733d159e29317c160c8895d0f4a217';
 export default node;

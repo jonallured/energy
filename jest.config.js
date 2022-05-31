@@ -13,7 +13,7 @@ module.exports = {
   },
   setupFilesAfterEnv: ["jest-extended/all", "./src/setupJest.ts"],
   transformIgnorePatterns: [
-    "node_modules/(?!(@react-native|react-native|react-native-reanimated|@babel|react-native-safe-area-context|react-native-linear-gradient)/)",
+    "node_modules/(?!(@react-native|react-native|react-native-reanimated|@babel|react-native-safe-area-context|react-native-linear-gradient|@react-native-seoul/masonry-list)/)",
   ],
   watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
 }

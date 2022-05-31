@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native"
 
 export type HomeTabsScreens = {
   HomeTabs: undefined
-  ArtistTabs: { artistName: string }
+  ArtistTabs: { slug: string }
   // Add Shows and Albums
 }
 

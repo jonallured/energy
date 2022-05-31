@@ -21,6 +21,7 @@ export const Artists = () => {
               node {
                 internalID
                 name
+                slug
                 imageUrl
                 initials
                 counts {
@@ -44,7 +45,7 @@ export const Artists = () => {
         <Touchable
           onPress={() => {
             navigation.navigate("ArtistTabs", {
-              artistName: artist.name || "",
+              slug: artist.slug || "",
             })
           }}
         >
