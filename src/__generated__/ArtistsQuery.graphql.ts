@@ -3,6 +3,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type ArtistsQueryVariables = {
     partnerID: string;
 };
@@ -12,14 +13,9 @@ export type ArtistsQueryResponse = {
             readonly totalCount: number | null;
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly internalID: string;
-                    readonly name: string | null;
                     readonly slug: string;
-                    readonly imageUrl: string | null;
-                    readonly initials: string | null;
-                    readonly counts: {
-                        readonly artworks: unknown | null;
-                    } | null;
+                    readonly internalID: string;
+                    readonly " $fragmentRefs": FragmentRefs<"Artists_artist">;
                 } | null;
             } | null> | null;
         } | null;
@@ -41,20 +37,26 @@ query ArtistsQuery(
       totalCount
       edges {
         node {
-          internalID
-          name
           slug
-          imageUrl
-          initials
-          counts {
-            artworks
-          }
+          internalID
+          ...Artists_artist
           id
         }
         id
       }
     }
     id
+  }
+}
+
+fragment Artists_artist on Artist {
+  internalID
+  name
+  slug
+  imageUrl
+  initials
+  counts {
+    artworks
   }
 }
 */
@@ -85,56 +87,17 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "slug",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "slug",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "imageUrl",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "initials",
-  "storageKey": null
-},
-v8 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "ArtistCounts",
-  "kind": "LinkedField",
-  "name": "counts",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "artworks",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -183,10 +146,11 @@ return {
                     "selections": [
                       (v3/*: any*/),
                       (v4/*: any*/),
-                      (v5/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/)
+                      {
+                        "args": null,
+                        "kind": "FragmentSpread",
+                        "name": "Artists_artist"
+                      }
                     ],
                     "storageKey": null
                   }
@@ -244,36 +208,71 @@ return {
                     "selections": [
                       (v3/*: any*/),
                       (v4/*: any*/),
-                      (v5/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/),
-                      (v9/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "name",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "imageUrl",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "initials",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "ArtistCounts",
+                        "kind": "LinkedField",
+                        "name": "counts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "artworks",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v9/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
             ],
             "storageKey": null
           },
-          (v9/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "a030ce0621cde8ae805e2d2fb0310257",
+    "cacheID": "b63855d9b1eb5f6b96ebd5ea1b17ad13",
     "id": null,
     "metadata": {},
     "name": "ArtistsQuery",
     "operationKind": "query",
-    "text": "query ArtistsQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    allArtistsConnection {\n      totalCount\n      edges {\n        node {\n          internalID\n          name\n          slug\n          imageUrl\n          initials\n          counts {\n            artworks\n          }\n          id\n        }\n        id\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query ArtistsQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    allArtistsConnection {\n      totalCount\n      edges {\n        node {\n          slug\n          internalID\n          ...Artists_artist\n          id\n        }\n        id\n      }\n    }\n    id\n  }\n}\n\nfragment Artists_artist on Artist {\n  internalID\n  name\n  slug\n  imageUrl\n  initials\n  counts {\n    artworks\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '0034d136be03787fc58f99c3885e7538';
+(node as any).hash = 'bcc9672bfc4f697d26d3d09a2170a873';
 export default node;

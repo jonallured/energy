@@ -6,10 +6,10 @@ import { ActivityIndicator } from "react-native"
 import { TabsContainer } from "helpers/components/TabsContainer"
 import { TabBarProps, Tabs } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 import { Shows } from "./Shows/Shows"
-import { Works } from "./Works/Works"
+import { Artworks } from "./Artworks/Artworks"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
+import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 
 type ArtistTabsProps = NativeStackScreenProps<HomeTabsScreens, "ArtistTabs">
 
@@ -74,8 +74,8 @@ const RenderArtistTabs: React.FC<RenderArtistTabsProps> = ({ slug, navigation })
         <Header artistName={data.artist?.name!} navigation={navigation} {...props} />
       )}
     >
-      <Tabs.Tab name="Works" label="Works">
-        <Works slug={slug} />
+      <Tabs.Tab name="Artworks" label="Works">
+        <Artworks slug={slug} />
       </Tabs.Tab>
       <Tabs.Tab name="Shows" label="Shows">
         <Shows />

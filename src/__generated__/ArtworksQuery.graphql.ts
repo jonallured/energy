@@ -3,35 +3,31 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
-export type WorksQueryVariables = {
+import { FragmentRefs } from "relay-runtime";
+export type ArtworksQueryVariables = {
     slug: string;
 };
-export type WorksQueryResponse = {
+export type ArtworksQueryResponse = {
     readonly artist: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly internalID: string;
-                    readonly title: string | null;
-                    readonly date: string | null;
-                    readonly image: {
-                        readonly url: string | null;
-                        readonly aspectRatio: number;
-                    } | null;
+                    readonly " $fragmentRefs": FragmentRefs<"Artworks_artwork">;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
 };
-export type WorksQuery = {
-    readonly response: WorksQueryResponse;
-    readonly variables: WorksQueryVariables;
+export type ArtworksQuery = {
+    readonly response: ArtworksQueryResponse;
+    readonly variables: ArtworksQueryVariables;
 };
 
 
 
 /*
-query WorksQuery(
+query ArtworksQuery(
   $slug: String!
 ) {
   artist(id: $slug) {
@@ -39,17 +35,22 @@ query WorksQuery(
       edges {
         node {
           internalID
-          title
-          date
-          image {
-            url
-            aspectRatio
-          }
+          ...Artworks_artwork
           id
         }
       }
     }
     id
+  }
+}
+
+fragment Artworks_artwork on Artwork {
+  internalID
+  title
+  date
+  image {
+    url
+    aspectRatio
   }
 }
 */
@@ -87,45 +88,6 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "date",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "aspectRatio",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 };
@@ -134,7 +96,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "WorksQuery",
+    "name": "ArtworksQuery",
     "selections": [
       {
         "alias": null,
@@ -169,9 +131,11 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
-                      (v4/*: any*/),
-                      (v5/*: any*/),
-                      (v6/*: any*/)
+                      {
+                        "args": null,
+                        "kind": "FragmentSpread",
+                        "name": "Artworks_artwork"
+                      }
                     ],
                     "storageKey": null
                   }
@@ -192,7 +156,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "WorksQuery",
+    "name": "ArtworksQuery",
     "selections": [
       {
         "alias": null,
@@ -227,10 +191,46 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
-                      (v4/*: any*/),
-                      (v5/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "title",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -240,21 +240,21 @@ return {
             ],
             "storageKey": "artworksConnection(first:100)"
           },
-          (v7/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "b07c220d61113f44b7bd8c4b63b39667",
+    "cacheID": "294486fc3ae65569c8b159d2f8350abb",
     "id": null,
     "metadata": {},
-    "name": "WorksQuery",
+    "name": "ArtworksQuery",
     "operationKind": "query",
-    "text": "query WorksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          title\n          date\n          image {\n            url\n            aspectRatio\n          }\n          id\n        }\n      }\n    }\n    id\n  }\n}\n"
+    "text": "query ArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          ...Artworks_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment Artworks_artwork on Artwork {\n  internalID\n  title\n  date\n  image {\n    url\n    aspectRatio\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'c3733d159e29317c160c8895d0f4a217';
+(node as any).hash = '163e6db5ef791418bdfa66525a796ac2';
 export default node;
