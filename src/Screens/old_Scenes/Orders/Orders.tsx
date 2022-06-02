@@ -7,8 +7,8 @@ import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, FetchPolicy } from "react-relay"
 import { OrdersScreenQuery } from "__generated__/OrdersScreenQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
-import { extractNodes } from "helpers/utils/extractNodes"
-import { calculateTimeRemaining } from "helpers/utils/time"
+import { extractNodes } from "shared/utils/extractNodes"
+import { calculateTimeRemaining } from "Screens/old_Scenes/_utils/time"
 import { StatusBadge } from "./components/StatusBadge"
 
 // TYPES

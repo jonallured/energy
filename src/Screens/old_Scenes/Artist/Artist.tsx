@@ -7,7 +7,7 @@ import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistScreenQuery } from "__generated__/ArtistScreenQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
-import { extractNodes } from "helpers/utils/extractNodes"
+import { extractNodes } from "shared/utils/extractNodes"
 
 interface ArtistHeaderProps {
   artist: NonNullable<ArtistScreenQuery["response"]["artist"]>

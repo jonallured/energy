@@ -5,7 +5,7 @@ import { ActivityIndicator, FlatList } from "react-native"
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
-import { SearchInput } from "helpers/components/SearchInput/SearchInput"
+import { SearchInput } from "Screens/old_Scenes/components/SearchInput/SearchInput"
 import { SelectPartnerOldQuery } from "__generated__/SelectPartnerOldQuery.graphql"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>

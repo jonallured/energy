@@ -1,10 +1,10 @@
 import { GlobalStore } from "store/GlobalStore"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
-import { extractNodes } from "helpers/utils/extractNodes"
+import { extractNodes } from "shared/utils/extractNodes"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { Flex, Text } from "palette"
 import { Image } from "react-native"
-import { TabsFlatList } from "helpers/components/TabsTestWrappers"
+import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
 import { Shows_show$key } from "__generated__/Shows_show.graphql"
 
 export const Shows = () => {

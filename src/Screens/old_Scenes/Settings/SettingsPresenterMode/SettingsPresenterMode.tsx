@@ -1,4 +1,4 @@
-import { LinkText } from "helpers/components/LinkText"
+import { LinkText } from "Screens/old_Scenes/components/LinkText"
 import { GlobalStore } from "store/GlobalStore"
 import { Box, Button, Flex, Join, RadioButton, Sans, Separator, Spacer, Text } from "palette"
 import { useState } from "react"

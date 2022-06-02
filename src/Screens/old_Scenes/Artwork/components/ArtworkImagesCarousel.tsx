@@ -1,5 +1,5 @@
-import { createGeminiUrl } from "helpers/utils/createGeminiUrl"
-import { useSizeToFitScreen } from "helpers/utils/useSizeToFit"
+import { createGeminiUrl } from "Screens/old_Scenes/_utils/createGeminiUrl"
+import { useSizeToFitScreen } from "Screens/old_Scenes/_utils/useSizeToFit"
 import { compact } from "lodash"
 import { Flex } from "palette"
 import { useRef } from "react"

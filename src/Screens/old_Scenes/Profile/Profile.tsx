@@ -10,7 +10,7 @@ import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ProfileTopWorksQuery } from "__generated__/ProfileTopWorksQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
-import { extractNodes } from "helpers/utils/extractNodes"
+import { extractNodes } from "shared/utils/extractNodes"
 import { ArtworkThumbnail } from "Screens/Artist/Artist"
 
 const TopWorks: React.FC = () => {

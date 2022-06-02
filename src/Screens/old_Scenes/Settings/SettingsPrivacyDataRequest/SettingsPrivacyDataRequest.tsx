@@ -1,4 +1,4 @@
-import { LinkText } from "helpers/components/LinkText"
+import { LinkText } from "Screens/old_Scenes/components/LinkText"
 import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
 
 export const SettingsPrivacyDataRequestScreen = () => {

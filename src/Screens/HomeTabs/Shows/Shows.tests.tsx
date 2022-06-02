@@ -1,6 +1,6 @@
 import { range } from "lodash"
-import { mockEnvironmentPayloadMaybe } from "tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "tests/renderWithWrappers"
+import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "shared/tests/renderWithWrappers"
 import { Shows } from './Shows'
 
 describe("Shows", () => {

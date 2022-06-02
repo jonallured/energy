@@ -6,7 +6,7 @@ import { Theme } from "palette"
 import { ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { combineProviders } from "utils/combineProviders"
+import { combineProviders } from "shared/utils/combineProviders"
 
 const Wrappers: React.FC = ({ children }) =>
   combineProviders(
@@ -21,6 +21,7 @@ const Wrappers: React.FC = ({ children }) =>
   )
 
 const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => (
+  //@ts-ignore
   <RelayEnvironmentProvider environment={defaultEnvironment}>{children}</RelayEnvironmentProvider>
 )
 const SuspenseProvider = ({ children }: { children?: React.ReactNode }) => (

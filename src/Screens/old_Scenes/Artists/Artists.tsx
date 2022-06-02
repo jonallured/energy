@@ -11,7 +11,7 @@ import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsScreenQuery } from "__generated__/ArtistsScreenQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
-import { extractNodes } from "helpers/utils/extractNodes"
+import { extractNodes } from "shared/utils/extractNodes"
 
 const ARTIST_CARD_WIDTH = 160
 
