@@ -6,16 +6,16 @@ import { ActivityIndicator } from "react-native"
 import { TabsContainer } from "Screens/_helpers/TabsContainer"
 import { TabBarProps, Tabs } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { Shows } from "./Shows/Shows"
-import { Artworks } from "./Artworks/Artworks"
-import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
+import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
+import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
+import { ArtistShows } from "./ArtistShows/ArtistShows"
 
-type ArtistTabsProps = NativeStackScreenProps<HomeTabsScreens, "ArtistTabs">
+type ArtistProps = NativeStackScreenProps<HomeTabsScreens, "ArtistTabs">
 
 type HeaderProps = {
   artistName: string
-  navigation: ArtistTabsProps["navigation"]
+  navigation: ArtistProps["navigation"]
 }
 
 const Header: React.FC<TabBarProps & HeaderProps> = ({ artistName, navigation }) => {
@@ -35,7 +35,7 @@ const Header: React.FC<TabBarProps & HeaderProps> = ({ artistName, navigation })
   )
 }
 
-export const ArtistTabs: React.FC<ArtistTabsProps> = ({ route, navigation }) => {
+export const ArtistTabs: React.FC<ArtistProps> = ({ route, navigation }) => {
   const { slug } = route.params
 
   return (
@@ -46,17 +46,17 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = ({ route, navigation }) => 
         </Flex>
       }
     >
-      <RenderArtistTabs slug={slug} navigation={navigation} />
+      <RenderArtist slug={slug} navigation={navigation} />
     </Suspense>
   )
 }
 
-type RenderArtistTabsProps = {
+type RenderArtistProps = {
   slug: string
-  navigation: ArtistTabsProps["navigation"]
+  navigation: ArtistProps["navigation"]
 }
 
-const RenderArtistTabs: React.FC<RenderArtistTabsProps> = ({ slug, navigation }) => {
+const RenderArtist: React.FC<RenderArtistProps> = ({ slug, navigation }) => {
   const data = useLazyLoadQuery<ArtistTabsQuery>(
     graphql`
       query ArtistTabsQuery($slug: String!) {
@@ -74,11 +74,11 @@ const RenderArtistTabs: React.FC<RenderArtistTabsProps> = ({ slug, navigation })
         <Header artistName={data.artist?.name!} navigation={navigation} {...props} />
       )}
     >
-      <Tabs.Tab name="Artworks" label="Works">
-        <Artworks slug={slug} />
+      <Tabs.Tab name="ArtistArtworks" label="Works">
+        <ArtistArtworks slug={slug} />
       </Tabs.Tab>
-      <Tabs.Tab name="Shows" label="Shows">
-        <Shows />
+      <Tabs.Tab name="ArtistShows" label="Shows">
+        <ArtistShows />
       </Tabs.Tab>
     </TabsContainer>
   )

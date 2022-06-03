@@ -4,30 +4,30 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworksQueryVariables = {
+export type ArtistArtworksQueryVariables = {
     slug: string;
 };
-export type ArtworksQueryResponse = {
+export type ArtistArtworksQueryResponse = {
     readonly artist: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly internalID: string;
-                    readonly " $fragmentRefs": FragmentRefs<"Artworks_artwork">;
+                    readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
 };
-export type ArtworksQuery = {
-    readonly response: ArtworksQueryResponse;
-    readonly variables: ArtworksQueryVariables;
+export type ArtistArtworksQuery = {
+    readonly response: ArtistArtworksQueryResponse;
+    readonly variables: ArtistArtworksQueryVariables;
 };
 
 
 
 /*
-query ArtworksQuery(
+query ArtistArtworksQuery(
   $slug: String!
 ) {
   artist(id: $slug) {
@@ -35,7 +35,7 @@ query ArtworksQuery(
       edges {
         node {
           internalID
-          ...Artworks_artwork
+          ...ArtworkGridItem_artwork
           id
         }
       }
@@ -44,7 +44,7 @@ query ArtworksQuery(
   }
 }
 
-fragment Artworks_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   internalID
   title
   date
@@ -96,7 +96,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtworksQuery",
+    "name": "ArtistArtworksQuery",
     "selections": [
       {
         "alias": null,
@@ -134,7 +134,7 @@ return {
                       {
                         "args": null,
                         "kind": "FragmentSpread",
-                        "name": "Artworks_artwork"
+                        "name": "ArtworkGridItem_artwork"
                       }
                     ],
                     "storageKey": null
@@ -156,7 +156,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArtworksQuery",
+    "name": "ArtistArtworksQuery",
     "selections": [
       {
         "alias": null,
@@ -247,14 +247,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "294486fc3ae65569c8b159d2f8350abb",
+    "cacheID": "5e4cf89c0ad211b51f83ef65d9f622b5",
     "id": null,
     "metadata": {},
-    "name": "ArtworksQuery",
+    "name": "ArtistArtworksQuery",
     "operationKind": "query",
-    "text": "query ArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          ...Artworks_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment Artworks_artwork on Artwork {\n  internalID\n  title\n  date\n  image {\n    url\n    aspectRatio\n  }\n}\n"
+    "text": "query ArtistArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          ...ArtworkGridItem_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ArtworkGridItem_artwork on Artwork {\n  internalID\n  title\n  date\n  image {\n    url\n    aspectRatio\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '163e6db5ef791418bdfa66525a796ac2';
+(node as any).hash = '2efb6991e8a84362eb8b1b956caf68ea';
 export default node;

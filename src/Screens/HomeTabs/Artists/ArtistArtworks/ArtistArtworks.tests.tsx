@@ -1,16 +1,16 @@
 import { range } from "lodash"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "shared/tests/renderWithWrappers"
-import { Artworks } from "./Artworks"
+import { ArtistArtworks } from "./ArtistArtworks"
 
-describe("Artworks", () => {
+describe("ArtistArtworks", () => {
   it("renders without throwing an error", async () => {
-    renderWithWrappersTL(<Artworks slug={"some"} />)
+    renderWithWrappersTL(<ArtistArtworks slug={"some"} />)
     await mockEnvironmentPayloadMaybe(mockProps)
   })
 
   it("renders the list of works", async () => {
-    const { getByTestId } = renderWithWrappersTL(<Artworks slug={"some"} />)
+    const { getByTestId } = renderWithWrappersTL(<ArtistArtworks slug={"some"} />)
     await mockEnvironmentPayloadMaybe(mockProps)
     expect(getByTestId("artist-artwork-list").props.data).toHaveLength(10)
   })

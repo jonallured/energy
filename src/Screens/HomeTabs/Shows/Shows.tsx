@@ -1,11 +1,9 @@
 import { GlobalStore } from "store/GlobalStore"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { extractNodes } from "shared/utils/extractNodes"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
-import { Flex, Text } from "palette"
-import { Image } from "react-native"
 import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
-import { Shows_show$key } from "__generated__/Shows_show.graphql"
+import { ShowListItem } from "../../_shared/ShowListItem"
 
 export const Shows = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
@@ -15,7 +13,7 @@ export const Shows = () => {
   return (
     <TabsFlatList
       data={shows}
-      renderItem={({ item: show }) => <ShowOverview show={show} />}
+      renderItem={({ item: show }) => <ShowListItem show={show} />}
       keyExtractor={(item) => item?.internalID!}
     />
   )
@@ -29,43 +27,10 @@ const showsQuery = graphql`
         edges {
           node {
             internalID
-            ...Shows_show
+            ...ShowListItem_show
           }
         }
       }
-    }
-  }
-`
-interface ShowOverviewProps {
-  show: Shows_show$key
-}
-
-export const ShowOverview: React.FC<ShowOverviewProps> = (props) => {
-  const show = useFragment<Shows_show$key>(ShowFragment, props.show)
-  return (
-    <Flex m={2}>
-      <Image
-        style={{ height: 200 }}
-        resizeMode="cover"
-        source={{ uri: show.coverImage?.url ?? "" }}
-      />
-      <Text variant="xs" color="black100" mt={1}>
-        {show?.name}
-      </Text>
-      <Text variant="xs" color="black60">
-        {show.formattedStartAt} - {show.formattedEndAt}
-      </Text>
-    </Flex>
-  )
-}
-
-const ShowFragment = graphql`
-  fragment Shows_show on Show {
-    name
-    formattedStartAt: startAt(format: "MMMM D")
-    formattedEndAt: endAt(format: "MMMM D, YYYY")
-    coverImage {
-      url
     }
   }
 `

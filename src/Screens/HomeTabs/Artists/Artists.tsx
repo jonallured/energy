@@ -1,12 +1,12 @@
-import { Avatar, Flex, Text, Touchable } from "palette"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { Touchable } from "palette"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { GlobalStore } from "store/GlobalStore"
 import { extractNodes } from "shared/utils/extractNodes"
 import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
-import { Artists_artist$key } from "__generated__/Artists_artist.graphql"
+import { ArtistListItem } from "Screens/_shared/ArtistListItem"
 
 export const Artists = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
@@ -25,7 +25,7 @@ export const Artists = () => {
             })
           }}
         >
-          <ArtistThumbnail artist={artist} />
+          <ArtistListItem artist={artist} />
         </Touchable>
       )}
       keyExtractor={(item) => item?.internalID!}
@@ -42,42 +42,10 @@ const artistsQuery = graphql`
           node {
             slug
             internalID
-            ...Artists_artist
+            ...ArtistListItem_artist
           }
         }
       }
-    }
-  }
-`
-
-interface ArtistThumbnailProps {
-  artist: Artists_artist$key
-}
-
-export const ArtistThumbnail: React.FC<ArtistThumbnailProps> = (props) => {
-  const artist = useFragment<Artists_artist$key>(ArtistThumbnailFragment, props.artist)
-  return (
-    <Flex px={2} py={1} flexDirection="row">
-      <Avatar src={artist.imageUrl!} size="xs" initials={artist.imageUrl ? "" : artist.initials!} />
-      <Flex mx={1}>
-        <Text variant="xs">{artist.name}</Text>
-        <Text variant="xs" color="black60">
-          {artist.counts?.artworks} Artworks
-        </Text>
-      </Flex>
-    </Flex>
-  )
-}
-
-const ArtistThumbnailFragment = graphql`
-  fragment Artists_artist on Artist {
-    internalID
-    name
-    slug
-    imageUrl
-    initials
-    counts {
-      artworks
     }
   }
 `

@@ -14,7 +14,7 @@ export type ShowsTabQueryResponse = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly internalID: string;
-                    readonly " $fragmentRefs": FragmentRefs<"Shows_show">;
+                    readonly " $fragmentRefs": FragmentRefs<"ShowListItem_show">;
                 } | null;
             } | null> | null;
         } | null;
@@ -37,7 +37,7 @@ query ShowsTabQuery(
       edges {
         node {
           internalID
-          ...Shows_show
+          ...ShowListItem_show
           id
         }
       }
@@ -46,7 +46,7 @@ query ShowsTabQuery(
   }
 }
 
-fragment Shows_show on Show {
+fragment ShowListItem_show on Show {
   name
   formattedStartAt: startAt(format: "MMMM D")
   formattedEndAt: endAt(format: "MMMM D, YYYY")
@@ -143,7 +143,7 @@ return {
                       {
                         "args": null,
                         "kind": "FragmentSpread",
-                        "name": "Shows_show"
+                        "name": "ShowListItem_show"
                       }
                     ],
                     "storageKey": null
@@ -269,14 +269,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2f059269caa55724cb0fcda834e8c133",
+    "cacheID": "cc4045c31327a0ca0cde9f9b6d81376a",
     "id": null,
     "metadata": {},
     "name": "ShowsTabQuery",
     "operationKind": "query",
-    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100) {\n      totalCount\n      edges {\n        node {\n          internalID\n          ...Shows_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment Shows_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
+    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100) {\n      totalCount\n      edges {\n        node {\n          internalID\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '291442be63d1a4e90d104932b7d48781';
+(node as any).hash = '1e5ade202ff3e21415d81b74cb73b90d';
 export default node;

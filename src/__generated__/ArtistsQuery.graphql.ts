@@ -15,7 +15,7 @@ export type ArtistsQueryResponse = {
                 readonly node: {
                     readonly slug: string;
                     readonly internalID: string;
-                    readonly " $fragmentRefs": FragmentRefs<"Artists_artist">;
+                    readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
                 } | null;
             } | null> | null;
         } | null;
@@ -39,7 +39,7 @@ query ArtistsQuery(
         node {
           slug
           internalID
-          ...Artists_artist
+          ...ArtistListItem_artist
           id
         }
         id
@@ -49,7 +49,7 @@ query ArtistsQuery(
   }
 }
 
-fragment Artists_artist on Artist {
+fragment ArtistListItem_artist on Artist {
   internalID
   name
   slug
@@ -149,7 +149,7 @@ return {
                       {
                         "args": null,
                         "kind": "FragmentSpread",
-                        "name": "Artists_artist"
+                        "name": "ArtistListItem_artist"
                       }
                     ],
                     "storageKey": null
@@ -265,14 +265,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b63855d9b1eb5f6b96ebd5ea1b17ad13",
+    "cacheID": "f5c6c832b05a4a678932bb6c83e502ed",
     "id": null,
     "metadata": {},
     "name": "ArtistsQuery",
     "operationKind": "query",
-    "text": "query ArtistsQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    allArtistsConnection {\n      totalCount\n      edges {\n        node {\n          slug\n          internalID\n          ...Artists_artist\n          id\n        }\n        id\n      }\n    }\n    id\n  }\n}\n\nfragment Artists_artist on Artist {\n  internalID\n  name\n  slug\n  imageUrl\n  initials\n  counts {\n    artworks\n  }\n}\n"
+    "text": "query ArtistsQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    allArtistsConnection {\n      totalCount\n      edges {\n        node {\n          slug\n          internalID\n          ...ArtistListItem_artist\n          id\n        }\n        id\n      }\n    }\n    id\n  }\n}\n\nfragment ArtistListItem_artist on Artist {\n  internalID\n  name\n  slug\n  imageUrl\n  initials\n  counts {\n    artworks\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'bcc9672bfc4f697d26d3d09a2170a873';
+(node as any).hash = '79a2f7ccd13082499e6ae34c8d85888e';
 export default node;

@@ -4,19 +4,19 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Shows_show = {
+export type ShowListItem_show = {
     readonly name: string | null;
     readonly formattedStartAt: string | null;
     readonly formattedEndAt: string | null;
     readonly coverImage: {
         readonly url: string | null;
     } | null;
-    readonly " $refType": "Shows_show";
+    readonly " $refType": "ShowListItem_show";
 };
-export type Shows_show$data = Shows_show;
-export type Shows_show$key = {
-    readonly " $data"?: Shows_show$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"Shows_show">;
+export type ShowListItem_show$data = ShowListItem_show;
+export type ShowListItem_show$key = {
+    readonly " $data"?: ShowListItem_show$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"ShowListItem_show">;
 };
 
 
@@ -25,7 +25,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Shows_show",
+  "name": "ShowListItem_show",
   "selections": [
     {
       "alias": null,
@@ -82,5 +82,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '8349e3d8ddeb87f419ea9561fa32d0f4';
+(node as any).hash = '559fc6745f72eafbbb6e8f85b0e6b661';
 export default node;

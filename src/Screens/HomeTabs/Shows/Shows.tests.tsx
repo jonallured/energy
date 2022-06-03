@@ -1,7 +1,7 @@
 import { range } from "lodash"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "shared/tests/renderWithWrappers"
-import { Shows } from './Shows'
+import { Shows } from "./Shows"
 
 describe("Shows", () => {
   it("renders without throwing an error", async () => {

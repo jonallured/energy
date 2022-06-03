@@ -1,7 +1,7 @@
 import { HomeTabs } from "Screens/HomeTabs/HomeTabs"
 import { createStackNavigator } from "@react-navigation/stack"
-import { ArtistTabs } from "Screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { NavigationContainer } from "@react-navigation/native"
+import { ArtistTabs } from "Screens/HomeTabs/Artists/ArtistTabs"
 
 export type HomeTabsScreens = {
   HomeTabs: undefined
