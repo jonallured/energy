@@ -1,8 +1,26 @@
-import { View, Text } from "react-native"
-import { Tabs } from "react-native-collapsible-tab-view"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { Button, Flex } from "palette"
+import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
+import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
 
 export const Albums = () => {
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   return (
-    <Tabs.FlatList data={[1, 2, 3, 4, 5]} renderItem={({ item }) => <Text>Album {item}</Text>} />
+    <TabsFlatList
+      data={[0]}
+      renderItem={() => (
+        <Flex mx={2}>
+          <Button
+            width={100}
+            block
+            onPress={() => {
+              navigation.navigate("CreateAlbum")
+            }}
+          >
+            Create New Album
+          </Button>
+        </Flex>
+      )}
+    />
   )
 }
