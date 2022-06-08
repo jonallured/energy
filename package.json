@@ -17,7 +17,8 @@
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "prettier-project": "yarn prettier --write 'src/**/*.{ts,tsx}'",
     "relay": "yarn relay-compiler",
-    "relay:watch": "yarn relay --watch"
+    "relay:watch": "yarn relay --watch",
+    "type-check": "yarn relay; yarn tsc"
   },
   "resolutions": {
     "@types/react": "^17"

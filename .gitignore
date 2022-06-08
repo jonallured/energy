@@ -71,6 +71,11 @@ ios/Assets/Fonts/*
 **/.env*
 !.env.example
 
-# Keep this rule last.
+# Relay
+src/__generated__/*
+
+# ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
+# ################## Keep this rule last. ##################
+
