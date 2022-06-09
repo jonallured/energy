@@ -21,7 +21,7 @@ export const Artists = () => {
         <Touchable
           onPress={() => {
             navigation.navigate("ArtistTabs", {
-              slug: artist.slug || "",
+              slug: artist.slug,
             })
           }}
         >
