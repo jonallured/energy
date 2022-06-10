@@ -1,11 +1,12 @@
 import { GlobalStore } from "store/GlobalStore"
 import { Button, Flex, Spacer, Separator, Text } from "palette"
-import { useState, useEffect, useRef, Suspense } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
+import { useState, useEffect, useRef } from "react"
+import { FlatList } from "react-native"
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { SearchInput } from "palette/atoms/SearchInput"
+import { SuspenseWrapper } from "Screens/_helpers/SuspenseWrapper"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 
@@ -97,13 +98,7 @@ const PartnerRow: React.FC<PartnerRow> = ({ partner }) => (
 
 export const SelectPartnerScreen = () => {
   return (
-    <Suspense
-      fallback={() => (
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <ActivityIndicator />
-        </Flex>
-      )}
-    >
+    <SuspenseWrapper>
       <SafeAreaView
         style={{
           flex: 1,
@@ -114,6 +109,6 @@ export const SelectPartnerScreen = () => {
       >
         <SelectPartner />
       </SafeAreaView>
-    </Suspense>
+    </SuspenseWrapper>
   )
 }

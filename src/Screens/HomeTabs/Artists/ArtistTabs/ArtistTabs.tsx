@@ -1,8 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Flex, Text, Touchable, ArrowLeftIcon } from "palette"
-import React from "react"
-import { Suspense } from "react"
-import { ActivityIndicator } from "react-native"
 import { TabsContainer } from "Screens/_helpers/TabsContainer"
 import { TabBarProps, Tabs } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -10,6 +7,7 @@ import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
+import { SuspenseWrapper } from "Screens/_helpers/SuspenseWrapper"
 
 type ArtistProps = NativeStackScreenProps<HomeTabsScreens, "ArtistTabs">
 
@@ -39,15 +37,9 @@ export const ArtistTabs: React.FC<ArtistProps> = ({ route, navigation }) => {
   const { slug } = route.params
 
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent={"center"} flex={1}>
-          <ActivityIndicator />
-        </Flex>
-      }
-    >
+    <SuspenseWrapper>
       <RenderArtist slug={slug} navigation={navigation} />
-    </Suspense>
+    </SuspenseWrapper>
   )
 }
 

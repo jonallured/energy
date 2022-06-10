@@ -7,8 +7,17 @@ import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 import { ArtistListItem } from "Screens/_shared/ArtistListItem"
+import { SuspenseWrapper } from "Screens/_helpers/SuspenseWrapper"
 
 export const Artists = () => {
+  return (
+    <SuspenseWrapper withTabs>
+      <RenderArtists />
+    </SuspenseWrapper>
+  )
+}
+
+const RenderArtists = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })

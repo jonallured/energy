@@ -4,8 +4,17 @@ import { extractNodes } from "shared/utils/extractNodes"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
 import { ShowListItem } from "../../_shared/ShowListItem"
+import { SuspenseWrapper } from "Screens/_helpers/SuspenseWrapper"
 
 export const Shows = () => {
+  return (
+    <SuspenseWrapper withTabs>
+      <RenderShows />
+    </SuspenseWrapper>
+  )
+}
+
+const RenderShows = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID! })
   const shows = extractNodes(data.partner?.showsConnection)
