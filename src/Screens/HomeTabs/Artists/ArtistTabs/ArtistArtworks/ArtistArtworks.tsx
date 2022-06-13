@@ -1,5 +1,5 @@
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
+import { TabsScrollView } from "Screens/_helpers/TabsTestWrappers"
 import MasonryList from "@react-native-seoul/masonry-list"
 import { extractNodes } from "shared/utils/extractNodes"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
@@ -10,22 +10,19 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworks = extractNodes(artworksData.artist?.artworksConnection)
 
   return (
-    <TabsFlatList // We still want to use TabFlatlist for collapsible header feature
-      data={[0]} // This should be 0 as TabsFlatlist needs atleast a single data
-      renderItem={() => (
-        <MasonryList
-          testID="artist-artwork-list"
-          contentContainerStyle={{
-            marginTop: 20,
-            paddingRight: 20,
-          }}
-          numColumns={2}
-          data={artworks}
-          renderItem={({ item: artwork }) => <ArtworkGridItem artwork={artwork} />}
-          keyExtractor={(item) => item.internalID!}
-        />
-      )}
-    />
+    <TabsScrollView>
+      <MasonryList
+        testID="artist-artwork-list"
+        contentContainerStyle={{
+          marginTop: 20,
+          paddingRight: 20,
+        }}
+        numColumns={2}
+        data={artworks}
+        renderItem={({ item: artwork }) => <ArtworkGridItem artwork={artwork} />}
+        keyExtractor={(item) => item.internalID!}
+      />
+    </TabsScrollView>
   )
 }
 

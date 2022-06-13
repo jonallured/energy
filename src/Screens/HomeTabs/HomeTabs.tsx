@@ -6,7 +6,6 @@ import { TabsContainer } from "Screens/_helpers/TabsContainer"
 import { Shows } from "./Shows/Shows"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "Screens/HomeTabs/Artists/Artists"
-import { SuspenseWrapper } from "Screens/_helpers/SuspenseWrapper"
 
 const Header = () => (
   <Flex px={2} mt={2}>
