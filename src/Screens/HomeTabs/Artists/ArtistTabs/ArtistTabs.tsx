@@ -65,7 +65,7 @@ const RenderArtist: React.FC<RenderArtistProps> = ({ slug }) => {
         <ArtistArtworks slug={slug} />
       </Tabs.Tab>
       <Tabs.Tab name="ArtistShows" label="Shows">
-        <ArtistShows />
+        <ArtistShows slug={slug} />
       </Tabs.Tab>
     </TabsContainer>
   )

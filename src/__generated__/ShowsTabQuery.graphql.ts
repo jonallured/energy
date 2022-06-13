@@ -10,7 +10,6 @@ export type ShowsTabQueryVariables = {
 export type ShowsTabQueryResponse = {
     readonly partner: {
         readonly showsConnection: {
-            readonly totalCount: number | null;
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly internalID: string;
@@ -34,7 +33,6 @@ query ShowsTabQuery(
 ) {
   partner(id: $partnerID) {
     showsConnection(first: 100) {
-      totalCount
       edges {
         node {
           internalID
@@ -84,24 +82,17 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "totalCount",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 },
-v6 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -131,7 +122,6 @@ return {
             "name": "showsConnection",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -148,8 +138,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v3/*: any*/),
                       (v4/*: any*/),
-                      (v5/*: any*/),
                       {
                         "args": null,
                         "kind": "FragmentSpread",
@@ -193,7 +183,6 @@ return {
             "name": "showsConnection",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -210,8 +199,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v3/*: any*/),
                       (v4/*: any*/),
-                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -263,7 +252,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -273,21 +262,21 @@ return {
             ],
             "storageKey": "showsConnection(first:100)"
           },
-          (v6/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "ee85f023d6fae4e7374bb836c406630e",
+    "cacheID": "b4d99f274107d89aed1e45e738c3631f",
     "id": null,
     "metadata": {},
     "name": "ShowsTabQuery",
     "operationKind": "query",
-    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100) {\n      totalCount\n      edges {\n        node {\n          internalID\n          slug\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
+    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '80eeac976de166b379b079c82e2e6323';
+(node as any).hash = '028c29dfe3f33bb8ba0e940751f68c7e';
 export default node;
