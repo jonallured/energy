@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { ArrowLeftIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import { Suspense } from "react"
 import { ActivityIndicator, Image, ScrollView } from "react-native"
@@ -7,10 +7,10 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 
-type ArtworkProps = NativeStackScreenProps<HomeTabsScreens, "Artwork">
+type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 
-export const Artwork: React.FC<ArtworkProps> = ({ route, navigation }) => {
-  const { slug } = route.params
+export const Artwork = () => {
+  const { slug } = useRoute<ArtworkRoute>().params
 
   return (
     <Suspense
@@ -20,18 +20,18 @@ export const Artwork: React.FC<ArtworkProps> = ({ route, navigation }) => {
         </Flex>
       }
     >
-      <RenderArtwork slug={slug} navigation={navigation} />
+      <RenderArtwork slug={slug} />
     </Suspense>
   )
 }
 
 type RenderArtworkProps = {
   slug: string
-  navigation: ArtworkProps["navigation"]
 }
 
-const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug, navigation }) => {
+const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
   const insets = useSafeAreaInsets()
+  const navigation = useNavigation()
   const artworkData = useLazyLoadQuery<ArtworkQuery>(artworkQuery, { slug })
 
   return (
