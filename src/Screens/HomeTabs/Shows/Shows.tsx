@@ -1,6 +1,9 @@
 import { GlobalStore } from "store/GlobalStore"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { extractNodes } from "shared/utils/extractNodes"
+import { Touchable } from "palette"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "routes/HomeTabsNavigationStack"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { TabsFlatList } from "Screens/_helpers/TabsTestWrappers"
 import { ShowListItem } from "../../_shared/ShowListItem"
@@ -15,6 +18,7 @@ export const Shows = () => {
 }
 
 const RenderShows = () => {
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID! })
   const shows = extractNodes(data.partner?.showsConnection)
@@ -22,7 +26,17 @@ const RenderShows = () => {
   return (
     <TabsFlatList
       data={shows}
-      renderItem={({ item: show }) => <ShowListItem show={show} />}
+      renderItem={({ item: show }) => (
+        <Touchable
+          onPress={() => {
+            navigation.navigate("ShowTabs", {
+              slug: show.slug || "",
+            })
+          }}
+        >
+          <ShowListItem show={show} />
+        </Touchable>
+      )}
       keyExtractor={(item) => item?.internalID!}
     />
   )
@@ -36,6 +50,7 @@ const showsQuery = graphql`
         edges {
           node {
             internalID
+            slug
             ...ShowListItem_show
           }
         }

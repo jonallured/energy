@@ -74,7 +74,7 @@ const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
           <Spacer mt={2} />
           <Separator />
           <Spacer mt={2} />
-          {artworkData.artwork?.inventoryId && (
+          {artworkData.artwork?.inventoryId ? (
             <>
               <Text variant="xs">Inventory ID</Text>
               <Text variant="xs" color="black60">
@@ -83,7 +83,7 @@ const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
               <Spacer mt={2} />
               <Separator />
             </>
-          )}
+          ) : null}
         </ScrollView>
       </Flex>
     </Flex>

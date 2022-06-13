@@ -12,6 +12,7 @@ interface ArtworkGridItemProps {
 export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, props.artwork)
+
   return (
     <Touchable
       onPress={() => {
