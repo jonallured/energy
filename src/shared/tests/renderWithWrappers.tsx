@@ -1,5 +1,5 @@
-import { GlobalStoreProvider } from "store/GlobalStore"
-import { defaultEnvironment } from "relay/environment/defaultEnvironent"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"
 import { Suspense } from "react"
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"

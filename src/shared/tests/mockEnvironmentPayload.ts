@@ -2,7 +2,7 @@ import { act } from "@testing-library/react-native"
 import { takeRight } from "lodash"
 import { MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { defaultEnvironment } from "relay/environment/defaultEnvironent"
+import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"
 import { flushPromiseQueue } from "./flushPromiseQueue"
 
 let counters: { [path: string]: number } = {}
