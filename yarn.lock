@@ -1959,6 +1959,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.182.tgz#05301a4d5e62963227eaafe0ce04dd77c54ea5c2"
   integrity sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==
 
+"@types/luxon@^2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-2.3.2.tgz#8a3f2cdd4858ce698b56cd8597d9243b8e9d3c65"
+  integrity sha512-WOehptuhKIXukSUUkRgGbj2c997Uv/iUgYgII8U7XLJqq9W2oF0kQ6frEznRQbdurioz+L/cdaIm4GutTQfgmA==
+
 "@types/node@*":
   version "17.0.35"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.35.tgz#635b7586086d51fb40de0a2ec9d1014a5283ba4a"
@@ -5779,6 +5784,11 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+luxon@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.4.0.tgz#9435806545bb32d4234dab766ab8a3d54847a765"
+  integrity sha512-w+NAwWOUL5hO0SgwOHsMBAmZ15SoknmQXhSO0hIbJCAmPKSsGeK8MlmhYh2w6Iib38IxN2M+/ooXWLbeis7GuA==
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
@@ -6181,11 +6191,6 @@ mkdirp@^0.5.1:
   integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
   dependencies:
     minimist "^1.2.6"
-
-moment@^2.29.2:
-  version "2.29.3"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
-  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
 
 ms@2.0.0:
   version "2.0.0"
@@ -7021,6 +7026,11 @@ react-native-svg@^12.1.1:
   dependencies:
     css-select "^4.2.1"
     css-tree "^1.0.0-alpha.39"
+
+react-native-uuid@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-uuid/-/react-native-uuid-2.0.1.tgz#ed4e2dfb1683eddb66967eb5dca140dfe1abddb9"
+  integrity sha512-cptnoIbL53GTCrWlb/+jrDC6tvb7ypIyzbXNJcpR3Vab0mkeaaVd5qnB3f0whXYzS+SMoSQLcUUB0gEWqkPC0g==
 
 react-native@0.66.2:
   version "0.66.2"

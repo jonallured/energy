@@ -6,10 +6,15 @@ import { TabName, TabReactElement } from "react-native-collapsible-tab-view/lib/
 
 type TabsContainerProps = {
   header: (props: TabBarProps<TabName>) => ReactElement
+  initialTabName: TabName | undefined
   children: TabReactElement<TabName> | TabReactElement<TabName>[]
 }
 
-export const TabsContainer: React.FC<TabsContainerProps> = ({ header, children }) => {
+export const TabsContainer: React.FC<TabsContainerProps> = ({
+  header,
+  children,
+  initialTabName,
+}) => {
   const insets = useSafeAreaInsets()
   return (
     <>
@@ -21,6 +26,7 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({ header, children }
             shadowRadius: 0,
             elevation: 0,
           }}
+          initialTabName={initialTabName}
           containerStyle={{ paddingTop: 20 }}
           TabBarComponent={(props) => (
             <MaterialTabBar

@@ -6,6 +6,8 @@ import { Shows } from "./Shows/Shows"
 import { Albums } from "./Albums/Albums"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
 import { Artists } from "./Artists/Artists"
+import { RouteProp, useRoute } from "@react-navigation/native"
+import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 
 const Header = () => (
   <Flex px={2} mt={2}>
@@ -13,15 +15,18 @@ const Header = () => (
   </Flex>
 )
 
+type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
+
 export const HomeTabs = () => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
+  const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
 
   if (!selectedPartner) {
     return <SelectPartnerScreen />
   }
 
   return (
-    <TabsContainer header={Header}>
+    <TabsContainer header={Header} initialTabName={tabName}>
       <Tabs.Tab name="Artists" label="Artists">
         <Artists />
       </Tabs.Tab>

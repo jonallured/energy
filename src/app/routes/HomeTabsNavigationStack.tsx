@@ -7,7 +7,7 @@ import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 
 export type HomeTabsScreens = {
-  HomeTabs: undefined
+  HomeTabs: { tabName: string } | undefined
   ArtistTabs: { slug: string }
   CreateAlbum: undefined
   Artwork: { slug: string }
