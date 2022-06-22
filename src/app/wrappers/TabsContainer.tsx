@@ -6,7 +6,7 @@ import { TabName, TabReactElement } from "react-native-collapsible-tab-view/lib/
 
 type TabsContainerProps = {
   header: (props: TabBarProps<TabName>) => ReactElement
-  initialTabName: TabName | undefined
+  initialTabName?: TabName | undefined
   children: TabReactElement<TabName> | TabReactElement<TabName>[]
 }
 
