@@ -44,7 +44,11 @@ export const CreateAlbum = () => {
           await GlobalStore.actions.albums.addAlbum({
             id: uuid.v4().toString(),
             title: values.albumName.trim(),
-            artworkIds: [],
+            artworkIds: [
+              "58e1a19d275b247d353ff0d9",
+              "5e8de3ececc28c001208e221",
+              "5a9dcb9d2a893a556122c3c5",
+            ], // mock data
             createdAt: DateTime.now().toISO(),
           })
           setLoading(true)
@@ -63,7 +67,7 @@ export const CreateAlbum = () => {
           })
         } catch (error) {
           setLoading(true)
-          console.log("Something went wrong")
+          console.error(error)
         }
       },
       validationSchema: createAlbumSchema,
@@ -100,13 +104,7 @@ export const CreateAlbum = () => {
       </Flex>
       <ShadowSeparator mb={2} />
       <Flex mx={2}>
-        <Button
-          width={100}
-          block
-          mb={4}
-          onPress={handleSubmit}
-          disabled={!isValid || !dirty || loading}
-        >
+        <Button block mb={4} onPress={handleSubmit} disabled={!isValid || !dirty || loading}>
           Create
         </Button>
       </Flex>

@@ -16,6 +16,7 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
   initialTabName,
 }) => {
   const insets = useSafeAreaInsets()
+
   return (
     <>
       <Flex flex={1} pt={insets.top}>
