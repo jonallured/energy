@@ -6,7 +6,9 @@ import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { Image } from "react-native"
 import { AlbumsQuery } from "__generated__/AlbumsQuery.graphql"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useNavigation } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { useScreenDimensions } from "shared/hooks"
 
 export const Albums = () => (
   <SuspenseWrapper withTabs>
@@ -17,18 +19,22 @@ export const Albums = () => (
 const RenderAlbums = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const safeAreaInsets = useSafeAreaInsets()
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
 
   return (
     <>
       <TabsScrollView>
         <Flex mx={2}>
           {albums.map((album) => (
-            <Flex key={album} mb={3} mt={1} backgroundColor="orange">
-              {/* {album.artworkIds.map((artworkId) => (
-              <AlbumListImage slug={artworkId} key={artworkId} />
-            ))} */}
-              <AlbumListImage slug={album.artworkIds[0]} key={album.artworkIds[0]} />
+            <Flex key={album.id} mb={3} mt={1}>
+              <Flex flexDirection="row-reverse" alignItems="flex-end">
+                {album.artworkIds
+                  .slice(0, 3)
+                  .reverse()
+                  .map((artworkId) => (
+                    <AlbumListImage slug={artworkId} key={artworkId} />
+                  ))}
+              </Flex>
               <Flex mt={1}>
                 <Text variant="xs">{album.title}</Text>
                 <Text variant="xs" color="black60">
@@ -58,6 +64,7 @@ const RenderAlbums = () => {
 
 const AlbumListImage = ({ slug }: { slug: string }) => {
   const albumImages = useLazyLoadQuery<AlbumsQuery>(albumsQuery, { slug })
+  const flexWidth = useScreenDimensions().width - 20
 
   return (
     <Image
@@ -66,6 +73,8 @@ const AlbumListImage = ({ slug }: { slug: string }) => {
       }}
       style={{
         aspectRatio: albumImages.artwork?.image?.aspectRatio ?? 1,
+        width: flexWidth / 3,
+        marginRight: -5,
       }}
     />
   )
