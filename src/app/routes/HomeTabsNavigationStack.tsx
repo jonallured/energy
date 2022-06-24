@@ -5,12 +5,14 @@ import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { CreateAlbum } from "app/screens/HomeTabs/Albums/CreateAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
+import { AlbumArtworks } from "app/screens/HomeTabs/Albums/AlbumArtworks"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined
   ArtistTabs: { slug: string }
   CreateAlbum: undefined
   Artwork: { slug: string }
+  AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
 }
 
@@ -28,6 +30,7 @@ export const HomeTabsNavigationStack = () => (
       <HomeTabsStackNavigator.Screen name="ArtistTabs" component={ArtistTabs} />
       <HomeTabsStackNavigator.Screen name="CreateAlbum" component={CreateAlbum} />
       <HomeTabsStackNavigator.Screen name="Artwork" component={Artwork} />
+      <HomeTabsStackNavigator.Screen name="AlbumArtworks" component={AlbumArtworks} />
       <HomeTabsStackNavigator.Screen name="ShowTabs" component={ShowTabs} />
     </HomeTabsStackNavigator.Navigator>
   </NavigationContainer>

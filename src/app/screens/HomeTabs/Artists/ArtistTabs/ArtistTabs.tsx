@@ -1,4 +1,3 @@
-import { Flex, Text, Touchable, ArrowLeftIcon } from "palette"
 import { TabsContainer } from "app/wrappers/TabsContainer"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -7,29 +6,9 @@ import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
 import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-
-type HeaderProps = {
-  artistName: string
-}
-
-const Header = ({ artistName }: HeaderProps) => {
-  const navigation = useNavigation()
-  return (
-    <Flex px={2} mt={2}>
-      <Touchable
-        onPress={() => {
-          navigation.goBack()
-        }}
-      >
-        <ArrowLeftIcon fill="black100" />
-      </Touchable>
-      <Text variant="lg" mt={2}>
-        {artistName}
-      </Text>
-    </Flex>
-  )
-}
+import { RouteProp, useRoute } from "@react-navigation/native"
+import { TabsScrollView } from "app/wrappers/TabsTestWrappers"
+import { Header } from "app/sharedUI/Header"
 
 type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
 
@@ -60,7 +39,7 @@ const RenderArtist: React.FC<RenderArtistProps> = ({ slug }) => {
   )
 
   return (
-    <TabsContainer header={(props) => <Header artistName={data.artist?.name!} {...props} />}>
+    <TabsContainer header={(props) => <Header label={data.artist?.name!} {...props} />}>
       <Tabs.Tab name="ArtistArtworks" label="Works">
         <ArtistArtworks slug={slug} />
       </Tabs.Tab>

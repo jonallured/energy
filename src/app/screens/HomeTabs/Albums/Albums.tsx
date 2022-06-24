@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "palette"
+import { Button, Flex, Text, Touchable } from "palette"
 import { TabsScrollView } from "app/wrappers/TabsTestWrappers"
 import { GlobalStore } from "app/store/GlobalStore"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -26,22 +26,28 @@ const RenderAlbums = () => {
       <TabsScrollView>
         <Flex mx={2}>
           {albums.map((album) => (
-            <Flex key={album.id} mb={3} mt={1}>
-              <Flex flexDirection="row-reverse" alignItems="flex-end">
-                {album.artworkIds
-                  .slice(0, 3)
-                  .reverse()
-                  .map((artworkId) => (
-                    <AlbumListImage slug={artworkId} key={artworkId} />
-                  ))}
+            <Touchable
+              onPress={() => {
+                navigation.navigate("AlbumArtworks", { albumId: album.id })
+              }}
+            >
+              <Flex key={album.id} mb={3} mt={1}>
+                <Flex flexDirection="row-reverse" alignItems="flex-end">
+                  {album.artworkIds
+                    .slice(0, 3)
+                    .reverse()
+                    .map((artworkId) => (
+                      <AlbumListImage slug={artworkId} key={artworkId} />
+                    ))}
+                </Flex>
+                <Flex mt={1}>
+                  <Text variant="xs">{album.title}</Text>
+                  <Text variant="xs" color="black60">
+                    {album.artworkIds.length} Artworks
+                  </Text>
+                </Flex>
               </Flex>
-              <Flex mt={1}>
-                <Text variant="xs">{album.title}</Text>
-                <Text variant="xs" color="black60">
-                  {album.artworkIds.length} Artworks
-                </Text>
-              </Flex>
-            </Flex>
+            </Touchable>
           ))}
         </Flex>
       </TabsScrollView>
