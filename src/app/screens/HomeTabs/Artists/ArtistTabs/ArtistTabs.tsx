@@ -7,8 +7,7 @@ import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
 import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { TabsScrollView } from "app/wrappers/TabsTestWrappers"
-import { Header } from "app/sharedUI/Header"
+import { Header } from "app/sharedUI"
 
 type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
 

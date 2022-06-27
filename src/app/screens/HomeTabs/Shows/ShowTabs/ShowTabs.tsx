@@ -6,30 +6,9 @@ import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 import { ShowArtworks } from "./ShowArtworks/ShowArtworks"
 import { ShowInstalls } from "./ShowInstalls/ShowInstalls"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { RouteProp, useRoute } from "@react-navigation/native"
 import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
-
-type HeaderProps = {
-  showName: string
-}
-
-const Header = ({ showName }: HeaderProps) => {
-  const navigation = useNavigation()
-  return (
-    <Flex px={2} mt={2}>
-      <Touchable
-        onPress={() => {
-          navigation.goBack()
-        }}
-      >
-        <ArrowLeftIcon fill="black100" />
-      </Touchable>
-      <Text variant="lg" mt={2}>
-        {showName}
-      </Text>
-    </Flex>
-  )
-}
+import { Header } from "app/sharedUI"
 
 type ShowTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
 
@@ -60,7 +39,7 @@ const RenderShow: React.FC<RenderShowProps> = ({ slug }) => {
   )
 
   return (
-    <TabsContainer header={(props) => <Header showName={data.show?.name!} {...props} />}>
+    <TabsContainer header={(props) => <Header label={data.show?.name!} {...props} />}>
       <Tabs.Tab name="ShowArtworks" label="Works">
         <ShowArtworks slug={slug} />
       </Tabs.Tab>
