@@ -12,6 +12,7 @@ export type ArtworkQueryResponse = {
             readonly url: string | null;
             readonly aspectRatio: number;
         } | null;
+        readonly internalID: string;
         readonly title: string | null;
         readonly price: string | null;
         readonly date: string | null;
@@ -44,6 +45,7 @@ query ArtworkQuery(
       url
       aspectRatio
     }
+    internalID
     title
     price
     date
@@ -108,44 +110,51 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "price",
+  "name": "title",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "date",
+  "name": "price",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "date",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = [
-  (v6/*: any*/)
+v8 = [
+  (v7/*: any*/)
 ],
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "concreteType": "ArtworkMedium",
   "kind": "LinkedField",
   "name": "mediumType",
   "plural": false,
-  "selections": (v7/*: any*/),
+  "selections": (v8/*: any*/),
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "concreteType": "dimensions",
@@ -170,14 +179,14 @@ v9 = {
   ],
   "storageKey": null
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "inventoryId",
   "storageKey": null
 },
-v11 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -203,9 +212,10 @@ return {
           (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
-          (v8/*: any*/),
+          (v6/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
+          (v11/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -213,7 +223,7 @@ return {
             "kind": "LinkedField",
             "name": "artist",
             "plural": false,
-            "selections": (v7/*: any*/),
+            "selections": (v8/*: any*/),
             "storageKey": null
           }
         ],
@@ -241,9 +251,10 @@ return {
           (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
-          (v8/*: any*/),
+          (v6/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
+          (v11/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -252,26 +263,26 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              (v6/*: any*/),
-              (v11/*: any*/)
+              (v7/*: any*/),
+              (v12/*: any*/)
             ],
             "storageKey": null
           },
-          (v11/*: any*/)
+          (v12/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "6b572109135ff6475e14c5537df9aeb4",
+    "cacheID": "879716b650f50fc887fe88f783d2aaaa",
     "id": null,
     "metadata": {},
     "name": "ArtworkQuery",
     "operationKind": "query",
-    "text": "query ArtworkQuery(\n  $slug: String!\n) {\n  artwork(id: $slug) {\n    image {\n      url\n      aspectRatio\n    }\n    title\n    price\n    date\n    mediumType {\n      name\n    }\n    dimensions {\n      in\n      cm\n    }\n    inventoryId\n    artist {\n      name\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query ArtworkQuery(\n  $slug: String!\n) {\n  artwork(id: $slug) {\n    image {\n      url\n      aspectRatio\n    }\n    internalID\n    title\n    price\n    date\n    mediumType {\n      name\n    }\n    dimensions {\n      in\n      cm\n    }\n    inventoryId\n    artist {\n      name\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '8d64d42a8bab2d7f83b42c289a16d70a';
+(node as any).hash = 'f04c096278d1cd62a63442d360e31ced';
 export default node;

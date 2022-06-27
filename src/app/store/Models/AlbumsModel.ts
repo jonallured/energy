@@ -1,6 +1,6 @@
 import { action, Action } from "easy-peasy"
 
-interface Album {
+export interface Album {
   id: Readonly<string>
   title: string
   artworkIds: string[]
@@ -10,8 +10,9 @@ interface Album {
 export interface AlbumsModel {
   albums: Album[]
   addAlbum: Action<this, Album>
-  updateAlbum: Action<this, Album>
   removeAlbum: Action<this, string>
+  addArtworksInAlbums: Action<this, { albumIds: string[]; artworkIdsToAdd: string[] }>
+  removeArtworksFromAlbums: Action<this, { albumIds: string[]; artworkIdsToRemove: string[] }>
 }
 
 export const AlbumsModel: AlbumsModel = {
@@ -19,11 +20,21 @@ export const AlbumsModel: AlbumsModel = {
   addAlbum: action((state, album) => {
     state.albums.push(album)
   }),
-  updateAlbum: action((state, album) => {
-    const index = state.albums.findIndex((x) => x.id == album.id)
-    state.albums[index] = album
-  }),
   removeAlbum: action((state, albumId) => {
     state.albums = state.albums.filter((x) => x.id !== albumId)
+  }),
+  addArtworksInAlbums: action((state, { albumIds, artworkIdsToAdd }) => {
+    albumIds.forEach((albumId) => {
+      const index = state.albums.findIndex((x) => x.id === albumId)
+      state.albums[index].artworkIds = [...state.albums[index].artworkIds, ...artworkIdsToAdd]
+    })
+  }),
+  removeArtworksFromAlbums: action((state, { albumIds, artworkIdsToRemove }) => {
+    albumIds.forEach((albumId) => {
+      const index = state.albums.findIndex((x) => x.id === albumId)
+      state.albums[index].artworkIds = state.albums[index].artworkIds.filter(
+        (id) => !artworkIdsToRemove.includes(id)
+      )
+    })
   }),
 }

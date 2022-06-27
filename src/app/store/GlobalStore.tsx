@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
-import { GlobalStoreModel } from "./Models/GlobalStoreModel"
+import { GlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 import { Platform } from "react-native"
+import { DeepPartial } from "global"
 
 const STORE_VERSION = 0
 
@@ -79,3 +80,16 @@ export function unsafe__getEnvironment() {
 export function unsafe__getAuth() {
   return { ...globalStoreInstance.getState().auth }
 }
+
+// tslint:disable-next-line:variable-name
+export const __globalStoreTestUtils__ = __TEST__
+  ? {
+      // this can be used to mock the initial state before mounting a test renderer
+      // e.g. `__globalStoreTestUtils__?.injectState({ nativeState: { selectedTab: "sell" } })`
+      // takes effect until the next test starts
+      injectState: (state: DeepPartial<GlobalStoreState>) => {
+        GlobalStore.actions.__inject(state)
+      },
+      getCurrentState: () => globalStoreInstance.getState(),
+    }
+  : undefined

@@ -44,11 +44,7 @@ export const CreateAlbum = () => {
           await GlobalStore.actions.albums.addAlbum({
             id: uuid.v4().toString(),
             title: values.albumName.trim(),
-            artworkIds: [
-              "58e1a19d275b247d353ff0d9",
-              "5e8de3ececc28c001208e221",
-              "5a9dcb9d2a893a556122c3c5",
-            ], // mock data
+            artworkIds: [],
             createdAt: DateTime.now().toISO(),
           })
           setLoading(true)

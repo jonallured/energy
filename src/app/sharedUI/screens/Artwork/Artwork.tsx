@@ -1,11 +1,12 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { ArrowLeftIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import { Suspense } from "react"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { ArrowLeftIcon, ArrowRightIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Suspense, useMemo } from "react"
 import { ActivityIndicator, Image, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { GlobalStore } from "app/store/GlobalStore"
 
 type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 
@@ -31,8 +32,14 @@ type RenderArtworkProps = {
 
 const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
   const insets = useSafeAreaInsets()
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworkData = useLazyLoadQuery<ArtworkQuery>(artworkQuery, { slug })
+  const albums = GlobalStore.useAppState((state) => state.albums.albums)
+
+  const numberOfAlbumsTheArtworkAvailable = useMemo(() => {
+    return albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
+      .length
+  }, [albums])
 
   return (
     <Flex flex={1} pt={insets.top} px={2} mt={2}>
@@ -43,7 +50,7 @@ const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
       >
         <ArrowLeftIcon fill="black100" />
       </Touchable>
-      <Flex mt={2}>
+      <Flex my={2}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Image
             source={{
@@ -73,9 +80,9 @@ const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
           )}
           <Spacer mt={2} />
           <Separator />
-          <Spacer mt={2} />
           {artworkData.artwork?.inventoryId ? (
             <>
+              <Spacer mt={2} />
               <Text variant="xs">Inventory ID</Text>
               <Text variant="xs" color="black60">
                 {artworkData.artwork?.inventoryId}
@@ -84,6 +91,38 @@ const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
               <Separator />
             </>
           ) : null}
+          <Touchable
+            onPress={() => {
+              navigation.navigate("AddArtworkToAlbum", { slug })
+            }}
+            disabled={numberOfAlbumsTheArtworkAvailable === albums.length}
+          >
+            <Spacer mt={3} />
+            <Flex flexDirection="row" alignItems="center">
+              <Image source={require("images/briefcase.webp")} />
+              <Flex ml={1}>
+                {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
+                  <Text>Add to Album</Text>
+                )}
+                {numberOfAlbumsTheArtworkAvailable === 0 ? null : (
+                  <Flex flexDirection="row" alignItems="center">
+                    <Text variant="xs" color="black60">
+                      Currently in{" "}
+                      {numberOfAlbumsTheArtworkAvailable === albums.length
+                        ? "all albums"
+                        : numberOfAlbumsTheArtworkAvailable === 1
+                        ? "1 album"
+                        : `${numberOfAlbumsTheArtworkAvailable} albums`}
+                    </Text>
+                  </Flex>
+                )}
+              </Flex>
+              {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
+                <ArrowRightIcon ml="auto" fill="black100" />
+              )}
+            </Flex>
+            <Spacer mt={3} />
+          </Touchable>
         </ScrollView>
       </Flex>
     </Flex>
@@ -97,6 +136,7 @@ const artworkQuery = graphql`
         url
         aspectRatio
       }
+      internalID
       title
       price
       date

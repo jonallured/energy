@@ -1,7 +1,9 @@
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
-import { action, Action } from "easy-peasy"
+import { action, Action, State } from "easy-peasy"
 import { AlbumsModel } from "./AlbumsModel"
+import { DeepPartial } from "global"
+import { assignDeep } from "../../../shared/utils/persistence"
 
 type ActiveMode = "viewer" | "manager"
 interface GlobalStoreStateModel {
@@ -18,6 +20,9 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   setActiveMode: Action<this, ActiveMode>
 
   reset: Action<this>
+
+  // for testing only. noop otherwise.
+  __inject: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
 }
 
 export const GlobalStoreModel: GlobalStoreModel = {
@@ -39,4 +44,15 @@ export const GlobalStoreModel: GlobalStoreModel = {
     state.activePartnerID = null
     state.activeMode = "viewer"
   }),
+
+  // for testing only. noop otherwise.
+  __inject: __TEST__
+    ? action((state, injectedState) => {
+        assignDeep(state, injectedState)
+      })
+    : action(() => {
+        console.error("Do not use this function outside of tests!!")
+      }),
 }
+
+export type GlobalStoreState = State<GlobalStoreModel>
