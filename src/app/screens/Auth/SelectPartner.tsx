@@ -7,6 +7,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { SearchInput } from "palette/atoms/SearchInput"
 import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
+import { ListEmptyComponent } from "app/sharedUI"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 
@@ -73,7 +74,7 @@ export const SelectPartner: React.FC<{}> = ({}) => {
       ItemSeparatorComponent={() => <Spacer mt={2} />}
       stickyHeaderIndices={[0]}
       ListHeaderComponent={<SelectPartnerHeader onSearchChange={setSearch} searchValue={search} />}
-      ListEmptyComponent={<Text>No partners found</Text>}
+      ListEmptyComponent={<ListEmptyComponent text={"No partners found"} />}
       contentContainerStyle={{ width: width - 20 }}
       showsVerticalScrollIndicator={false}
     />

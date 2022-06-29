@@ -1,13 +1,13 @@
+import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { TabsFlatList } from "app/wrappers/TabsTestWrappers"
+import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { extractNodes } from "shared/utils/extractNodes"
 import { Touchable } from "palette"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
-import { TabsFlatList } from "app/wrappers/TabsTestWrappers"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
-import { ShowListItem } from "app/sharedUI/items/ShowListItem"
 
 export const Shows = () => {
   return (
@@ -38,6 +38,7 @@ const RenderShows = () => {
         </Touchable>
       )}
       keyExtractor={(item) => item?.internalID!}
+      ListEmptyComponent={<ListEmptyComponent text="No shows" />}
     />
   )
 }

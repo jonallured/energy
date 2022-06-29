@@ -2,7 +2,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { TabsFlatList } from "app/wrappers/TabsTestWrappers"
 import { extractNodes } from "shared/utils/extractNodes"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
-import { ShowListItem } from "app/sharedUI/items/ShowListItem"
+import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, { slug })
@@ -13,6 +13,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
       data={shows}
       renderItem={({ item: show }) => <ShowListItem show={show} />}
       keyExtractor={(item) => item?.internalID!}
+      ListEmptyComponent={<ListEmptyComponent text={"No shows"} />}
     />
   )
 }

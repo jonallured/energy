@@ -4,23 +4,24 @@ import MasonryList from "@react-native-seoul/masonry-list"
 import { extractNodes } from "shared/utils/extractNodes"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
+import { ListEmptyComponent } from 'app/sharedUI'
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })
   const artworks = extractNodes(artworksData.artist?.artworksConnection)
-
   return (
     <TabsScrollView>
       <MasonryList
         testID="artist-artwork-list"
         contentContainerStyle={{
-          marginTop: 20,
+          marginTop: artworks.length ? 20 : 0,
           paddingRight: 20,
         }}
         numColumns={2}
         data={artworks}
         renderItem={({ item: artwork }) => <ArtworkGridItem artwork={artwork} />}
         keyExtractor={(item) => item.internalID!}
+        ListEmptyComponent={<ListEmptyComponent text={"No artworks"} />}
       />
     </TabsScrollView>
   )
