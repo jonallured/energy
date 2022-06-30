@@ -1,11 +1,10 @@
-import { Button, Flex, Text, Touchable } from "palette"
-import { TabsScrollView } from "app/wrappers/TabsTestWrappers"
+import { Button, Flex, Touchable } from "palette"
+import { SuspenseWrapper, TabsScrollView } from "app/wrappers"
 import { GlobalStore } from "app/store/GlobalStore"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
-import { AlbumListItem } from "app/sharedUI/items/AlbumListItem"
+import { AlbumListItem } from "app/sharedUI"
 
 export const Albums = () => (
   <SuspenseWrapper withTabs>

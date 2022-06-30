@@ -1,5 +1,4 @@
-import { Tab, TabsProps } from "palette/elements/Tabs"
-import { CheckIcon, ChevronIcon } from "palette/svgs"
+import { CheckIcon, ChevronIcon, Tab, TabsProps } from "palette"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { LayoutRectangle } from "react-native"

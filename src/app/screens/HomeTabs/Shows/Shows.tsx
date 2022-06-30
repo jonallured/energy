@@ -1,13 +1,12 @@
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { TabsFlatList } from "app/wrappers/TabsTestWrappers"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { extractNodes } from "shared/utils/extractNodes"
+import { extractNodes } from "shared/utils"
 import { Touchable } from "palette"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
+import { SuspenseWrapper, TabsFlatList } from "app/wrappers"
 
 export const Shows = () => {
   return (

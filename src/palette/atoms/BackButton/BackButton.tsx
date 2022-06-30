@@ -1,5 +1,4 @@
-import { Flex } from "palette"
-import { ChevronIcon, CloseIcon } from "palette/svgs"
+import { ChevronIcon, CloseIcon, Flex } from "palette"
 import { TouchableOpacity } from "react-native"
 
 interface BackButtonProps {

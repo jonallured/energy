@@ -1,5 +1,4 @@
-import { useTheme } from "palette"
-import { isThemeV3 } from "palette/Theme"
+import { isThemeV3, useTheme } from "palette"
 import { TextStyle } from "react-native"
 import { NoUndefined } from "shared/types"
 import { TextProps } from "."

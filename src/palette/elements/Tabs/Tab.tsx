@@ -1,5 +1,4 @@
-import { Text } from "palette"
-import { useColor } from "palette/hooks"
+import { Text, useColor } from "palette"
 import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
 

@@ -1,10 +1,9 @@
 import { graphql, useLazyLoadQuery } from "react-relay"
 import MasonryList from "@react-native-seoul/masonry-list"
-import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
+import { Header, ArtworkGridItem } from "app/sharedUI"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
-import { Header } from "app/sharedUI/Header"
+import { SuspenseWrapper } from "app/wrappers"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 

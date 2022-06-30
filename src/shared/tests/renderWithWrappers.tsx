@@ -6,7 +6,7 @@ import { Theme } from "palette"
 import { ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { combineProviders } from "shared/utils/combineProviders"
+import { combineProviders } from "shared/utils"
 
 const Wrappers: React.FC = ({ children }) =>
   combineProviders(

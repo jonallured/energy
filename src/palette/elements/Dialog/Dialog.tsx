@@ -1,4 +1,4 @@
-import { useTheme } from "palette/Theme"
+import { useTheme } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"

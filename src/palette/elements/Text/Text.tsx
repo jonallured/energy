@@ -1,5 +1,4 @@
-import { useTheme } from "palette"
-import { isThemeV3, TextVariantV3 } from "palette/Theme"
+import { isThemeV3, TextVariantV3, useTheme } from "palette"
 import { forwardRef, Ref } from "react"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"

@@ -4,12 +4,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { useState } from "react"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
+import { SuspenseWrapper } from "app/wrappers"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AddArtworkToAlbumQuery } from "__generated__/AddArtworkToAlbumQuery.graphql"
 import { FlatList } from "react-native-gesture-handler"
-import { Header } from "app/sharedUI/Header"
-import { AlbumListItem } from "app/sharedUI/items/AlbumListItem"
+import { AlbumListItem, Header } from "app/sharedUI"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworkToAlbum">
 

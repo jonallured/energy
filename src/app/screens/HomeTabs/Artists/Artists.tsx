@@ -1,13 +1,12 @@
 import { Touchable } from "palette"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
+import { extractNodes } from "shared/utils"
 import { GlobalStore } from "app/store/GlobalStore"
-import { extractNodes } from "shared/utils/extractNodes"
-import { TabsFlatList } from "app/wrappers/TabsTestWrappers"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
-import { ArtistListItem } from "app/sharedUI/items/ArtistListItem"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
+import { ArtistListItem } from "app/sharedUI"
+import { SuspenseWrapper, TabsFlatList } from "app/wrappers"
 
 export const Artists = () => {
   return (

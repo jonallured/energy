@@ -1,11 +1,10 @@
-import { TabsContainer } from "app/wrappers/TabsContainer"
+import { SuspenseWrapper, TabsContainer } from "app/wrappers"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { Header } from "app/sharedUI"
 

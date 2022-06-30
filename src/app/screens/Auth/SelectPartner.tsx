@@ -1,13 +1,12 @@
+import { Button, Flex, SearchInput, Separator, Spacer, Text } from "palette"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, Spacer, Separator, Text } from "palette"
 import { useState, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
 import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
-import { SearchInput } from "palette/atoms/SearchInput"
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
 import { ListEmptyComponent } from "app/sharedUI"
+import { SuspenseWrapper } from "app/wrappers"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 

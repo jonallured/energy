@@ -1,4 +1,4 @@
-import { useColor } from "palette"
+import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "./Icon"
 
 export const LinkIcon: React.FC<IconProps> = (props) => {

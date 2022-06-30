@@ -1,4 +1,4 @@
-import { Color } from "palette/Theme"
+import { Color } from "palette"
 import { useState } from "react"
 import { Touchable, TouchableProps } from "./Touchable"
 

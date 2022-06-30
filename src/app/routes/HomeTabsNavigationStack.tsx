@@ -3,10 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native"
 import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { CreateAlbum } from "app/screens/HomeTabs/Albums/CreateAlbum"
-import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { AlbumArtworks } from "app/screens/HomeTabs/Albums/AlbumArtworks"
-import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbum"
+import { Artwork, AddArtworkToAlbum } from "app/sharedUI"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined

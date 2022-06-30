@@ -1,4 +1,4 @@
-import { SuspenseWrapper } from "app/wrappers/SuspenseWrapper"
+import { SuspenseWrapper } from "app/wrappers"
 import { Image, ImageProps } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"

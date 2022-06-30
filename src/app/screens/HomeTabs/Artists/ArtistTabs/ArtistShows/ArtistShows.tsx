@@ -1,6 +1,6 @@
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { TabsFlatList } from "app/wrappers/TabsTestWrappers"
-import { extractNodes } from "shared/utils/extractNodes"
+import { TabsFlatList } from "app/wrappers"
+import { extractNodes } from "shared/utils"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 

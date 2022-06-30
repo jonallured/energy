@@ -6,10 +6,10 @@ import {
   Flex,
   Input,
   Spacer,
+  ShadowSeparator,
   Text,
   Touchable,
 } from "palette"
-import { ShadowSeparator } from "palette/elements/Separator/ShadowSeparator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { GlobalStore } from "app/store/GlobalStore"

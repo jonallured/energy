@@ -1,10 +1,9 @@
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { TabsScrollView } from "app/wrappers/TabsTestWrappers"
+import { TabsScrollView } from "app/wrappers"
 import MasonryList from "@react-native-seoul/masonry-list"
-import { extractNodes } from "shared/utils/extractNodes"
+import { extractNodes } from "shared/utils"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
-import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
-import { ListEmptyComponent } from 'app/sharedUI'
+import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })

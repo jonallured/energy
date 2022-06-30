@@ -1,4 +1,4 @@
-import { bullet } from "palette/helpers"
+import { bullet } from "palette"
 import { SpacerProps } from "../../atoms/Spacer"
 import { Avatar } from "../Avatar"
 import { Flex } from "../Flex"
