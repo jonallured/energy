@@ -1,5 +1,5 @@
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "shared/tests/renderWithWrappers"
+import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { Artwork } from "./Artwork"
 
 jest.mock("@react-navigation/native", () => ({
@@ -9,12 +9,12 @@ jest.mock("@react-navigation/native", () => ({
 
 describe("Artwork", () => {
   it("renders without throwing an error", async () => {
-    renderWithWrappersTL(<Artwork />)
+    renderWithWrappers(<Artwork />)
     await mockEnvironmentPayloadMaybe(mockProps)
   })
 
   it("renders the list of artists", async () => {
-    const { queryByText } = renderWithWrappersTL(<Artwork />)
+    const { queryByText } = renderWithWrappers(<Artwork />)
     await mockEnvironmentPayloadMaybe(mockProps)
 
     expect(queryByText("some title")).toBeDefined()

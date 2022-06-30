@@ -1,8 +1,7 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { act } from "react-test-renderer"
-import { flushPromiseQueue } from "shared/tests/flushPromiseQueue"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "shared/tests/renderWithWrappers"
+import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { AlbumArtworks } from "./AlbumArtworks"
 
 jest.mock("@react-navigation/native", () => ({
@@ -14,7 +13,7 @@ jest.unmock("react-relay")
 
 describe("AlbumArtworks", () => {
   it("renders without throwing an error", async () => {
-    const { queryByText } = renderWithWrappersTL(<AlbumArtworks />)
+    const { queryByText } = renderWithWrappers(<AlbumArtworks />)
 
     act(() => {
       GlobalStore.actions.albums.addAlbum(album)
@@ -25,7 +24,7 @@ describe("AlbumArtworks", () => {
     expect(queryByText("artwork-1-title")).toBeDefined()
   })
   it("renders with throwing an error", async () => {
-    const { queryByText } = renderWithWrappersTL(<AlbumArtworks />)
+    const { queryByText } = renderWithWrappers(<AlbumArtworks />)
 
     act(() => {
       GlobalStore.actions.albums.addAlbum(album)

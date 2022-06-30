@@ -33,7 +33,7 @@ const SuspenseProvider = ({ children }: { children?: React.ReactNode }) => (
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappersTL = (component: ReactElement) => {
+export const renderWithWrappers = (component: ReactElement) => {
   try {
     return render(component, { wrapper: Wrappers })
   } catch (error: any) {
