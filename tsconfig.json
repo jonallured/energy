@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true, // Don't type check the node modules
     "allowJs": true /* Allow javascript files to be compiled. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "baseUrl": "src" /* Base directory to resolve non-absolute module names. */,

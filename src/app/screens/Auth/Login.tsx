@@ -22,7 +22,7 @@ const PLAY_STORE_SCHEME_URL = "artsy://"
 const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
 const APP_SCHEME_URL = "artsy:///"
 
-export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
+export const LoginScreenContent: React.FC = () => {
   const color = useColor()
   const space = useSpace()
   const insets = useSafeAreaInsets()
@@ -101,7 +101,6 @@ export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
             placeholder="Email address"
             placeholderTextColor={color("black30")}
             title="Email"
-            titleStyle={{ color: "white" }}
             value={values.email}
             returnKeyType="next"
             spellCheck={false}
@@ -133,7 +132,6 @@ export const LoginScreenContent: React.FC<LoginScreenProps> = ({}) => {
             ref={passwordInputRef}
             secureTextEntry
             title="Password"
-            titleStyle={{ color: "white" }}
             returnKeyType="done"
             // We need to to set textContentType to password here
             // enable autofill of login details from the device keychain.
