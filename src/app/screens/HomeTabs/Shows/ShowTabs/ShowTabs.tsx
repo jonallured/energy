@@ -5,26 +5,17 @@ import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 import { ShowArtworks } from "./ShowArtworks/ShowArtworks"
 import { ShowInstalls } from "./ShowInstalls/ShowInstalls"
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { SuspenseWrapper, TabsContainer } from "app/wrappers"
+import { TabsContainer } from "app/wrappers"
 import { Header } from "app/sharedUI"
 
 type ShowTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
-
-export const ShowTabs = () => {
-  const { slug } = useRoute<ShowTabsRoute>().params
-
-  return (
-    <SuspenseWrapper>
-      <RenderShow slug={slug} />
-    </SuspenseWrapper>
-  )
-}
-
-type RenderShowProps = {
+type ShowTabsProps = {
   slug: string
 }
 
-const RenderShow: React.FC<RenderShowProps> = ({ slug }) => {
+export const ShowTabs: React.FC<ShowTabsProps> = () => {
+  const { slug } = useRoute<ShowTabsRoute>().params
+
   const data = useLazyLoadQuery<ShowTabsQuery>(
     graphql`
       query ShowTabsQuery($slug: String!) {

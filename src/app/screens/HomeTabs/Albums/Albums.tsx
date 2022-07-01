@@ -4,15 +4,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
-import { AlbumListItem } from "app/sharedUI"
+import { AlbumListItem, ListEmptyComponent } from "app/sharedUI"
 
-export const Albums = () => (
-  <SuspenseWrapper withTabs>
-    <RenderAlbums />
-  </SuspenseWrapper>
-)
-
-const RenderAlbums = () => {
+export const Albums = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
@@ -21,18 +15,22 @@ const RenderAlbums = () => {
     <>
       <TabsScrollView>
         <Flex mx={2} mb={6}>
-          {albums.map((album) => (
-            <Touchable
-              onPress={() => {
-                navigation.navigate("AlbumArtworks", { albumId: album.id })
-              }}
-              key={album.id}
-            >
-              <Flex mb={3} mt={1}>
-                <AlbumListItem album={album} />
-              </Flex>
-            </Touchable>
-          ))}
+          {albums.length > 0 ? (
+            albums.map((album) => (
+              <Touchable
+                onPress={() => {
+                  navigation.navigate("AlbumArtworks", { albumId: album.id })
+                }}
+                key={album.id}
+              >
+                <Flex mb={3} mt={1}>
+                  <AlbumListItem album={album} />
+                </Flex>
+              </Touchable>
+            ))
+          ) : (
+            <ListEmptyComponent />
+          )}
         </Flex>
       </TabsScrollView>
       <Flex

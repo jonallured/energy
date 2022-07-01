@@ -7,6 +7,7 @@ import { RelayEnvironmentProvider } from "react-relay/hooks"
 import { MainNavigationStack } from "./routes/MainNavigationStack"
 import { defaultEnvironment } from "./relay/environment/defaultEnvironent"
 import { ProvideScreenDimensions } from "shared/hooks"
+import { SuspenseWrapper } from "./wrappers"
 
 LogBox.ignoreLogs(["Expected style "])
 
@@ -14,9 +15,11 @@ const AppProviders = ({ children }: { children: ReactNode }) => (
   <GlobalStoreProvider>
     <Theme>
       <RelayEnvironmentProvider environment={defaultEnvironment}>
-        <SafeAreaProvider>
-          <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
-        </SafeAreaProvider>
+        <SuspenseWrapper>
+          <SafeAreaProvider>
+            <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+          </SafeAreaProvider>
+        </SuspenseWrapper>
       </RelayEnvironmentProvider>
     </Theme>
   </GlobalStoreProvider>

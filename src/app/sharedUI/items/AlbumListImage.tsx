@@ -1,4 +1,3 @@
-import { SuspenseWrapper } from "app/wrappers"
 import { Image, ImageProps } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"
@@ -8,13 +7,7 @@ interface AlbumListImageProps {
   style?: ImageProps["style"]
 }
 
-export const AlbumListImage = (props: AlbumListImageProps) => (
-  <SuspenseWrapper withTabs>
-    <RenderAlbumListImage {...props} />
-  </SuspenseWrapper>
-)
-
-const RenderAlbumListImage = ({ slug, style }: AlbumListImageProps) => {
+export const AlbumListImage = ({ slug, style }: AlbumListImageProps) => {
   const albumImages = useLazyLoadQuery<AlbumListImageQuery>(albumsQuery, { slug })
 
   return (

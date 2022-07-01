@@ -1,7 +1,7 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { ArrowLeftIcon, ArrowRightIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import { Suspense, useMemo } from "react"
-import { ActivityIndicator, Image, ScrollView } from "react-native"
+import { useMemo } from "react"
+import { Image, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
@@ -10,27 +10,13 @@ import { GlobalStore } from "app/store/GlobalStore"
 
 type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 
-export const Artwork = () => {
-  const { slug } = useRoute<ArtworkRoute>().params
-
-  return (
-    <Suspense
-      fallback={
-        <Flex justifyContent={"center"} flex={1}>
-          <ActivityIndicator />
-        </Flex>
-      }
-    >
-      <RenderArtwork slug={slug} />
-    </Suspense>
-  )
-}
-
-type RenderArtworkProps = {
+type ArtworkProps = {
   slug: string
 }
 
-const RenderArtwork: React.FC<RenderArtworkProps> = ({ slug }) => {
+export const Artwork: React.FC<ArtworkProps> = () => {
+  const { slug } = useRoute<ArtworkRoute>().params
+
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworkData = useLazyLoadQuery<ArtworkQuery>(artworkQuery, { slug })

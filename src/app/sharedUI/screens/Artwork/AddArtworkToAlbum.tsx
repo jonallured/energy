@@ -4,29 +4,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { useState } from "react"
-import { SuspenseWrapper } from "app/wrappers"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AddArtworkToAlbumQuery } from "__generated__/AddArtworkToAlbumQuery.graphql"
 import { FlatList } from "react-native-gesture-handler"
 import { AlbumListItem, Header } from "app/sharedUI"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworkToAlbum">
-
-export const AddArtworkToAlbum = () => {
-  const { slug } = useRoute<HomeTabsRoute>().params
-
-  return (
-    <SuspenseWrapper>
-      <RenderAddArtworkToAlbum slug={slug} />
-    </SuspenseWrapper>
-  )
-}
-
-type RenderAddArtworkToAlbumProps = {
+type AddArtworkToAlbumProps = {
   slug: string
 }
 
-const RenderAddArtworkToAlbum: React.FC<RenderAddArtworkToAlbumProps> = ({ slug }) => {
+export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
+  const { slug } = useRoute<HomeTabsRoute>().params
   const artworkData = useLazyLoadQuery<AddArtworkToAlbumQuery>(addArtworkToAlbumQuery, { slug })
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

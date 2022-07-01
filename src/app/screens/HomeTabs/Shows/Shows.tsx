@@ -6,17 +6,9 @@ import { extractNodes } from "shared/utils"
 import { Touchable } from "palette"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
-import { SuspenseWrapper, TabsFlatList } from "app/wrappers"
+import { TabsFlatList } from "app/wrappers"
 
 export const Shows = () => {
-  return (
-    <SuspenseWrapper withTabs>
-      <RenderShows />
-    </SuspenseWrapper>
-  )
-}
-
-const RenderShows = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID! })

@@ -9,22 +9,13 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { Header } from "app/sharedUI"
 
 type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
-
-export const ArtistTabs = () => {
-  const { slug } = useRoute<ArtistTabsRoute>().params
-
-  return (
-    <SuspenseWrapper>
-      <RenderArtist slug={slug} />
-    </SuspenseWrapper>
-  )
-}
-
-type RenderArtistProps = {
+type ArtistTabsProps = {
   slug: string
 }
 
-const RenderArtist: React.FC<RenderArtistProps> = ({ slug }) => {
+export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
+  const { slug } = useRoute<ArtistTabsRoute>().params
+
   const data = useLazyLoadQuery<ArtistTabsQuery>(
     graphql`
       query ArtistTabsQuery($slug: String!) {
@@ -39,10 +30,14 @@ const RenderArtist: React.FC<RenderArtistProps> = ({ slug }) => {
   return (
     <TabsContainer header={(props) => <Header label={data.artist?.name!} {...props} />}>
       <Tabs.Tab name="ArtistArtworks" label="Works">
-        <ArtistArtworks slug={slug} />
+        <SuspenseWrapper withTabs>
+          <ArtistArtworks slug={slug} />
+        </SuspenseWrapper>
       </Tabs.Tab>
       <Tabs.Tab name="ArtistShows" label="Shows">
-        <ArtistShows slug={slug} />
+        <SuspenseWrapper withTabs>
+          <ArtistShows slug={slug} />
+        </SuspenseWrapper>
       </Tabs.Tab>
     </TabsContainer>
   )

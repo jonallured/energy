@@ -6,17 +6,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ArtistListItem } from "app/sharedUI"
-import { SuspenseWrapper, TabsFlatList } from "app/wrappers"
+import { TabsFlatList } from "app/wrappers"
 
 export const Artists = () => {
-  return (
-    <SuspenseWrapper withTabs>
-      <RenderArtists />
-    </SuspenseWrapper>
-  )
-}
-
-const RenderArtists = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })

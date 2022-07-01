@@ -1,7 +1,7 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { Flex, Text } from "palette"
-import { TabsContainer } from "app/wrappers"
+import { SuspenseWrapper, TabsContainer } from "app/wrappers"
 import { Shows } from "./Shows/Shows"
 import { Albums } from "./Albums/Albums"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
@@ -28,13 +28,19 @@ export const HomeTabs = () => {
   return (
     <TabsContainer header={Header} initialTabName={tabName}>
       <Tabs.Tab name="Artists" label="Artists">
-        <Artists />
+        <SuspenseWrapper withTabs>
+          <Artists />
+        </SuspenseWrapper>
       </Tabs.Tab>
       <Tabs.Tab name="Shows" label="Shows">
-        <Shows />
+        <SuspenseWrapper withTabs>
+          <Shows />
+        </SuspenseWrapper>
       </Tabs.Tab>
       <Tabs.Tab name="Albums" label="Albums">
-        <Albums />
+        <SuspenseWrapper withTabs>
+          <Albums />
+        </SuspenseWrapper>
       </Tabs.Tab>
     </TabsContainer>
   )
