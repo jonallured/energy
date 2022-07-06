@@ -12,6 +12,7 @@ import { useState } from "react"
 import { Header } from "app/sharedUI/Header"
 import MasonryList from "@react-native-seoul/masonry-list"
 import { ArtworkItem } from "app/sharedUI/items/ArtworkItem"
+
 interface CreateAlbumValuesSchema {
   albumName: string
 }
@@ -82,9 +83,9 @@ export const CreateAlbum = () => {
         </Flex>
         <Spacer mt={2} />
         <Touchable onPress={() => navigation.navigate("CreateAlbumChooseArtist")}>
-          <Flex flexDirection="row" alignItems="center">
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text>Add Items to Album</Text>
-            <ArrowRightIcon fill="black100" ml="auto" />
+            <ArrowRightIcon fill="black100" />
           </Flex>
         </Touchable>
       </Flex>

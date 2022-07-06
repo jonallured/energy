@@ -6,7 +6,6 @@ import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
-import { SuspenseWrapper } from "app/wrappers"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 
@@ -98,17 +97,15 @@ const PartnerRow: React.FC<PartnerRow> = ({ partner }) => (
 
 export const SelectPartnerScreen = () => {
   return (
-    <SuspenseWrapper>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "white",
-        }}
-      >
-        <SelectPartner />
-      </SafeAreaView>
-    </SuspenseWrapper>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+      }}
+    >
+      <SelectPartner />
+    </SafeAreaView>
   )
 }

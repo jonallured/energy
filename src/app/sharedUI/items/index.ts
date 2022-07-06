@@ -1,6 +1,5 @@
 export * from "./AlbumListImage"
 export * from "./AlbumListItem"
 export * from "./ArtistListItem"
-export * from "./ArtistListItem"
 export * from "./ArtworkGridItem"
 export * from "./ShowListItem"

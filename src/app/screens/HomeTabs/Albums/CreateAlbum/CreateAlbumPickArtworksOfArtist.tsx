@@ -63,7 +63,7 @@ export const CreateAlbumPickArtworksOfArtist = () => {
       <Header
         label="Add to Album"
         rightElements={
-          <Flex ml="auto" backgroundColor="black10" borderRadius={50} alignItems="center">
+          <Flex backgroundColor="black10" borderRadius={50} alignItems="center">
             <Touchable onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}>
               <Text px={2} py={0.5}>
                 {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}

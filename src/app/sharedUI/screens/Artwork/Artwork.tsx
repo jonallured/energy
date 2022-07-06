@@ -77,38 +77,40 @@ export const Artwork: React.FC<ArtworkProps> = () => {
               <Separator />
             </>
           ) : null}
-          <Touchable
-            onPress={() => {
-              navigation.navigate("AddArtworkToAlbum", { slug })
-            }}
-            disabled={numberOfAlbumsTheArtworkAvailable === albums.length}
-          >
-            <Spacer mt={3} />
-            <Flex flexDirection="row" alignItems="center">
-              <Image source={require("images/briefcase.webp")} />
-              <Flex ml={1}>
+          {albums.length !== 0 ? (
+            <Touchable
+              onPress={() => {
+                navigation.navigate("AddArtworkToAlbum", { slug })
+              }}
+              disabled={numberOfAlbumsTheArtworkAvailable === albums.length}
+            >
+              <Spacer mt={3} />
+              <Flex flexDirection="row" alignItems="center">
+                <Image source={require("images/briefcase.webp")} />
+                <Flex ml={1}>
+                  {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
+                    <Text>Add to Album</Text>
+                  )}
+                  {numberOfAlbumsTheArtworkAvailable === 0 ? null : (
+                    <Flex flexDirection="row" alignItems="center">
+                      <Text variant="xs" color="black60">
+                        Currently in{" "}
+                        {numberOfAlbumsTheArtworkAvailable === albums.length
+                          ? "all albums"
+                          : numberOfAlbumsTheArtworkAvailable === 1
+                          ? "1 album"
+                          : `${numberOfAlbumsTheArtworkAvailable} albums`}
+                      </Text>
+                    </Flex>
+                  )}
+                </Flex>
                 {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
-                  <Text>Add to Album</Text>
-                )}
-                {numberOfAlbumsTheArtworkAvailable === 0 ? null : (
-                  <Flex flexDirection="row" alignItems="center">
-                    <Text variant="xs" color="black60">
-                      Currently in{" "}
-                      {numberOfAlbumsTheArtworkAvailable === albums.length
-                        ? "all albums"
-                        : numberOfAlbumsTheArtworkAvailable === 1
-                        ? "1 album"
-                        : `${numberOfAlbumsTheArtworkAvailable} albums`}
-                    </Text>
-                  </Flex>
+                  <ArrowRightIcon ml="auto" fill="black100" />
                 )}
               </Flex>
-              {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
-                <ArrowRightIcon ml="auto" fill="black100" />
-              )}
-            </Flex>
-            <Spacer mt={3} />
-          </Touchable>
+              <Spacer mt={3} />
+            </Touchable>
+          ) : null}
         </ScrollView>
       </Flex>
     </Flex>

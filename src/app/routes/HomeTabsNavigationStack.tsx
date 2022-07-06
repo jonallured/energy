@@ -2,13 +2,13 @@ import { HomeTabs } from "app/screens/HomeTabs/HomeTabs"
 import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native"
 import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
-import { CreateAlbum } from "app/sharedUI/screens/CreateAlbum/CreateAlbum"
+import { CreateAlbum } from "app/screens/HomeTabs/Albums/CreateAlbum/CreateAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { AlbumArtworks } from "app/screens/HomeTabs/Albums/AlbumArtworks"
 import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbum"
-import { CreateAlbumChooseArtist } from "app/sharedUI/screens/CreateAlbum/CreateAlbumChooseArtist"
-import { CreateAlbumPickArtworksOfArtist } from "app/sharedUI/screens/CreateAlbum/CreateAlbumPickArtworksOfArtist"
+import { CreateAlbumChooseArtist } from "app/screens/HomeTabs/Albums/CreateAlbum/CreateAlbumChooseArtist"
+import { CreateAlbumPickArtworksOfArtist } from "app/screens/HomeTabs/Albums/CreateAlbum/CreateAlbumPickArtworksOfArtist"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined

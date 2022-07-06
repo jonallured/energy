@@ -14,20 +14,22 @@ export const Albums = () => {
   return (
     <>
       <TabsScrollView>
-        <Flex mx={2} mb={6}>
+        <Flex>
           {albums.length > 0 ? (
-            albums.map((album) => (
-              <Touchable
-                onPress={() => {
-                  navigation.navigate("AlbumArtworks", { albumId: album.id })
-                }}
-                key={album.id}
-              >
-                <Flex mb={3} mt={1}>
-                  <AlbumListItem album={album} />
-                </Flex>
-              </Touchable>
-            ))
+            <Flex mx={2} mb={6}>
+              {albums.map((album) => (
+                <Touchable
+                  onPress={() => {
+                    navigation.navigate("AlbumArtworks", { albumId: album.id })
+                  }}
+                  key={album.id}
+                >
+                  <Flex mb={3} mt={1}>
+                    <AlbumListItem album={album} />
+                  </Flex>
+                </Touchable>
+              ))}
+            </Flex>
           ) : (
             <ListEmptyComponent />
           )}
