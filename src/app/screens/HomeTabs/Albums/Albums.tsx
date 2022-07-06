@@ -1,5 +1,5 @@
 import { Button, Flex, Touchable } from "palette"
-import { SuspenseWrapper, TabsScrollView } from "app/wrappers"
+import { TabsScrollView } from "app/wrappers"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, useNavigation } from "@react-navigation/native"

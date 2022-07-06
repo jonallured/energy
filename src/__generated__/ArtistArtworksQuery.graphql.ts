@@ -9,10 +9,12 @@ export type ArtistArtworksQueryVariables = {
 };
 export type ArtistArtworksQueryResponse = {
     readonly artist: {
+        readonly name: string | null;
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly internalID: string;
+                    readonly slug: string;
                     readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
                 } | null;
             } | null> | null;
@@ -31,10 +33,12 @@ query ArtistArtworksQuery(
   $slug: String!
 ) {
   artist(id: $slug) {
+    name
     artworksConnection(first: 100) {
       edges {
         node {
           internalID
+          slug
           ...ArtworkGridItem_artwork
           id
         }
@@ -48,7 +52,6 @@ fragment ArtworkGridItem_artwork on Artwork {
   internalID
   title
   date
-  slug
   image {
     url
     aspectRatio
@@ -71,21 +74,35 @@ v1 = [
     "variableName": "slug"
   }
 ],
-v2 = [
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v3 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 100
   }
 ],
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v4 = {
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -107,9 +124,10 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
             "alias": null,
-            "args": (v2/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "ArtworkConnection",
             "kind": "LinkedField",
             "name": "artworksConnection",
@@ -131,7 +149,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "args": null,
                         "kind": "FragmentSpread",
@@ -167,9 +186,10 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
             "alias": null,
-            "args": (v2/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "ArtworkConnection",
             "kind": "LinkedField",
             "name": "artworksConnection",
@@ -191,7 +211,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -204,13 +225,6 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "date",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "slug",
                         "storageKey": null
                       },
                       {
@@ -238,7 +252,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -248,21 +262,21 @@ return {
             ],
             "storageKey": "artworksConnection(first:100)"
           },
-          (v4/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "76cc3716e65d53ece97a509b24c5f3be",
+    "cacheID": "99e31bae8b4f3d3aac9d042f221468cd",
     "id": null,
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",
-    "text": "query ArtistArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          ...ArtworkGridItem_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ArtworkGridItem_artwork on Artwork {\n  internalID\n  title\n  date\n  slug\n  image {\n    url\n    aspectRatio\n  }\n}\n"
+    "text": "query ArtistArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    name\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ArtworkGridItem_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ArtworkGridItem_artwork on Artwork {\n  internalID\n  title\n  date\n  image {\n    url\n    aspectRatio\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '2efb6991e8a84362eb8b1b956caf68ea';
+(node as any).hash = '63bf55a6aa86519d117f0bbfce47b886';
 export default node;

@@ -8,7 +8,6 @@ export type ArtworkGridItem_artwork = {
     readonly internalID: string;
     readonly title: string | null;
     readonly date: string | null;
-    readonly slug: string;
     readonly image: {
         readonly url: string | null;
         readonly aspectRatio: number;
@@ -53,13 +52,6 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "slug",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "Image",
       "kind": "LinkedField",
       "name": "image",
@@ -86,5 +78,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'b409b5f0811943ab45dea0357206b062';
+(node as any).hash = 'f07b8da0358ca329f16dcacdeb04f194';
 export default node;

@@ -11,7 +11,7 @@ if (Platform.OS === "ios") {
   window.requestIdleCallback = null
 }
 
-const asynchStorage = {
+const asyncStorage = {
   async getItem(key: string) {
     try {
       const res = await AsyncStorage.getItem(key)
@@ -41,7 +41,7 @@ const asynchStorage = {
 function createGlobalStore() {
   const store = createStore<GlobalStoreModel>(
     persist(GlobalStoreModel, {
-      storage: asynchStorage,
+      storage: asyncStorage,
     }),
     {
       name: "GlobalStore",

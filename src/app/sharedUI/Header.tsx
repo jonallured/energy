@@ -3,9 +3,10 @@ import { Flex, Text, Touchable, ArrowLeftIcon } from "palette"
 
 type HeaderProps = {
   label: string
+  rightElements?: Element
 }
 
-export const Header = ({ label }: HeaderProps) => {
+export const Header = ({ label, rightElements }: HeaderProps) => {
   const navigation = useNavigation()
   return (
     <Flex px={2} mt={2}>
@@ -16,9 +17,10 @@ export const Header = ({ label }: HeaderProps) => {
       >
         <ArrowLeftIcon fill="black100" />
       </Touchable>
-      <Text variant="lg" mt={2}>
-        {label}
-      </Text>
+      <Flex flexDirection="row" mt={2} alignItems="center">
+        <Text variant="lg">{label}</Text>
+        {rightElements}
+      </Flex>
     </Flex>
   )
 }

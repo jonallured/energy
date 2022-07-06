@@ -4,9 +4,12 @@ import MasonryList from "@react-native-seoul/masonry-list"
 import { extractNodes } from "shared/utils"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworks = extractNodes(artworksData.artist?.artworksConnection)
   return (
     <TabsScrollView>
@@ -18,7 +21,16 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
         }}
         numColumns={2}
         data={artworks}
-        renderItem={({ item: artwork }) => <ArtworkGridItem artwork={artwork} />}
+        renderItem={({ item: artwork }) => (
+          <ArtworkGridItem
+            artwork={artwork}
+            onPress={() =>
+              navigation.navigate("Artwork", {
+                slug: artwork.slug,
+              })
+            }
+          />
+        )}
         keyExtractor={(item) => item.internalID!}
         ListEmptyComponent={<ListEmptyComponent text={"No artworks"} />}
       />
@@ -26,13 +38,15 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   )
 }
 
-const artistArtworksQuery = graphql`
+export const artistArtworksQuery = graphql`
   query ArtistArtworksQuery($slug: String!) {
     artist(id: $slug) {
+      name
       artworksConnection(first: 100) {
         edges {
           node {
             internalID
+            slug
             ...ArtworkGridItem_artwork
           }
         }

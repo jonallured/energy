@@ -33,7 +33,7 @@ export const Artists = () => {
   )
 }
 
-const artistsQuery = graphql`
+export const artistsQuery = graphql`
   query ArtistsQuery($partnerID: String!) {
     partner(id: $partnerID) {
       allArtistsConnection {

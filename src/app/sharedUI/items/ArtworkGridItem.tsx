@@ -1,27 +1,20 @@
 import { graphql, useFragment } from "react-relay"
-import { Flex, Text, Touchable } from "palette"
+import { CheckCircleFillIcon, Flex, Text, Touchable } from "palette"
 import { Image } from "react-native"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 
 interface ArtworkGridItemProps {
   artwork: ArtworkGridItem_artwork$key
+  onPress?: () => void
+  selected?: boolean
 }
 
 export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, props.artwork)
 
   return (
-    <Touchable
-      onPress={() => {
-        navigation.navigate("Artwork", {
-          slug: artwork.slug,
-        })
-      }}
-    >
-      <Flex mb={4} pl={2}>
+    <Touchable onPress={props.onPress}>
+      <Flex mb={4} pl={2} opacity={props.selected ? 0.4 : 1}>
         <Image
           source={{ uri: Image.resolveAssetSource({ uri: artwork.image?.url! }).uri }}
           style={{
@@ -35,6 +28,11 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
           </Text>
         </Text>
       </Flex>
+      {props.selected ? (
+        <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
+          <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+        </Flex>
+      ) : null}
     </Touchable>
   )
 }
@@ -44,7 +42,6 @@ const ArtworkGridItemFragment = graphql`
     internalID
     title
     date
-    slug
     image {
       url
       aspectRatio
