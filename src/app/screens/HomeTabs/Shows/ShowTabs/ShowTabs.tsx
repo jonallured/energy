@@ -32,7 +32,7 @@ export const ShowTabs: React.FC<ShowTabsProps> = () => {
       <Tabs.Tab name="ShowArtworks" label="Works">
         <ShowArtworks slug={slug} />
       </Tabs.Tab>
-      <Tabs.Tab name="ShowInstalls" label="Shows">
+      <Tabs.Tab name="ShowInstalls" label="Installs">
         <ShowInstalls />
       </Tabs.Tab>
     </TabsContainer>
