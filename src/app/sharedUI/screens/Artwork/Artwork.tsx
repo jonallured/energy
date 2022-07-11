@@ -1,5 +1,14 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { ArrowLeftIcon, ArrowRightIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  BriefcaseIcon,
+  Flex,
+  Separator,
+  Spacer,
+  Text,
+  Touchable,
+} from "palette"
 import { useMemo } from "react"
 import { Image, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -86,7 +95,7 @@ export const Artwork: React.FC<ArtworkProps> = () => {
             >
               <Spacer mt={3} />
               <Flex flexDirection="row" alignItems="center">
-                <Image source={require("images/briefcase.webp")} />
+                <BriefcaseIcon fill="black100" />
                 <Flex ml={1}>
                   {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
                     <Text>Add to Album</Text>
