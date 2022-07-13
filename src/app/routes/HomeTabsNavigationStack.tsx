@@ -13,7 +13,7 @@ import { CreateAlbumPickArtworksOfArtist } from "app/screens/HomeTabs/Albums/Cre
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined
   ArtistTabs: { slug: string }
-  Artwork: { slug: string }
+  Artwork: { slug: string; contextArtworkSlugs?: string[] }
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
   AddArtworkToAlbum: { slug: string }

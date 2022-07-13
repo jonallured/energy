@@ -1,20 +1,19 @@
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
-import { Artwork } from "./Artwork"
+import { ArtworkContent } from "./ArtworkContent"
 
 jest.mock("@react-navigation/native", () => ({
-  useRoute: () => ({ params: { slug: "slug" } }),
   useNavigation: jest.fn(),
 }))
 
-describe("Artwork", () => {
+describe("ArtworkContent", () => {
   it("renders without throwing an error", async () => {
-    renderWithWrappers(<Artwork />)
+    renderWithWrappers(<ArtworkContent slug="slug" />)
     await mockEnvironmentPayloadMaybe(mockProps)
   })
 
   it("renders the list of artists", async () => {
-    const { queryByText } = renderWithWrappers(<Artwork />)
+    const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
     await mockEnvironmentPayloadMaybe(mockProps)
 
     expect(queryByText("some title")).toBeDefined()
@@ -26,10 +25,6 @@ describe("Artwork", () => {
 const mockProps = {
   Artwork: () => ({
     artwork: {
-      image: {
-        url: "some artwork url",
-        aspectRatio: 1,
-      },
       title: "some title",
       price: "some price",
       date: "some date",
@@ -45,5 +40,9 @@ const mockProps = {
         name: "some artist anem",
       },
     },
+  }),
+  Image: () => ({
+    url: "some artwork url",
+    aspectRatio: 1,
   }),
 }

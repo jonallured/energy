@@ -11,6 +11,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworksData = useLazyLoadQuery<ShowArtworksQuery>(showArtworksQuery, { slug })
   const artworks = extractNodes(artworksData.show?.artworksConnection)
+  const artworkSlugs = artworks.map((artwork) => artwork.slug)
 
   return (
     <TabsScrollView>
@@ -28,6 +29,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
             onPress={() =>
               navigation.navigate("Artwork", {
                 slug: artwork.slug,
+                contextArtworkSlugs: artworkSlugs,
               })
             }
           />
