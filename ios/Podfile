@@ -1,6 +1,9 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
+require 'dotenv'
+Dotenv.load('../.env.shared')
+
 platform :ios, '11.0'
 
 target 'Energy' do
@@ -33,7 +36,7 @@ target 'Energy' do
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
-    
+
     # Setup Env Vars For Build Schemas
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
@@ -44,5 +47,5 @@ target 'Energy' do
     end
 
   end
-  
+
 end

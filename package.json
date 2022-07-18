@@ -18,7 +18,8 @@
     "prettier-project": "yarn prettier --write 'src/**/*.{ts,tsx}'",
     "relay": "yarn relay-compiler",
     "relay:watch": "yarn relay --watch",
-    "type-check": "yarn relay; yarn tsc"
+    "type-check": "yarn relay; yarn tsc",
+    "secrets:generate!": "scripts/secrets-generate-baseline"
   },
   "resolutions": {
     "@types/react": "^17"
@@ -100,14 +101,17 @@
     "babel-plugin-relay": "^12.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "concurrently": "^7.0.0",
+    "danger": "^11.1.1",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-import-resolver-typescript": "^3.1.1",
     "eslint-plugin-import": "^2.26.0",
     "graphql": "^15.0.0",
     "husky": "^7.0.4",
     "jest": "^26.0.0",
     "jest-environment-jsdom": "^26.0.0",
+    "jest-junit": "^14.0.0",
     "jest-raw-loader": "^1.0.1",
     "lint-staged": "^11.2.6",
     "metro-react-native-babel-preset": "^0.66.2",

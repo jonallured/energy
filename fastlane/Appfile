@@ -1,0 +1,10 @@
+# ios
+app_identifier "sy.art.folio"
+apple_id "mobiledeploys@artsymail.com"
+team_name "Art.sy Inc."
+team_id "23KMWZ572J"
+itc_team_id "479887"
+
+# android
+package_name "net.artsy.folio"
+json_key_file "./android-secret.json"
