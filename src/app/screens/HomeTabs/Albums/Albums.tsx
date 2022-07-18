@@ -44,7 +44,7 @@ export const Albums = () => {
         width="100%"
         backgroundColor="white100"
       >
-        <Button block onPress={() => navigation.navigate("CreateAlbum")}>
+        <Button block onPress={() => navigation.navigate("CreateOrEditAlbum", { mode: "create" })}>
           Create New Album
         </Button>
       </Flex>

@@ -36,7 +36,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
         ))}
       </Flex>
       <Flex mt={1}>
-        <Text variant="xs">{album.title}</Text>
+        <Text variant="xs">{album.name}</Text>
         <Text variant="xs" color="black60">
           {album.artworkIds.length} Artworks
         </Text>

@@ -12,24 +12,28 @@ import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
 import { useState } from "react"
 import { GlobalStore } from "app/store/GlobalStore"
 import { intersection } from "lodash"
+import { useArtworksByMode } from "./useArtworksByMode"
 
-type ArtworksToAddToAlbumRoute = RouteProp<HomeTabsScreens, "CreateAlbumPickArtworksOfArtist">
+type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
+  HomeTabsScreens,
+  "CreateOrEditAlbumChooseArtworks"
+>
 
-export const CreateAlbumPickArtworksOfArtist = () => {
-  const { slug } = useRoute<ArtworksToAddToAlbumRoute>().params
+export const CreateOrEditAlbumChooseArtworks = () => {
+  const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })
   const artworks = extractNodes(artworksData.artist?.artworksConnection)
   const safeAreaInsets = useSafeAreaInsets()
-  const selectedArtworks = GlobalStore.useAppState(
-    (state) => state.albums.sessionState.selectedArtworks
-  )
 
+  const albums = GlobalStore.useAppState((state) => state.albums.albums)
+  const album = albums.find((album) => album.id === albumId)
+
+  const selectedArtworks = useArtworksByMode(mode, slug)
   const selectedArtworksForThisArtist = intersection(
     artworks.map((artwork) => artwork.internalID),
     selectedArtworks
   )
-
   const [selectedArtworkIds, setSelectedArtworkIds] = useState(selectedArtworksForThisArtist)
   const [areAllArtworkSelected, setAreAllArtworkSelected] = useState<boolean>(false)
 
@@ -54,14 +58,22 @@ export const CreateAlbumPickArtworksOfArtist = () => {
   }
 
   const selectArtworksToAddToAnAlbum = async () => {
-    await GlobalStore.actions.albums.selectArtworksForANewAlbum(selectedArtworkIds)
-    navigation.navigate("CreateAlbum")
+    const currentArtworks = {
+      artistSlug: slug,
+      artworkIds: selectedArtworkIds,
+    }
+    if (mode === "edit" && albumId) {
+      await GlobalStore.actions.albums.selectArtworksForExistingAlbum(currentArtworks)
+    } else {
+      await GlobalStore.actions.albums.selectArtworksForNewAlbum(currentArtworks)
+    }
+    navigation.navigate("CreateOrEditAlbum", { mode, albumId })
   }
 
   return (
     <Flex flex={1} pt={safeAreaInsets.top}>
       <Header
-        label="Add to Album"
+        label={mode === "edit" ? "Save to Album" : "Add to Album"}
         rightElements={
           <Flex backgroundColor="black10" borderRadius={50} alignItems="center">
             <Touchable onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}>
@@ -80,13 +92,18 @@ export const CreateAlbumPickArtworksOfArtist = () => {
         }}
         numColumns={2}
         data={artworks}
-        renderItem={({ item: artwork }) => (
-          <ArtworkGridItem
-            artwork={artwork}
-            onPress={() => selectArtworkHandler(artwork.internalID)}
-            selected={selectedArtworkIds.includes(artwork.internalID)}
-          />
-        )}
+        renderItem={({ item: artwork }) => {
+          if (album?.artworkIds.includes(artwork.internalID)) {
+            return <ArtworkGridItem artwork={artwork} disable />
+          }
+          return (
+            <ArtworkGridItem
+              artwork={artwork}
+              onPress={() => selectArtworkHandler(artwork.internalID)}
+              selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+            />
+          )
+        }}
         keyExtractor={(item) => item.internalID!}
       />
       <Flex px={2} pt={1} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>
@@ -98,7 +115,7 @@ export const CreateAlbumPickArtworksOfArtist = () => {
           onPress={selectArtworksToAddToAnAlbum}
           disabled={selectedArtworkIds.length <= 0}
         >
-          Add
+          {mode === "edit" ? "Save" : "Add"}
         </Button>
       </Flex>
     </Flex>

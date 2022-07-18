@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
 import { Header } from "app/sharedUI"
@@ -11,8 +11,14 @@ import { useLazyLoadQuery } from "react-relay"
 import { extractNodes } from "shared/utils/extractNodes"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 
-export const CreateAlbumChooseArtist = () => {
+type CreateOrEditAlbumChooseArtistRoute = RouteProp<
+  HomeTabsScreens,
+  "CreateOrEditAlbumChooseArtist"
+>
+
+export const CreateOrEditAlbumChooseArtist = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const { mode, albumId } = useRoute<CreateOrEditAlbumChooseArtistRoute>().params
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
@@ -20,14 +26,16 @@ export const CreateAlbumChooseArtist = () => {
 
   return (
     <Flex flex={1} pt={insets.top}>
-      <Header label="Add to Album" />
+      <Header label={mode === "edit" ? "Save to Album" : "Add to Album"} />
       <Spacer mt={2} />
       <FlatList
         data={artists}
         renderItem={({ item: artist }) => (
           <Touchable
             onPress={() =>
-              navigation.navigate("CreateAlbumPickArtworksOfArtist", {
+              navigation.navigate("CreateOrEditAlbumChooseArtworks", {
+                mode,
+                albumId,
                 slug: artist.slug,
               })
             }

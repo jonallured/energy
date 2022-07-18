@@ -21,7 +21,7 @@ describe("AlbumArtworks", () => {
 
     await mockEnvironmentPayloadMaybe(mockProps)
 
-    expect(queryByText("artwork-1-title")).toBeDefined()
+    expect(queryByText("artwork-1-name")).toBeDefined()
   })
   it("renders with throwing an error", async () => {
     const { queryByText } = renderWithWrappers(<AlbumArtworks />)
@@ -32,7 +32,7 @@ describe("AlbumArtworks", () => {
 
     await mockEnvironmentPayloadMaybe(mockProps)
 
-    expect(queryByText("artwork-title-that-does-not-exist")).toBeDefined()
+    expect(queryByText("artwork-name-that-does-not-exist")).toBeDefined()
   })
 })
 
@@ -42,7 +42,7 @@ const mockProps = {
       url: "some artwork url",
       aspectRatio: 1,
     },
-    title: "artwork-1-title",
+    name: "artwork-1-name",
     price: "some price",
     date: "some date",
     id: "album-id",
@@ -51,8 +51,6 @@ const mockProps = {
 }
 
 const album = {
-  id: "album-id",
-  title: "album-title",
+  name: "album-name",
   artworkIds: ["artwork-1-id"],
-  createdAt: "date",
 }

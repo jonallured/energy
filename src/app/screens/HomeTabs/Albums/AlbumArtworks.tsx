@@ -3,7 +3,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { Header, ArtworkItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Touchable, TrashIcon } from "palette"
+import { Flex, Touchable, TrashIcon, EditIcon } from "palette"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Alert } from "react-native"
 
@@ -20,30 +20,43 @@ export const AlbumArtworks = () => {
     return <ListEmptyComponent />
   }
 
-  const deleteAlbumHandler = () =>
-    Alert.alert("Are you sure you want to delete this album?", "You cannot undo this action", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: async () => {
-          await GlobalStore.actions.albums.removeAlbum(album.id)
-          navigation.goBack()
+  const deleteAlbumHandler = () => {
+    return Alert.alert(
+      "Are you sure you want to delete this album?",
+      "You cannot undo this action.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ])
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            await GlobalStore.actions.albums.removeAlbum(album.id)
+            navigation.goBack()
+          },
+        },
+      ]
+    )
+  }
+
+  const editAlbumHandler = () => {
+    GlobalStore.actions.albums.clearSelectedArtworksForEditAlbum()
+    navigation.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
+  }
 
   return (
     <Flex flex={1} pt={safeAreaInsets.top}>
       <Header
-        label={album.title}
+        label={album.name}
         rightElements={
-          <Flex alignItems="center">
-            <Touchable onPress={deleteAlbumHandler}>
+          <Flex flexDirection="row" alignItems="center">
+            <Touchable onPress={deleteAlbumHandler} style={{ marginRight: 20 }}>
               <TrashIcon fill="black100" width={25} height={25} />
+            </Touchable>
+            <Touchable onPress={editAlbumHandler}>
+              <EditIcon fill="black100" width={25} height={25} />
             </Touchable>
           </Flex>
         }
