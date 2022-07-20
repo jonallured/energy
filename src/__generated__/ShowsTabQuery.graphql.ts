@@ -32,7 +32,7 @@ query ShowsTabQuery(
   $partnerID: String!
 ) {
   partner(id: $partnerID) {
-    showsConnection(first: 100) {
+    showsConnection(first: 100, status: ALL) {
       edges {
         node {
           internalID
@@ -76,6 +76,11 @@ v2 = [
     "kind": "Literal",
     "name": "first",
     "value": 100
+  },
+  {
+    "kind": "Literal",
+    "name": "status",
+    "value": "ALL"
   }
 ],
 v3 = {
@@ -152,7 +157,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "showsConnection(first:100)"
+            "storageKey": "showsConnection(first:100,status:\"ALL\")"
           }
         ],
         "storageKey": null
@@ -260,7 +265,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "showsConnection(first:100)"
+            "storageKey": "showsConnection(first:100,status:\"ALL\")"
           },
           (v5/*: any*/)
         ],
@@ -269,14 +274,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b4d99f274107d89aed1e45e738c3631f",
+    "cacheID": "2ac8ceb0f1391b68b78117b97ee3bd98",
     "id": null,
     "metadata": {},
     "name": "ShowsTabQuery",
     "operationKind": "query",
-    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
+    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100, status: ALL) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '028c29dfe3f33bb8ba0e940751f68c7e';
+(node as any).hash = 'ec521153197ed5d78bf24f3aaf0a6868';
 export default node;

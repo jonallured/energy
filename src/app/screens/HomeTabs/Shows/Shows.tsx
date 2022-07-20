@@ -37,7 +37,7 @@ export const Shows = () => {
 const showsQuery = graphql`
   query ShowsTabQuery($partnerID: String!) {
     partner(id: $partnerID) {
-      showsConnection(first: 100) {
+      showsConnection(first: 100, status: ALL) {
         edges {
           node {
             internalID
