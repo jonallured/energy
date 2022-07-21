@@ -1,4 +1,4 @@
-frozen_string_literal: true
+# frozen_string_literal: true
 
 require 'yaml'
 require 'spaceship'
@@ -12,7 +12,7 @@ before_all do
 end
 
 require 'dotenv'
-Dotenv.load('../.env.shared')
+Dotenv.load('../.env')
 
 lane :ship_beta do
   ship_beta_ios

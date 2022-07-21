@@ -2,7 +2,7 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 require 'dotenv'
-Dotenv.load('../.env.shared')
+Dotenv.load('../.env')
 
 platform :ios, '11.0'
 
@@ -10,8 +10,8 @@ target 'Energy' do
   config = use_native_modules!
 
   ENVFILES = {
-    'Debug' => '$(PODS_ROOT)/../../.env.dev',
-    'Release' => '$(PODS_ROOT)/../../.env.shared',
+    'Debug' => '$(PODS_ROOT)/../../.env',
+    'Release' => '$(PODS_ROOT)/../../.env',
   }
 
 

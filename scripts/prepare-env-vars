@@ -6,12 +6,12 @@
 # Exit if any subcommand fails
 set -e
 
-echo "Downloading .env.shared file..."
-if ! aws s3 cp s3://artsy-citadel/dev/.env.energy .env.shared; then
+echo "Downloading .env file..."
+if ! aws s3 cp s3://artsy-citadel/dev/.env.energy .env; then
   echo "Unable to download shared config from s3"
   echo "This is expected for open source contributors. We will work on adding support for OSS soon"
   echo "If you work at Artsy, please check your s3 access."
-  cp .env.oss .env.shared
+  cp .env.oss .env
 fi
 
 if [[ ! -e ".env" ]]; then
@@ -23,8 +23,5 @@ if [[ -e ".env.dev" ]]; then
   echo "Removing existing .env.dev file"
   rm .env.dev
 fi
-
-echo "Creating .env.dev from .env and .dev.shared..."
-awk 1 .env.shared .env > .env.dev
 
 echo "Preparing environment variables completed!"
