@@ -77,6 +77,13 @@ ios/Assets/Fonts/*
 # Relay
 src/__generated__/*
 
+# iOS test files
+test-results.xml
+xcode_test_raw.log
+
+# CI derived data
+derived_data/*
+
 # ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
