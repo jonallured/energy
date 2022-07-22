@@ -1,0 +1,13 @@
+diff --git a/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts b/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts
+index 3458b95..4347eb9 100644
+--- a/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts
++++ b/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts
+@@ -8,7 +8,7 @@ interface Props<T> extends Omit<ScrollViewProps, 'refreshControl'> {
+     onEndReached?: () => void;
+     onEndReachedThreshold?: number;
+     style?: StyleProp<ViewStyle>;
+-    data: T[];
++    data: readonly T[];
+     renderItem: ({ item: T, i: number }: {
+         item: any;
+         i: any;

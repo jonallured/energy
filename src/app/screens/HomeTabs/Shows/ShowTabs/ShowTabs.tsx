@@ -33,7 +33,7 @@ export const ShowTabs: React.FC<ShowTabsProps> = () => {
         <ShowArtworks slug={slug} />
       </Tabs.Tab>
       <Tabs.Tab name="ShowInstalls" label="Installs">
-        <ShowInstalls />
+        <ShowInstalls slug={slug} />
       </Tabs.Tab>
     </TabsContainer>
   )

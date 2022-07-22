@@ -20,7 +20,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
     <Touchable disabled={disable} onPress={onPress}>
       <Flex mb={4} pl={2} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}>
         <Image
-          source={{ uri: Image.resolveAssetSource({ uri: artwork.image?.url! }).uri }}
+          source={{ uri: artwork.image?.url! }}
           style={{
             aspectRatio: artwork.image?.aspectRatio ?? 1,
           }}
