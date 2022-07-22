@@ -180,7 +180,7 @@ export const LoginScreenContent: React.FC = () => {
           stable Wifi connection.
         </Text>
       </ScrollView>
-      <Flex px={2} paddingBottom={20}>
+      <Flex px={2} paddingBottom={space(2)}>
         <TouchableOpacity onPress={handleOpenArtsyMobile}>
           <Flex flexDirection="row">
             <Image

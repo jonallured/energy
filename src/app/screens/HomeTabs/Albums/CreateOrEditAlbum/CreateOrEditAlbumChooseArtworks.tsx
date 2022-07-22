@@ -2,7 +2,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { Header } from "app/sharedUI"
-import { Flex, Spacer, Button, Text, Touchable } from "palette"
+import { Flex, Spacer, Button, Text, Touchable, useSpace } from "palette"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useLazyLoadQuery } from "react-relay"
 import { extractNodes } from "shared/utils/extractNodes"
@@ -25,6 +25,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })
   const artworks = extractNodes(artworksData.artist?.artworksConnection)
   const safeAreaInsets = useSafeAreaInsets()
+  const space = useSpace()
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
@@ -87,8 +88,8 @@ export const CreateOrEditAlbumChooseArtworks = () => {
       <Spacer mt={2} />
       <MasonryList
         contentContainerStyle={{
-          marginTop: 20,
-          paddingRight: 20,
+          marginTop: space(2),
+          paddingRight: space(2),
         }}
         numColumns={2}
         data={artworks}

@@ -5,7 +5,7 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native"
-import { ArrowRightIcon, Button, Flex, Input, Spacer, Text, Touchable } from "palette"
+import { ArrowRightIcon, Button, Flex, Input, Spacer, Text, Touchable, useSpace } from "palette"
 import { ShadowSeparator } from "palette/elements/Separator/ShadowSeparator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
@@ -42,6 +42,7 @@ export const CreateOrEditAlbum = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
   const selectedArtworks = uniq([...(album?.artworkIds || []), ...selectedArtworksInModel])
+  const space = useSpace()
 
   const { handleSubmit, handleChange, values, errors, validateForm, isValid, dirty, isSubmitting } =
     useFormik<CreateAlbumValuesSchema>({
@@ -133,8 +134,8 @@ export const CreateOrEditAlbum = () => {
       ) : null}
       <MasonryList
         contentContainerStyle={{
-          paddingRight: 20,
-          marginTop: 20,
+          paddingRight: space(2),
+          marginTop: space(2),
         }}
         numColumns={2}
         data={selectedArtworks}

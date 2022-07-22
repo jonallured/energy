@@ -1,5 +1,5 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { ArrowLeftIcon, Flex, Touchable } from "palette"
+import { ArrowLeftIcon, Flex, Touchable, useSpace } from "palette"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
@@ -14,11 +14,12 @@ export const Artwork = () => {
   const artworkSlugs = params.contextArtworkSlugs ?? [params.slug]
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const space = useSpace()
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
     name: slug,
     content: (
       <SuspenseWrapper key={slug}>
-        <ScrollView style={{ paddingHorizontal: 20 }}>
+        <ScrollView style={{ paddingHorizontal: space(2) }}>
           <ArtworkContent slug={slug} />
         </ScrollView>
       </SuspenseWrapper>

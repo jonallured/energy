@@ -3,7 +3,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { Header, ArtworkItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Touchable, TrashIcon, EditIcon } from "palette"
+import { Flex, Touchable, TrashIcon, EditIcon, useSpace } from "palette"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Alert } from "react-native"
 
@@ -15,6 +15,7 @@ export const AlbumArtworks = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
+  const space = useSpace()
 
   if (!album) {
     return <ListEmptyComponent />
@@ -52,7 +53,7 @@ export const AlbumArtworks = () => {
         label={album.name}
         rightElements={
           <Flex flexDirection="row" alignItems="center">
-            <Touchable onPress={deleteAlbumHandler} style={{ marginRight: 20 }}>
+            <Touchable onPress={deleteAlbumHandler} style={{ marginRight: space(2) }}>
               <TrashIcon fill="black100" width={25} height={25} />
             </Touchable>
             <Touchable onPress={editAlbumHandler}>
@@ -64,8 +65,8 @@ export const AlbumArtworks = () => {
       <MasonryList
         testID="artist-artwork-list"
         contentContainerStyle={{
-          paddingRight: 20,
-          marginTop: 20,
+          paddingRight: space(2),
+          marginTop: space(2),
         }}
         numColumns={2}
         data={album.artworkIds}

@@ -1,4 +1,4 @@
-import { Button, CheckCircleFillIcon, Flex, Touchable } from "palette"
+import { Button, CheckCircleFillIcon, Flex, Spacer, Touchable, useSpace } from "palette"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
@@ -22,6 +22,7 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const space = useSpace()
 
   const selectAlbumHandler = (albumId: string) => {
     if (!selectedAlbumIds.includes(albumId)) {
@@ -80,7 +81,10 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
               </Flex>
             )
           }}
-          style={{ marginBottom: 180, marginTop: 20 }}
+          style={{
+            marginBottom: space(12) + space(2),
+            marginTop: space(2),
+          }}
         />
       </Flex>
       <Flex

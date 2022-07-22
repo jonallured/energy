@@ -6,20 +6,22 @@ import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { ArtworkGridItem } from "app/sharedUI"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { useSpace } from "palette"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworksData = useLazyLoadQuery<ShowArtworksQuery>(showArtworksQuery, { slug })
   const artworks = extractNodes(artworksData.show?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
+  const space = useSpace()
 
   return (
     <TabsScrollView>
       <MasonryList
         testID="show-artwork-list"
         contentContainerStyle={{
-          marginTop: 20,
-          paddingRight: 20,
+          marginTop: space(2),
+          paddingRight: space(2),
         }}
         numColumns={2}
         data={artworks}

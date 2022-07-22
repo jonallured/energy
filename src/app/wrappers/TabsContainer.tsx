@@ -1,5 +1,5 @@
 import { ReactElement } from "react"
-import { Flex } from "palette"
+import { Flex, useSpace } from "palette"
 import { Tabs, MaterialTabBar, TabBarProps } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { TabName, TabReactElement } from "react-native-collapsible-tab-view/lib/typescript/types"
@@ -16,6 +16,7 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
   initialTabName,
 }) => {
   const insets = useSafeAreaInsets()
+  const space = useSpace()
 
   return (
     <>
@@ -28,14 +29,14 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
             elevation: 0,
           }}
           initialTabName={initialTabName}
-          containerStyle={{ paddingTop: 20 }}
+          containerStyle={{ paddingTop: space(2) }}
           TabBarComponent={(props) => (
             <MaterialTabBar
               scrollEnabled
               {...props}
-              style={{ marginHorizontal: 10 }}
-              labelStyle={{ margin: -10 }} // only way to match the design without patching the library
-              tabStyle={{ margin: 10 }}
+              style={{ marginHorizontal: space(1) }}
+              labelStyle={{ margin: -space(1) }} // only way to match the design without patching the library
+              tabStyle={{ margin: space(1) }}
               indicatorStyle={{ backgroundColor: "black", width: "20%", height: 1 }}
             />
           )}
