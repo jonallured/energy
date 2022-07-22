@@ -24,7 +24,10 @@ const mockProps = {
           internalID: `some-id-${i}`,
           title: "Title",
           date: "2022",
-          imageURL: "some-url",
+          image: {
+            url: "some-url",
+            aspectRatio: 1,
+          },
         },
       })),
     },
