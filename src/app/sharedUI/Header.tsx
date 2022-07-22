@@ -23,7 +23,9 @@ export const Header = ({ label, withoutBackButton, rightElements }: HeaderProps)
         </Flex>
       ) : null}
       <Flex flexDirection="row" mt={2} alignItems="center" justifyContent="space-between">
-        <Text variant="lg">{label}</Text>
+        <Flex flex={1}>
+          <Text variant="lg">{label}</Text>
+        </Flex>
         {rightElements}
       </Flex>
     </Flex>
