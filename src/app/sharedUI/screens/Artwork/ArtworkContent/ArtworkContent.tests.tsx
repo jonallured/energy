@@ -1,6 +1,6 @@
+import { ArtworkContent } from "./ArtworkContent"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
-import { ArtworkContent } from "./ArtworkContent"
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),

@@ -1,10 +1,10 @@
-import { CheckIcon, ChevronIcon, Tab, TabsProps } from "palette"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { LayoutRectangle } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
 import { Box } from "../Box"
 import { TabBarContainer } from "./TabBarContainer"
+import { CheckIcon, ChevronIcon, Tab, TabsProps } from "palette"
+import { useScreenDimensions } from "shared/hooks"
 
 /**
  * Renders a list of tabs. Evenly-spaces them across the screen with

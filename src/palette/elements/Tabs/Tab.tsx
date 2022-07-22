@@ -1,6 +1,6 @@
-import { Text, useColor } from "palette"
 import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
+import { Text, useColor } from "palette"
 
 export interface TabV3Props {
   label: string

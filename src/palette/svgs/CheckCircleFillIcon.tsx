@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** CheckCircleFillIcon */
 export const CheckCircleFillIcon: React.FC<IconProps> = (props) => {

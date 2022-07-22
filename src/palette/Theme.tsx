@@ -1,4 +1,13 @@
 import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
+import { SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
+import {
+  Color as ColorV3BeforeDevPurple,
+  SpacingUnit as SpacingUnitV3Numbers,
+} from "@artsy/palette-tokens/dist/themes/v3"
+import {
+  TextTreatment as TextTreatmentWithUnits,
+  TextVariant as TextVariantV3,
+} from "@artsy/palette-tokens/dist/typography/v3"
 import _ from "lodash"
 import { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
@@ -9,15 +18,6 @@ import { ThemeContext, ThemeProvider } from "styled-components/native"
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
 
-import { SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
-import {
-  Color as ColorV3BeforeDevPurple,
-  SpacingUnit as SpacingUnitV3Numbers,
-} from "@artsy/palette-tokens/dist/themes/v3"
-import {
-  TextTreatment as TextTreatmentWithUnits,
-  TextVariant as TextVariantV3,
-} from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3

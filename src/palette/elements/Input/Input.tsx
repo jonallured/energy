@@ -1,7 +1,6 @@
-import { themeGet } from "@styled-system/theme-get"
 import { EventEmitter } from "events"
+import { themeGet } from "@styled-system/theme-get"
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import { useEffect, useImperativeHandle, useRef, useState, forwardRef } from "react"
 import {
   LayoutAnimation,
@@ -13,10 +12,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
-import { MeasuredView } from "shared/utils"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
+import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
+import { MeasuredView } from "shared/utils"
 
 const DEFAULT_FONT_SIZE = 16
 export const INPUT_HEIGHT = 50

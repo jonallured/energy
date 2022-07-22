@@ -1,4 +1,3 @@
-import { Color } from "palette"
 import { PixelRatio } from "react-native"
 import Svg, { SvgProps } from "react-native-svg"
 import styled from "styled-components"
@@ -14,6 +13,7 @@ import {
   top,
   TopProps,
 } from "styled-system"
+import { Color } from "palette"
 
 const DEFAULT_SIZE = 18
 

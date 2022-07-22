@@ -1,13 +1,13 @@
-import { Button, CheckCircleFillIcon, Flex, Spacer, Touchable, useSpace } from "palette"
-import { GlobalStore } from "app/store/GlobalStore"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { useState } from "react"
+import { FlatList } from "react-native-gesture-handler"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AddArtworkToAlbumQuery } from "__generated__/AddArtworkToAlbumQuery.graphql"
-import { FlatList } from "react-native-gesture-handler"
+import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { AlbumListItem, Header } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Button, CheckCircleFillIcon, Flex, Spacer, Touchable, useSpace } from "palette"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworkToAlbum">
 type AddArtworkToAlbumProps = {

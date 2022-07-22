@@ -1,13 +1,13 @@
-import { GlobalStore } from "app/store/GlobalStore"
-import { Tabs } from "react-native-collapsible-tab-view"
-import { SuspenseWrapper, TabsContainer } from "app/wrappers"
-import { Shows } from "./Shows/Shows"
-import { Albums } from "./Albums/Albums"
-import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
-import { Artists } from "./Artists/Artists"
 import { RouteProp, useRoute } from "@react-navigation/native"
+import { Tabs } from "react-native-collapsible-tab-view"
+import { Albums } from "./Albums/Albums"
+import { Artists } from "./Artists/Artists"
+import { Shows } from "./Shows/Shows"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
 import { Header } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
+import { SuspenseWrapper, TabsContainer } from "app/wrappers"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
 

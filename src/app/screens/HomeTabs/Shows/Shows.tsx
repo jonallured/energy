@@ -1,12 +1,12 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { extractNodes } from "shared/utils"
-import { Touchable } from "palette"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { TabsFlatList } from "app/wrappers"
+import { Touchable } from "palette"
+import { extractNodes } from "shared/utils"
 
 export const Shows = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

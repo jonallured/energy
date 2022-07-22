@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { G, Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** EditIcon */
 export const EditIcon: React.FC<IconProps> = (props) => {

@@ -1,7 +1,7 @@
-import { Flex, Text, useSpace } from "palette"
-import { useScreenDimensions } from "shared/hooks"
 import { AlbumListImage } from "./AlbumListImage"
 import { Album } from "app/store/Models/AlbumsModel"
+import { Flex, Text, useSpace } from "palette"
+import { useScreenDimensions } from "shared/hooks"
 
 export const AlbumListItem = ({ album }: { album: Album }) => {
   const space = useSpace()

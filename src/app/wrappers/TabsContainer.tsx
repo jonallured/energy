@@ -1,8 +1,8 @@
 import { ReactElement } from "react"
-import { Flex, useSpace } from "palette"
 import { Tabs, MaterialTabBar, TabBarProps } from "react-native-collapsible-tab-view"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { TabName, TabReactElement } from "react-native-collapsible-tab-view/lib/typescript/types"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Flex, useSpace } from "palette"
 
 type TabsContainerProps = {
   header: (props: TabBarProps<TabName>) => ReactElement

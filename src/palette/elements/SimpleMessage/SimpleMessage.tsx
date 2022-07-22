@@ -1,8 +1,8 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text } from "palette"
 import styled from "styled-components/native"
 import { Flex, FlexProps } from "../Flex"
 import { SansV1Props } from "../Text"
+import { Text } from "palette"
 
 interface SimpleMessageProps extends FlexProps {
   children: React.ReactNode | null

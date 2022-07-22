@@ -1,5 +1,5 @@
-import { IconProps } from "palette"
 import Svg, { Path } from "react-native-svg"
+import { IconProps } from "palette"
 
 export const TriangleDown: React.FC<IconProps> = (props) => {
   return (

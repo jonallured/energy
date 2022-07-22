@@ -1,7 +1,7 @@
-import { graphql, useFragment } from "react-relay"
-import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "palette"
 import { Image } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "palette"
 
 interface ArtworkGridItemProps {
   artwork: ArtworkGridItem_artwork$key

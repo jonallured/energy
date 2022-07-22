@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { G, Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** ArtsyMarkBlackIcon */
 export const ArtsyMarkBlackIcon: React.FC<IconProps> = (props) => {

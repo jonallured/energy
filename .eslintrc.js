@@ -29,6 +29,7 @@ module.exports = {
     },
   },
   rules: {
+    "import/order": [ERR, { alphabetize: { order: "asc" } }],
     // we want to enable some of these
     "import/no-named-as-default": OFF,
     "no-empty-pattern": OFF,

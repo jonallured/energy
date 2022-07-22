@@ -1,5 +1,5 @@
-import { Button, CheckIcon } from "palette"
 import { ButtonProps } from "."
+import { Button, CheckIcon } from "palette"
 
 type FollowButtonProps = Omit<
   ButtonProps,

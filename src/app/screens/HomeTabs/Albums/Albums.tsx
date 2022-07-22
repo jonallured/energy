@@ -1,10 +1,10 @@
-import { Button, Flex, Touchable } from "palette"
-import { TabsScrollView } from "app/wrappers"
-import { GlobalStore } from "app/store/GlobalStore"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { AlbumListItem, ListEmptyComponent } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
+import { TabsScrollView } from "app/wrappers"
+import { Button, Flex, Touchable } from "palette"
 
 export const Albums = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)

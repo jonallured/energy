@@ -1,12 +1,12 @@
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { TabsScrollView } from "app/wrappers"
 import MasonryList from "@react-native-seoul/masonry-list"
-import { extractNodes } from "shared/utils"
-import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
-import { ArtworkGridItem } from "app/sharedUI"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { ArtworkGridItem } from "app/sharedUI"
+import { TabsScrollView } from "app/wrappers"
 import { useSpace } from "palette"
+import { extractNodes } from "shared/utils"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

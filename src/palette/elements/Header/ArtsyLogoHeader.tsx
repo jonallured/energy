@@ -1,5 +1,5 @@
-import { ArtsyLogoIcon, Box, Flex, Spacer } from "palette"
 import { StyleSheet } from "react-native"
+import { ArtsyLogoIcon, Box, Flex, Spacer } from "palette"
 
 interface Props {
   shadow?: boolean

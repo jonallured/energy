@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** ArrowDownIcon */
 export const ArrowDownIcon: React.FC<IconProps> = (props) => {

@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import { CssTransition, Flex, FlexProps, Text, useTheme } from "palette"
 import { useState } from "react"
 import {
   PixelRatio,
@@ -8,6 +7,7 @@ import {
   TouchableWithoutFeedbackProps,
 } from "react-native"
 import styled from "styled-components/native"
+import { CssTransition, Flex, FlexProps, Text, useTheme } from "palette"
 
 const CHECKBOX_SIZE = 20
 const DURATION = 250

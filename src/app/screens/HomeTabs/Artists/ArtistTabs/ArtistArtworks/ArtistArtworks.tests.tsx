@@ -1,7 +1,7 @@
 import { range } from "lodash"
+import { ArtistArtworks } from "./ArtistArtworks"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
-import { ArtistArtworks } from "./ArtistArtworks"
 
 describe("ArtistArtworks", () => {
   it("renders without throwing an error", async () => {

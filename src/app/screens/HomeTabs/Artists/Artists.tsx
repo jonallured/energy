@@ -1,12 +1,12 @@
-import { Touchable } from "palette"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
-import { extractNodes } from "shared/utils"
-import { GlobalStore } from "app/store/GlobalStore"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ArtistListItem } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
+import { Touchable } from "palette"
+import { extractNodes } from "shared/utils"
 
 export const Artists = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

@@ -1,6 +1,6 @@
+import { ArtworkItem } from "./ArtworkItem"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
-import { ArtworkItem } from "./ArtworkItem"
 
 describe("ArtworkItem", () => {
   it("renders without throwing an error", async () => {

@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { G, Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** EnterIcon */
 export const EnterIcon: React.FC<IconProps> = (props) => {

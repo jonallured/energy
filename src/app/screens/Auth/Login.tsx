@@ -1,11 +1,11 @@
-import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Input, Spacer, Text, useColor, useSpace } from "palette"
 import { useRef } from "react"
 import { Alert, Image, Linking, Platform, ScrollView, TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Box, Button, Flex, Input, Spacer, Text, useColor, useSpace } from "palette"
 
 export interface LoginSchema {
   email: string
@@ -148,7 +148,6 @@ export const LoginScreenContent: React.FC = () => {
             Alert.alert("Oups, not yet implemented")
           }}
         >
-          {/* eslint-disable-next-line react-native/no-inline-styles */}
           <Text
             variant="sm"
             color="white"

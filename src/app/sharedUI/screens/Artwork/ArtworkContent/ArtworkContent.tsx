@@ -1,11 +1,11 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArrowRightIcon, BriefcaseIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import { useMemo } from "react"
 import { Image } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
+import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ArrowRightIcon, BriefcaseIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
 
 type ArtworkContentProps = {
   slug: string

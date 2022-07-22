@@ -1,7 +1,7 @@
-import { Flex, Text } from "palette"
 import { Image } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
+import { Flex, Text } from "palette"
 
 interface ShowListItemProps {
   show: ShowListItem_show$key

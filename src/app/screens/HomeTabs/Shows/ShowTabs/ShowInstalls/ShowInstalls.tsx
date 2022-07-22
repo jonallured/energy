@@ -1,5 +1,5 @@
-import { Text } from "palette"
 import { TabsFlatList } from "app/wrappers"
+import { Text } from "palette"
 
 export const ShowInstalls = () => {
   return (

@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** MagnifyingGlassIcon */
 export const MagnifyingGlassIcon: React.FC<IconProps> = (props) => {

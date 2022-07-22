@@ -1,11 +1,11 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { ArrowLeftIcon, Flex, Touchable, useSpace } from "palette"
+import { ScrollView } from "react-native-gesture-handler"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
 import { SuspenseWrapper } from "app/wrappers"
-import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
-import { ScrollView } from "react-native-gesture-handler"
+import { ArrowLeftIcon, Flex, Touchable, useSpace } from "palette"
 
 type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 

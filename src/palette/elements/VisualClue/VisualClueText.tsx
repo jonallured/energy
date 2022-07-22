@@ -1,5 +1,5 @@
-import { Flex, PopIn, Text, useColor } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
+import { Flex, PopIn, Text, useColor } from "palette"
 
 const WRAPPER_WIDTH = 56
 const WRAPPER_HEIGHT = 52

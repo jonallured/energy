@@ -1,4 +1,3 @@
-import { isThemeV3, TextVariantV3, useTheme } from "palette"
 import { forwardRef, Ref } from "react"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
@@ -14,6 +13,7 @@ import {
   TypographyProps,
 } from "styled-system"
 import { useFontFamilyFor } from "./helpers"
+import { isThemeV3, TextVariantV3, useTheme } from "palette"
 
 export interface TextProps extends RNTextProps, InnerStyledTextProps {
   children?: React.ReactNode

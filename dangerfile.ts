@@ -1,7 +1,7 @@
+import * as fs from "fs"
 import { danger, fail, warn } from "danger"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
-import * as fs from "fs"
 
 /**
  * Helpers

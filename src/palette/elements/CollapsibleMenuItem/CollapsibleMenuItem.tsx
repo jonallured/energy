@@ -1,6 +1,6 @@
-import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { LayoutAnimation, View } from "react-native"
+import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
 
 interface CollapsableMenuItemProps {
   overtitle?: string

@@ -3,10 +3,10 @@
  */
 
 import { AppRegistry } from "react-native"
-import { App } from "./src/app/App"
-import { name as appName } from "./app.json"
 import "react-native-gesture-handler"
 import { enableFreeze } from "react-native-screens"
+import { name as appName } from "./app.json"
+import { App } from "./src/app/App"
 
 global.__TEST__ = false
 

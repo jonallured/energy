@@ -1,7 +1,7 @@
-import { isThemeV3, useTheme } from "palette"
 import { TextStyle } from "react-native"
-import { NoUndefined } from "shared/types"
 import { TextProps } from "."
+import { isThemeV3, useTheme } from "palette"
+import { NoUndefined } from "shared/types"
 
 export const useFontFamilyFor = ({
   italic,

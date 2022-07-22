@@ -1,13 +1,13 @@
-import { Theme } from "palette"
 import { ReactNode } from "react"
 import { LogBox } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { GlobalStoreProvider } from "./store/GlobalStore"
 import { RelayEnvironmentProvider } from "react-relay/hooks"
-import { MainNavigationStack } from "./routes/MainNavigationStack"
 import { defaultEnvironment } from "./relay/environment/defaultEnvironent"
-import { ProvideScreenDimensions } from "shared/hooks"
+import { MainNavigationStack } from "./routes/MainNavigationStack"
+import { GlobalStoreProvider } from "./store/GlobalStore"
 import { SuspenseWrapper } from "./wrappers"
+import { Theme } from "palette"
+import { ProvideScreenDimensions } from "shared/hooks"
 
 LogBox.ignoreLogs(["Expected style "])
 

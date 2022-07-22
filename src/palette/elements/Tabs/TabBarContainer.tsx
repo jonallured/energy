@@ -1,9 +1,9 @@
 import { compact } from "lodash"
-import { useColor } from "palette/hooks"
 import { useEffect, useRef } from "react"
 import { Animated, LayoutRectangle, ScrollView, View } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
 import { Box } from "../Box"
+import { useColor } from "palette/hooks"
+import { useScreenDimensions } from "shared/hooks"
 
 export const TAB_BAR_HEIGHT = 48
 

@@ -1,5 +1,5 @@
-import { useColor } from "palette/hooks"
 import { Circle, Icon, IconProps, Path } from "./Icon"
+import { useColor } from "palette/hooks"
 
 /** XCircleIcon */
 export const XCircleIcon: React.FC<IconProps> = (props) => {

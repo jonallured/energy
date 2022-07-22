@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Flex, FlexProps, CssTransition, Text, useTheme } from "palette"
 import {
   PixelRatio,
   StyleSheet,
@@ -7,6 +6,7 @@ import {
   TouchableWithoutFeedbackProps,
 } from "react-native"
 import styled from "styled-components/native"
+import { Flex, FlexProps, CssTransition, Text, useTheme } from "palette"
 
 const RADIOBUTTON_SIZE = 20
 const DURATION = 150

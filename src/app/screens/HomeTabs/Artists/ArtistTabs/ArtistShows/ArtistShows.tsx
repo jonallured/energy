@@ -1,11 +1,11 @@
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { TabsFlatList } from "app/wrappers"
-import { extractNodes } from "shared/utils"
-import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
-import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
+import { TabsFlatList } from "app/wrappers"
 import { Touchable } from "palette"
+import { extractNodes } from "shared/utils"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

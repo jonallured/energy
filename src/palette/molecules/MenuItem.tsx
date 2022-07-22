@@ -1,5 +1,5 @@
-import { ChevronIcon, Flex, Sans, Touchable, useColor } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
+import { ChevronIcon, Flex, Sans, Touchable, useColor } from "palette"
 
 export const MenuItem: React.FC<{
   disabled?: boolean

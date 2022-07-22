@@ -1,5 +1,3 @@
-import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
-import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -10,6 +8,8 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
+import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 
 interface ScreenContextState {
   handleTopSafeArea: boolean

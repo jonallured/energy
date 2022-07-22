@@ -1,7 +1,7 @@
 import { action, Action } from "easy-peasy"
 import { uniq } from "lodash"
-import uuid from "react-native-uuid"
 import { DateTime } from "luxon"
+import uuid from "react-native-uuid"
 
 export interface Album {
   id: Readonly<string>

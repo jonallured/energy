@@ -1,15 +1,15 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { FlatList } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useLazyLoadQuery } from "react-relay"
+import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
 import { Header } from "app/sharedUI"
 import { ArtistListItem } from "app/sharedUI/items/ArtistListItem"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, Spacer, Touchable } from "palette"
-import { FlatList } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useLazyLoadQuery } from "react-relay"
 import { extractNodes } from "shared/utils/extractNodes"
-import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
   HomeTabsScreens,
