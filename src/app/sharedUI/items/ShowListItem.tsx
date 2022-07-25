@@ -14,7 +14,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
       <Image
         style={{ height: 200 }}
         resizeMode="cover"
-        source={{ uri: show.coverImage?.url ?? "" }}
+        source={{ uri: Image.resolveAssetSource({ uri: show.coverImage?.url! }).uri }}
       />
       <Text variant="xs" color="black100" mt={1}>
         {show?.name}
