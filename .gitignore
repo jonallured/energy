@@ -84,6 +84,8 @@ xcode_test_raw.log
 # CI derived data
 derived_data/*
 
+metaflags.json
+
 # ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
