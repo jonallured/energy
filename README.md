@@ -9,7 +9,6 @@
 Don't know what Artsy is?
 Check out [this overview](https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell) or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
 
-
 [Artsy](https://github.com/artsy) is an Open Source project. Feel free to check the [Artsy readme](https://github.com/artsy/README) for an overview as well as [Practices](https://github.com/artsy/README/tree/main/practices) and [Playbooks](https://github.com/artsy/README/tree/main/playbooks).
 
 Energy is Folio's mobile app repository.
@@ -18,11 +17,11 @@ Want to know more about Energy? Read the [mobile](http://artsy.github.io/blog/ca
 
 Other mobile projects are [Eigen](https://github.com/artsy/eigen) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
 
-
 ### Getting Started
 
 - Get set up [here](docs/getting_started.md).
 
+- Checkout our [docs](docs/README.md)
 
 ### Thanks
 
