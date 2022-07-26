@@ -7,6 +7,7 @@ import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI"
 import { SuspenseWrapper, TabsContainer } from "app/wrappers"
+import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
 
 type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
 type ArtistTabsProps = {
@@ -37,6 +38,11 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
       <Tabs.Tab name="ArtistShows" label="Shows">
         <SuspenseWrapper withTabs>
           <ArtistShows slug={slug} />
+        </SuspenseWrapper>
+      </Tabs.Tab>
+      <Tabs.Tab name="ArtistDocuments" label="Documents">
+        <SuspenseWrapper withTabs>
+          <ArtistDocuments slug={slug} />
         </SuspenseWrapper>
       </Tabs.Tab>
     </TabsContainer>

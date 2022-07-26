@@ -26,6 +26,22 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
+jest.mock("rn-fetch-blob", () => ({
+  config: () => ({
+    fetch: jest.fn(),
+  }),
+  fs: {
+    exists: jest.fn(),
+    dirs: {
+      DocumentDir: "path/to/documents",
+    },
+  },
+}))
+
+jest.mock("react-native-file-viewer", () => ({
+  open: jest.fn(),
+}))
+
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
