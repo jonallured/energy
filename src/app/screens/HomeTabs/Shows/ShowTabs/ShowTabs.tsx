@@ -6,7 +6,8 @@ import { ShowInstalls } from "./ShowInstalls/ShowInstalls"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI"
-import { TabsContainer } from "app/wrappers"
+import { SuspenseWrapper, TabsContainer } from "app/wrappers"
+import { ShowDocuments } from "./ShowDocuments/ShowDocuments"
 
 type ShowTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
 type ShowTabsProps = {
@@ -30,10 +31,19 @@ export const ShowTabs: React.FC<ShowTabsProps> = () => {
   return (
     <TabsContainer header={(props) => <Header label={data.show?.name!} {...props} />}>
       <Tabs.Tab name="ShowArtworks" label="Works">
-        <ShowArtworks slug={slug} />
+        <SuspenseWrapper withTabs>
+          <ShowArtworks slug={slug} />
+        </SuspenseWrapper>
       </Tabs.Tab>
       <Tabs.Tab name="ShowInstalls" label="Installs">
-        <ShowInstalls slug={slug} />
+        <SuspenseWrapper withTabs>
+          <ShowInstalls slug={slug} />
+        </SuspenseWrapper>
+      </Tabs.Tab>
+      <Tabs.Tab name="ShowDocuments" label="Documents">
+        <SuspenseWrapper withTabs>
+          <ShowDocuments slug={slug} />
+        </SuspenseWrapper>
       </Tabs.Tab>
     </TabsContainer>
   )
