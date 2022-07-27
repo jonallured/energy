@@ -3,6 +3,7 @@ import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { DocumentEntity, DocumentGridItem } from "./DocumentGridItem"
 import RNFetchBlob from "rn-fetch-blob"
 import FileViewer from "react-native-file-viewer"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 const mockConfigFetch = jest.fn()
 
@@ -47,11 +48,21 @@ describe("DocumentGridItem", () => {
 
   describe("when the file is not on the user's device", () => {
     it("should download the file", async () => {
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userAccessToken: "userAccessToken",
+        },
+      })
+
       const { getByText } = renderWithWrappers(<DocumentGridItem document={mockDocument} />)
 
       fireEvent.press(getByText("File Name"))
 
-      await waitFor(() => expect(mockConfigFetch).toBeCalledWith("GET", "/path/to/file.pdf"))
+      await waitFor(() =>
+        expect(mockConfigFetch).toBeCalledWith("GET", "/path/to/file.pdf", {
+          "X-ACCESS-TOKEN": "userAccessToken",
+        })
+      )
     })
 
     it("should display loading indicator", () => {

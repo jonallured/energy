@@ -7,6 +7,7 @@ import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
 import { FileTypeIcon } from "./FileTypeIcon"
 import { last } from "lodash"
+import { GlobalStore } from "app/store/GlobalStore"
 
 export interface DocumentEntity {
   id: string
@@ -25,6 +26,7 @@ export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
   const formattedSize = formatBytes(document.size)
   const downloadTask = useRef<StatefulPromise<FetchBlobResponse> | null>(null)
   const fileExtension = last(document.url.split("."))
+  const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
 
   const downloadFile = async (fileUrl: string, dest: string) => {
     try {
@@ -33,7 +35,9 @@ export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
         path: dest,
       })
 
-      downloadTask.current = fetchInstance.fetch("GET", fileUrl)
+      downloadTask.current = fetchInstance.fetch("GET", fileUrl, {
+        "X-ACCESS-TOKEN": userAccessToken,
+      })
       await downloadTask.current
     } catch (error) {
       // Trying to silently remove the file
