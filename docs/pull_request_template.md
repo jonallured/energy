@@ -1,14 +1,11 @@
-<!-- 
-➡️ PR title in form of `type(PROJECT-XXXX): what changed`
-➡️ Jira ticket in square brackets like [PROJECT-XXXX]
-❗️ If this is a work in progress, remember to prefix it with [WIP] and/or open a draft PR instead of normal PR
--->
+<!-- PR title in form of `type(PROJECT-XXXX): what changed`
+❗️ [WIP] prefix and/or open a draft PR if this is a work in progress -->
+### Description
+<!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
 This PR resolves []
 
-### Description
 
-<!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
 ### PR Checklist
 
