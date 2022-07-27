@@ -1,28 +1,16 @@
-import { useNavigation } from "@react-navigation/native"
-import { Flex, Text, Touchable, ArrowLeftIcon } from "palette"
+import { Flex, Text } from "palette"
+import { BackButton } from "./molecules/BackButton"
 
 type HeaderProps = {
   label: string
-  withoutBackButton?: boolean
   rightElements?: Element
 }
 
-export const Header = ({ label, withoutBackButton, rightElements }: HeaderProps) => {
-  const navigation = useNavigation()
+export const Header = ({ label, rightElements }: HeaderProps) => {
   return (
     <Flex px={2}>
-      {!withoutBackButton ? (
-        <Flex mt={2}>
-          <Touchable
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <ArrowLeftIcon fill="black100" />
-          </Touchable>
-        </Flex>
-      ) : null}
-      <Flex flexDirection="row" mt={2} alignItems="center" justifyContent="space-between">
+      <BackButton />
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
         <Flex flex={1}>
           <Text variant="lg">{label}</Text>
         </Flex>

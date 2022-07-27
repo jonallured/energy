@@ -5,11 +5,31 @@ import { Artists } from "./Artists/Artists"
 import { Shows } from "./Shows/Shows"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
-import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { SuspenseWrapper, TabsContainer } from "app/wrappers"
+import { useNavigation } from "@react-navigation/native"
+import { Flex, Text, Touchable, MenuIcon } from "palette"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
+
+export const Header = () => {
+  const navigation = useNavigation()
+
+  return (
+    <Flex flexDirection="row" px={2} mt={2} alignItems="center" justifyContent="space-between">
+      <Touchable
+        onPress={() => {
+          navigation.navigate("Settings")
+        }}
+      >
+        <MenuIcon />
+      </Touchable>
+      <Flex flex={1} ml={1}>
+        <Text variant="lg">Folio</Text>
+      </Flex>
+    </Flex>
+  )
+}
 
 export const HomeTabs = () => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
@@ -20,10 +40,7 @@ export const HomeTabs = () => {
   }
 
   return (
-    <TabsContainer
-      header={(props) => <Header {...props} label="Folio" withoutBackButton />}
-      initialTabName={tabName}
-    >
+    <TabsContainer header={() => <Header />} initialTabName={tabName}>
       <Tabs.Tab name="Artists" label="Artists">
         <SuspenseWrapper withTabs>
           <Artists />

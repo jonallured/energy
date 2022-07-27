@@ -6,6 +6,8 @@ import { CreateOrEditAlbumChooseArtist } from "app/screens/HomeTabs/Albums/Creat
 import { CreateOrEditAlbumChooseArtworks } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtworks"
 import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { HomeTabs } from "app/screens/HomeTabs/HomeTabs"
+import { Settings } from "app/screens/HomeTabs/Settings/Settings"
+import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
@@ -13,6 +15,8 @@ import { InstallImage } from "app/sharedUI/screens/InstallImage/InstallImage"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined
+  Settings: undefined
+  DarkModeSettings: undefined
   ArtistTabs: { slug: string }
   InstallImage: { url: string }
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
@@ -24,32 +28,28 @@ export type HomeTabsScreens = {
   CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
 }
 
-export const HomeTabsStackNavigator = createStackNavigator<HomeTabsScreens>()
+const { Navigator, Screen } = createStackNavigator<HomeTabsScreens>()
 
 export const HomeTabsNavigationStack = () => (
   <NavigationContainer>
-    <HomeTabsStackNavigator.Navigator
+    <Navigator
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: "white" },
       }}
     >
-      <HomeTabsStackNavigator.Screen name="HomeTabs" component={HomeTabs} />
-      <HomeTabsStackNavigator.Screen name="ArtistTabs" component={ArtistTabs} />
-      <HomeTabsStackNavigator.Screen name="Artwork" component={Artwork} />
-      <HomeTabsStackNavigator.Screen name="InstallImage" component={InstallImage} />
-      <HomeTabsStackNavigator.Screen name="AlbumArtworks" component={AlbumArtworks} />
-      <HomeTabsStackNavigator.Screen name="ShowTabs" component={ShowTabs} />
-      <HomeTabsStackNavigator.Screen name="AddArtworkToAlbum" component={AddArtworkToAlbum} />
-      <HomeTabsStackNavigator.Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
-      <HomeTabsStackNavigator.Screen
-        name="CreateOrEditAlbumChooseArtist"
-        component={CreateOrEditAlbumChooseArtist}
-      />
-      <HomeTabsStackNavigator.Screen
-        name="CreateOrEditAlbumChooseArtworks"
-        component={CreateOrEditAlbumChooseArtworks}
-      />
-    </HomeTabsStackNavigator.Navigator>
+      <Screen name="HomeTabs" component={HomeTabs} />
+      <Screen name="Settings" component={Settings} />
+      <Screen name="DarkModeSettings" component={DarkModeSettings} />
+      <Screen name="ArtistTabs" component={ArtistTabs} />
+      <Screen name="Artwork" component={Artwork} />
+      <Screen name="InstallImage" component={InstallImage} />
+      <Screen name="AlbumArtworks" component={AlbumArtworks} />
+      <Screen name="ShowTabs" component={ShowTabs} />
+      <Screen name="AddArtworkToAlbum" component={AddArtworkToAlbum} />
+      <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
+      <Screen name="CreateOrEditAlbumChooseArtist" component={CreateOrEditAlbumChooseArtist} />
+      <Screen name="CreateOrEditAlbumChooseArtworks" component={CreateOrEditAlbumChooseArtworks} />
+    </Navigator>
   </NavigationContainer>
 )
