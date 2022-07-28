@@ -6,6 +6,7 @@ import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArrowRightIcon, BriefcaseIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { ImagePlaceholder } from "app/sharedUI"
 
 type ArtworkContentProps = {
   slug: string
@@ -23,14 +24,14 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = (props) => {
 
   return (
     <Flex>
-      <Image
-        source={{
-          uri: Image.resolveAssetSource({ uri: artworkData.artwork?.image?.url! }).uri,
-        }}
-        style={{
-          aspectRatio: artworkData.artwork?.image?.aspectRatio ?? 1,
-        }}
-      />
+      {artworkData.artwork?.image?.url ? (
+        <Image
+          source={{ uri: artworkData.artwork?.image?.url }}
+          style={{ aspectRatio: artworkData.artwork?.image?.aspectRatio ?? 1 }}
+        />
+      ) : (
+        <ImagePlaceholder height={400} />
+      )}
       <Spacer mt={2} />
       <Separator />
       <Spacer mt={2} />

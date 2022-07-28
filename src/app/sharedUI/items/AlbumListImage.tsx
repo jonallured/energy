@@ -1,6 +1,8 @@
 import { Image, ImageProps } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"
+import { ImagePlaceholder } from "../molecules"
 
 interface AlbumListImageProps {
   slug: string
@@ -9,13 +11,17 @@ interface AlbumListImageProps {
 
 export const AlbumListImage = ({ slug, style }: AlbumListImageProps) => {
   const albumImages = useLazyLoadQuery<AlbumListImageQuery>(albumsQuery, { slug })
+  const placeHolderHeight = useScreenDimensions().height / 5
+  const albumListImage = albumImages.artwork?.image
+
+  if (!albumListImage?.url) {
+    return <ImagePlaceholder height={placeHolderHeight} />
+  }
 
   return (
     <Image
-      source={{
-        uri: Image.resolveAssetSource({ uri: albumImages.artwork?.image?.url! }).uri,
-      }}
-      style={[style, { aspectRatio: albumImages.artwork?.image?.aspectRatio ?? 1 }]}
+      source={{ uri: albumListImage?.url }}
+      style={[style, { aspectRatio: albumListImage?.aspectRatio ?? 1 }]}
     />
   )
 }
