@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"

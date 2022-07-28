@@ -2,7 +2,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { ScrollView } from "react-native-gesture-handler"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
 import { SuspenseWrapper } from "app/wrappers"
 import { ArrowLeftIcon, Flex, Touchable, useSpace } from "palette"

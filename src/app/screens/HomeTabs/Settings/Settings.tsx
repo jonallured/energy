@@ -1,7 +1,7 @@
 import { ArrowRightIcon, Flex, Separator, Spacer, Text, Touchable, Button } from "palette"
 import { BackButton } from "app/sharedUI/molecules/BackButton"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { GlobalStore } from "app/store/GlobalStore"
 
 export const Settings = () => {

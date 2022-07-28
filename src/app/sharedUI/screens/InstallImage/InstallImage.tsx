@@ -1,7 +1,7 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { ArrowLeftIcon, Flex, Touchable } from "palette"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { HomeTabsScreens } from "app/routes/HomeTabsNavigationStack"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Image } from "react-native"
 
 type ImageRoute = RouteProp<HomeTabsScreens, "InstallImage">
