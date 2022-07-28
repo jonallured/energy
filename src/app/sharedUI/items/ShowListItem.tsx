@@ -2,6 +2,7 @@ import { Image } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
 import { Flex, Text } from "palette"
+import { ImagePlaceholder } from "app/sharedUI"
 
 interface ShowListItemProps {
   show: ShowListItem_show$key
@@ -9,13 +10,14 @@ interface ShowListItemProps {
 
 export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const show = useFragment<ShowListItem_show$key>(ShowListItemFragment, props.show)
+
   return (
     <Flex m={2}>
-      <Image
-        style={{ height: 200 }}
-        resizeMode="cover"
-        source={{ uri: Image.resolveAssetSource({ uri: show.coverImage?.url! }).uri }}
-      />
+      {show.coverImage?.url ? (
+        <Image style={{ height: 200 }} resizeMode="cover" source={{ uri: show.coverImage.url }} />
+      ) : (
+        <ImagePlaceholder height={200} />
+      )}
       <Text variant="xs" color="black100" mt={1}>
         {show?.name}
       </Text>
