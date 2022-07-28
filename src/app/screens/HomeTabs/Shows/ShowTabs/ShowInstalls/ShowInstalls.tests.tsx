@@ -6,14 +6,14 @@ describe("ShowInstalls", () => {
   it("renders ListEmptyComponent", async () => {
     const { getByText } = renderWithWrappers(<ShowInstalls slug={"someSlug"} />)
     await mockEnvironmentPayloadMaybe(mockPropsEmptyList)
-    expect(getByText("No results to display")).toBeTruthy()
+    expect(getByText("No show installs shots to display")).toBeTruthy()
   })
 
   it("renders the list of installs", async () => {
     const { getByTestId } = renderWithWrappers(<ShowInstalls slug={"someSlug"} />)
     await mockEnvironmentPayloadMaybe(mockProps)
     images.forEach((image) => {
-      expect(getByTestId(image.url)).toBeTruthy()
+      expect(getByTestId(image.resized.url)).toBeTruthy()
     })
   })
 })
@@ -27,11 +27,11 @@ const mockPropsEmptyList = {
 const images = [
   {
     internalID: "first-install-shot",
-    url: "some-url-1",
+    resized: { url: "some-url-1" },
   },
   {
     internalID: "second-install-shot",
-    url: "some-url-2",
+    resized: { url: "some-url-2" },
   },
 ]
 

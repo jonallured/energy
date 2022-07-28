@@ -5,9 +5,15 @@ import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ListEmptyComponent } from "app/sharedUI"
 import { useSpace } from "palette"
+import { Dimensions } from "react-native"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
-  const installsData = useLazyLoadQuery<ShowInstallsQuery>(showInstallsQuery, { slug })
+  const windowWidth = Number(Dimensions.get("window").width)
+  const installsData = useLazyLoadQuery<ShowInstallsQuery>(showInstallsQuery, {
+    slug,
+    imageSize: 2 * windowWidth,
+  })
+
   let installs = installsData.show?.images ?? []
 
   const space = useSpace()
@@ -23,21 +29,23 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
         numColumns={2}
         data={installs}
         renderItem={({ item: showInstall }) => {
-          return <ArtworkImageGridItem url={showInstall.url} />
+          return <ArtworkImageGridItem url={showInstall.resized.url} />
         }}
         keyExtractor={(item) => item.internalID!}
-        ListEmptyComponent={<ListEmptyComponent />}
+        ListEmptyComponent={<ListEmptyComponent text="No show installs shots to display" />}
       />
     </TabsScrollView>
   )
 }
 
 const showInstallsQuery = graphql`
-  query ShowInstallsQuery($slug: String!) {
+  query ShowInstallsQuery($slug: String!, $imageSize: Int!) {
     show(id: $slug) {
-      images {
+      images(default: true) {
         internalID
-        url
+        resized(height: $imageSize, version: "normalized") {
+          url
+        }
       }
     }
   }
