@@ -26,6 +26,36 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
+jest.mock("@gorhom/bottom-sheet", () => {
+  const react = require("react-native")
+  return {
+    __esModule: true,
+    default: react.View,
+    BottomSheetScrollView: react.ScrollView,
+  }
+})
+
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
+jest.mock("shared/hooks", () => {
+  const screenDimensions: ScreenDimensionsWithSafeAreas = {
+    width: 380,
+    height: 550,
+    orientation: "portrait",
+    size: "small",
+    isSmallScreen: true,
+    safeAreaInsets: {
+      top: 20,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+  }
+  return {
+    ...jest.requireActual("shared/hooks"),
+    useScreenDimensions: () => screenDimensions,
+  }
+})
+
 jest.mock("rn-fetch-blob", () => ({
   config: () => ({
     fetch: jest.fn(),

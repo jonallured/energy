@@ -2,7 +2,7 @@ import { Flex, Text } from "palette"
 import { BackButton } from "./molecules/BackButton"
 
 type HeaderProps = {
-  label: string
+  label?: string
   rightElements?: Element
 }
 
