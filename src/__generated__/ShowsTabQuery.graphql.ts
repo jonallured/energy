@@ -14,6 +14,7 @@ export type ShowsTabQueryResponse = {
                 readonly node: {
                     readonly internalID: string;
                     readonly slug: string;
+                    readonly artworksCount: number | null;
                     readonly " $fragmentRefs": FragmentRefs<"ShowListItem_show">;
                 } | null;
             } | null> | null;
@@ -37,6 +38,7 @@ query ShowsTabQuery(
         node {
           internalID
           slug
+          artworksCount
           ...ShowListItem_show
           id
         }
@@ -101,6 +103,13 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "artworksCount",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 };
@@ -145,6 +154,7 @@ return {
                     "selections": [
                       (v3/*: any*/),
                       (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "args": null,
                         "kind": "FragmentSpread",
@@ -206,6 +216,7 @@ return {
                     "selections": [
                       (v3/*: any*/),
                       (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -257,7 +268,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v5/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -267,21 +278,21 @@ return {
             ],
             "storageKey": "showsConnection(first:100,status:\"ALL\")"
           },
-          (v5/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "2ac8ceb0f1391b68b78117b97ee3bd98",
+    "cacheID": "7d27c8c0a0717971f3f07cca73db42d7",
     "id": null,
     "metadata": {},
     "name": "ShowsTabQuery",
     "operationKind": "query",
-    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100, status: ALL) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
+    "text": "query ShowsTabQuery(\n  $partnerID: String!\n) {\n  partner(id: $partnerID) {\n    showsConnection(first: 100, status: ALL) {\n      edges {\n        node {\n          internalID\n          slug\n          artworksCount\n          ...ShowListItem_show\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ShowListItem_show on Show {\n  name\n  formattedStartAt: startAt(format: \"MMMM D\")\n  formattedEndAt: endAt(format: \"MMMM D, YYYY\")\n  coverImage {\n    url\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'ec521153197ed5d78bf24f3aaf0a6868';
+(node as any).hash = '9a4a3b5cdf44d1e60bcbf460d5d1a3c5';
 export default node;

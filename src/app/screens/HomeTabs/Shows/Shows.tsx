@@ -17,17 +17,23 @@ export const Shows = () => {
   return (
     <TabsFlatList
       data={shows}
-      renderItem={({ item: show }) => (
-        <Touchable
-          onPress={() => {
-            navigation.navigate("ShowTabs", {
-              slug: show.slug || "",
-            })
-          }}
-        >
-          <ShowListItem show={show} />
-        </Touchable>
-      )}
+      renderItem={({ item: show }) => {
+        if (show.artworksCount && show.artworksCount > 0) {
+          return (
+            <Touchable
+              onPress={() => {
+                navigation.navigate("ShowTabs", {
+                  slug: show.slug || "",
+                })
+              }}
+            >
+              <ShowListItem show={show} />
+            </Touchable>
+          )
+        } else {
+          return null
+        }
+      }}
       keyExtractor={(item) => item?.internalID!}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
     />
@@ -42,6 +48,7 @@ const showsQuery = graphql`
           node {
             internalID
             slug
+            artworksCount
             ...ShowListItem_show
           }
         }
