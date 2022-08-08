@@ -105,7 +105,7 @@ export const CreateOrEditAlbum = () => {
   }
 
   return (
-    <Flex flex={1} pt={safeAreaInsets.top}>
+    <>
       <Header label={mode === "edit" ? "Edit Album" : "Create Album"} />
       <Flex px={2} mt={2}>
         <Flex>
@@ -159,6 +159,6 @@ export const CreateOrEditAlbum = () => {
           {mode === "edit" ? "Save" : "Create"}
         </Button>
       </Flex>
-    </Flex>
+    </>
   )
 }

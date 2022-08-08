@@ -7,7 +7,7 @@ import { AddArtworkToAlbumQuery } from "__generated__/AddArtworkToAlbumQuery.gra
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { AlbumListItem, Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, CheckCircleFillIcon, Flex, Spacer, Touchable, useSpace } from "palette"
+import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "palette"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworkToAlbum">
 type AddArtworkToAlbumProps = {
@@ -50,43 +50,41 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
 
   return (
     <>
-      <Flex mt={2}>
-        <Header label={artworkData.artwork?.title || ""} />
-        <FlatList
-          data={albums}
-          keyExtractor={(item) => item?.id}
-          renderItem={({ item: album }) => {
-            return (
-              <Flex key={album.id} mx={2}>
-                {/* Condition to only display album when the artwork is not included already */}
-                {!album.artworkIds.includes(artworkData.artwork?.internalID!) ? (
-                  <Touchable onPress={() => selectAlbumHandler(album.id)}>
-                    {/* Change opacity based on selection */}
-                    <Flex mb={3} mt={1} opacity={selectedAlbumIds.includes(album.id) ? 0.4 : 1}>
-                      <AlbumListItem album={album} />
+      <Header label={artworkData.artwork?.title || ""} />
+      <FlatList
+        data={albums}
+        keyExtractor={(item) => item?.id}
+        renderItem={({ item: album }) => {
+          return (
+            <Flex key={album.id} mx={2}>
+              {/* Condition to only display album when the artwork is not included already */}
+              {!album.artworkIds.includes(artworkData.artwork?.internalID!) ? (
+                <Touchable onPress={() => selectAlbumHandler(album.id)}>
+                  {/* Change opacity based on selection */}
+                  <Flex mb={3} mt={1} opacity={selectedAlbumIds.includes(album.id) ? 0.4 : 1}>
+                    <AlbumListItem album={album} />
+                  </Flex>
+                  {selectedAlbumIds.includes(album.id) ? (
+                    <Flex
+                      position="absolute"
+                      top={2}
+                      right={1}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <CheckCircleFillIcon height={30} width={30} fill="blue100" />
                     </Flex>
-                    {selectedAlbumIds.includes(album.id) ? (
-                      <Flex
-                        position="absolute"
-                        top={2}
-                        right={1}
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <CheckCircleFillIcon height={30} width={30} fill="blue100" />
-                      </Flex>
-                    ) : null}
-                  </Touchable>
-                ) : null}
-              </Flex>
-            )
-          }}
-          style={{
-            marginBottom: space(12) + space(2),
-            marginTop: space(2),
-          }}
-        />
-      </Flex>
+                  ) : null}
+                </Touchable>
+              ) : null}
+            </Flex>
+          )
+        }}
+        style={{
+          marginBottom: space(12) + space(2),
+          marginTop: space(2),
+        }}
+      />
       <Flex
         position="absolute"
         bottom={0}

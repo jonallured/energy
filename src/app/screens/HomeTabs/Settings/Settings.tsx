@@ -1,20 +1,17 @@
 import { ArrowRightIcon, Flex, Separator, Spacer, Text, Touchable, Button } from "palette"
-import { BackButton } from "app/sharedUI/molecules/BackButton"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Header } from "app/sharedUI"
 
 export const Settings = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
 
   return (
-    <Flex>
-      <Flex mx={2} mt={6}>
-        <BackButton />
-        <Text variant="lg">Settings</Text>
-      </Flex>
-      {/*
-      <Spacer m={2} />
+    <>
+      <Header label="Settings" />
+
+      {/* <Spacer m={2} />
       <Separator />
       <Spacer m={1} />
       <Flex mx={2}>
@@ -39,6 +36,6 @@ export const Settings = () => {
           Log out
         </Button>
       </Flex>
-    </Flex>
+    </>
   )
 }

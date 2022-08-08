@@ -1,7 +1,6 @@
 import MasonryList from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Alert } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header, ArtworkItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -12,7 +11,6 @@ type AlbumArtworksRoute = RouteProp<HomeTabsScreens, "AlbumArtworks">
 export const AlbumArtworks = () => {
   const { albumId } = useRoute<AlbumArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const safeAreaInsets = useSafeAreaInsets()
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
   const space = useSpace()
@@ -48,7 +46,7 @@ export const AlbumArtworks = () => {
   }
 
   return (
-    <Flex flex={1} pt={safeAreaInsets.top}>
+    <>
       <Header
         label={album.name}
         rightElements={
@@ -73,6 +71,6 @@ export const AlbumArtworks = () => {
         renderItem={({ item: artworkId }) => <ArtworkItem artworkId={artworkId} />}
         keyExtractor={(item) => item}
       />
-    </Flex>
+    </>
   )
 }

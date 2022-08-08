@@ -9,14 +9,16 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { SuspenseWrapper, TabsContainer } from "app/wrappers"
 import { useNavigation } from "@react-navigation/native"
 import { Flex, Text, Touchable, MenuIcon } from "palette"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
 
 export const Header = () => {
   const navigation = useNavigation()
+  const safeAreaInsets = useSafeAreaInsets()
 
   return (
-    <Flex flexDirection="row" px={2} mt={2} alignItems="center" justifyContent="space-between">
+    <Flex flexDirection="row" px={2} mt={2} alignItems="center" pt={safeAreaInsets.top}>
       <Touchable
         onPress={() => {
           navigation.navigate("Settings")

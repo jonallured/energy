@@ -72,7 +72,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   }
 
   return (
-    <Flex flex={1} pt={safeAreaInsets.top}>
+    <>
       <Header
         label={mode === "edit" ? "Save to Album" : "Add to Album"}
         rightElements={
@@ -119,6 +119,6 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           {mode === "edit" ? "Save" : "Add"}
         </Button>
       </Flex>
-    </Flex>
+    </>
   )
 }

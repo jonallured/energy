@@ -16,11 +16,10 @@ import {
   useColor,
   useSpace,
 } from "palette"
-import { ImagePlaceholder } from "app/sharedUI"
+import { HEADER_HEIGHT, ImagePlaceholder } from "app/sharedUI"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { useScreenDimensions } from "shared/hooks"
 
-const HEADER_HEIGHT = 100 // TODO: Should be imported from header
 const BOTTOM_SHEET_HEIGHT = 180
 
 export const ArtworkContent = ({ slug }: { slug: string }) => {
@@ -57,7 +56,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
         {artworkData.artwork?.image?.url ? (
           <Image
             source={{ uri: artworkData.artwork?.image?.url }}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginBottom: space(3) }}
             resizeMode="contain"
           />
         ) : (
