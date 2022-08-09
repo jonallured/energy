@@ -8,6 +8,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import {
   ArrowRightIcon,
   BriefcaseIcon,
+  Button,
+  EditIcon,
   Flex,
   Separator,
   Spacer,
@@ -23,12 +25,14 @@ import { useScreenDimensions } from "shared/hooks"
 const BOTTOM_SHEET_HEIGHT = 180
 
 export const ArtworkContent = ({ slug }: { slug: string }) => {
+  
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const [isScrollEnabled, setIsScrollEnabled] = useState(false)
   const color = useColor()
   const space = useSpace()
   const bottomSheetRef = useRef<BottomSheet>(null)
 
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, { slug })
   const numberOfAlbumsTheArtworkAvailable = useMemo(() => {
@@ -144,6 +148,19 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               <Spacer mt={3} />
             </Touchable>
           ) : null}
+          <Spacer mt={4} />
+          <Button
+            block
+            onPress={() =>
+              navigation.navigate("ArtworkWebView", {
+                uri: `https://cms-staging.artsy.net/artworks/${artworkData.artwork?.slug}/edit?partnerID=${partnerID}`,
+              })
+            }
+            icon={<EditIcon fill="white100" />}
+            iconPosition="right"
+          >
+            Edit artwork in CMS
+          </Button>
         </ScrollView>
       </BottomSheet>
     </Flex>
@@ -157,6 +174,7 @@ const artworkContentQuery = graphql`
         url
         aspectRatio
       }
+      slug
       internalID
       title
       price

@@ -10,6 +10,7 @@ import { Settings } from "app/screens/HomeTabs/Settings/Settings"
 import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbum"
+import { ArtworkWebView } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { InstallImage } from "app/sharedUI/screens/InstallImage/InstallImage"
 
@@ -23,6 +24,7 @@ export type HomeTabsScreens = {
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
   AddArtworkToAlbum: { slug: string }
+  ArtworkWebView: { uri: string }
   CreateOrEditAlbum: { mode: "create" | "edit"; albumId?: string }
   CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
   CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
@@ -47,6 +49,7 @@ export const HomeTabsNavigationStack = () => (
       <Screen name="AlbumArtworks" component={AlbumArtworks} />
       <Screen name="ShowTabs" component={ShowTabs} />
       <Screen name="AddArtworkToAlbum" component={AddArtworkToAlbum} />
+      <Screen name="ArtworkWebView" component={ArtworkWebView} />
       <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
       <Screen name="CreateOrEditAlbumChooseArtist" component={CreateOrEditAlbumChooseArtist} />
       <Screen name="CreateOrEditAlbumChooseArtworks" component={CreateOrEditAlbumChooseArtworks} />
