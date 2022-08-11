@@ -25,7 +25,6 @@ import { useScreenDimensions } from "shared/hooks"
 const BOTTOM_SHEET_HEIGHT = 180
 
 export const ArtworkContent = ({ slug }: { slug: string }) => {
-  
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const [isScrollEnabled, setIsScrollEnabled] = useState(false)
   const color = useColor()
@@ -53,6 +52,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetRef.current?.expand()
   }, [])
+
+  // For Presentation Mode
+  const isPriceHidden = GlobalStore.useAppState((state) => state.presentationMode.hiddenItems.price)
+  const isEditArtworkHidden = GlobalStore.useAppState(
+    (state) => state.presentationMode.hiddenItems.editArtwork
+  )
 
   return (
     <Flex flex={1}>
@@ -91,8 +96,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             {artworkData.artwork?.title}, <Text color="black60">{artworkData.artwork?.date}</Text>
           </Text>
           <Spacer mt={0.5} />
-          <Text weight="medium">{artworkData.artwork?.price || "$0"}</Text>
-          <Spacer mt={0.5} />
+          {isPriceHidden ? null : (
+            <>
+              <Text weight="medium">{artworkData.artwork?.price || "$0"}</Text>
+              <Spacer mt={0.5} />
+            </>
+          )}
           <Text variant="xs" color="black60">
             {artworkData.artwork?.mediumType?.name}
           </Text>
@@ -148,19 +157,23 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               <Spacer mt={3} />
             </Touchable>
           ) : null}
-          <Spacer mt={4} />
-          <Button
-            block
-            onPress={() =>
-              navigation.navigate("ArtworkWebView", {
-                uri: `https://cms-staging.artsy.net/artworks/${artworkData.artwork?.slug}/edit?partnerID=${partnerID}`,
-              })
-            }
-            icon={<EditIcon fill="white100" />}
-            iconPosition="right"
-          >
-            Edit artwork in CMS
-          </Button>
+          {isEditArtworkHidden ? null : (
+            <>
+              <Spacer mt={4} />
+              <Button
+                block
+                onPress={() =>
+                  navigation.navigate("ArtworkWebView", {
+                    uri: `https://cms-staging.artsy.net/artworks/${artworkData.artwork?.slug}/edit?partnerID=${partnerID}`,
+                  })
+                }
+                icon={<EditIcon fill="white100" />}
+                iconPosition="right"
+              >
+                Edit artwork in CMS
+              </Button>
+            </>
+          )}
         </ScrollView>
       </BottomSheet>
     </Flex>

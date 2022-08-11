@@ -13,11 +13,13 @@ import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbu
 import { ArtworkWebView } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { InstallImage } from "app/sharedUI/screens/InstallImage/InstallImage"
+import { EditPresentationMode } from "app/screens/HomeTabs/Settings/EditPresentationMode"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined
   Settings: undefined
   DarkModeSettings: undefined
+  EditPresentationMode: undefined
   ArtistTabs: { slug: string }
   InstallImage: { url: string }
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
@@ -43,6 +45,7 @@ export const HomeTabsNavigationStack = () => (
       <Screen name="HomeTabs" component={HomeTabs} />
       <Screen name="Settings" component={Settings} />
       <Screen name="DarkModeSettings" component={DarkModeSettings} />
+      <Screen name="EditPresentationMode" component={EditPresentationMode} />
       <Screen name="ArtistTabs" component={ArtistTabs} />
       <Screen name="Artwork" component={Artwork} />
       <Screen name="InstallImage" component={InstallImage} />
