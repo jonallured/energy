@@ -2,7 +2,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { ArtistListItem } from "app/sharedUI"
+import { ArtistListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
 import { Touchable } from "palette"
@@ -28,6 +28,7 @@ export const Artists = () => {
           <ArtistListItem artist={artist} />
         </Touchable>
       )}
+      ListEmptyComponent={<ListEmptyComponent text="No artists" />}
       keyExtractor={(item) => item?.internalID!}
     />
   )
