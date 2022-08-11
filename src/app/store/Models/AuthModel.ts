@@ -4,6 +4,12 @@ import Config from "react-native-config"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 import { getUserAgent } from "shared/utils"
 
+interface EmailOAuthParams {
+  email: string
+  password: string
+  otp?: string
+}
+
 interface AuthModelState {
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
@@ -35,7 +41,7 @@ export interface AuthModel extends AuthModelState {
     GlobalStoreModel,
     ReturnType<typeof fetch>
   >
-  signInUsingEmail: Thunk<this, { email: string; password: string }>
+  signInUsingEmail: Thunk<this, EmailOAuthParams>
   signOut: Thunk<this, void, {}, GlobalStoreModel>
 }
 
@@ -116,52 +122,65 @@ export const AuthModel: AuthModel = {
       fail(error)
     }
   }),
-
-  signInUsingEmail: thunk(async (actions, { email, password }) => {
-    try {
-      const result = await actions.gravityUnauthenticatedRequest({
-        path: `/oauth2/access_token`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: {
-          email,
-          oauth_provider: "email",
-          password,
-          grant_type: "credentials",
-          scope: "offline_access",
-          client_id: Config.ARTSY_API_CLIENT_KEY,
-          client_secret: Config.ARTSY_API_CLIENT_SECRET,
-        },
+  signInUsingEmail: thunk(async (actions, { email, password, otp }) => {
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email,
+        oauth_provider: "email",
+        otp_attempt: otp,
+        password,
+        grant_type: "credentials",
+        client_id: Config.ARTSY_API_CLIENT_KEY,
+        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        scope: "offline_access",
+      },
+    })
+    const resJson = await result.json()
+    // // The user has successfully logged in
+    if (result.status === 201) {
+      const { expires_in, access_token } = resJson
+      const userId = await actions.getUserID()
+      actions.setState({
+        userAccessToken: access_token,
+        userAccessTokenExpiresIn: expires_in,
+        userID: userId,
       })
-      const resJson = await result.json()
-      // // The user has successfully logged in
-      if (result.status === 201) {
-        const { expires_in, access_token } = resJson
-        const userId = await actions.getUserID()
-        actions.setState({
-          userAccessToken: access_token,
-          userAccessTokenExpiresIn: expires_in,
-          userID: userId,
-        })
-        return {
-          success: true,
-          message: null,
-        }
-      }
       return {
-        success: false,
-        message: resJson.error_description || "Unable to log in, please try again later",
-      }
-    } catch (error) {
-      return {
-        success: false,
-        message: "Something went wrong",
+        success: true,
+        message: null,
       }
     }
-  }),
 
+    const { error_description: errorDescription } = resJson
+
+    switch (errorDescription) {
+      case "missing two-factor authentication code":
+        return {
+          success: false,
+          message: "otp_missing",
+        }
+      case "missing on-demand authentication code":
+        return {
+          success: false,
+          message: "on_demand_otp_missing",
+        }
+      case "invalid two-factor authentication code":
+        return {
+          success: false,
+          message: "invalid_otp",
+        }
+      default:
+        return {
+          success: false,
+          message: "Unable to log in, please try again later",
+        }
+    }
+  }),
   signOut: thunk(async (actions, _, context) => {
     context.getStoreActions().reset()
     actions.setState(authModelInitialState)

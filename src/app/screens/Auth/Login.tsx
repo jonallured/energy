@@ -1,20 +1,21 @@
-import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { useRef } from "react"
-import { Alert, Image, Linking, Platform, ScrollView, TouchableOpacity } from "react-native"
-import LinearGradient from "react-native-linear-gradient"
+import { useFormik } from "formik"
+import { useRef, useState } from "react"
+import { Alert, Linking, Platform, ScrollView, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Box, Button, Flex, Input, Spacer, Text, useColor, useSpace } from "palette"
+import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 
 export interface LoginSchema {
   email: string
   password: string
+  otp: string
 }
 
 export const loginSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address"),
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
+  otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
 })
 
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=net.artsy.app"
@@ -22,10 +23,17 @@ const PLAY_STORE_SCHEME_URL = "artsy://"
 const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
 const APP_SCHEME_URL = "artsy:///"
 
-export const LoginScreenContent: React.FC = () => {
+const initialValues: LoginSchema = { email: "", password: "", otp: "" }
+
+export const LoginScreen: React.FC = () => {
   const color = useColor()
-  const space = useSpace()
   const insets = useSafeAreaInsets()
+
+  const passwordInputRef = useRef<Input>(null)
+  const emailInputRef = useRef<Input>(null)
+  const otpInputRef = useRef<Input>(null)
+
+  const [showOtpInputField, setShowOtpInputField] = useState(false)
 
   const {
     values,
@@ -37,10 +45,32 @@ export const LoginScreenContent: React.FC = () => {
     dirty,
     isSubmitting,
     setErrors,
-  } = useFormikContext<LoginSchema>()
+  } = useFormik<LoginSchema>({
+    enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: true,
+    initialValues,
+    initialErrors: {},
+    onSubmit: async ({ email, password, otp }, { setErrors, validateForm }) => {
+      validateForm()
+      const { success, message } = await GlobalStore.actions.auth.signInUsingEmail({
+        email,
+        password,
+        otp: otp === "" ? undefined : otp.trim(),
+      })
 
-  const passwordInputRef = useRef<Input>(null)
-  const emailInputRef = useRef<Input>(null)
+      if (message === "otp_missing" || message === "on_demand_otp_missing") {
+        setShowOtpInputField(true)
+        otpInputRef.current?.focus()
+      }
+
+      if (!success && message !== "otp_missing" && message !== "on_demand_otp_missing") {
+        // For security purposes, we are returning a generic error message
+        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+      }
+    },
+    validationSchema: loginSchema,
+  })
 
   // TODO: Test this on Android
   const handleOpenArtsyMobile = async () => {
@@ -61,28 +91,19 @@ export const LoginScreenContent: React.FC = () => {
   }
 
   return (
-    <LinearGradient
-      colors={["#8D8D8D", "#999999", "#A9A9A9", "#B9B9B9", "#838383", "#6A6A6A"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={{ flex: 1, flexGrow: 1 }}
-    >
+    <Flex flex={1} mt={2} pt={insets.top} px={2}>
       <ScrollView
-        contentContainerStyle={{ paddingTop: insets.top, paddingHorizontal: space(2) }}
         keyboardShouldPersistTaps="always"
         bounces={false}
+        showsVerticalScrollIndicator={false}
       >
-        <Text variant="xl" color="white" fontWeight="bold">
-          Folio
-        </Text>
-        <Spacer mt={60} />
-        <Text variant="lg" color="white">
-          Log In
-        </Text>
-        <Text variant="md" mt={0.5} color="white">
+        <Text variant="lg">Folio</Text>
+        <Spacer mt={2} />
+        <Text variant="xl">Log In</Text>
+        <Text variant="md" mt={0.5}>
           With Your Artsy Partner Account
         </Text>
-        <Spacer mt={50} />
+        <Spacer mt={3} />
         <Box>
           <Input
             ref={emailInputRef}
@@ -139,27 +160,53 @@ export const LoginScreenContent: React.FC = () => {
             value={values.password}
             error={errors.password}
           />
+          {showOtpInputField ? (
+            <>
+              <Spacer mt={2} />
+              <Input
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  // Hide error when the user starts to type again
+                  if (errors.otp) {
+                    setErrors({
+                      otp: undefined,
+                    })
+                    validateForm()
+                  }
+                  handleChange("otp")(text)
+                }}
+                onSubmitEditing={handleSubmit}
+                onBlur={() => validateForm()}
+                placeholder="Enter an authentication code"
+                placeholderTextColor={color("black30")}
+                ref={otpInputRef}
+                title="Authentication code"
+                returnKeyType="done"
+                // We need to to set textContentType to password here
+                // enable autofill of login details from the device keychain.
+                value={values.otp}
+                error={errors.otp}
+              />
+            </>
+          ) : null}
         </Box>
-
-        <Spacer mt={1} />
-
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert("Oups, not yet implemented")
-          }}
-        >
-          <Text
-            variant="sm"
-            color="white"
-            style={{ textDecorationLine: "underline" }}
-            textAlign="right"
-          >
-            Forgot password?
-          </Text>
-        </TouchableOpacity>
-
+        {showOtpInputField ? null : (
+          <>
+            <Spacer mt={1} />
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert("Oups, not yet implemented")
+              }}
+            >
+              <Text variant="xs" textAlign="right" underline color="black60">
+                Forgot password?
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
         <Spacer mt={3} />
-
         <Button
           onPress={handleSubmit}
           block
@@ -171,62 +218,19 @@ export const LoginScreenContent: React.FC = () => {
         >
           Log in
         </Button>
-
         <Spacer mt={2} />
-
-        <Text variant="xs" color="white" textAlign={"center"}>
+        <Text variant="xs" pb={1} textAlign="center" color="black60">
           Once you log in. Artsy Folio will begin downloading your artworks. We recommend using a
           stable Wifi connection.
         </Text>
+        <Spacer mt={3} />
+        <Flex px={2} pb={insets.bottom > 0 ? insets.bottom : 2} alignItems="center">
+          <Text>Looking for Artsy Mobile?</Text>
+          <TouchableOpacity onPress={handleOpenArtsyMobile}>
+            <Text underline>Tap here to open</Text>
+          </TouchableOpacity>
+        </Flex>
       </ScrollView>
-      <Flex px={2} paddingBottom={space(2)}>
-        <TouchableOpacity onPress={handleOpenArtsyMobile}>
-          <Flex flexDirection="row">
-            <Image
-              resizeMode="contain"
-              style={{ height: 50, width: 50 }}
-              source={require("images/short-white-logo.png")}
-            />
-            <Text color="white" ml={1} textAlign="left">
-              Looking for Artsy Mobile?{"\n"}Tap here to open
-            </Text>
-          </Flex>
-        </TouchableOpacity>
-      </Flex>
-    </LinearGradient>
-  )
-}
-
-const initialValues: LoginSchema = { email: "", password: "" }
-
-export const LoginScreen: React.FC<{}> = () => {
-  const formik = useFormik<LoginSchema>({
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: true,
-    initialValues,
-    initialErrors: {},
-    onSubmit: async ({ email, password }) => {
-      GlobalStore.actions.auth
-        .signInUsingEmail({ email, password })
-        .then((res: { success: boolean; message: string }) => {
-          if (!res.success) {
-            if (res.message) {
-              Alert.alert(res.message)
-            }
-          }
-        })
-        .catch((error: string) => {
-          console.warn(error)
-        })
-      // const res = await GlobalStore.actions.auth.signInUsingEmail({ email, password })
-    },
-    validationSchema: loginSchema,
-  })
-
-  return (
-    <FormikProvider value={formik}>
-      <LoginScreenContent />
-    </FormikProvider>
+    </Flex>
   )
 }
