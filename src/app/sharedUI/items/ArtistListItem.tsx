@@ -13,7 +13,7 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
       <Avatar src={artist.imageUrl!} size="xs" initials={artist.imageUrl ? "" : artist.initials!} />
       <Flex mx={1}>
         <Text variant="xs">{artist.name}</Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="onBackgroundMedium">
           {artist.counts?.artworks} Artworks
         </Text>
       </Flex>

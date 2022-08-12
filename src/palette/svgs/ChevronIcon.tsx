@@ -17,8 +17,7 @@ interface ChevronProps extends IconProps {
   direction?: Direction
 }
 
-/** ChevronIcon */
-export const ChevronIcon = ({ direction = "right", ...props }: ChevronProps) => {
+export const ChevronIcon = ({ direction = "right", ...restProps }: ChevronProps) => {
   const Arrow = directionMap[direction]
-  return <Arrow {...props} />
+  return <Arrow {...restProps} />
 }

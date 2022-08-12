@@ -48,7 +48,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
           justifyContent="center"
           backgroundColor="red100"
         >
-          <TrashIcon height={20} width={20} fill="white100" />
+          <TrashIcon height={20} width={20} fill="onBackgroundHigh" />
         </Flex>
       ) : null}
     </Touchable>

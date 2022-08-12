@@ -120,7 +120,6 @@ export const LoginScreen: React.FC = () => {
             onBlur={() => validateForm()}
             blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
             placeholder="Email address"
-            placeholderTextColor={color("black30")}
             title="Email"
             value={values.email}
             returnKeyType="next"
@@ -149,7 +148,6 @@ export const LoginScreen: React.FC = () => {
             onSubmitEditing={handleSubmit}
             onBlur={() => validateForm()}
             placeholder="Password"
-            placeholderTextColor={color("black30")}
             ref={passwordInputRef}
             secureTextEntry
             title="Password"

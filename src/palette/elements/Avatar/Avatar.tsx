@@ -1,4 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
+import { useColor } from "palette"
 import { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
 import styled from "styled-components/native"
@@ -36,8 +37,9 @@ export interface AvatarProps extends ImgHTMLAttributes<any> {
   size?: "xxs" | "xs" | "sm" | "md"
 }
 
-/** An circular Avatar component containing an image or initials */
+/** A circular Avatar component containing an image or initials */
 export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
+  const color = useColor()
   const { diameter, typeSize } = SIZES[size]
 
   if (src) {
@@ -48,6 +50,8 @@ export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
           width: diameter,
           height: diameter,
           borderRadius: diameter / 2,
+          borderColor: color("white100"),
+          borderWidth: 1,
         }}
         source={{
           uri: src,

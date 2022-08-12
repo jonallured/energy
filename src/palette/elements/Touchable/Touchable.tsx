@@ -53,7 +53,7 @@ export const Touchable: React.FC<TouchableProps> = ({
     </TouchableWithoutFeedback>
   ) : (
     <TouchableHighlight
-      underlayColor={color("white100")}
+      underlayColor={color("primary")}
       activeOpacity={0.8}
       {...props}
       onPress={onPressWrapped}

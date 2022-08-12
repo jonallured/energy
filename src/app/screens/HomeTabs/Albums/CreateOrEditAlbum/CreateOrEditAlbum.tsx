@@ -123,7 +123,7 @@ export const CreateOrEditAlbum = () => {
         >
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text>Add Items to Album</Text>
-            <ArrowRightIcon fill="black100" />
+            <ArrowRightIcon fill="onBackgroundHigh" />
           </Flex>
         </Touchable>
       </Flex>

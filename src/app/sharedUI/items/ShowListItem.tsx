@@ -18,10 +18,10 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
       ) : (
         <ImagePlaceholder height={200} />
       )}
-      <Text variant="xs" color="black100" mt={1}>
+      <Text variant="xs" mt={1}>
         {show?.name}
       </Text>
-      <Text variant="xs" color="black60">
+      <Text variant="xs" color="onBackgroundMedium">
         {show.formattedStartAt} - {show.formattedEndAt}
       </Text>
     </Flex>

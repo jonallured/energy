@@ -76,13 +76,9 @@ export const CreateOrEditAlbumChooseArtworks = () => {
       <Header
         label={mode === "edit" ? "Save to Album" : "Add to Album"}
         rightElements={
-          <Flex backgroundColor="black10" borderRadius={50} alignItems="center">
-            <Touchable onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}>
-              <Text px={2} py={0.5}>
-                {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
-              </Text>
-            </Touchable>
-          </Flex>
+          <Button size="small" onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}>
+            {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
+          </Button>
         }
       />
       <Spacer mt={2} />

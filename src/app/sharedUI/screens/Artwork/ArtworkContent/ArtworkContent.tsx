@@ -79,21 +79,26 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
         handleComponent={() => (
           <Touchable onPress={handlePresentModalPress}>
             <Flex
-              my={1}
-              width={30}
-              height={4}
-              backgroundColor="black"
-              alignSelf="center"
-              borderRadius={10}
-            />
+              width="100%"
+              height={30}
+              alignItems="center"
+              justifyContent="center"
+              backgroundColor="background"
+            >
+              <Flex width={30} height={4} backgroundColor="onBackgroundMedium" borderRadius={10} />
+            </Flex>
           </Touchable>
         )}
         backgroundStyle={{ borderTopWidth: 1, borderColor: color("black10") }}
       >
-        <ScrollView style={{ paddingHorizontal: space(2) }} scrollEnabled={isScrollEnabled}>
+        <ScrollView
+          style={{ paddingHorizontal: space(2), backgroundColor: color("background") }}
+          scrollEnabled={isScrollEnabled}
+        >
           <Text>{artworkData.artwork?.artist?.name}</Text>
-          <Text italic color="black60">
-            {artworkData.artwork?.title}, <Text color="black60">{artworkData.artwork?.date}</Text>
+          <Text italic color="onBackgroundMedium">
+            {artworkData.artwork?.title},{" "}
+            <Text color="onBackgroundMedium">{artworkData.artwork?.date}</Text>
           </Text>
           <Spacer mt={0.5} />
           {isPriceHidden ? null : (
@@ -102,11 +107,11 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               <Spacer mt={0.5} />
             </>
           )}
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="onBackgroundMedium">
             {artworkData.artwork?.mediumType?.name}
           </Text>
           {(artworkData.artwork?.dimensions?.in || artworkData.artwork?.dimensions?.cm) && (
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="onBackgroundMedium">
               {artworkData.artwork?.dimensions?.in} - {artworkData.artwork?.dimensions?.cm}
             </Text>
           )}
@@ -116,7 +121,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             <>
               <Spacer mt={2} />
               <Text variant="xs">Inventory ID</Text>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="onBackgroundMedium">
                 {artworkData.artwork?.inventoryId}
               </Text>
               <Spacer mt={2} />
@@ -132,14 +137,14 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             >
               <Spacer mt={3} />
               <Flex flexDirection="row" alignItems="center">
-                <BriefcaseIcon fill="black100" />
+                <BriefcaseIcon fill="onBackgroundHigh" />
                 <Flex ml={1}>
                   {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
                     <Text>Add to Album</Text>
                   )}
                   {numberOfAlbumsTheArtworkAvailable === 0 ? null : (
                     <Flex flexDirection="row" alignItems="center">
-                      <Text variant="xs" color="black60">
+                      <Text variant="xs" color="onBackgroundMedium">
                         Currently in{" "}
                         {numberOfAlbumsTheArtworkAvailable === albums.length
                           ? "all albums"
@@ -151,7 +156,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                   )}
                 </Flex>
                 {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
-                  <ArrowRightIcon ml="auto" fill="black100" />
+                  <ArrowRightIcon ml="auto" fill="onBackgroundHigh" />
                 )}
               </Flex>
               <Spacer mt={3} />

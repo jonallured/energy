@@ -1,7 +1,8 @@
 import { ReactElement } from "react"
+import { Flex, useColor, useSpace } from "palette"
 import { Tabs, MaterialTabBar, TabBarProps } from "react-native-collapsible-tab-view"
 import { TabName, TabReactElement } from "react-native-collapsible-tab-view/lib/typescript/types"
-import { Flex, useSpace } from "palette"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 type TabsContainerProps = {
   header: (props: TabBarProps<TabName>) => ReactElement
@@ -15,6 +16,8 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
   initialTabName,
 }) => {
   const space = useSpace()
+  const color = useColor()
+  const insets = useSafeAreaInsets()
 
   return (
     <>
@@ -24,6 +27,7 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
           shadowOpacity: 0,
           shadowRadius: 0,
           elevation: 0,
+          backgroundColor: color("background"),
         }}
         initialTabName={initialTabName}
         containerStyle={{ paddingTop: space(2) }}
@@ -32,15 +36,24 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
             scrollEnabled
             {...props}
             style={{ marginHorizontal: space(1) }}
+            activeColor={color("onBackgroundHigh")}
+            inactiveColor={color("onBackgroundMedium")}
             labelStyle={{ margin: -space(1) }} // only way to match the design without patching the library
             tabStyle={{ margin: space(1) }}
-            indicatorStyle={{ backgroundColor: "black", width: "20%", height: 1 }}
+            indicatorStyle={{ backgroundColor: color("onBackgroundHigh"), width: "20%", height: 1 }}
           />
         )}
       >
         {children}
       </Tabs.Container>
-      <Flex backgroundColor={"white100"} position={"absolute"} top={0} left={0} right={0} />
+      <Flex
+        height={insets.top}
+        backgroundColor="background"
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+      />
     </>
   )
 }

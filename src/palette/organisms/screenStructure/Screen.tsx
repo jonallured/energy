@@ -50,14 +50,16 @@ const ScreenWrapper = ({ children }: { children?: React.ReactNode }) => {
 const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
   const header = getChildByType(children, Screen.Header)
   const headerFloating = getChildByType(children, Screen.FloatingHeader)
+  const rawHeader = getChildByType(children, Screen.RawHeader)
   const background = getChildByType(children, Screen.Background)
   const bodyChildren = getChildrenByTypeDeep(children, Screen.Body)
 
   return (
-    <Flex flex={1} backgroundColor="white100">
+    <Flex flex={1}>
       {background /* fullscreen */}
 
       {header}
+      {rawHeader}
       {bodyChildren}
 
       {headerFloating /* floating, so keep close to the bottom */}
@@ -65,7 +67,11 @@ const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
   )
 }
 
-const useUpdateScreenContext = ({ header }: { header: "none" | "regular" | "floating" }) => {
+const useUpdateScreenContext = ({
+  header,
+}: {
+  header: "none" | "regular" | "floating" | "raw"
+}) => {
   const { setOptions } = useScreenContext()
 
   useEffect(
@@ -80,7 +86,7 @@ interface HeaderProps {
   onBack?: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onBack }) => {
+const Header = ({ onBack }: HeaderProps) => {
   useUpdateScreenContext({ header: "regular" })
   const insets = useSafeAreaInsets()
 
@@ -100,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
 /**
  * @deprecated Use `Screen.Header` instead.
  */
-export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
+const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
   useUpdateScreenContext({ header: "floating" })
   const insets = useSafeAreaInsets()
 
@@ -121,6 +127,14 @@ export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
     )
   }
   return null
+}
+
+/**
+ * Use `RawHeader` when you need to make a custom header that we have no support for yet.
+ */
+const RawHeader = ({ children }: { children: React.ReactNode }) => {
+  useUpdateScreenContext({ header: "raw" })
+  return <>{children}</>
 }
 
 const SCREEN_HORIZONTAL_PADDING: SpacingUnit = 2
@@ -284,6 +298,7 @@ export const Screen = Object.assign(ScreenWrapper, {
   Body,
   Header,
   FloatingHeader,
+  RawHeader,
   Background,
   BottomView,
   BodyXPadding,

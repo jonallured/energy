@@ -92,7 +92,6 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
         pt={2}
         pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}
         width="100%"
-        backgroundColor="white100"
       >
         <Button
           block

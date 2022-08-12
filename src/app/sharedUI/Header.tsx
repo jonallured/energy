@@ -1,32 +1,49 @@
-import { ArrowLeftIcon, Flex, Text, Touchable } from "palette"
 import { useNavigation } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { ArrowLeftIcon, Flex, Spacer, Text, Touchable } from "palette"
 
 export const HEADER_HEIGHT = 44
 
-type HeaderProps = {
+interface HeaderProps {
+  leftElements?: React.ReactNode
   label?: string
-  rightElements?: Element
+  withoutBackButton?: boolean
+  rightElements?: React.ReactNode
 }
 
-export const Header = ({ label, rightElements }: HeaderProps) => {
+export const Header = ({ leftElements, label, withoutBackButton, rightElements }: HeaderProps) => {
   const navigation = useNavigation()
   const safeAreaInsets = useSafeAreaInsets()
   return (
-    <Flex px={2} pt={safeAreaInsets.top}>
-      <Flex height={HEADER_HEIGHT} justifyContent="center">
-        <Touchable onPress={() => navigation.goBack()}>
-          <ArrowLeftIcon fill="black100" />
-        </Touchable>
-      </Flex>
-      {label ? (
-        <Flex flexDirection="row" alignItems="center" justifyContent="space-between" pb={1}>
-          <Flex flex={1}>
-            <Text variant="lg">{label}</Text>
-          </Flex>
+    <Flex
+      height={HEADER_HEIGHT}
+      mt={safeAreaInsets.top}
+      flexDirection="row"
+      alignItems="center"
+      px={2}
+    >
+      {leftElements !== undefined ? (
+        <>
+          {leftElements}
+          <Spacer x={1} />
+        </>
+      ) : withoutBackButton ? null : (
+        <>
+          <Touchable onPress={() => navigation.goBack()}>
+            <ArrowLeftIcon fill="onBackgroundHigh" />
+          </Touchable>
+          <Spacer x={1} />
+        </>
+      )}
+
+      {label !== undefined && <Text variant="lg">{label}</Text>}
+
+      {rightElements !== undefined && (
+        <>
+          <Flex flex={1} />
           {rightElements}
-        </Flex>
-      ) : null}
+        </>
+      )}
     </Flex>
   )
 }

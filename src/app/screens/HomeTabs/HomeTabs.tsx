@@ -1,39 +1,20 @@
-import { RouteProp, useRoute } from "@react-navigation/native"
-import { Tabs } from "react-native-collapsible-tab-view"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
-import { Shows } from "./Shows/Shows"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
+import { Touchable } from "palette"
 import { GlobalStore } from "app/store/GlobalStore"
+import { HamburgerIcon } from "palette/svgs/HamburgerIcon"
+import { Header } from "app/sharedUI"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
+import { Shows } from "./Shows/Shows"
 import { SuspenseWrapper, TabsContainer } from "app/wrappers"
-import { useNavigation } from "@react-navigation/native"
-import { Flex, Text, Touchable, MenuIcon } from "palette"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Tabs } from "react-native-collapsible-tab-view"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
 
-export const Header = () => {
-  const navigation = useNavigation()
-  const safeAreaInsets = useSafeAreaInsets()
-
-  return (
-    <Flex flexDirection="row" px={2} mt={2} alignItems="center" pt={safeAreaInsets.top}>
-      <Touchable
-        onPress={() => {
-          navigation.navigate("Settings")
-        }}
-      >
-        <MenuIcon />
-      </Touchable>
-      <Flex flex={1} ml={1}>
-        <Text variant="lg">Folio</Text>
-      </Flex>
-    </Flex>
-  )
-}
-
 export const HomeTabs = () => {
+  const nav = useNavigation()
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
 
@@ -42,7 +23,21 @@ export const HomeTabs = () => {
   }
 
   return (
-    <TabsContainer header={() => <Header />} initialTabName={tabName}>
+    <TabsContainer
+      header={(props) => (
+        <Header
+          {...props}
+          withoutBackButton
+          leftElements={
+            <Touchable onPress={() => nav.navigate("Settings")}>
+              <HamburgerIcon fill="onBackgroundHigh" />
+            </Touchable>
+          }
+          label="Folio"
+        />
+      )}
+      initialTabName={tabName}
+    >
       <Tabs.Tab name="Artists" label="Artists">
         <SuspenseWrapper withTabs>
           <Artists />

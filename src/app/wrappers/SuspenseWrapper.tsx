@@ -16,7 +16,7 @@ export const SuspenseWrapper: React.FC<ArtsySuspenseProps> = (props) => {
             <ActivityIndicator />
           </TabsScrollView>
         ) : (
-          <Flex flex={1} justifyContent="center" alignItems="center">
+          <Flex backgroundColor="background" flex={1} justifyContent="center" alignItems="center">
             <ActivityIndicator />
           </Flex>
         )

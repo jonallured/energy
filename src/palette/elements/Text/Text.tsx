@@ -30,6 +30,7 @@ export const Text = forwardRef(
     {
       variant = "sm",
       italic = false,
+      color = "onBackgroundHigh",
       caps,
       weight = "regular",
       underline = false,
@@ -60,6 +61,7 @@ export const Text = forwardRef(
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}
         children={children}
+        color={color}
         {...rest}
       />
     )

@@ -248,11 +248,11 @@ const useStyleForVariantAndState = (
 
   switch (variant) {
     case "fillDark":
-      retval.textColor = color("white100")
+      retval.textColor = color("onPrimaryHigh")
       switch (state) {
         case DisplayState.Enabled:
-          retval.backgroundColor = color("black100")
-          retval.borderColor = color("black100")
+          retval.backgroundColor = color("primary")
+          retval.borderColor = color("primary")
           break
         case DisplayState.Disabled:
           retval.backgroundColor = color("black30")

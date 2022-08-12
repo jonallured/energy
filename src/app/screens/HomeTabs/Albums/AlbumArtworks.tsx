@@ -52,10 +52,10 @@ export const AlbumArtworks = () => {
         rightElements={
           <Flex flexDirection="row" alignItems="center">
             <Touchable onPress={deleteAlbumHandler} style={{ marginRight: space(2) }}>
-              <TrashIcon fill="black100" width={25} height={25} />
+              <TrashIcon fill="onBackgroundHigh" width={25} height={25} />
             </Touchable>
             <Touchable onPress={editAlbumHandler}>
-              <EditIcon fill="black100" width={25} height={25} />
+              <EditIcon fill="onBackgroundHigh" width={25} height={25} />
             </Touchable>
           </Flex>
         }

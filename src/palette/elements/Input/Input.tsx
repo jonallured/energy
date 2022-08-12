@@ -75,9 +75,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
 }
 
 export type Input = TextInput
-/**
- * Input component
- */
+
 export const Input = forwardRef<TextInput, InputProps>(
   (
     {
@@ -284,7 +282,13 @@ export const Input = forwardRef<TextInput, InputProps>(
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize, ...inputTextStyle }}
+                style={{
+                  flex: 1,
+                  fontSize,
+                  ...inputTextStyle,
+                  color: color("onBackgroundHigh"),
+                  backgroundColor: color("background"),
+                }}
                 numberOfLines={multiline ? undefined : 1}
                 secureTextEntry={!showPassword}
                 textAlignVertical={multiline ? "top" : "center"}

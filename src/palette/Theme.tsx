@@ -18,7 +18,6 @@ import { ThemeContext, ThemeProvider } from "styled-components/native"
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
 
-
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 export type Color =
@@ -30,9 +29,26 @@ export type Color =
   | "yellow10"
   | "orange10"
   | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
+
   // v5 stuff
-  | "appBackground"
-  | "appForeground"
+  // big stuff, background, cards, button fills, etc.
+  | "background"
+  | "primary"
+  | "secondary"
+  | "brand"
+
+  // small stuff, texts, icons, etc.
+  | "onBackgroundHigh"
+  | "onBackgroundMedium"
+  | "onBackgroundLow"
+  | "onPrimaryHigh"
+  | "onPrimaryMedium"
+  | "onPrimaryLow"
+  | "onSecondaryHigh"
+  | "onSecondaryMedium"
+  | "onSecondaryLow"
+  | "onBrand"
+
 export { SpacingUnitV2, SpacingUnitV3 }
 export { TextVariantV3 }
 
@@ -147,6 +163,8 @@ const fixTextTreatments = (
   return textTreatments
 }
 
+const fixedColorsV3 = fixColorV3(eigenUsefulTHEME_V3.colors)
+
 const THEMES = {
   v2: {
     ...THEME_V2,
@@ -170,7 +188,7 @@ const THEMES = {
   },
   v3: {
     ...eigenUsefulTHEME_V3,
-    colors: fixColorV3(eigenUsefulTHEME_V3.colors),
+    colors: fixedColorsV3,
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
@@ -185,9 +203,21 @@ const THEMES = {
   v5: {
     ...eigenUsefulTHEME_V3,
     colors: {
-      ...fixColorV3(eigenUsefulTHEME_V3.colors),
-      appBackground: "white",
-      appForeground: "black",
+      ...fixedColorsV3,
+      background: fixedColorsV3.white100,
+      onBackgroundHigh: fixedColorsV3.black100,
+      onBackgroundMedium: fixedColorsV3.black60,
+      onBackgroundLow: fixedColorsV3.black30,
+      primary: fixedColorsV3.black100,
+      onPrimaryHigh: fixedColorsV3.white100,
+      onPrimaryMedium: fixedColorsV3.black10,
+      onPrimaryLow: fixedColorsV3.black10,
+      secondary: fixedColorsV3.black30,
+      onSecondaryHigh: fixedColorsV3.black100,
+      onSecondaryMedium: fixedColorsV3.black60,
+      onSecondaryLow: fixedColorsV3.black60,
+      brand: fixedColorsV3.blue100,
+      onBrand: fixedColorsV3.white100,
     },
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
@@ -203,9 +233,21 @@ const THEMES = {
   v5dark: {
     ...eigenUsefulTHEME_V3,
     colors: {
-      ...fixColorV3(eigenUsefulTHEME_V3.colors),
-      appBackground: "black",
-      appForeground: "white",
+      ...fixedColorsV3,
+      background: fixedColorsV3.black100,
+      onBackgroundHigh: fixedColorsV3.white100,
+      onBackgroundMedium: fixedColorsV3.black30,
+      onBackgroundLow: fixedColorsV3.black30,
+      primary: fixedColorsV3.white100,
+      onPrimaryHigh: fixedColorsV3.black100,
+      onPrimaryMedium: fixedColorsV3.black60,
+      onPrimaryLow: fixedColorsV3.black60,
+      secondary: fixedColorsV3.black60,
+      onSecondaryHigh: fixedColorsV3.white100,
+      onSecondaryMedium: fixedColorsV3.black10,
+      onSecondaryLow: fixedColorsV3.black10,
+      brand: fixedColorsV3.blue100,
+      onBrand: fixedColorsV3.white100,
     },
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {

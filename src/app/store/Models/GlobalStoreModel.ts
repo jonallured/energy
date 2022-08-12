@@ -4,6 +4,7 @@ import { AlbumsModel } from "./AlbumsModel"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
 import { DeepPartial } from "global"
+import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
 import { PresentationModeModel } from "./PresenationModeModel"
 
 type ActiveMode = "viewer" | "manager"
@@ -11,6 +12,7 @@ interface GlobalStoreStateModel {
   auth: AuthModel
   config: ConfigModel
   albums: AlbumsModel
+  devicePrefs: DevicePrefsModel
   presentationMode: PresentationModeModel
 
   activePartnerID: string | null
@@ -31,6 +33,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
   auth: AuthModel,
   config: ConfigModel,
   albums: AlbumsModel,
+  devicePrefs: getDevicePrefsModel(),
   presentationMode: PresentationModeModel,
 
   activePartnerID: null,
