@@ -1,8 +1,7 @@
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
-import { Touchable } from "palette"
+import { MenuIcon, Touchable } from "palette"
 import { GlobalStore } from "app/store/GlobalStore"
-import { HamburgerIcon } from "palette/svgs/HamburgerIcon"
 import { Header } from "app/sharedUI"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
@@ -30,7 +29,12 @@ export const HomeTabs = () => {
           withoutBackButton
           leftElements={
             <Touchable onPress={() => nav.navigate("Settings")}>
-              <HamburgerIcon fill="onBackgroundHigh" />
+              <MenuIcon fill="onBackgroundHigh" />
+            </Touchable>
+          }
+          rightElements={
+            <Touchable onPress={() => nav.navigate("FolioDesignLanguage")}>
+              <MenuIcon fill="onBackgroundHigh" />
             </Touchable>
           }
           label="Folio"

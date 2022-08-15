@@ -11,7 +11,6 @@ import {
 import _ from "lodash"
 import { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-
 /**
  * All of the config for the Artsy theming system, based on the
  * design system from our design team:
@@ -22,6 +21,8 @@ type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 export type Color =
   | ColorV3BeforeDevPurple
+  // v5 stuff
+  // Anything big/surface: background, cards, button fills, etc.  | "background"
   | "devpurple"
   | "yellow150"
   | "yellow100"
@@ -29,15 +30,11 @@ export type Color =
   | "yellow10"
   | "orange10"
   | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
-
-  // v5 stuff
-  // big stuff, background, cards, button fills, etc.
   | "background"
   | "primary"
   | "secondary"
   | "brand"
-
-  // small stuff, texts, icons, etc.
+  // Anything small, texts, icons, etc.
   | "onBackgroundHigh"
   | "onBackgroundMedium"
   | "onBackgroundLow"
@@ -116,7 +113,12 @@ const fixSpaceUnitsV3 = (
   return fixed as any
 }
 
-// this function is just adding a dev color, `devpurple`
+export interface TextTreatment {
+  fontSize: number
+  lineHeight: number
+  letterSpacing?: number
+}
+
 const fixColorV3 = (
   colors: typeof eigenUsefulTHEME_V3.colors
 ): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
@@ -130,13 +132,11 @@ const fixColorV3 = (
   ourColors.orange150 = "#A8501C"
   return colors as any
 }
-
 export interface TextTreatment {
   fontSize: number
   lineHeight: number
   letterSpacing?: number
 }
-
 // this function is removing the `px` and `em` suffix and making the values into numbers
 const fixTextTreatments = (
   variantsWithUnits: Record<"xxl" | "xl" | "lg" | "md" | "sm" | "xs", TextTreatmentWithUnits>
@@ -162,6 +162,8 @@ const fixTextTreatments = (
   })
   return textTreatments
 }
+
+const colors = eigenUsefulTHEME_V3.colors
 
 const fixedColorsV3 = fixColorV3(eigenUsefulTHEME_V3.colors)
 
@@ -203,21 +205,21 @@ const THEMES = {
   v5: {
     ...eigenUsefulTHEME_V3,
     colors: {
-      ...fixedColorsV3,
-      background: fixedColorsV3.white100,
-      onBackgroundHigh: fixedColorsV3.black100,
-      onBackgroundMedium: fixedColorsV3.black60,
-      onBackgroundLow: fixedColorsV3.black30,
-      primary: fixedColorsV3.black100,
-      onPrimaryHigh: fixedColorsV3.white100,
-      onPrimaryMedium: fixedColorsV3.black10,
-      onPrimaryLow: fixedColorsV3.black10,
-      secondary: fixedColorsV3.black30,
-      onSecondaryHigh: fixedColorsV3.black100,
-      onSecondaryMedium: fixedColorsV3.black60,
-      onSecondaryLow: fixedColorsV3.black60,
-      brand: fixedColorsV3.blue100,
-      onBrand: fixedColorsV3.white100,
+      ...colors,
+      background: colors.white100,
+      onBackgroundHigh: colors.black100,
+      onBackgroundMedium: colors.black60,
+      onBackgroundLow: colors.black30,
+      primary: colors.black100,
+      onPrimaryHigh: colors.white100,
+      onPrimaryMedium: colors.black10,
+      onPrimaryLow: colors.black10,
+      secondary: colors.black30,
+      onSecondaryHigh: colors.black100,
+      onSecondaryMedium: colors.black60,
+      onSecondaryLow: colors.black60,
+      brand: colors.blue100,
+      onBrand: colors.white100,
     },
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
@@ -233,21 +235,21 @@ const THEMES = {
   v5dark: {
     ...eigenUsefulTHEME_V3,
     colors: {
-      ...fixedColorsV3,
-      background: fixedColorsV3.black100,
-      onBackgroundHigh: fixedColorsV3.white100,
-      onBackgroundMedium: fixedColorsV3.black30,
-      onBackgroundLow: fixedColorsV3.black30,
-      primary: fixedColorsV3.white100,
-      onPrimaryHigh: fixedColorsV3.black100,
-      onPrimaryMedium: fixedColorsV3.black60,
-      onPrimaryLow: fixedColorsV3.black60,
-      secondary: fixedColorsV3.black60,
-      onSecondaryHigh: fixedColorsV3.white100,
-      onSecondaryMedium: fixedColorsV3.black10,
-      onSecondaryLow: fixedColorsV3.black10,
-      brand: fixedColorsV3.blue100,
-      onBrand: fixedColorsV3.white100,
+      ...colors,
+      background: colors.black100,
+      onBackgroundHigh: colors.white100,
+      onBackgroundMedium: colors.black30,
+      onBackgroundLow: colors.black30,
+      primary: colors.white100,
+      onPrimaryHigh: colors.black100,
+      onPrimaryMedium: colors.black60,
+      onPrimaryLow: colors.black60,
+      secondary: colors.black60,
+      onSecondaryHigh: colors.white100,
+      onSecondaryMedium: colors.black10,
+      onSecondaryLow: colors.black10,
+      brand: colors.blue100,
+      onBrand: colors.white100,
     },
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
@@ -264,11 +266,6 @@ const THEMES = {
 
 export type ThemeV3Type = typeof THEMES.v3
 export type ThemeType = ThemeV3Type
-
-/**
- * Do not use this!! Use any the hooks instead!
- */
-export const themeProps = THEMES.v2
 
 const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   if (!_.isString(theme)) {
