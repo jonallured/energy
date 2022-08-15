@@ -13,7 +13,7 @@ export const Settings = () => {
   return (
     <Screen>
       <Screen.RawHeader>
-        <Header label="Settings" />
+        <Header label="Settings" safeAreaInsets />
       </Screen.RawHeader>
       <Screen.Body>
         <Spacer y={2} />
@@ -52,6 +52,10 @@ export const Settings = () => {
         <Spacer y={1} />
         <Button block onPress={() => nav.navigate("FolioDesignLanguage")}>
           Folio Design Language
+        </Button>
+        <Spacer y={1} />
+        <Button block onPress={() => nav.navigate("InsteadOfStorybook")}>
+          Instead Of Storybook
         </Button>
       </Screen.Body>
     </Screen>

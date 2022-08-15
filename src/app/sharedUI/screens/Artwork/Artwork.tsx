@@ -10,6 +10,7 @@ type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 export const Artwork = () => {
   const { params } = useRoute<ArtworkRoute>()
   const artworkSlugs = params.contextArtworkSlugs ?? [params.slug]
+
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
     name: slug,
     content: (
@@ -21,7 +22,7 @@ export const Artwork = () => {
 
   return (
     <>
-      <Header />
+      <Header safeAreaInsets />
       <Flex flex={1}>
         <ScrollableScreensView screens={screens} initialScreenName={params.slug} />
       </Flex>

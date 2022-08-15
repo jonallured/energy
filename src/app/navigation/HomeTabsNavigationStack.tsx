@@ -19,6 +19,7 @@ import { useState } from "react"
 import { Button, TextInput } from "react-native"
 import { EditPresentationMode } from "app/screens/HomeTabs/Settings/EditPresentationMode"
 import { FolioDesignLanguage } from "app/screens/Dev/FolioDesignLanguage"
+import { InsteadOfStorybook } from "app/screens/Dev/InsteadOfStorybook"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined
@@ -27,6 +28,8 @@ export type HomeTabsScreens = {
   EditPresentationMode: undefined
   ArtistTabs: { slug: string }
   InstallImage: { url: string }
+  InsteadOfStorybook: undefined
+  FolioDesignLanguage: undefined
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
@@ -55,6 +58,7 @@ export const HomeTabsNavigationStack = () => {
           <Screen name="HomeTabs" component={HomeTabs} />
           <Screen name="Settings" component={Settings} />
           <Screen name="DarkModeSettings" component={DarkModeSettings} />
+          <Screen name="InsteadOfStorybook" component={InsteadOfStorybook} />
           <Screen name="FolioDesignLanguage" component={FolioDesignLanguage} />
           <Screen name="ArtistTabs" component={ArtistTabs} />
           <Screen name="Artwork" component={Artwork} />

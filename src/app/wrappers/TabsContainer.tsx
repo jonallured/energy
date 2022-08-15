@@ -21,6 +21,7 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
 
   return (
     <>
+      <Flex height={insets.top} backgroundColor="background" />
       <Tabs.Container
         renderHeader={header}
         headerContainerStyle={{
