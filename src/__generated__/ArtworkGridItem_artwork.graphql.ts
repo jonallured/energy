@@ -12,6 +12,7 @@ export type ArtworkGridItem_artwork = {
         readonly url: string | null;
         readonly aspectRatio: number;
     } | null;
+    readonly availability: string | null;
     readonly " $refType": "ArtworkGridItem_artwork";
 };
 export type ArtworkGridItem_artwork$data = ArtworkGridItem_artwork;
@@ -73,10 +74,17 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "availability",
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'f07b8da0358ca329f16dcacdeb04f194';
+(node as any).hash = '0d6e2609ee69e1bd161cbc0ea9898461';
 export default node;

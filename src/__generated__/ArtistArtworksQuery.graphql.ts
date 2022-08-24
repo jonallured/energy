@@ -56,6 +56,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url
     aspectRatio
   }
+  availability
 }
 */
 
@@ -252,6 +253,13 @@ return {
                         ],
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "availability",
+                        "storageKey": null
+                      },
                       (v6/*: any*/)
                     ],
                     "storageKey": null
@@ -269,12 +277,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "99e31bae8b4f3d3aac9d042f221468cd",
+    "cacheID": "af062637f89faa690381817037d83e86",
     "id": null,
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",
-    "text": "query ArtistArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    name\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ArtworkGridItem_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ArtworkGridItem_artwork on Artwork {\n  internalID\n  title\n  date\n  image {\n    url\n    aspectRatio\n  }\n}\n"
+    "text": "query ArtistArtworksQuery(\n  $slug: String!\n) {\n  artist(id: $slug) {\n    name\n    artworksConnection(first: 100) {\n      edges {\n        node {\n          internalID\n          slug\n          ...ArtworkGridItem_artwork\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ArtworkGridItem_artwork on Artwork {\n  internalID\n  title\n  date\n  image {\n    url\n    aspectRatio\n  }\n  availability\n}\n"
   }
 };
 })();

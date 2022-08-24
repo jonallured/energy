@@ -2,6 +2,7 @@ import { Image } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "palette"
+import { AvailabilityDot } from "app/sharedUI"
 
 interface ArtworkGridItemProps {
   artwork: ArtworkGridItem_artwork$key
@@ -26,7 +27,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
           }}
         />
         <Text italic variant="xs" color="black60" mt={1}>
-          {artwork.title},{" "}
+          <AvailabilityDot availability={artwork.availability} /> {artwork.title},{" "}
           <Text variant="xs" color="black60">
             {artwork.date}
           </Text>
@@ -64,5 +65,6 @@ const ArtworkGridItemFragment = graphql`
       url
       aspectRatio
     }
+    availability
   }
 `
