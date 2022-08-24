@@ -18,7 +18,7 @@ import {
   useColor,
   useSpace,
 } from "palette"
-import { HEADER_HEIGHT, ImagePlaceholder } from "app/sharedUI"
+import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent } from "app/sharedUI"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -34,10 +34,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, { slug })
-  const numberOfAlbumsTheArtworkAvailable = useMemo(() => {
-    return albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
-      .length
-  }, [albums])
 
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - HEADER_HEIGHT
@@ -59,12 +55,62 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     (state) => state.presentationMode.hiddenItems.editArtwork
   )
 
+  if (!artworkData.artwork) {
+    return <ListEmptyComponent />
+  }
+
+  // Destructing all the artwork fields here
+  const {
+    internalID,
+    image,
+    artistNames,
+    title,
+    date,
+    price,
+    medium,
+    dimensions,
+    additionalInformation,
+    mediumType,
+    conditionDescription,
+    signature,
+    certificateOfAuthenticity,
+    framed,
+    series,
+    imageRights,
+    inventoryId,
+    confidentialNotes,
+    internalDisplayPrice,
+    provenance,
+    exhibitionHistory,
+    literature,
+  } = artworkData.artwork
+
+  const numberOfAlbumsIncludingArtwork = useMemo(() => {
+    return albums.filter((album) => album.artworkIds.includes(internalID)).length
+  }, [albums])
+
+  const shouldDisplayTheDetailBox =
+    mediumType ||
+    conditionDescription ||
+    signature ||
+    certificateOfAuthenticity ||
+    framed ||
+    series ||
+    imageRights ||
+    inventoryId ||
+    confidentialNotes ||
+    internalDisplayPrice ||
+    provenance
+
+  const shouldShowAboutTheArtworkTitle =
+    additionalInformation || shouldDisplayTheDetailBox || !exhibitionHistory || literature
+
   return (
     <Flex flex={1}>
       <Flex height={imageFlexHeight} px={space(2)}>
-        {artworkData.artwork?.image?.url ? (
+        {image?.url ? (
           <Image
-            source={{ uri: artworkData.artwork?.image?.url }}
+            source={{ uri: image?.url }}
             style={{ flex: 1, marginBottom: space(3) }}
             resizeMode="contain"
           />
@@ -95,93 +141,166 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           style={{ paddingHorizontal: space(2), backgroundColor: color("background") }}
           scrollEnabled={isScrollEnabled}
         >
-          <Text>{artworkData.artwork?.artist?.name}</Text>
+          <Text>{artistNames}</Text>
           <Text italic color="onBackgroundMedium">
-            {artworkData.artwork?.title},{" "}
-            <Text color="onBackgroundMedium">{artworkData.artwork?.date}</Text>
+            {title}, <Text color="onBackgroundMedium">{date}</Text>
           </Text>
           <Spacer mt={0.5} />
-          {isPriceHidden ? null : (
+          {isPriceHidden && !price ? null : (
             <>
-              <Text weight="medium">{artworkData.artwork?.price || "$0"}</Text>
+              <Text weight="medium">{price}</Text>
               <Spacer mt={0.5} />
             </>
           )}
           <Text variant="xs" color="onBackgroundMedium">
-            {artworkData.artwork?.mediumType?.name}
+            {medium}
           </Text>
-          {(artworkData.artwork?.dimensions?.in || artworkData.artwork?.dimensions?.cm) && (
+          {(dimensions?.in || dimensions?.cm) && (
             <Text variant="xs" color="onBackgroundMedium">
-              {artworkData.artwork?.dimensions?.in} - {artworkData.artwork?.dimensions?.cm}
+              {dimensions?.in} - {dimensions?.cm}
             </Text>
           )}
           <Spacer mt={2} />
           <Separator />
-          {artworkData.artwork?.inventoryId ? (
+          {shouldShowAboutTheArtworkTitle ? (
             <>
               <Spacer mt={2} />
-              <Text variant="xs">Inventory ID</Text>
-              <Text variant="xs" color="onBackgroundMedium">
-                {artworkData.artwork?.inventoryId}
-              </Text>
-              <Spacer mt={2} />
-              <Separator />
+              <Text>About the artwork</Text>
+              <Spacer mt={1} />
             </>
           ) : null}
+          {additionalInformation ? (
+            <>
+              <Text>{additionalInformation}</Text>
+              <Spacer mt={2} />
+            </>
+          ) : null}
+          {shouldDisplayTheDetailBox ? (
+            <>
+              <Flex px={2} border={1} borderColor="onBackgroundLow">
+                <Spacer mt={2} />
+                {mediumType?.name ? (
+                  <ArtworkDetail label="Medium" value={mediumType?.name} />
+                ) : null}
+                {conditionDescription?.label ? (
+                  <ArtworkDetail label="Condition" value={conditionDescription?.label} />
+                ) : null}
+                {signature ? <ArtworkDetail label="Signature" value={signature} /> : null}
+                {certificateOfAuthenticity?.label ? (
+                  <ArtworkDetail
+                    label="Certificate of Authenticity"
+                    value={certificateOfAuthenticity?.label}
+                  />
+                ) : null}
+                {framed?.label ? <ArtworkDetail label="Frame" value={framed?.label} /> : null}
+                {series ? <ArtworkDetail label="Series" value={series} /> : null}
+                {imageRights ? <ArtworkDetail label="Image Rights" value={imageRights} /> : null}
+                {inventoryId ? <ArtworkDetail label="Inventory ID" value={inventoryId} /> : null}
+                {confidentialNotes ? (
+                  <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
+                ) : null}
+                {internalDisplayPrice ? (
+                  <ArtworkDetail label="Editions" value={internalDisplayPrice} />
+                ) : null}
+                {provenance ? <ArtworkDetail label="Provenance" value={provenance} /> : null}
+                <Spacer mt={1} />
+              </Flex>
+              <Spacer mt={2} />
+            </>
+          ) : null}
+
+          {exhibitionHistory ? (
+            <Flex
+              px={2}
+              pt={2}
+              pb={1}
+              border={1}
+              borderColor="onBackgroundLow"
+              borderBottomColor={exhibitionHistory && literature ? "background" : "onBackgroundLow"}
+            >
+              <ArtworkDetail size="big" label="Exhibition history" value={"exhibitionHistory"} />
+            </Flex>
+          ) : null}
+          {literature ? (
+            <Flex px={2} pt={2} pb={1} border={1} borderColor="onBackgroundLow">
+              <ArtworkDetail size="big" label="Bibliography" value={literature} />
+            </Flex>
+          ) : null}
+          <Spacer mt={2} />
+
           {albums.length !== 0 ? (
             <Touchable
               onPress={() => {
                 navigation.navigate("AddArtworkToAlbum", { slug })
               }}
-              disabled={numberOfAlbumsTheArtworkAvailable === albums.length}
+              disabled={numberOfAlbumsIncludingArtwork === albums.length}
             >
               <Spacer mt={3} />
               <Flex flexDirection="row" alignItems="center">
                 <BriefcaseIcon fill="onBackgroundHigh" />
                 <Flex ml={1}>
-                  {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
+                  {numberOfAlbumsIncludingArtwork === albums.length ? null : (
                     <Text>Add to Album</Text>
                   )}
-                  {numberOfAlbumsTheArtworkAvailable === 0 ? null : (
+                  {numberOfAlbumsIncludingArtwork === 0 ? null : (
                     <Flex flexDirection="row" alignItems="center">
                       <Text variant="xs" color="onBackgroundMedium">
                         Currently in{" "}
-                        {numberOfAlbumsTheArtworkAvailable === albums.length
+                        {numberOfAlbumsIncludingArtwork === albums.length
                           ? "all albums"
-                          : numberOfAlbumsTheArtworkAvailable === 1
+                          : numberOfAlbumsIncludingArtwork === 1
                           ? "1 album"
-                          : `${numberOfAlbumsTheArtworkAvailable} albums`}
+                          : `${numberOfAlbumsIncludingArtwork} albums`}
                       </Text>
                     </Flex>
                   )}
                 </Flex>
-                {numberOfAlbumsTheArtworkAvailable === albums.length ? null : (
+                {numberOfAlbumsIncludingArtwork === albums.length ? null : (
                   <ArrowRightIcon ml="auto" fill="onBackgroundHigh" />
                 )}
               </Flex>
               <Spacer mt={3} />
             </Touchable>
           ) : null}
+          <Spacer mt={2} />
+          <Separator />
+          <Spacer mt={2} />
           {isEditArtworkHidden ? null : (
-            <>
-              <Spacer mt={4} />
-              <Button
-                block
-                onPress={() =>
-                  navigation.navigate("ArtworkWebView", {
-                    uri: `https://cms-staging.artsy.net/artworks/${artworkData.artwork?.slug}/edit?partnerID=${partnerID}`,
-                  })
-                }
-                icon={<EditIcon fill="white100" />}
-                iconPosition="right"
-              >
-                Edit artwork in CMS
-              </Button>
-            </>
+            <Button
+              block
+              onPress={() =>
+                navigation.navigate("ArtworkWebView", {
+                  uri: `https://cms-staging.artsy.net/artworks/${internalID}/edit?partnerID=${partnerID}`,
+                })
+              }
+              icon={<EditIcon fill="white100" />}
+              iconPosition="right"
+            >
+              Edit artwork in CMS
+            </Button>
           )}
+          <Spacer pb={2} />
         </ScrollView>
       </BottomSheet>
     </Flex>
+  )
+}
+
+interface ArtworkDetailProps {
+  size?: "big" | "small"
+  label: string
+  value: string
+}
+
+const ArtworkDetail = ({ size = "small", label, value }: ArtworkDetailProps) => {
+  return (
+    <>
+      <Text variant={size === "big" ? "sm" : "xs"}>{label}</Text>
+      <Text variant={size === "big" ? "sm" : "xs"} color="onBackgroundMedium">
+        {value}
+      </Text>
+      <Spacer mt={1} />
+    </>
   )
 }
 
@@ -192,11 +311,11 @@ const artworkContentQuery = graphql`
         url
         aspectRatio
       }
-      slug
       internalID
       title
       price
       date
+      medium
       mediumType {
         name
       }
@@ -205,9 +324,25 @@ const artworkContentQuery = graphql`
         cm
       }
       inventoryId
-      artist {
-        name
+      artistNames
+      signature
+      provenance
+      exhibitionHistory
+      literature
+      imageRights
+      series
+      certificateOfAuthenticity {
+        label
       }
+      conditionDescription {
+        label
+      }
+      framed {
+        label
+      }
+      confidentialNotes
+      internalDisplayPrice
+      additionalInformation
     }
   }
 `
