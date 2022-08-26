@@ -22,7 +22,7 @@ export const Artwork = () => {
 
   return (
     <>
-      <Header />
+      <Header safeAreaInsets />
       <Flex flex={1}>
         <ScrollableScreensView screens={screens} initialScreenName={params.slug} />
       </Flex>

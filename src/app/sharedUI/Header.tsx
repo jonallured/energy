@@ -9,14 +9,27 @@ interface HeaderProps {
   label?: string
   withoutBackButton?: boolean
   rightElements?: React.ReactNode
+  safeAreaInsets?: boolean
 }
 
-export const Header = ({ leftElements, label, withoutBackButton, rightElements }: HeaderProps) => {
+export const Header = ({
+  leftElements,
+  label,
+  withoutBackButton,
+  rightElements,
+  safeAreaInsets,
+}: HeaderProps) => {
   const navigation = useNavigation()
   const insets = useSafeAreaInsets()
 
   return (
-    <Flex height={HEADER_HEIGHT} flexDirection="row" alignItems="center" px={2} mt={insets.top}>
+    <Flex
+      height={HEADER_HEIGHT}
+      flexDirection="row"
+      alignItems="center"
+      px={2}
+      mt={safeAreaInsets ? insets.top : 0}
+    >
       {leftElements !== undefined ? (
         <>
           {leftElements}
