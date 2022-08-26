@@ -11,7 +11,7 @@ export const ArtworkWebView = () => {
 
   return (
     <Flex flex={1} pb={2}>
-      <Header />
+      <Header safeAreaInsets />
       <WebView source={{ uri }} />
     </Flex>
   )
