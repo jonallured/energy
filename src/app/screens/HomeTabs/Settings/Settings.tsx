@@ -13,7 +13,7 @@ export const Settings = () => {
   return (
     <Screen>
       <Screen.RawHeader>
-        <Header label="Settings" safeAreaInsets />
+        <Header label="Settings" />
       </Screen.RawHeader>
       <Screen.Body>
         <Spacer y={2} />
