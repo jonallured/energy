@@ -182,17 +182,17 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 {mediumType?.name ? (
                   <ArtworkDetail label="Medium" value={mediumType?.name} />
                 ) : null}
-                {conditionDescription?.label ? (
-                  <ArtworkDetail label="Condition" value={conditionDescription?.label} />
+                {conditionDescription?.details ? (
+                  <ArtworkDetail label="Condition" value={conditionDescription?.details} />
                 ) : null}
                 {signature ? <ArtworkDetail label="Signature" value={signature} /> : null}
-                {certificateOfAuthenticity?.label ? (
+                {certificateOfAuthenticity?.details ? (
                   <ArtworkDetail
                     label="Certificate of Authenticity"
-                    value={certificateOfAuthenticity?.label}
+                    value={certificateOfAuthenticity?.details}
                   />
                 ) : null}
-                {framed?.label ? <ArtworkDetail label="Frame" value={framed?.label} /> : null}
+                {framed?.details ? <ArtworkDetail label="Frame" value={framed?.details} /> : null}
                 {series ? <ArtworkDetail label="Series" value={series} /> : null}
                 {imageRights ? <ArtworkDetail label="Image Rights" value={imageRights} /> : null}
                 {inventoryId ? <ArtworkDetail label="Inventory ID" value={inventoryId} /> : null}
@@ -218,7 +218,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               borderColor="onBackgroundLow"
               borderBottomColor={exhibitionHistory && literature ? "background" : "onBackgroundLow"}
             >
-              <ArtworkDetail size="big" label="Exhibition history" value={"exhibitionHistory"} />
+              <ArtworkDetail size="big" label="Exhibition history" value={exhibitionHistory} />
             </Flex>
           ) : null}
           {literature ? (
@@ -330,13 +330,13 @@ const artworkContentQuery = graphql`
       imageRights
       series
       certificateOfAuthenticity {
-        label
+        details
       }
       conditionDescription {
-        label
+        details
       }
       framed {
-        label
+        details
       }
       confidentialNotes
       internalDisplayPrice
