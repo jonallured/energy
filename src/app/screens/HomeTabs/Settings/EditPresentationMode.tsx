@@ -1,66 +1,87 @@
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Separator, Spacer, Text } from "palette"
+import { Flex, Separator, Spacer, Text } from "palette"
+import { ScrollView } from "react-native"
 
 export const EditPresentationMode = () => {
-  const isHidePriceEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isHidePriceEnabled
-  )
-  const isHideWorksAvailabilityEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isHideWorksAvailabilityEnabled
-  )
-  const isHideConfidentialNotesEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isHideConfidentialNotesEnabled
-  )
-  const isHideArtworkEditButtonEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isHideArtworkEditButtonEnabled
-  )
+  const presentationConfigs = [
+    {
+      label: "Hide Prices",
+      state: GlobalStore.useAppState((state) => state.presentationMode.isHidePriceEnabled),
+      toggleHandler: () => GlobalStore.actions.presentationMode.toggleIsHidePriceEnabled(),
+    },
+    {
+      label: "Hide Price For Sold Works",
+      state: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHidePriceForSoldWorksEnabled
+      ),
+      toggleHandler: () =>
+        GlobalStore.actions.presentationMode.toggleIsHidePriceForSoldWorksEnabled(),
+    },
+    {
+      label: "Hide Unpublished Works",
+      state: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHideUnpublishedWorksEnabled
+      ),
+      toggleHandler: () =>
+        GlobalStore.actions.presentationMode.toggleIsHideUnpublishedWorksEnabled(),
+    },
+    {
+      label: "Hide Works Not For Sale",
+      state: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHideWorksNotForSaleEnabled
+      ),
+      toggleHandler: () =>
+        GlobalStore.actions.presentationMode.toggleIsHideWorksNotForSaleEnabled(),
+    },
+    {
+      label: "Hide Works Availability",
+      state: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHideWorksAvailabilityEnabled
+      ),
+      toggleHandler: () =>
+        GlobalStore.actions.presentationMode.toggleIsHideWorksAvailabilityEnabled(),
+    },
+    {
+      label: "Hide Confidential Notes",
+      state: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHideConfidentialNotesEnabled
+      ),
+      toggleHandler: () =>
+        GlobalStore.actions.presentationMode.toggleIsHideConfidentialNotesEnabled(),
+    },
+    {
+      label: "Hide Artwork Edit Button",
+      state: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHideArtworkEditButtonEnabled
+      ),
+      toggleHandler: () =>
+        GlobalStore.actions.presentationMode.toggleIsHideArtworkEditButtonEnabled(),
+    },
+  ]
 
   return (
     <>
-      <Header label="Edit Presentation Mode" />
-      <Spacer m={1} />
-      <SwitchContainer
-        label="Hide Prices"
-        onValueChange={() => GlobalStore.actions.presentationMode.toggleIsHidePriceEnabled()}
-        value={isHidePriceEnabled}
-      />
-      <Spacer m={1} />
-      <Separator />
-      <Spacer m={1} />
-      <SwitchContainer
-        label="Hide Works Availability"
-        onValueChange={() =>
-          GlobalStore.actions.presentationMode.toggleIsHideWorksAvailabilityEnabled()
-        }
-        value={isHideWorksAvailabilityEnabled}
-      />
-      <Spacer m={1} />
-      <Separator />
-      <Spacer m={1} />
-      <SwitchContainer
-        label="Hide Confidential Notes"
-        onValueChange={() =>
-          GlobalStore.actions.presentationMode.toggleIsHideConfidentialNotesEnabled()
-        }
-        value={isHideConfidentialNotesEnabled}
-      />
-      <Spacer m={1} />
-      <Separator />
-      <Spacer m={1} />
-      <SwitchContainer
-        label="Hide Artwork Edit Button"
-        onValueChange={() =>
-          GlobalStore.actions.presentationMode.toggleIsHideArtworkEditButtonEnabled()
-        }
-        value={isHideArtworkEditButtonEnabled}
-      />
-      <Spacer m={2} />
-      <Text mx={2} variant="xs">
-        When Presentation Mode is enabled, all the information and features toggled ON will be
-        hidden. Features toggled OFF will be visible.
-      </Text>
+      <Header label="Edit Presentation Mode" safeAreaInsets />
+      <ScrollView>
+        <Spacer m={1} />
+        {presentationConfigs.map((presentationConfig, index, row) => (
+          <Flex key={index}>
+            <SwitchContainer
+              label={presentationConfig.label}
+              onValueChange={presentationConfig.toggleHandler}
+              value={presentationConfig.state}
+            />
+            {index + 1 !== row.length && <Separator m={2} />}
+          </Flex>
+        ))}
+        <Spacer m={2} />
+        <Text mx={2} variant="xs">
+          When Presentation Mode is enabled, all the information and features toggled ON will be
+          hidden. Features toggled OFF will be visible.
+        </Text>
+      </ScrollView>
     </>
   )
 }
