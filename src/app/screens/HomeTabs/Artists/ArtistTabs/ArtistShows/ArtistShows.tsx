@@ -17,11 +17,11 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
       data={shows}
       renderItem={({ item: show }) => (
         <Touchable
-          onPress={() => {
+          onPress={() =>
             navigation.navigate("ShowTabs", {
-              slug: show.slug || "",
+              slug: show.slug,
             })
-          }}
+          }
         >
           <ShowListItem show={show} />
         </Touchable>

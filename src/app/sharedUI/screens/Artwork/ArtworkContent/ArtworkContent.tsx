@@ -230,9 +230,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
           {albums.length !== 0 ? (
             <Touchable
-              onPress={() => {
-                navigation.navigate("AddArtworkToAlbum", { slug })
-              }}
+              onPress={() => navigation.navigate("AddArtworkToAlbum", { slug })}
               disabled={numberOfAlbumsIncludingArtwork === albums.length}
             >
               <Spacer mt={3} />

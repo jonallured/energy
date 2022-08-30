@@ -19,9 +19,7 @@ export const Albums = () => {
             <Flex mx={2} mb={6}>
               {albums.map((album) => (
                 <Touchable
-                  onPress={() => {
-                    navigation.navigate("AlbumArtworks", { albumId: album.id })
-                  }}
+                  onPress={() => navigation.navigate("AlbumArtworks", { albumId: album.id })}
                   key={album.id}
                 >
                   <Flex mb={3} mt={1}>

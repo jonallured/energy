@@ -21,11 +21,11 @@ export const Shows = () => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (
             <Touchable
-              onPress={() => {
+              onPress={() =>
                 navigation.navigate("ShowTabs", {
-                  slug: show.slug || "",
+                  slug: show.slug,
                 })
-              }}
+              }
             >
               <ShowListItem show={show} />
             </Touchable>

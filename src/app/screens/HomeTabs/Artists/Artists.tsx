@@ -19,11 +19,11 @@ export const Artists = () => {
       data={artists}
       renderItem={({ item: artist }) => (
         <Touchable
-          onPress={() => {
+          onPress={() =>
             navigation.navigate("ArtistTabs", {
               slug: artist.slug,
             })
-          }}
+          }
         >
           <ArtistListItem artist={artist} />
         </Touchable>
