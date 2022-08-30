@@ -4,8 +4,9 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import org.devio.rn.splashscreen.SplashScreen;
+import android.content.res.Configuration;
 import android.os.Bundle;
-
 
 public class MainActivity extends ReactActivity {
 
@@ -20,7 +21,20 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
+    switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                setTheme(R.style.DarkTheme);
+
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                setTheme(R.style.LightTheme);
+                break;
+            default:
+                setTheme(R.style.LightTheme);
+        }
+
+        SplashScreen.show(this);
+        super.onCreate(savedInstanceState);
   }
 
   @Override
@@ -31,5 +45,5 @@ public class MainActivity extends ReactActivity {
         return new RNGestureHandlerEnabledRootView(MainActivity.this);
       }
     };
-  }  
+  }
 }
