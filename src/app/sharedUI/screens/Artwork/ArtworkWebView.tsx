@@ -21,7 +21,7 @@ export const ArtworkWebView = () => {
         onLoad={() => setIsProgressBarVisible(false)}
       />
       {isProgressBarVisible && (
-        <Flex px={4} height="100%">
+        <Flex px={4} height="100%" justifyContent="center">
           <ProgressBar progress={loadProgress} />
         </Flex>
       )}
