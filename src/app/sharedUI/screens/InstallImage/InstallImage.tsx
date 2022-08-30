@@ -12,7 +12,7 @@ export const InstallImage = () => {
 
   return (
     <Flex flex={1} mt={2}>
-      <Header safeAreaInsets />
+      <Header safeAreaInsets positionAbsolute />
       <Flex flex={1} justifyContent="center" mb={5}>
         <Image source={{ uri: params.url }} style={{ aspectRatio: 1 }} />
       </Flex>

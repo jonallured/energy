@@ -10,6 +10,7 @@ interface HeaderProps {
   withoutBackButton?: boolean
   rightElements?: React.ReactNode
   safeAreaInsets?: boolean
+  positionAbsolute?: boolean
 }
 
 export const Header = ({
@@ -18,6 +19,7 @@ export const Header = ({
   withoutBackButton,
   rightElements,
   safeAreaInsets,
+  positionAbsolute,
 }: HeaderProps) => {
   const navigation = useNavigation()
   const insets = useSafeAreaInsets()
@@ -29,6 +31,7 @@ export const Header = ({
       alignItems="center"
       px={2}
       mt={safeAreaInsets ? insets.top : 0}
+      position={positionAbsolute ? "absolute" : "relative"}
     >
       {leftElements !== undefined ? (
         <>
