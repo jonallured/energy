@@ -7,7 +7,6 @@
     "yarn.lock": "text",
     "tslint.json": "jsonc"
   },
-  "eslint.enable": false,
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "prettier.singleQuote": false,

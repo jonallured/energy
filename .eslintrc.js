@@ -9,11 +9,14 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:import/recommended",
-    "plugin:react/jsx-runtime",
     "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react/jsx-runtime",
     "prettier", // "prettier" needs to be last!
   ],
   parser: "@typescript-eslint/parser",
+  parserOptions: { project: "./tsconfig.json" },
   settings: {
     // This is needed to make eslint happy with name aliases
     "import/parsers": {
@@ -30,6 +33,7 @@ module.exports = {
   },
   rules: {
     "import/order": [ERR, { alphabetize: { order: "asc" } }],
+    "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
     // we want to enable some of these
     "import/no-named-as-default": OFF,
     "no-empty-pattern": OFF,
@@ -44,5 +48,9 @@ module.exports = {
     "no-useless-escape": OFF,
     "react/react-in-jsx-scope": OFF,
     "react-native/no-inline-styles": OFF,
+    "@typescript-eslint/no-unused-vars": OFF,
+    "@typescript-eslint/no-explicit-any": OFF,
+    "@typescript-eslint/no-var-requires": OFF,
+    "@typescript-eslint/ban-ts-comment": OFF,
   },
 }
