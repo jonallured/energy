@@ -37,7 +37,6 @@ module.exports = {
       {
         alphabetize: { order: "asc" },
         groups: ["builtin", "external", "internal", "index", "sibling", "parent", "object", "type"],
-        pathGroups: [{ pattern: "palette", group: "external" }],
       },
     ],
     "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
@@ -59,5 +58,6 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": OFF,
     "@typescript-eslint/no-var-requires": OFF,
     "@typescript-eslint/ban-ts-comment": OFF,
+    "@typescript-eslint/explicit-module-boundary-types": OFF,
   },
 }

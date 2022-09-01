@@ -13,24 +13,18 @@
   "prettier.trailingComma": "es5",
   "prettier.semi": false,
   "prettier.printWidth": 120,
-  "editor.rulers": [
-    120
-  ],
+  "editor.rulers": [120],
   "editor.tabSize": 2,
   "files.exclude": {
     "**/.git": true,
-    "build": true,
+    "build": true
   },
   "search.exclude": {
     "**/node_modules": true,
     ".vscode/.react/*": true
   },
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "todohighlight.exclude": [
-    "node_modules/**",
-    ".vscode/**",
-    "externals/**"
-  ],
+  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
   "tslint.autoFixOnSave": true,
   "typescript.format.enable": false,
   "[json]": {
@@ -40,5 +34,7 @@
   "eslint.alwaysShowStatus": true,
   "eslint.run": "onSave",
   "eslint.packageManager": "yarn",
-  "eslint.codeActionsOnSave.rules": null
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

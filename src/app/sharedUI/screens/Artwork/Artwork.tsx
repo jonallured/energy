@@ -1,16 +1,15 @@
-import { ReactElement, useCallback, useMemo, useRef } from "react"
-import { Dimensions } from "react-native"
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet"
-import { SuspenseWrapper } from "app/wrappers"
-import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { ReactElement, useCallback, useMemo, useRef } from "react"
+import { Dimensions } from "react-native"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header, ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { SuspenseWrapper } from "app/wrappers"
 import {
   CloseIcon,
   Text,
@@ -25,6 +24,7 @@ import {
   Spacer,
   useTheme,
 } from "palette"
+import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
 
 type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
