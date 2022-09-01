@@ -36,5 +36,9 @@
   "[json]": {
     "editor.formatOnSave": false
   },
-  "javascript.validate.enable": true
+  "javascript.validate.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.run": "onSave",
+  "eslint.packageManager": "yarn",
+  "eslint.codeActionsOnSave.rules": null
 }

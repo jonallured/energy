@@ -32,7 +32,14 @@ module.exports = {
     },
   },
   rules: {
-    "import/order": [ERR, { alphabetize: { order: "asc" } }],
+    "import/order": [
+      ERR,
+      {
+        alphabetize: { order: "asc" },
+        groups: ["builtin", "external", "internal", "index", "sibling", "parent", "object", "type"],
+        pathGroups: [{ pattern: "palette", group: "external" }],
+      },
+    ],
     "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
     // we want to enable some of these
     "import/no-named-as-default": OFF,
