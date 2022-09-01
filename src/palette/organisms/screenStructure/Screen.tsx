@@ -1,3 +1,4 @@
+import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -8,7 +9,6 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
 import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 
 interface ScreenContextState {
@@ -55,7 +55,7 @@ const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
   const bodyChildren = getChildrenByTypeDeep(children, Screen.Body)
 
   return (
-    <Flex flex={1}>
+    <Flex flex={1} backgroundColor="background">
       {background /* fullscreen */}
 
       {header}
@@ -70,12 +70,15 @@ const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
 const useUpdateScreenContext = ({
   header,
 }: {
-  header: "none" | "regular" | "floating" | "raw"
+  header: "none" | "regular" | "floating" | "raw-safe" | "raw-nosafe"
 }) => {
   const { setOptions } = useScreenContext()
 
   useEffect(
-    () => void setOptions({ handleTopSafeArea: header === "none" || header === "floating" }),
+    () =>
+      void setOptions({
+        handleTopSafeArea: header === "none" || header === "floating" || header === "raw-safe",
+      }),
     [header]
   )
 }
@@ -129,12 +132,25 @@ const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
   return null
 }
 
+interface RawHeaderProps {
+  children: React.ReactNode
+  nosafe?: boolean
+}
+
 /**
  * Use `RawHeader` when you need to make a custom header that we have no support for yet.
  */
-const RawHeader = ({ children }: { children: React.ReactNode }) => {
-  useUpdateScreenContext({ header: "raw" })
-  return <>{children}</>
+const RawHeader = ({ children, nosafe = false }: RawHeaderProps) => {
+  useUpdateScreenContext({ header: nosafe ? "raw-nosafe" : "raw-safe" })
+  const saInsets = useSafeAreaInsets()
+
+  return (
+    <Wrap if={!nosafe}>
+      <Flex top={saInsets.top}>
+        <Wrap.Content>{children}</Wrap.Content>
+      </Flex>
+    </Wrap>
+  )
 }
 
 const SCREEN_HORIZONTAL_PADDING: SpacingUnit = 2

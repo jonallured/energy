@@ -11,7 +11,9 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, Input, Spacer, Text, useColor } from "palette"
+import { Button, Flex, Input, Screen, Spacer, Text, useColor } from "palette"
+import { useScreenDimensions } from "shared/hooks"
+import { MeasuredView } from "shared/utils"
 
 export interface LoginSchema {
   email: string
@@ -32,7 +34,7 @@ const APP_SCHEME_URL = "artsy:///"
 
 const initialValues: LoginSchema = { email: "", password: "", otp: "" }
 
-export const LoginScreen: React.FC = () => {
+export const LoginScreen = () => {
   const color = useColor()
   const insets = useSafeAreaInsets()
 
@@ -98,157 +100,173 @@ export const LoginScreen: React.FC = () => {
   }
 
   return (
-    <Flex flex={1} mt={2} pt={insets.top} px={2}>
+    <Flex flex={1} pt={insets.top} px={2} backgroundColor="background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-        }}
+        style={{ flex: 1 }}
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "space-between",
-            flexDirection: "column",
-          }}
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
-          <Flex flex={1}>
-            <Text variant="lg">Folio</Text>
-            <Spacer mt={2} />
-            <Text variant="xl">Log In</Text>
-            <Text variant="md" mt={0.5}>
-              With Your Artsy Partner Account
-            </Text>
-            <Spacer mt={4} />
-            <Input
-              ref={emailInputRef}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              keyboardType="email-address"
-              onChangeText={(text) => {
-                handleChange("email")(text.trim())
-              }}
-              onSubmitEditing={() => {
+          <Text variant="lg">Folio</Text>
+          <Spacer mt={2} />
+          <Text variant="xl">Log In</Text>
+          <Text variant="md" mt={0.5}>
+            With Your Artsy Partner Account
+          </Text>
+          <Spacer mt={4} />
+          <Input
+            ref={emailInputRef}
+            autoCapitalize="none"
+            autoCompleteType="email"
+            keyboardType="email-address"
+            onChangeText={(text) => {
+              handleChange("email")(text.trim())
+            }}
+            onSubmitEditing={() => {
+              validateForm()
+              passwordInputRef.current?.focus()
+            }}
+            onBlur={() => validateForm()}
+            blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+            placeholder="Email address"
+            title="Email"
+            value={values.email}
+            returnKeyType="next"
+            spellCheck={false}
+            autoCorrect={false}
+            // We need to to set textContentType to username (instead of emailAddress) here
+            // enable autofill of login details from the device keychain.
+            textContentType="username"
+            error={errors.email}
+          />
+          <Spacer mt={2} />
+          <Input
+            autoCapitalize="none"
+            autoCompleteType="password"
+            autoCorrect={false}
+            onChangeText={(text) => {
+              // Hide error when the user starts to type again
+              if (errors.password) {
+                setErrors({
+                  password: undefined,
+                })
                 validateForm()
-                passwordInputRef.current?.focus()
-              }}
-              onBlur={() => validateForm()}
-              blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-              placeholder="Email address"
-              title="Email"
-              value={values.email}
-              returnKeyType="next"
-              spellCheck={false}
-              autoCorrect={false}
-              // We need to to set textContentType to username (instead of emailAddress) here
-              // enable autofill of login details from the device keychain.
-              textContentType="username"
-              error={errors.email}
-            />
-            <Spacer mt={2} />
-            <Input
-              autoCapitalize="none"
-              autoCompleteType="password"
-              autoCorrect={false}
-              onChangeText={(text) => {
-                // Hide error when the user starts to type again
-                if (errors.password) {
-                  setErrors({
-                    password: undefined,
-                  })
-                  validateForm()
-                }
-                handleChange("password")(text)
-              }}
-              onSubmitEditing={handleSubmit}
-              onBlur={() => validateForm()}
-              placeholder="Password"
-              ref={passwordInputRef}
-              secureTextEntry
-              title="Password"
-              // We need to to set textContentType to password here
-              // enable autofill of login details from the device keychain.
-              textContentType="password"
-              value={values.password}
-              error={errors.password}
-            />
-            {showOtpInputField ? (
-              <>
-                <Spacer mt={2} />
-                <Input
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="numeric"
-                  onChangeText={(text) => {
-                    // Hide error when the user starts to type again
-                    if (errors.otp) {
-                      setErrors({
-                        otp: undefined,
-                      })
-                      validateForm()
-                    }
-                    handleChange("otp")(text)
-                  }}
-                  onSubmitEditing={handleSubmit}
-                  onBlur={() => validateForm()}
-                  placeholder="Enter an authentication code"
-                  placeholderTextColor={color("black30")}
-                  ref={otpInputRef}
-                  title="Authentication code"
-                  // We need to to set textContentType to password here
-                  // enable autofill of login details from the device keychain.
-                  value={values.otp}
-                  error={errors.otp}
-                />
-              </>
-            ) : null}
-            {showOtpInputField ? null : (
-              <>
-                <Spacer mt={1} />
-                <TouchableOpacity
-                  onPress={() => {
-                    Alert.alert("Oups, not yet implemented")
-                  }}
-                >
-                  <Text variant="xs" textAlign="right" underline color="black60">
-                    Forgot password?
-                  </Text>
-                </TouchableOpacity>
-              </>
-            )}
-            <Spacer mb={4} />
-          </Flex>
-          <Flex justifyContent="flex-end">
-            <Button
-              onPress={handleSubmit}
-              block
-              haptic="impactMedium"
-              disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
-              loading={isSubmitting}
-              testID="loginButton"
-              variant="fillDark"
-            >
-              Log in
-            </Button>
-            <Spacer mt={2} />
-            <Text variant="xs" pb={1} textAlign="center" color="black60">
-              Once you log in. Artsy Folio will begin downloading your artworks. We recommend using
-              a stable Wifi connection.
-            </Text>
-            <Spacer mt={2} />
+              }
+              handleChange("password")(text)
+            }}
+            onSubmitEditing={handleSubmit}
+            onBlur={() => validateForm()}
+            placeholder="Password"
+            ref={passwordInputRef}
+            secureTextEntry
+            title="Password"
+            // We need to to set textContentType to password here
+            // enable autofill of login details from the device keychain.
+            textContentType="password"
+            value={values.password}
+            error={errors.password}
+          />
+          {showOtpInputField ? (
+            <>
+              <Spacer mt={2} />
+              <Input
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  // Hide error when the user starts to type again
+                  if (errors.otp) {
+                    setErrors({
+                      otp: undefined,
+                    })
+                    validateForm()
+                  }
+                  handleChange("otp")(text)
+                }}
+                onSubmitEditing={handleSubmit}
+                onBlur={() => validateForm()}
+                placeholder="Enter an authentication code"
+                placeholderTextColor={color("black30")}
+                ref={otpInputRef}
+                title="Authentication code"
+                // We need to to set textContentType to password here
+                // enable autofill of login details from the device keychain.
+                value={values.otp}
+                error={errors.otp}
+              />
+            </>
+          ) : null}
+          {showOtpInputField ? null : (
+            <>
+              <Spacer mt={1} />
+              <TouchableOpacity
+                onPress={() => {
+                  Alert.alert("Oups, not yet implemented")
+                }}
+              >
+                <Text variant="xs" textAlign="right" underline color="black60">
+                  Forgot password?
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+          <Spacer mb={4} />
+          <Button
+            onPress={handleSubmit}
+            block
+            haptic="impactMedium"
+            disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
+            loading={isSubmitting}
+            testID="loginButton"
+            variant="fillDark"
+          >
+            Log in
+          </Button>
+          <Spacer mt={2} />
+          <Text variant="xs" pb={1} textAlign="center" color="black60">
+            Once you log in. Artsy Folio will begin downloading your artworks. We recommend using a
+            stable Wifi connection.
+          </Text>
+
+          <CloseToTheBottomOfScrollView>
             <Flex px={2} pb={insets.bottom > 0 ? insets.bottom : 2} alignItems="center">
               <Text>Looking for Artsy Mobile?</Text>
               <TouchableOpacity onPress={handleOpenArtsyMobile}>
                 <Text underline>Tap here to open</Text>
               </TouchableOpacity>
             </Flex>
-          </Flex>
-          <Spacer pb={2} />
+          </CloseToTheBottomOfScrollView>
         </ScrollView>
       </KeyboardAvoidingView>
     </Flex>
+  )
+}
+
+const CloseToTheBottomOfScrollView = ({ children }: { children: React.ReactNode }) => {
+  const { height: screenHeight } = useScreenDimensions()
+  const saInsets = useSafeAreaInsets()
+  const [viewSize, setViewSize] = useState({ width: 0, height: 0 })
+
+  const inner = (
+    <>
+      {children}
+      <Spacer pb={2} />
+    </>
+  )
+
+  return (
+    <>
+      <MeasuredView setMeasuredState={setViewSize}>{inner}</MeasuredView>
+      <Flex
+        position="absolute"
+        top={screenHeight - viewSize.height - saInsets.top - saInsets.bottom}
+        width="100%"
+      >
+        {inner}
+      </Flex>
+    </>
   )
 }

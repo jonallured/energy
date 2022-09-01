@@ -1,6 +1,6 @@
 import { Screen, Spacer } from "palette"
-import { GlobalStore } from "app/store/GlobalStore"
 import { Header, SettingsItem } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
 
 export const DarkModeSettings = () => {
   const syncWithSystem = GlobalStore.useAppState(
@@ -14,8 +14,6 @@ export const DarkModeSettings = () => {
         <Header label="Dark mode settings" />
       </Screen.RawHeader>
       <Screen.Body>
-        <Spacer y={2} />
-
         <SettingsItem
           title="Sync with system"
           subtitle="Automatically turn dark mode on or off based on the system's dark mode setting."

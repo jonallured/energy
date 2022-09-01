@@ -338,14 +338,14 @@ const useStyleForVariantAndState = (
     case "outline":
       switch (state) {
         case DisplayState.Enabled:
-          retval.backgroundColor = color("white100")
-          retval.borderColor = color("black60")
-          retval.textColor = color("black100")
+          retval.backgroundColor = color("background")
+          retval.borderColor = color("onBackgroundMedium")
+          retval.textColor = color("onBackgroundHigh")
           break
         case DisplayState.Disabled:
-          retval.backgroundColor = color("white100")
-          retval.borderColor = color("black30")
-          retval.textColor = color("black30")
+          retval.backgroundColor = color("background")
+          retval.borderColor = color("onBackgroundLow")
+          retval.textColor = color("onBackgroundLow")
           break
         case DisplayState.Pressed:
           retval.backgroundColor = color("blue100")

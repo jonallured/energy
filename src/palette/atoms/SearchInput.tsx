@@ -15,7 +15,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <Flex flexDirection="row" justifyContent="center">
       <Input
-        icon={<MagnifyingGlassIcon width={18} height={18} />}
+        icon={<MagnifyingGlassIcon width={18} height={18} fill="onBackgroundHigh" />}
         autoCorrect={false}
         enableClearButton
         returnKeyType="search"

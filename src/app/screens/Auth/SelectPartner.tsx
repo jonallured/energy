@@ -1,11 +1,10 @@
+import { Button, Flex, Screen, SearchInput, Separator, Spacer, Text } from "palette"
 import { useState, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
-import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, SearchInput, Separator, Spacer, Text } from "palette"
 
 type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
 
@@ -13,41 +12,23 @@ interface SelectPartnerHeaderProps {
   onSearchChange: (term: string) => void
   searchValue: string
 }
-export const SelectPartnerHeader: React.FC<SelectPartnerHeaderProps> = ({
-  onSearchChange,
-  searchValue,
-}) => {
-  return (
-    <Flex backgroundColor="white" mb={2} flexDirection="column" alignItems="center">
-      <Text variant="md" textAlign="center">
-        Select a partner to continue
-      </Text>
-      <SearchInput
-        placeholder="Type to search..."
-        onChangeText={onSearchChange}
-        value={searchValue}
-      />
-      <Separator mt={2} />
-    </Flex>
-  )
-}
+export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartnerHeaderProps) => (
+  <Flex mb={2} flexDirection="column" alignItems="center" backgroundColor="background">
+    <Text variant="md" textAlign="center">
+      Select a partner to continue
+    </Text>
+    <SearchInput
+      placeholder="Type to search..."
+      onChangeText={onSearchChange}
+      value={searchValue}
+    />
+    <Separator mt={2} />
+  </Flex>
+)
 
-export const SelectPartner: React.FC<{}> = ({}) => {
-  const data = useLazyLoadQuery<SelectPartnerQuery>(
-    graphql`
-      query SelectPartnerQuery {
-        me {
-          partners {
-            name
-            internalID
-          }
-        }
-      }
-    `,
-    {}
-  )
+export const SelectPartner = () => {
+  const data = useLazyLoadQuery<SelectPartnerQuery>(partnerQuery, {})
 
-  const { width } = useSafeAreaFrame()
   const [search, setSearch] = useState("")
   const partners = useRef(data.me?.partners).current
   const [filteredData, setFilteredData] = useState(partners)
@@ -66,46 +47,39 @@ export const SelectPartner: React.FC<{}> = ({}) => {
     <FlatList
       data={filteredData}
       keyExtractor={(item) => item?.internalID!}
-      renderItem={({ item: partner }) => {
-        return <PartnerRow partner={partner!} />
-      }}
+      renderItem={({ item: partner }) => (
+        <Button
+          variant="outline"
+          block
+          onPress={() => GlobalStore.actions.setActivePartnerID(partner!.internalID)}
+        >
+          {partner!.name}
+        </Button>
+      )}
       ItemSeparatorComponent={() => <Spacer mt={2} />}
       stickyHeaderIndices={[0]}
       ListHeaderComponent={<SelectPartnerHeader onSearchChange={setSearch} searchValue={search} />}
       ListEmptyComponent={<ListEmptyComponent text={"No partners found"} />}
-      contentContainerStyle={{ width: width - 20 }}
       showsVerticalScrollIndicator={false}
     />
   )
 }
 
-interface PartnerRow {
-  partner: NonNullable<Partners[0]>
-}
+const partnerQuery = graphql`
+  query SelectPartnerQuery {
+    me {
+      partners {
+        name
+        internalID
+      }
+    }
+  }
+`
 
-const PartnerRow: React.FC<PartnerRow> = ({ partner }) => (
-  <Button
-    variant="outline"
-    block
-    onPress={() => {
-      GlobalStore.actions.setActivePartnerID(partner.internalID)
-    }}
-  >
-    <Text>{partner.name}</Text>
-  </Button>
-)
-
-export const SelectPartnerScreen = () => {
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
-    >
+export const SelectPartnerScreen = () => (
+  <Screen>
+    <Screen.Body>
       <SelectPartner />
-    </SafeAreaView>
-  )
-}
+    </Screen.Body>
+  </Screen>
+)

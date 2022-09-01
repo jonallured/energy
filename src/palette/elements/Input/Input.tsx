@@ -147,7 +147,7 @@ export const Input = forwardRef<TextInput, InputProps>(
         return
       }
       return (
-        <Flex pr="1" justifyContent="center" flexGrow={0}>
+        <Flex pr="1" justifyContent="center" flexGrow={0} backgroundColor="background">
           <TouchableOpacity
             onPress={() => {
               setShowPassword(!showPassword)
@@ -260,7 +260,7 @@ export const Input = forwardRef<TextInput, InputProps>(
           >
             {renderLeftHandSection?.()}
             {!!icon && (
-              <Flex pl="1" justifyContent="center" flexGrow={0}>
+              <Flex pl="1" justifyContent="center" flexGrow={0} backgroundColor="background">
                 {icon}
               </Flex>
             )}
