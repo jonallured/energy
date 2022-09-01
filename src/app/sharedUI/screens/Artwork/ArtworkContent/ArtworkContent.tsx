@@ -19,7 +19,7 @@ import {
   useSpace,
 } from "palette"
 import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent } from "app/sharedUI"
-import BottomSheet from "@gorhom/bottom-sheet"
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useScreenDimensions } from "shared/hooks"
 
 const BOTTOM_SHEET_HEIGHT = 180
@@ -38,7 +38,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - HEADER_HEIGHT
 
-  const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, screenHeight], [screenHeight])
+  const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, "98%"], [screenHeight])
 
   // Enable scroll only when the bottom sheet is expanded.
   const handleSheetChanges = useCallback((index: number) => {
@@ -136,8 +136,9 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           </Touchable>
         )}
         backgroundStyle={{ borderTopWidth: 1, borderColor: color("black10") }}
+        style={{ shadowColor: "black", shadowOpacity: 0.08, shadowRadius: 5 }}
       >
-        <ScrollView
+        <BottomSheetScrollView
           style={{ paddingHorizontal: space(2), backgroundColor: color("background") }}
           scrollEnabled={isScrollEnabled}
         >
@@ -278,7 +279,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             </Button>
           )}
           <Spacer pb={2} />
-        </ScrollView>
+        </BottomSheetScrollView>
       </BottomSheet>
     </Flex>
   )
