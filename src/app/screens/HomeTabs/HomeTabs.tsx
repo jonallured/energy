@@ -13,7 +13,7 @@ import { Tabs } from "react-native-collapsible-tab-view"
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
 
 export const HomeTabs = () => {
-  const nav = useNavigation()
+  const navigation = useNavigation()
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
 
@@ -28,12 +28,12 @@ export const HomeTabs = () => {
           {...props}
           withoutBackButton
           leftElements={
-            <Touchable onPress={() => nav.navigate("Settings")}>
+            <Touchable onPress={() => navigation.navigate("Settings")}>
               <MenuIcon fill="onBackgroundHigh" />
             </Touchable>
           }
           rightElements={
-            <Touchable onPress={() => nav.navigate("FolioDesignLanguage")}>
+            <Touchable onPress={() => navigation.navigate("FolioDesignLanguage")}>
               <MenuIcon fill="onBackgroundHigh" />
             </Touchable>
           }

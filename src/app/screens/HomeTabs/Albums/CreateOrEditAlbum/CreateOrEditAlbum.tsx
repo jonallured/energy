@@ -106,7 +106,7 @@ export const CreateOrEditAlbum = () => {
 
   return (
     <>
-      <Header label={mode === "edit" ? "Edit Album" : "Create Album"} />
+      <Header label={mode === "edit" ? "Edit Album" : "Create Album"} safeAreaInsets />
       <Flex px={2} mt={2}>
         <Flex>
           <Input

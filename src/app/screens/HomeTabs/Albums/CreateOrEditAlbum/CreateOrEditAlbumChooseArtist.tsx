@@ -24,7 +24,7 @@ export const CreateOrEditAlbumChooseArtist = () => {
 
   return (
     <>
-      <Header label={mode === "edit" ? "Save to Album" : "Add to Album"} />
+      <Header label={mode === "edit" ? "Save to Album" : "Add to Album"} safeAreaInsets/>
       <Spacer mt={2} />
       <FlatList
         data={artists}

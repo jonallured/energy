@@ -80,6 +80,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
             {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
           </Button>
         }
+        safeAreaInsets
       />
       <Spacer mt={2} />
       <MasonryList

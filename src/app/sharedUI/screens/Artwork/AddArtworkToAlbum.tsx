@@ -50,7 +50,7 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
 
   return (
     <>
-      <Header label={artworkData.artwork?.title!} />
+      <Header label={artworkData.artwork?.title!} safeAreaInsets />
       <FlatList
         data={albums}
         keyExtractor={(item) => item?.id}

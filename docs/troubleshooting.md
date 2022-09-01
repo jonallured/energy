@@ -6,6 +6,7 @@ Try the following
 
 ```
 yarn setup:artsy
+
 yarn install:all
 
 ```

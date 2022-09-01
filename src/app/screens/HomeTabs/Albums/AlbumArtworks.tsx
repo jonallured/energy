@@ -59,6 +59,7 @@ export const AlbumArtworks = () => {
             </Touchable>
           </Flex>
         }
+        safeAreaInsets
       />
       <MasonryList
         testID="artist-artwork-list"

@@ -40,7 +40,7 @@ export const Header = ({
         </>
       ) : withoutBackButton ? null : (
         <>
-          <Touchable onPress={() => navigation.goBack()}>
+          <Touchable onPress={() => navigation.goBack()} underlayColor="transparent">
             <ArrowLeftIcon fill="onBackgroundHigh" />
           </Touchable>
           <Spacer x={1} />

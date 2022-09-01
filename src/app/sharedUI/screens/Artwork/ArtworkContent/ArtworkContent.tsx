@@ -8,8 +8,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import {
   ArrowRightIcon,
   BriefcaseIcon,
-  Button,
-  EditIcon,
   Flex,
   Separator,
   Spacer,
@@ -31,7 +29,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const space = useSpace()
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, { slug })
 
@@ -51,9 +48,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
   // For Presentation Mode
   const isPriceHidden = GlobalStore.useAppState((state) => state.presentationMode.hiddenItems.price)
-  const isEditArtworkHidden = GlobalStore.useAppState(
-    (state) => state.presentationMode.hiddenItems.editArtwork
-  )
 
   if (!artworkData.artwork) {
     return <ListEmptyComponent />
@@ -262,23 +256,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             </Touchable>
           ) : null}
           <Spacer mt={2} />
-          <Separator />
-          <Spacer mt={2} />
-          {isEditArtworkHidden ? null : (
-            <Button
-              block
-              onPress={() =>
-                navigation.navigate("ArtworkWebView", {
-                  uri: `https://cms-staging.artsy.net/artworks/${internalID}/edit?partnerID=${partnerID}`,
-                })
-              }
-              icon={<EditIcon fill="white100" />}
-              iconPosition="right"
-            >
-              Edit artwork in CMS
-            </Button>
-          )}
-          <Spacer pb={2} />
         </BottomSheetScrollView>
       </BottomSheet>
     </Flex>

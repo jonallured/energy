@@ -5,7 +5,7 @@ import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 
 export const Settings = () => {
-  const nav = useNavigation()
+  const navigation = useNavigation()
   const isPresenationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresenationModeEnabled
   )
@@ -17,7 +17,7 @@ export const Settings = () => {
       </Screen.RawHeader>
       <Screen.Body>
         <Spacer y={2} />
-        <Button block onPress={() => nav.navigate("DarkModeSettings")}>
+        <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
           Dark Mode
         </Button>
         <Spacer y={2} />
@@ -31,7 +31,7 @@ export const Settings = () => {
         <Spacer m={1} />
         <Separator />
         <Spacer m={1} />
-        <Touchable onPress={() => nav.navigate("EditPresentationMode")}>
+        <Touchable onPress={() => navigation.navigate("EditPresentationMode")}>
           <Flex mx={2}>
             <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
               <Text>Presentation Mode Settings</Text>
@@ -50,11 +50,11 @@ export const Settings = () => {
         </Button>
 
         <Spacer y={1} />
-        <Button block onPress={() => nav.navigate("FolioDesignLanguage")}>
+        <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
           Folio Design Language
         </Button>
         <Spacer y={1} />
-        <Button block onPress={() => nav.navigate("InsteadOfStorybook")}>
+        <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
           Instead Of Storybook
         </Button>
       </Screen.Body>
