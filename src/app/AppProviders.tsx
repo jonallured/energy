@@ -1,4 +1,4 @@
-import { Text, Theme, _test_THEMES } from "palette"
+import { Theme } from "palette"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { RelayEnvironmentProvider } from "react-relay/hooks"
@@ -7,7 +7,6 @@ import { ProvideScreenDimensions } from "shared/hooks"
 import { SuspenseWrapper } from "./wrappers"
 import { Appearance, StatusBar } from "react-native"
 import { useEffect } from "react"
-import { cloneDeep } from "lodash"
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => (
   <GlobalStoreProvider>
@@ -34,12 +33,7 @@ function ThemeProvider({ children }: { children?: React.ReactNode }) {
   }, [])
 
   const isDarkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme) === "dark"
-  const overrides = GlobalStore.useAppState((state) => state.devicePrefs.overrides)
-
-  //   const theme = isDarkMode ? "v5dark" : "v5"
-  const temp = isDarkMode ? _test_THEMES.v5dark : _test_THEMES.v5
-  temp.colors = isDarkMode ? { ...temp.colors, ...overrides } : temp.colors
-  const theme = cloneDeep(temp)
+  const theme = isDarkMode ? "v5dark" : "v5"
 
   return (
     <Theme theme={theme}>

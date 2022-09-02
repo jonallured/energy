@@ -13,10 +13,6 @@ export interface DevicePrefsModel {
   setSystemColorScheme: Action<this, this["systemColorScheme"]>
   setUsingSystemColorScheme: Action<this, this["usingSystemColorScheme"]>
   setForcedColorScheme: Action<this, this["forcedColorScheme"]>
-
-  // temp color scheme stuff
-  overrides: Record<string, any>
-  setOverrides: Action<this, Partial<this["overrides"]>>
 }
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
@@ -37,10 +33,5 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   }),
   setForcedColorScheme: action((state, option) => {
     state.forcedColorScheme = option
-  }),
-
-  overrides: { background: "#000" },
-  setOverrides: action((state, newOverrides) => {
-    state.overrides = { ...state.overrides, ...newOverrides }
   }),
 })
