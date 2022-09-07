@@ -28,7 +28,15 @@ export const HomeTabs = () => {
           {...props}
           withoutBackButton
           leftElements={
-            <Touchable onPress={() => navigation.navigate("Settings")}>
+            <Touchable
+              hitSlop={{
+                top: 10,
+                left: 10,
+                bottom: 10,
+                right: 10,
+              }}
+              onPress={() => navigation.navigate("Settings")}
+            >
               <MenuIcon fill="onBackgroundHigh" />
             </Touchable>
           }
