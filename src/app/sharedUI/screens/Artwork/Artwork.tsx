@@ -30,7 +30,7 @@ import { EditArtworkInCms } from "./EditArtworkInCms"
 type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 
 export const Artwork = () => {
-  const { space, color } = useTheme()
+  const { color } = useTheme()
   const { params } = useRoute<ArtworkRoute>()
   const artworkSlugs = params.contextArtworkSlugs ?? [params.slug]
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
@@ -99,6 +99,7 @@ export const Artwork = () => {
             justifyContent="center"
             height="50"
             backgroundColor="background"
+            borderRadius={10}
           >
             <Flex m={2} position="absolute" left="0">
               <Touchable
@@ -112,9 +113,7 @@ export const Artwork = () => {
           </Flex>
         )}
       >
-        <BottomSheetScrollView
-          style={{ paddingHorizontal: space(2), backgroundColor: color("background") }}
-        >
+        <BottomSheetScrollView style={{ backgroundColor: color("background") }}>
           <Separator />
           <Flex alignItems="center" mx="2">
             <ModalRow
