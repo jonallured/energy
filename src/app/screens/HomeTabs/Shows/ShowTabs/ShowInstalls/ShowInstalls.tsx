@@ -28,9 +28,9 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
         }}
         numColumns={2}
         data={installs}
-        renderItem={({ item: showInstall }) => {
-          return <ArtworkImageGridItem url={showInstall.resized.url} />
-        }}
+        renderItem={({ item: showInstall }) => (
+          <ArtworkImageGridItem url={showInstall.resized.url} />
+        )}
         keyExtractor={(item) => item.internalID!}
         ListEmptyComponent={<ListEmptyComponent text="No show installs shots to display" />}
       />

@@ -1,4 +1,3 @@
-import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -9,6 +8,7 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
 import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 
 interface ScreenContextState {
@@ -50,6 +50,7 @@ const ScreenWrapper = ({ children }: { children?: React.ReactNode }) => {
 const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
   const header = getChildByType(children, Screen.Header)
   const headerFloating = getChildByType(children, Screen.FloatingHeader)
+  const headerFloatingBack = getChildByType(children, Screen.HeaderFloatingBackButton)
   const rawHeader = getChildByType(children, Screen.RawHeader)
   const background = getChildByType(children, Screen.Background)
   const bodyChildren = getChildrenByTypeDeep(children, Screen.Body)
@@ -63,6 +64,7 @@ const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
       {bodyChildren}
 
       {headerFloating /* floating, so keep close to the bottom */}
+      {headerFloatingBack /* floating, so keep close to the bottom */}
     </Flex>
   )
 }
@@ -70,14 +72,18 @@ const ScreenRoot = ({ children }: { children?: React.ReactNode }) => {
 const useUpdateScreenContext = ({
   header,
 }: {
-  header: "none" | "regular" | "floating" | "raw-safe" | "raw-nosafe"
+  header: "none" | "regular" | "floating" | "floating-back" | "raw-safe" | "raw-nosafe"
 }) => {
   const { setOptions } = useScreenContext()
 
   useEffect(
     () =>
       void setOptions({
-        handleTopSafeArea: header === "none" || header === "floating" || header === "raw-safe",
+        handleTopSafeArea:
+          header === "none" ||
+          header === "floating" ||
+          header === "floating-back" ||
+          header === "raw-safe",
       }),
     [header]
   )
@@ -130,6 +136,26 @@ const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
     )
   }
   return null
+}
+
+const HeaderFloatingBackButton = ({ onBack }: { onBack: () => void }) => {
+  useUpdateScreenContext({ header: "floating-back" })
+  const insets = useSafeAreaInsets()
+
+  return (
+    <Flex
+      position="absolute"
+      top={insets.top}
+      left={0}
+      right={0}
+      height={NAVBAR_HEIGHT}
+      px={10}
+      flexDirection="row"
+      alignItems="center"
+    >
+      <BackButtonWithBackground onPress={onBack} />
+    </Flex>
+  )
 }
 
 interface RawHeaderProps {
@@ -314,6 +340,7 @@ export const Screen = Object.assign(ScreenWrapper, {
   Body,
   Header,
   FloatingHeader,
+  HeaderFloatingBackButton,
   RawHeader,
   Background,
   BottomView,
