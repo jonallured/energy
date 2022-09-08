@@ -1,12 +1,13 @@
-import { Theme } from "palette"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
-import { RelayEnvironmentProvider } from "react-relay/hooks"
-import { defaultEnvironment } from "./relay/environment/defaultEnvironent"
-import { ProvideScreenDimensions } from "shared/hooks"
-import { SuspenseWrapper } from "./wrappers"
-import { Appearance, StatusBar } from "react-native"
+import { cloneDeep } from "lodash"
 import { useEffect } from "react"
+import { Appearance, StatusBar } from "react-native"
+import { SafeAreaProvider } from "react-native-safe-area-context"
+import { RelayEnvironmentProvider } from "react-relay/hooks"
+import { Text, Theme, _test_THEMES } from "palette"
+import { ProvideScreenDimensions } from "shared/hooks"
+import { defaultEnvironment } from "./relay/environment/defaultEnvironent"
+import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
+import { SuspenseWrapper } from "./wrappers"
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => (
   <GlobalStoreProvider>

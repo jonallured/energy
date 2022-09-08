@@ -1,11 +1,11 @@
-import { TabsScrollView } from "app/wrappers"
-import MasonryList from "@react-native-seoul/masonry-list"
-import { ArtworkImageGridItem } from "app/sharedUI/items/ArtworkImageGridItem"
-import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { ListEmptyComponent } from "app/sharedUI"
-import { useSpace } from "palette"
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import { Dimensions } from "react-native"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
+import { ListEmptyComponent } from "app/sharedUI"
+import { ArtworkImageGridItem } from "app/sharedUI/items/ArtworkImageGridItem"
+import { TabsScrollView } from "app/wrappers"
+import { useSpace } from "palette"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
   const windowWidth = Number(Dimensions.get("window").width)
@@ -14,7 +14,7 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
     imageSize: 2 * windowWidth,
   })
 
-  let installs = installsData.show?.images ?? []
+  const installs = installsData.show?.images ?? []
 
   const space = useSpace()
 

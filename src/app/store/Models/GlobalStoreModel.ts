@@ -1,11 +1,11 @@
 import { action, Action, State } from "easy-peasy"
-import { assignDeep } from "../../../shared/utils/persistence"
+import { DeepPartial } from "global"
 import { AlbumsModel } from "./AlbumsModel"
 import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
-import { DeepPartial } from "global"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
 import { PresentationModeModel } from "./PresenationModeModel"
+import { assignDeep } from "../../../shared/utils/persistence"
 
 type ActiveMode = "viewer" | "manager"
 interface GlobalStoreStateModel {

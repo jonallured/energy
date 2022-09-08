@@ -1,9 +1,9 @@
 import { RouteProp, useRoute } from "@react-navigation/native"
+import { useState } from "react"
+import { WebView } from "react-native-webview"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI"
 import { Flex, ProgressBar } from "palette"
-import { useState } from "react"
-import { WebView } from "react-native-webview"
 
 type ArtworkWebViewRoute = RouteProp<HomeTabsScreens, "ArtworkWebView">
 

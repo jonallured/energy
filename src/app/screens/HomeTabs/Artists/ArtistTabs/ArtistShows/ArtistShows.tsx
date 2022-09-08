@@ -26,7 +26,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
           <ShowListItem show={show} />
         </Touchable>
       )}
-      keyExtractor={(item) => item?.internalID!}
+      keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text={"No shows"} />}
     />
   )

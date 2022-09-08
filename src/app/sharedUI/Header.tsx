@@ -38,22 +38,24 @@ export const Header = ({
           {leftElements}
           <Spacer x={1} />
         </>
-      ) : withoutBackButton ? null : (
-        <>
-          <Touchable
-            onPress={() => navigation.goBack()}
-            underlayColor="transparent"
-            hitSlop={{
-              top: 10,
-              right: 10,
-              bottom: 10,
-              left: 10,
-            }}
-          >
-            <ArrowLeftIcon fill="onBackgroundHigh" />
-          </Touchable>
-          <Spacer x={1} />
-        </>
+      ) : (
+        !withoutBackButton && (
+          <>
+            <Touchable
+              onPress={() => navigation.goBack()}
+              underlayColor="transparent"
+              hitSlop={{
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10,
+              }}
+            >
+              <ArrowLeftIcon fill="onBackgroundHigh" />
+            </Touchable>
+            <Spacer x={1} />
+          </>
+        )
       )}
 
       {label !== undefined && <Text variant="lg">{label}</Text>}

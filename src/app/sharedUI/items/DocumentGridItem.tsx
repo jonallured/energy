@@ -1,13 +1,13 @@
-import { Button, Flex, Text, Touchable } from "palette"
-import { formatBytes } from "shared/utils/formatBytes"
-import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from "rn-fetch-blob"
-import { getUrlExtension } from "shared/utils"
+import { last } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
-import { FileTypeIcon } from "./FileTypeIcon"
-import { last } from "lodash"
+import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from "rn-fetch-blob"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Button, Flex, Text, Touchable } from "palette"
+import { getUrlExtension } from "shared/utils"
+import { formatBytes } from "shared/utils/formatBytes"
+import { FileTypeIcon } from "./FileTypeIcon"
 
 export interface DocumentEntity {
   id: string

@@ -33,10 +33,10 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
     }
   }
 
-  const addArtworkToTheSelectedAlbums = async () => {
+  const addArtworkToTheSelectedAlbums = () => {
     try {
       setLoading(false)
-      await GlobalStore.actions.albums.addArtworksInAlbums({
+      GlobalStore.actions.albums.addArtworksInAlbums({
         albumIds: selectedAlbumIds,
         artworkIdsToAdd: [artworkData.artwork?.internalID!],
       })
@@ -58,13 +58,13 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
           return (
             <Flex key={album.id} mx={2}>
               {/* Condition to only display album when the artwork is not included already */}
-              {!album.artworkIds.includes(artworkData.artwork?.internalID!) ? (
+              {!album.artworkIds.includes(artworkData.artwork?.internalID!) && (
                 <Touchable onPress={() => selectAlbumHandler(album.id)}>
                   {/* Change opacity based on selection */}
                   <Flex mb={3} mt={1} opacity={selectedAlbumIds.includes(album.id) ? 0.4 : 1}>
                     <AlbumListItem album={album} />
                   </Flex>
-                  {selectedAlbumIds.includes(album.id) ? (
+                  {selectedAlbumIds.includes(album.id) && (
                     <Flex
                       position="absolute"
                       top={2}
@@ -74,9 +74,9 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
                     >
                       <CheckCircleFillIcon height={30} width={30} fill="blue100" />
                     </Flex>
-                  ) : null}
+                  )}
                 </Touchable>
-              ) : null}
+              )}
             </Flex>
           )
         }}

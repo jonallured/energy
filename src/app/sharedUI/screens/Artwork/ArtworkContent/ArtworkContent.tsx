@@ -1,9 +1,11 @@
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Image, ScrollView } from "react-native"
+import { Image } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   ArrowRightIcon,
@@ -16,8 +18,6 @@ import {
   useColor,
   useSpace,
 } from "palette"
-import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent } from "app/sharedUI"
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useScreenDimensions } from "shared/hooks"
 
 const BOTTOM_SHEET_HEIGHT = 180
@@ -141,12 +141,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             {title}, <Text color="onBackgroundMedium">{date}</Text>
           </Text>
           <Spacer mt={0.5} />
-          {!isPriceHidden && price ? (
+          {!(isPriceHidden && !price) && (
             <>
               <Text weight="medium">{price}</Text>
               <Spacer mt={0.5} />
             </>
-          ) : null}
+          )}
           <Text variant="xs" color="onBackgroundMedium">
             {medium}
           </Text>
@@ -157,54 +157,52 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           )}
           <Spacer mt={2} />
           <Separator />
-          {shouldShowAboutTheArtworkTitle ? (
+          {!!shouldShowAboutTheArtworkTitle && (
             <>
               <Spacer mt={2} />
               <Text>About the artwork</Text>
               <Spacer mt={1} />
             </>
-          ) : null}
-          {additionalInformation ? (
+          )}
+          {!!additionalInformation && (
             <>
               <Text>{additionalInformation}</Text>
               <Spacer mt={2} />
             </>
-          ) : null}
-          {shouldDisplayTheDetailBox ? (
+          )}
+          {!!shouldDisplayTheDetailBox && (
             <>
               <Flex px={2} border={1} borderColor="onBackgroundLow">
                 <Spacer mt={2} />
-                {mediumType?.name ? (
-                  <ArtworkDetail label="Medium" value={mediumType?.name} />
-                ) : null}
-                {conditionDescription?.details ? (
+                {!!mediumType?.name && <ArtworkDetail label="Medium" value={mediumType?.name} />}
+                {!!conditionDescription?.details && (
                   <ArtworkDetail label="Condition" value={conditionDescription?.details} />
-                ) : null}
-                {signature ? <ArtworkDetail label="Signature" value={signature} /> : null}
-                {certificateOfAuthenticity?.details ? (
+                )}
+                {!!signature && <ArtworkDetail label="Signature" value={signature} />}
+                {!!certificateOfAuthenticity?.details && (
                   <ArtworkDetail
                     label="Certificate of Authenticity"
                     value={certificateOfAuthenticity?.details}
                   />
-                ) : null}
-                {framed?.details ? <ArtworkDetail label="Frame" value={framed?.details} /> : null}
-                {series ? <ArtworkDetail label="Series" value={series} /> : null}
-                {imageRights ? <ArtworkDetail label="Image Rights" value={imageRights} /> : null}
-                {inventoryId ? <ArtworkDetail label="Inventory ID" value={inventoryId} /> : null}
-                {confidentialNotes ? (
+                )}
+                {!!framed?.details && <ArtworkDetail label="Frame" value={framed?.details} />}
+                {!!series && <ArtworkDetail label="Series" value={series} />}
+                {!!imageRights && <ArtworkDetail label="Image Rights" value={imageRights} />}
+                {!!inventoryId && <ArtworkDetail label="Inventory ID" value={inventoryId} />}
+                {!!confidentialNotes && (
                   <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
-                ) : null}
-                {internalDisplayPrice ? (
+                )}
+                {!!internalDisplayPrice && (
                   <ArtworkDetail label="Editions" value={internalDisplayPrice} />
-                ) : null}
-                {provenance ? <ArtworkDetail label="Provenance" value={provenance} /> : null}
+                )}
+                {!!provenance && <ArtworkDetail label="Provenance" value={provenance} />}
                 <Spacer mt={1} />
               </Flex>
               <Spacer mt={2} />
             </>
-          ) : null}
+          )}
 
-          {exhibitionHistory ? (
+          {!!exhibitionHistory && (
             <Flex
               px={2}
               pt={2}
@@ -215,15 +213,15 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             >
               <ArtworkDetail size="big" label="Exhibition history" value={exhibitionHistory} />
             </Flex>
-          ) : null}
-          {literature ? (
+          )}
+          {!!literature && (
             <Flex px={2} pt={2} pb={1} border={1} borderColor="onBackgroundLow">
               <ArtworkDetail size="big" label="Bibliography" value={literature} />
             </Flex>
-          ) : null}
+          )}
           <Spacer mt={2} />
 
-          {albums.length !== 0 ? (
+          {albums.length !== 0 && (
             <Touchable
               onPress={() => navigation.navigate("AddArtworkToAlbum", { slug })}
               disabled={numberOfAlbumsIncludingArtwork === albums.length}
@@ -232,10 +230,8 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               <Flex flexDirection="row" alignItems="center">
                 <BriefcaseIcon fill="onBackgroundHigh" />
                 <Flex ml={1}>
-                  {numberOfAlbumsIncludingArtwork === albums.length ? null : (
-                    <Text>Add to Album</Text>
-                  )}
-                  {numberOfAlbumsIncludingArtwork === 0 ? null : (
+                  {numberOfAlbumsIncludingArtwork !== albums.length && <Text>Add to Album</Text>}
+                  {numberOfAlbumsIncludingArtwork !== 0 && (
                     <Flex flexDirection="row" alignItems="center">
                       <Text variant="xs" color="onBackgroundMedium">
                         Currently in{" "}
@@ -248,13 +244,13 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                     </Flex>
                   )}
                 </Flex>
-                {numberOfAlbumsIncludingArtwork === albums.length ? null : (
+                {numberOfAlbumsIncludingArtwork !== albums.length && (
                   <ArrowRightIcon ml="auto" fill="onBackgroundHigh" />
                 )}
               </Flex>
               <Spacer mt={3} />
             </Touchable>
-          ) : null}
+          )}
           <Spacer mt={2} />
         </BottomSheetScrollView>
       </BottomSheet>

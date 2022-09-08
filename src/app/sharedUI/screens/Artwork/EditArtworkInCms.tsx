@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { Button, EditIcon } from "palette"
-import { GlobalStore } from "app/store/GlobalStore"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { EditArtworkInCmsQuery } from '__generated__/EditArtworkInCmsQuery.graphql'
+import { EditArtworkInCmsQuery } from "__generated__/EditArtworkInCmsQuery.graphql"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Button, EditIcon } from "palette"
 
 export const EditArtworkInCms = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)

@@ -1,6 +1,6 @@
-import { Screen, Spacer } from "palette"
 import { Header, SettingsItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Screen, Spacer } from "palette"
 
 export const DarkModeSettings = () => {
   const syncWithSystem = GlobalStore.useAppState(

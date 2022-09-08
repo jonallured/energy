@@ -1,18 +1,18 @@
-import MasonryList from "@react-native-seoul/masonry-list"
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { intersection } from "lodash"
 import { useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useLazyLoadQuery } from "react-relay"
-import { useArtworksByMode } from "./useArtworksByMode"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { Header } from "app/sharedUI"
 import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Spacer, Button, Text, Touchable, useSpace } from "palette"
+import { Flex, Spacer, Button, Text, useSpace } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
+import { useArtworksByMode } from "./useArtworksByMode"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
   HomeTabsScreens,
@@ -58,15 +58,15 @@ export const CreateOrEditAlbumChooseArtworks = () => {
     setAreAllArtworkSelected(toggleSelectAllArtwork)
   }
 
-  const selectArtworksToAddToAnAlbum = async () => {
+  const selectArtworksToAddToAnAlbum = () => {
     const currentArtworks = {
       artistSlug: slug,
       artworkIds: selectedArtworkIds,
     }
     if (mode === "edit" && albumId) {
-      await GlobalStore.actions.albums.selectArtworksForExistingAlbum(currentArtworks)
+      GlobalStore.actions.albums.selectArtworksForExistingAlbum(currentArtworks)
     } else {
-      await GlobalStore.actions.albums.selectArtworksForNewAlbum(currentArtworks)
+      GlobalStore.actions.albums.selectArtworksForNewAlbum(currentArtworks)
     }
     navigation.navigate("CreateOrEditAlbum", { mode, albumId })
   }
@@ -102,7 +102,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
             />
           )
         }}
-        keyExtractor={(item) => item.internalID!}
+        keyExtractor={(item) => item.internalID}
       />
       <Flex px={2} pt={1} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>
         <Text variant="xs" color="black60" mb={1} textAlign="center">

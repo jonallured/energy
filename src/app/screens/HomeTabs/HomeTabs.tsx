@@ -1,4 +1,4 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
@@ -13,7 +13,7 @@ import { Shows } from "./Shows/Shows"
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
 
 export const HomeTabs = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
 

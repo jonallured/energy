@@ -1,4 +1,4 @@
-import MasonryList from "@react-native-seoul/masonry-list"
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Alert } from "react-native"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
@@ -31,8 +31,8 @@ export const AlbumArtworks = () => {
         {
           text: "Delete",
           style: "destructive",
-          onPress: async () => {
-            await GlobalStore.actions.albums.removeAlbum(album.id)
+          onPress: () => {
+            GlobalStore.actions.albums.removeAlbum(album.id)
             navigation.goBack()
           },
         },
@@ -70,7 +70,7 @@ export const AlbumArtworks = () => {
         numColumns={2}
         data={album.artworkIds}
         renderItem={({ item: artworkId }) => <ArtworkItem artworkId={artworkId} />}
-        keyExtractor={(item) => item}
+        keyExtractor={(item: string) => item}
       />
     </>
   )

@@ -1,5 +1,5 @@
-import { Flex, Text } from "palette"
 import { Switch } from "react-native"
+import { Flex, Text } from "palette"
 
 interface SettingsItemProps {
   title: string

@@ -1,9 +1,8 @@
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { Flex } from "palette"
-import { Header } from "app/sharedUI/Header"
-
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Image } from "react-native"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { Header } from "app/sharedUI/Header"
+import { Flex } from "palette"
 
 type ImageRoute = RouteProp<HomeTabsScreens, "InstallImage">
 

@@ -1,9 +1,9 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
+import FileViewer from "react-native-file-viewer"
+import RNFetchBlob from "rn-fetch-blob"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { DocumentEntity, DocumentGridItem } from "./DocumentGridItem"
-import RNFetchBlob from "rn-fetch-blob"
-import FileViewer from "react-native-file-viewer"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 const mockConfigFetch = jest.fn()
 

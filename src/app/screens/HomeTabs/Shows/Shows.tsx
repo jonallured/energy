@@ -34,7 +34,7 @@ export const Shows = () => {
           return null
         }
       }}
-      keyExtractor={(item) => item?.internalID!}
+      keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
     />
   )

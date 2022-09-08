@@ -29,7 +29,7 @@ export const Artists = () => {
         </Touchable>
       )}
       ListEmptyComponent={<ListEmptyComponent text="No artists" />}
-      keyExtractor={(item) => item?.internalID!}
+      keyExtractor={(item) => item?.internalID}
     />
   )
 }

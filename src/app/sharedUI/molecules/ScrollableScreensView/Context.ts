@@ -6,7 +6,9 @@ export interface ScrollableScreensContextValue {
   activeScreen: ScrollableScreenEntity
 }
 
-export const ScrollableScreensContext = createContext(null as any)
+export const ScrollableScreensContext = createContext(
+  null as unknown as ScrollableScreensContextValue
+)
 
 export const useScrollableScreensContext = () => {
   const context = useContext<ScrollableScreensContextValue>(ScrollableScreensContext)

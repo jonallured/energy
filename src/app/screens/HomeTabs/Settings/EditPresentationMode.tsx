@@ -1,8 +1,8 @@
+import { ScrollView } from "react-native"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, Separator, Spacer, Text } from "palette"
-import { ScrollView } from "react-native"
 
 export const EditPresentationMode = () => {
   const presentationConfigs = [

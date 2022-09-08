@@ -1,11 +1,12 @@
-import { useNavigation } from "@react-navigation/native"
-import { Spacer, Button, Screen, Text, Separator, Touchable, Flex, ArrowRightIcon } from "palette"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Spacer, Button, Screen, Text, Separator, Touchable, Flex, ArrowRightIcon } from "palette"
 
 export const Settings = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const isPresenationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresenationModeEnabled
   )
@@ -45,7 +46,7 @@ export const Settings = () => {
         <Spacer m={1} />
         <Separator />
 
-        <Button block onPress={() => GlobalStore.actions.auth.signOut()}>
+        <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
           Log out
         </Button>
 

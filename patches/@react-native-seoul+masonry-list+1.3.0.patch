@@ -1,13 +1,50 @@
 diff --git a/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts b/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts
-index 3458b95..4347eb9 100644
+index 3458b95..55af7ec 100644
 --- a/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts
 +++ b/node_modules/@react-native-seoul/masonry-list/lib/index.d.ts
-@@ -8,7 +8,7 @@ interface Props<T> extends Omit<ScrollViewProps, 'refreshControl'> {
+@@ -8,11 +8,8 @@ interface Props<T> extends Omit<ScrollViewProps, 'refreshControl'> {
      onEndReached?: () => void;
      onEndReachedThreshold?: number;
      style?: StyleProp<ViewStyle>;
 -    data: T[];
+-    renderItem: ({ item: T, i: number }: {
+-        item: any;
+-        i: any;
+-    }) => ReactElement;
 +    data: readonly T[];
-     renderItem: ({ item: T, i: number }: {
-         item: any;
-         i: any;
++    renderItem: ({ item, i }:{item:T, i:number}) => ReactElement;
+     LoadingView?: React.ComponentType<any> | React.ReactElement | null;
+     ListHeaderComponent?: React.ComponentType<any> | React.ReactElement | null;
+     ListEmptyComponent?: React.ComponentType<any> | React.ReactElement | null;
+@@ -21,8 +18,7 @@ interface Props<T> extends Omit<ScrollViewProps, 'refreshControl'> {
+     contentContainerStyle?: StyleProp<ViewStyle>;
+     containerStyle?: StyleProp<ViewStyle>;
+     numColumns?: number;
+-    keyExtractor?: ((item: T | any, index: number) => string) | undefined;
++    keyExtractor?: ((item: T, index: number) => string) | undefined;
+ }
+ declare function MasonryList<T>(props: Props<T>): ReactElement;
+-declare const _default: React.MemoExoticComponent<typeof MasonryList>;
+-export default _default;
++export const MasonryList;
+\ No newline at end of file
+diff --git a/node_modules/@react-native-seoul/masonry-list/lib/index.js b/node_modules/@react-native-seoul/masonry-list/lib/index.js
+index a70f495..ef65609 100644
+--- a/node_modules/@react-native-seoul/masonry-list/lib/index.js
++++ b/node_modules/@react-native-seoul/masonry-list/lib/index.js
+@@ -16,7 +16,7 @@ const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }, onEn
+     return (layoutMeasurement.height + contentOffset.y >=
+         contentSize.height - paddingToBottom);
+ };
+-function MasonryList(props) {
++export const MasonryList = memo((props) =>  {
+     const [isRefreshing, setIsRefreshing] = useState(false);
+     const { refreshing, data, innerRef, ListHeaderComponent, ListEmptyComponent, ListFooterComponent, ListHeaderComponentStyle, containerStyle, contentContainerStyle, renderItem, onEndReachedThreshold, onEndReached, onRefresh, loading, LoadingView, numColumns = 2, horizontal, onScroll, removeClippedSubviews = false, keyExtractor, } = props;
+     const { style } = props, propsWithoutStyle = __rest(props, ["style"]);
+@@ -58,5 +58,4 @@ function MasonryList(props) {
+       {loading && LoadingView}
+       {ListFooterComponent}
+     </ScrollView>);
+-}
+-export default memo(MasonryList);
++})

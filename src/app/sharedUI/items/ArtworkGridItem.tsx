@@ -1,8 +1,8 @@
 import { Image } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "palette"
 import { AvailabilityDot } from "app/sharedUI"
+import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "palette"
 
 interface ArtworkGridItemProps {
   artwork: ArtworkGridItem_artwork$key
@@ -33,12 +33,12 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
           </Text>
         </Text>
       </Flex>
-      {!disable && selectedToAdd ? (
+      {!disable && selectedToAdd && (
         <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
           <CheckCircleFillIcon height={30} width={30} fill="blue100" />
         </Flex>
-      ) : null}
-      {selectedToRemove ? (
+      )}
+      {selectedToRemove && (
         <Flex
           position="absolute"
           top={1}
@@ -51,7 +51,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
         >
           <TrashIcon height={20} width={20} fill="onBackgroundHigh" />
         </Flex>
-      ) : null}
+      )}
     </Touchable>
   )
 }

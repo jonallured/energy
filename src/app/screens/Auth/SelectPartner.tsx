@@ -1,12 +1,10 @@
-import { Button, Flex, Screen, SearchInput, Separator, Spacer, Text } from "palette"
 import { useState, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-
-type Partners = NonNullable<NonNullable<SelectPartnerQuery["response"]["me"]>["partners"]>
+import { Button, Flex, Screen, SearchInput, Separator, Spacer, Text } from "palette"
 
 interface SelectPartnerHeaderProps {
   onSearchChange: (term: string) => void
@@ -26,8 +24,20 @@ export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartn
   </Flex>
 )
 
-export const SelectPartner = () => {
-  const data = useLazyLoadQuery<SelectPartnerQuery>(partnerQuery, {})
+export const SelectPartner = ({}) => {
+  const data = useLazyLoadQuery<SelectPartnerQuery>(
+    graphql`
+      query SelectPartnerQuery {
+        me {
+          partners {
+            name
+            internalID
+          }
+        }
+      }
+    `,
+    {}
+  )
 
   const [search, setSearch] = useState("")
   const partners = useRef(data.me?.partners).current
@@ -64,17 +74,6 @@ export const SelectPartner = () => {
     />
   )
 }
-
-const partnerQuery = graphql`
-  query SelectPartnerQuery {
-    me {
-      partners {
-        name
-        internalID
-      }
-    }
-  }
-`
 
 export const SelectPartnerScreen = () => (
   <Screen>

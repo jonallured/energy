@@ -1,4 +1,4 @@
-import MasonryList from "@react-native-seoul/masonry-list"
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
@@ -36,7 +36,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
             }
           />
         )}
-        keyExtractor={(item) => item.internalID!}
+        keyExtractor={(item) => item.internalID}
       />
     </TabsScrollView>
   )

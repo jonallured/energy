@@ -1,6 +1,6 @@
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtworkGridItem } from "./ArtworkGridItem"
 import { ArtworkItemQuery } from "__generated__/ArtworkItemQuery.graphql"
+import { ArtworkGridItem } from "./ArtworkGridItem"
 
 interface ArtworkItemProps {
   artworkId: string

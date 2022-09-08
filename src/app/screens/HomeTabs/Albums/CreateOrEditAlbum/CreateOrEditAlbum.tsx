@@ -1,4 +1,4 @@
-import MasonryList from "@react-native-seoul/masonry-list"
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import {
   CommonActions,
   NavigationProp,
@@ -11,13 +11,13 @@ import { uniq } from "lodash"
 import { useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
-import { useArtworksByMode } from "./useArtworksByMode"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI/Header"
 import { ArtworkItem } from "app/sharedUI/items/ArtworkItem"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArrowRightIcon, Button, Flex, Input, Spacer, Text, Touchable, useSpace } from "palette"
 import { ShadowSeparator } from "palette/elements/Separator/ShadowSeparator"
+import { useArtworksByMode } from "./useArtworksByMode"
 
 interface CreateAlbumValuesSchema {
   albumName: string
@@ -50,16 +50,16 @@ export const CreateOrEditAlbum = () => {
         albumName: mode === "edit" ? album?.name ?? "" : "",
       },
       initialErrors: {},
-      onSubmit: async () => {
+      onSubmit: () => {
         try {
           if (mode === "edit" && albumId) {
-            await GlobalStore.actions.albums.editAlbum({
+            GlobalStore.actions.albums.editAlbum({
               albumId: albumId,
               name: values.albumName,
               artworkIds: selectedArtworks.filter((ids) => !selectedArtworksToRemove.includes(ids)),
             })
           } else {
-            await GlobalStore.actions.albums.addAlbum({
+            GlobalStore.actions.albums.addAlbum({
               name: values.albumName.trim(),
               artworkIds: selectedArtworks,
             })
@@ -127,11 +127,11 @@ export const CreateOrEditAlbum = () => {
           </Flex>
         </Touchable>
       </Flex>
-      {mode === "edit" ? (
+      {mode === "edit" && (
         <Text ml={2} mt={2} variant="xs" color="black60">
           Select artworks to remove from album
         </Text>
-      ) : null}
+      )}
       <MasonryList
         contentContainerStyle={{
           paddingRight: space(2),
@@ -151,7 +151,7 @@ export const CreateOrEditAlbum = () => {
             />
           )
         }}
-        keyExtractor={(item) => item}
+        keyExtractor={(item: string) => item}
       />
       <ShadowSeparator />
       <Flex px={2} pt={2} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>

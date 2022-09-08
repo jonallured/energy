@@ -11,7 +11,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, Input, Screen, Spacer, Text, useColor } from "palette"
+import { Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { MeasuredView } from "shared/utils"
 
@@ -169,7 +169,7 @@ export const LoginScreen = () => {
             value={values.password}
             error={errors.password}
           />
-          {showOtpInputField ? (
+          {showOtpInputField && (
             <>
               <Spacer mt={2} />
               <Input
@@ -198,8 +198,8 @@ export const LoginScreen = () => {
                 error={errors.otp}
               />
             </>
-          ) : null}
-          {showOtpInputField ? null : (
+          )}
+          {!showOtpInputField && (
             <>
               <Spacer mt={1} />
               <TouchableOpacity

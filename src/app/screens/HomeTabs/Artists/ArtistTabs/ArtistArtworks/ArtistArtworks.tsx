@@ -1,4 +1,4 @@
-import MasonryList from "@react-native-seoul/masonry-list"
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
@@ -36,7 +36,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
             }
           />
         )}
-        keyExtractor={(item) => item.internalID!}
+        keyExtractor={(item) => item.internalID}
         ListEmptyComponent={<ListEmptyComponent text={"No artworks"} />}
       />
     </TabsScrollView>

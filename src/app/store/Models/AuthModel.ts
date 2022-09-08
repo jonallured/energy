@@ -1,8 +1,8 @@
 import { action, Action, thunk, Thunk } from "easy-peasy"
 import { stringify } from "qs"
 import Config from "react-native-config"
-import { GlobalStoreModel } from "./GlobalStoreModel"
 import { getUserAgent } from "shared/utils"
+import { GlobalStoreModel } from "./GlobalStoreModel"
 
 interface EmailOAuthParams {
   email: string

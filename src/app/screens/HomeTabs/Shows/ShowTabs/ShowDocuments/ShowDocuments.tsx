@@ -1,11 +1,11 @@
+import { MasonryList } from "@react-native-seoul/masonry-list"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { TabsScrollView } from "app/wrappers"
-import { extractNodes } from "shared/utils"
-import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
-import { useSpace } from "palette"
-import { GlobalStore } from "app/store/GlobalStore"
-import MasonryList from "@react-native-seoul/masonry-list"
 import { ShowDocumentsQuery } from "__generated__/ShowDocumentsQuery.graphql"
+import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
+import { TabsScrollView } from "app/wrappers"
+import { useSpace } from "palette"
+import { extractNodes } from "shared/utils"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
   const space = useSpace()

@@ -41,7 +41,7 @@ export const CreateOrEditAlbumChooseArtist = () => {
             <ArtistListItem artist={artist} />
           </Touchable>
         )}
-        keyExtractor={(item) => item?.internalID!}
+        keyExtractor={(item) => item?.internalID}
       />
     </>
   )

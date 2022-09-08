@@ -1,7 +1,7 @@
-import { Flex, Touchable } from "palette"
-import { Image } from "react-native"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { Image } from "react-native"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { Flex, Touchable } from "palette"
 
 interface ArtworkImageGridItemProps {
   url: string
