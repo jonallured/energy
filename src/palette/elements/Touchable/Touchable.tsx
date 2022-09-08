@@ -12,23 +12,23 @@ import { Flex } from "../Flex"
 
 interface ExtraTouchableProps {
   flex?: number
+  /**
+   * `haptic` can be used like:
+   * <Touchable haptic />
+   * or
+   * <Touchable haptic="impactHeavy" />
+   */
   haptic?: HapticFeedbackTypes | true
   noFeedback?: boolean
 }
 
 export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
 
-/**
- * `haptic` can be used like:
- * <Touchable haptic />
- * or
- * <Touchable haptic="impactHeavy" />
- */
 export const Touchable: React.FC<TouchableProps> = ({
   children,
   flex,
   haptic,
-  noFeedback,
+  noFeedback = false,
   onPress,
   ...props
 }) => {
@@ -53,7 +53,7 @@ export const Touchable: React.FC<TouchableProps> = ({
     </TouchableWithoutFeedback>
   ) : (
     <TouchableHighlight
-      underlayColor={color("secondary")}
+      underlayColor={color("background")}
       activeOpacity={0.8}
       {...props}
       onPress={onPressWrapped}

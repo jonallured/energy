@@ -9,7 +9,7 @@ export const FolioDesignLanguage = () => {
   return (
     <Screen>
       <Screen.RawHeader>
-        <Header label="Folio Design Language" safeAreaInsets />
+        <Header label="Folio Design Language" />
       </Screen.RawHeader>
       <Screen.Body scroll>
         <Text>
