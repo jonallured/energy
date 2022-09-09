@@ -51,6 +51,7 @@ export const HomeTabsNavigationStack = () => {
           headerShown: false,
           cardStyle: { backgroundColor: color("background") },
         }}
+        initialRouteName="HomeTabs"
       >
         <Screen name="HomeTabs" component={HomeTabs} />
         <Screen name="Settings" component={Settings} />

@@ -1,4 +1,4 @@
-import { computed, Computed } from "easy-peasy"
+import { Action, computed, Computed, action } from "easy-peasy"
 
 type Environment = "staging" | "production"
 
@@ -33,15 +33,13 @@ export const environmentOptions = defineEnvironmentOptions({
 
 export type EnvironmentKey = keyof typeof environmentOptions
 
-interface EnvironmentModelState {
+export interface EnvironmentModel {
   activeEnvironment: Environment
+  strings: Computed<this, { [k in EnvironmentKey]: string }>
+  setEnvironment: Action<this, Environment>
 }
 
-export interface EnvironmentModel extends EnvironmentModelState {
-  strings: Computed<EnvironmentModel, { [k in EnvironmentKey]: string }>
-}
-
-export const EnvironmentModel: EnvironmentModel = {
+export const getEnvironmentModel = (): EnvironmentModel => ({
   // TODO:
   // CRITICAL!
   // Detect if this is a test build or a production build
@@ -58,4 +56,7 @@ export const EnvironmentModel: EnvironmentModel = {
 
     return result
   }),
-}
+  setEnvironment: action((state, environment) => {
+    state.activeEnvironment = environment
+  }),
+})

@@ -19,7 +19,8 @@
     "relay": "yarn relay-compiler",
     "relay:watch": "yarn relay --watch",
     "type-check": "yarn relay; yarn tsc",
-    "secrets:generate!": "scripts/secrets-generate-baseline"
+    "secrets:generate!": "scripts/secrets-generate-baseline",
+    "trouble": "killall node ; yarn setup:artsy ; yarn install:all ; yarn relay ; yarn start"
   },
   "resolutions": {
     "@types/react": "^17"
@@ -61,6 +62,7 @@
     "react-native-reanimated": "^2.8.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
+    "react-native-shake": "^5.1.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^12.1.1",
     "react-native-uuid": "^2.0.1",

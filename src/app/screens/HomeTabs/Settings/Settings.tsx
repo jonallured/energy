@@ -1,5 +1,5 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { useNavigation } from "@react-navigation/native"
+import { DevMenu } from "app/screens/Dev/DevMenu"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -58,6 +58,8 @@ export const Settings = () => {
         <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
           Instead Of Storybook
         </Button>
+        <Spacer y={1} />
+        <DevMenu />
       </Screen.Body>
     </Screen>
   )

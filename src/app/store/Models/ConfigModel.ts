@@ -1,4 +1,4 @@
-import { EnvironmentModel } from "./EnvironmentModel"
+import { getEnvironmentModel, EnvironmentModel } from "./EnvironmentModel"
 
 interface ConfigModelState {
   environment: EnvironmentModel
@@ -7,5 +7,5 @@ interface ConfigModelState {
 export type ConfigModel = ConfigModelState
 
 export const ConfigModel: ConfigModel = {
-  environment: EnvironmentModel,
+  environment: getEnvironmentModel(),
 }
