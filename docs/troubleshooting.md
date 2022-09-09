@@ -18,9 +18,11 @@ yarn start
 yarn ios
 ```
 
-then you can also try
+you can also try
 
 `yarn open-xcode`
 and play button on xcode
+
+❗️when you open xcode make sure you open `Energy.xcworkspace` and not `Energy.xcodeproj`
 
 If this does not work, try deleting the app and installing it again.
