@@ -1,5 +1,5 @@
-import { Icon, IconProps, Path } from "./Icon"
 import { useColor } from "palette/hooks"
+import { Icon, IconProps, Path } from "./Icon"
 
 /** ExpandIcon */
 export const ExpandIcon: React.FC<IconProps> = (props) => {

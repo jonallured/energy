@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react"
 import { Animated, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useTheme } from "palette"
 import { Button } from "../Button"
 import { Flex } from "../Flex"
 import { Text } from "../Text"
-import { useTheme } from "palette"
 
 interface DialogAction {
   text: string

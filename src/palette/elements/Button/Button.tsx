@@ -6,13 +6,13 @@ import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
 import styled from "styled-components/native"
+import { Spacer } from "palette"
+import { useColor } from "palette/hooks"
+import { MeasuredView, ViewMeasurements } from "shared/utils"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
 import { Text, useTextStyleForPalette } from "../Text"
-import { Spacer } from "palette"
-import { useColor } from "palette/hooks"
-import { MeasuredView, ViewMeasurements } from "shared/utils"
 
 export interface ButtonProps extends BoxProps {
   children: React.ReactNode

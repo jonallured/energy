@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react-native"
-import { Screen } from "./Screen"
 import { Button, Flex, Input, Text } from "palette"
+import { Screen } from "./Screen"
 
 const ScreenMeta: ComponentMeta<typeof Screen> = {
   title: "palette/organisms/Screen",

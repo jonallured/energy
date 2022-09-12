@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { LayoutRectangle } from "react-native"
-import { TabBarContainer } from "./TabBarContainer"
 import { Tab, TabsProps } from "palette"
+import { TabBarContainer } from "./TabBarContainer"
 
 /**
  * Renders a  scrollable list of tabs. Tabs are not evenly spaced across screen

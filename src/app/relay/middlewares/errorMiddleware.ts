@@ -33,7 +33,7 @@ export const errorMiddleware = () => {
     const resJson = res?.json as GraphQLResponse
 
     // @ts-ignore RELAY 12 MIGRATION
-    const hasErrors: boolean = Boolean(resJson.errors?.length)
+    const hasErrors = Boolean(resJson.errors?.length)
 
     if (!hasErrors) {
       return res

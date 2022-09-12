@@ -1,8 +1,8 @@
+import { bullet } from "palette"
 import { SpacerProps } from "../../atoms/Spacer"
 import { Avatar } from "../Avatar"
 import { Flex } from "../Flex"
 import { Sans } from "../Text"
-import { bullet } from "palette"
 
 interface EntityHeaderProps extends SpacerProps {
   smallVariant?: boolean

@@ -18,9 +18,9 @@ import {
   verticalAlign,
   VerticalAlignProps,
 } from "styled-system"
-import { _test_THEMES, themeProps } from "../../Theme"
 import { SansProps } from "./Sans"
 import { SerifProps } from "./Serif"
+import { _test_THEMES, themeProps } from "../../Theme"
 
 export interface FullTextProps
   extends TextProps,

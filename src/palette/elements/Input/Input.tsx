@@ -13,10 +13,10 @@ import {
   View,
 } from "react-native"
 import styled from "styled-components/native"
-import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
-import { InputTitle } from "./InputTitle"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import { MeasuredView } from "shared/utils"
+import { InputTitle } from "./InputTitle"
+import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 
 const DEFAULT_FONT_SIZE = 16
 export const INPUT_HEIGHT = 50

@@ -1,5 +1,5 @@
-import { G, Icon, IconProps, Path } from "./Icon"
 import { useColor } from "palette/hooks"
+import { G, Icon, IconProps, Path } from "./Icon"
 
 /** InstitutionIcon */
 export const InstitutionIcon: React.FC<IconProps> = (props) => {

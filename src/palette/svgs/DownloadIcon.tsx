@@ -1,5 +1,5 @@
-import { Icon, IconProps, Path } from "./Icon"
 import { useColor } from "palette/hooks"
+import { Icon, IconProps, Path } from "./Icon"
 
 /** DownloadIcon */
 export const DownloadIcon: React.FC<IconProps> = (props) => {

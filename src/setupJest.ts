@@ -35,7 +35,6 @@ jest.mock("@gorhom/bottom-sheet", () => {
   }
 })
 
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 jest.mock("shared/hooks", () => {
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
@@ -129,6 +128,7 @@ jest.mock("app/relay/environment/createEnvironment", () => ({
 }))
 
 import { resetEnvironment } from "app/relay/environment/resetEnvironment"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 beforeEach(() => {
   resetEnvironment()
 })

@@ -1,6 +1,6 @@
-import { Icon, IconProps, Path } from "./Icon"
 import { Color } from "palette"
 import { useColor } from "palette/hooks"
+import { Icon, IconProps, Path } from "./Icon"
 
 type ShieldIconProps = IconProps & {
   checkColor?: Color

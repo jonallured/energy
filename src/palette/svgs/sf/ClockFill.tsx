@@ -1,5 +1,5 @@
-import { Icon, IconProps, Path } from "../Icon"
 import { useColor } from "palette/hooks"
+import { Icon, IconProps, Path } from "../Icon"
 
 /** ClockFill */
 export const ClockFill: React.FC<IconProps> = (props) => {

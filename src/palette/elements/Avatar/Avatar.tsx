@@ -1,9 +1,9 @@
 import { themeGet } from "@styled-system/theme-get"
-import { useColor } from "palette"
 import { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
 import styled from "styled-components/native"
 import { borderRadius } from "styled-system"
+import { useColor } from "palette"
 import { Flex } from "../Flex"
 import { Text } from "../Text"
 

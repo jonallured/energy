@@ -1,5 +1,5 @@
-import { Icon, IconProps, Path } from "./Icon"
 import { useColor } from "palette/hooks"
+import { Icon, IconProps, Path } from "./Icon"
 
 /** EstablishedIcon */
 export const EstablishedIcon: React.FC<IconProps> = (props) => {
