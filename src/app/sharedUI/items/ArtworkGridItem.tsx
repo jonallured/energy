@@ -21,7 +21,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
     <Touchable disabled={disable} onPress={onPress}>
       <Flex mb={4} pl={2} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}>
         <Image
-          source={{ uri: artwork.image?.url! }}
+          source={{ uri: artwork.image?.resized?.url! }}
           style={{
             aspectRatio: artwork.image?.aspectRatio ?? 1,
           }}
@@ -57,12 +57,14 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
 }
 
 const ArtworkGridItemFragment = graphql`
-  fragment ArtworkGridItem_artwork on Artwork {
+  fragment ArtworkGridItem_artwork on Artwork @argumentDefinitions(imageSize: { type: "Int" }) {
     internalID
     title
     date
     image {
-      url
+      resized(width: $imageSize, version: "normalized") {
+        url
+      }
       aspectRatio
     }
     availability

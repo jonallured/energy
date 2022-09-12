@@ -6,10 +6,11 @@ import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { TabsFlatList } from "app/wrappers"
 import { Touchable } from "palette"
 import { extractNodes } from "shared/utils"
+import { imageSize } from "app/utils/imageSize"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, { slug })
+  const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, { slug, imageSize })
   const shows = extractNodes(showsData.artist?.showsConnection)
 
   return (
@@ -33,14 +34,14 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
 }
 
 const artistShowsQuery = graphql`
-  query ArtistShowsQuery($slug: String!) {
+  query ArtistShowsQuery($slug: String!, $imageSize: Int!) {
     artist(id: $slug) {
       showsConnection(first: 100) {
         edges {
           node {
             internalID
             slug
-            ...ShowListItem_show
+            ...ShowListItem_show @arguments(imageSize: $imageSize)
           }
         }
       }

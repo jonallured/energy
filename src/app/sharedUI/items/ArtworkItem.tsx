@@ -1,7 +1,7 @@
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkItemQuery } from "__generated__/ArtworkItemQuery.graphql"
-import { ArtworkGridItem } from "./ArtworkGridItem"
-
+import { ArtworkGridItem } from "app/sharedUI"
+import { imageSize } from "app/utils/imageSize"
 interface ArtworkItemProps {
   artworkId: string
   onPress?: () => void
@@ -9,7 +9,10 @@ interface ArtworkItemProps {
 }
 
 export const ArtworkItem = ({ artworkId, onPress, selectedToRemove }: ArtworkItemProps) => {
-  const artworkData = useLazyLoadQuery<ArtworkItemQuery>(artworkItemQuery, { id: artworkId })
+  const artworkData = useLazyLoadQuery<ArtworkItemQuery>(artworkItemQuery, {
+    id: artworkId,
+    imageSize,
+  })
   return (
     <ArtworkGridItem
       artwork={artworkData.artwork!}
@@ -20,9 +23,9 @@ export const ArtworkItem = ({ artworkId, onPress, selectedToRemove }: ArtworkIte
 }
 
 const artworkItemQuery = graphql`
-  query ArtworkItemQuery($id: String!) {
+  query ArtworkItemQuery($id: String!, $imageSize: Int!) {
     artwork(id: $id) {
-      ...ArtworkGridItem_artwork
+      ...ArtworkGridItem_artwork @arguments(imageSize: $imageSize)
     }
   }
 `

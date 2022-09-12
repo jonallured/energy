@@ -12,8 +12,8 @@ import {
   typography,
   TypographyProps,
 } from "styled-system"
+import { isThemeV3, TextVariantV3, useTheme, useColor } from "palette"
 import { useFontFamilyFor } from "./helpers"
-import { isThemeV3, TextVariantV3, useTheme } from "palette"
 
 export interface TextProps extends RNTextProps, InnerStyledTextProps {
   children?: React.ReactNode
@@ -41,6 +41,7 @@ export const Text = forwardRef(
     ref: Ref<RNText>
   ) => {
     const { theme } = useTheme()
+    const colorz = useColor()
     const fontFamily = useFontFamilyFor({ italic, weight })
     if (!isThemeV3(theme)) {
       console.warn("Text is missing because null is returned. Wrap your Text with ThemeV3.")
@@ -61,7 +62,8 @@ export const Text = forwardRef(
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}
         children={children}
-        color={color}
+        // @ts-expect-error
+        color={colorz(color)}
         {...rest}
       />
     )

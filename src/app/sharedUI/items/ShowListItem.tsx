@@ -13,8 +13,12 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
 
   return (
     <Flex m={2}>
-      {show.coverImage?.url ? (
-        <Image style={{ height: 200 }} resizeMode="cover" source={{ uri: show.coverImage.url }} />
+      {show.coverImage?.resized?.url ? (
+        <Image
+          style={{ height: 200 }}
+          resizeMode="cover"
+          source={{ uri: show.coverImage.resized.url }}
+        />
       ) : (
         <ImagePlaceholder height={200} />
       )}
@@ -29,12 +33,14 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
 }
 
 const ShowListItemFragment = graphql`
-  fragment ShowListItem_show on Show {
+  fragment ShowListItem_show on Show @argumentDefinitions(imageSize: { type: "Int" }) {
     name
     formattedStartAt: startAt(format: "MMMM D")
     formattedEndAt: endAt(format: "MMMM D, YYYY")
     coverImage {
-      url
+      resized(width: $imageSize, version: "normalized") {
+        url
+      }
     }
   }
 `

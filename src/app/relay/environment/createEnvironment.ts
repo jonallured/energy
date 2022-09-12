@@ -6,7 +6,7 @@ import {
   RelayNetworkLayer,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
-import { showLoggerMiddleware, showPerfMiddleware } from "../../../utils/loggers"
+import { showLoggerMiddleware, showPerfMiddleware } from "app/utils/loggers"
 import { authMiddleware } from "../middlewares/authMiddleware"
 import { errorMiddleware } from "../middlewares/errorMiddleware"
 import { metaphysicsUrlMiddleware } from "../middlewares/metaphysicsUrlMiddleware"

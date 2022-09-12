@@ -1,21 +1,19 @@
 import { MasonryList } from "@react-native-seoul/masonry-list"
-import { Dimensions } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
 import { ArtworkImageGridItem } from "app/sharedUI/items/ArtworkImageGridItem"
+import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
 import { useSpace } from "palette"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
-  const windowWidth = Number(Dimensions.get("window").width)
   const installsData = useLazyLoadQuery<ShowInstallsQuery>(showInstallsQuery, {
     slug,
-    imageSize: 2 * windowWidth,
+    imageSize,
   })
 
   const installs = installsData.show?.images ?? []
-
   const space = useSpace()
 
   return (
@@ -43,7 +41,7 @@ const showInstallsQuery = graphql`
     show(id: $slug) {
       images(default: true) {
         internalID
-        resized(height: $imageSize, version: "normalized") {
+        resized(width: $imageSize, version: "normalized") {
           url
         }
       }

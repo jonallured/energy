@@ -4,13 +4,14 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtworkGridItem } from "app/sharedUI"
+import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
 import { useSpace } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const artworksData = useLazyLoadQuery<ShowArtworksQuery>(showArtworksQuery, { slug })
+  const artworksData = useLazyLoadQuery<ShowArtworksQuery>(showArtworksQuery, { slug, imageSize })
   const artworks = extractNodes(artworksData.show?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
   const space = useSpace()
@@ -43,14 +44,14 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
 }
 
 const showArtworksQuery = graphql`
-  query ShowArtworksQuery($slug: String!) {
+  query ShowArtworksQuery($slug: String!, $imageSize: Int!) {
     show(id: $slug) {
       artworksConnection(first: 100) {
         edges {
           node {
             internalID
             slug
-            ...ArtworkGridItem_artwork
+            ...ArtworkGridItem_artwork @arguments(imageSize: $imageSize)
           }
         }
       }

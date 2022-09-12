@@ -19,6 +19,7 @@ import {
   useSpace,
 } from "palette"
 import { useScreenDimensions } from "shared/hooks"
+import { imageSize } from "app/utils/imageSize"
 
 const BOTTOM_SHEET_HEIGHT = 180
 
@@ -30,7 +31,10 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
-  const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, { slug })
+  const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, {
+    slug,
+    imageSize,
+  })
 
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - HEADER_HEIGHT
@@ -102,9 +106,9 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   return (
     <Flex flex={1}>
       <Flex height={imageFlexHeight} px={space(2)}>
-        {image?.url ? (
+        {image?.resized?.url ? (
           <Image
-            source={{ uri: image?.url }}
+            source={{ uri: image.resized.url }}
             style={{ flex: 1, marginBottom: space(3) }}
             resizeMode="contain"
           />
@@ -277,10 +281,12 @@ const ArtworkDetail = ({ size = "small", label, value }: ArtworkDetailProps) => 
 }
 
 const artworkContentQuery = graphql`
-  query ArtworkContentQuery($slug: String!) {
+  query ArtworkContentQuery($slug: String!, $imageSize: Int!) {
     artwork(id: $slug) {
       image {
-        url
+        resized(width: $imageSize, version: "normalized") {
+          url
+        }
         aspectRatio
       }
       internalID

@@ -19,8 +19,8 @@
     "relay": "yarn relay-compiler",
     "relay:watch": "yarn relay --watch",
     "type-check": "yarn relay; yarn tsc",
-    "secrets:generate!": "scripts/secrets-generate-baseline",
-    "trouble": "killall node ; yarn setup:artsy ; yarn install:all ; yarn relay ; yarn start"
+    "trouble": "killall node ; yarn setup:artsy ; yarn install:all ; yarn relay ; yarn start",
+    "secrets:generate!": "scripts/secrets-generate-baseline"
   },
   "resolutions": {
     "@types/react": "^17"

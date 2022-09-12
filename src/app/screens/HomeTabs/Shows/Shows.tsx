@@ -7,11 +7,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
 import { Touchable } from "palette"
 import { extractNodes } from "shared/utils"
+import { imageSize } from "app/utils/imageSize"
 
 export const Shows = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
-  const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID! })
+  const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID!, imageSize })
   const shows = extractNodes(data.partner?.showsConnection)
 
   return (
@@ -41,7 +42,7 @@ export const Shows = () => {
 }
 
 const showsQuery = graphql`
-  query ShowsTabQuery($partnerID: String!) {
+  query ShowsTabQuery($partnerID: String!, $imageSize: Int!) {
     partner(id: $partnerID) {
       showsConnection(first: 100, status: ALL) {
         edges {
@@ -49,7 +50,7 @@ const showsQuery = graphql`
             internalID
             slug
             artworksCount
-            ...ShowListItem_show
+            ...ShowListItem_show @arguments(imageSize: $imageSize)
           }
         }
       }
