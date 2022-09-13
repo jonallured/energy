@@ -6,6 +6,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent } from "app/sharedUI"
+import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   ArrowRightIcon,
@@ -170,7 +171,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           )}
           {!!additionalInformation && (
             <>
-              <Text>{additionalInformation}</Text>
+              <Markdown>{additionalInformation}</Markdown>
               <Spacer mt={2} />
             </>
           )}
