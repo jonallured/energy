@@ -60,7 +60,7 @@ export const getEnvironmentModel = (): EnvironmentModel => ({
   // WE CAN NOT GO LIVE WITH THIS
   // See https://github.com/artsy/eigen/blob/2c4797a6f6395fd2a054570de0f70c37996e4533/src/lib/store/config/EnvironmentModel.tsx#L80
   // Reach out to #practice-mobile for more information
-  activeEnvironment: "staging",
+  activeEnvironment: __DEV__ ? "staging" : "production",
   strings: computed(({ activeEnvironment }) => {
     const result: { [k in EnvironmentKey]: string } = {} as any
 
