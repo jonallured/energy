@@ -1,3 +1,4 @@
+import CookieManager from "@react-native-cookies/cookies"
 import { action, Action, thunk, Thunk } from "easy-peasy"
 import { stringify } from "qs"
 import Config from "react-native-config"
@@ -184,5 +185,6 @@ export const AuthModel: AuthModel = {
   signOut: thunk(async (actions, _, context) => {
     context.getStoreActions().reset()
     actions.setState(authModelInitialState)
+    await CookieManager.clearAll()
   }),
 }

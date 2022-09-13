@@ -71,6 +71,12 @@ jest.mock("react-native-file-viewer", () => ({
   open: jest.fn(),
 }))
 
+jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
+
+beforeEach(() => {
+  require("@react-native-cookies/cookies").clearAll.mockReset()
+})
+
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
