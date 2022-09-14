@@ -15,7 +15,6 @@ import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView } from "app/sharedUI/screens/Artwork/ArtworkWebView"
-import { InstallImage } from "app/sharedUI/screens/InstallImage/InstallImage"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useColor } from "palette"
 
@@ -60,7 +59,6 @@ export const HomeTabsNavigationStack = () => {
         <Screen name="FolioDesignLanguage" component={FolioDesignLanguage} />
         <Screen name="ArtistTabs" component={ArtistTabs} />
         <Screen name="Artwork" component={Artwork} />
-        <Screen name="InstallImage" component={InstallImage} />
         <Screen name="AlbumArtworks" component={AlbumArtworks} />
         <Screen name="ShowTabs" component={ShowTabs} />
         <Screen name="AddArtworkToAlbum" component={AddArtworkToAlbum} />

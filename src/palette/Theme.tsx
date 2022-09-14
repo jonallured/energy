@@ -35,6 +35,7 @@ export type Color =
   | "secondary"
   | "brand"
   // Anything small, texts, icons, etc.
+  | "onBackground"
   | "onBackgroundHigh"
   | "onBackgroundMedium"
   | "onBackgroundLow"
@@ -207,6 +208,7 @@ const THEMES = {
     colors: {
       ...colors,
       background: colors.white100,
+      onBackground: colors.black100,
       onBackgroundHigh: colors.black100,
       onBackgroundMedium: colors.black60,
       onBackgroundLow: colors.black30,

@@ -5,9 +5,10 @@ import { Image } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent } from "app/sharedUI"
+import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent, ImageModal } from "app/sharedUI"
 import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
+import { imageSize } from "app/utils/imageSize"
 import {
   ArrowRightIcon,
   BriefcaseIcon,
@@ -20,7 +21,6 @@ import {
   useSpace,
 } from "palette"
 import { useScreenDimensions } from "shared/hooks"
-import { imageSize } from "app/utils/imageSize"
 
 const BOTTOM_SHEET_HEIGHT = 180
 
@@ -30,6 +30,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const color = useColor()
   const space = useSpace()
   const bottomSheetRef = useRef<BottomSheet>(null)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, {
@@ -106,13 +107,24 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
   return (
     <Flex flex={1}>
+      <ImageModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        uri={image?.resized?.url}
+      />
+
       <Flex height={imageFlexHeight} px={space(2)}>
         {image?.resized?.url ? (
-          <Image
-            source={{ uri: image.resized.url }}
-            style={{ flex: 1, marginBottom: space(3) }}
-            resizeMode="contain"
-          />
+          <Touchable
+            style={{ width: "100%", height: "100%" }}
+            onPress={() => setIsModalVisible(!isModalVisible)}
+          >
+            <Image
+              source={{ uri: image.resized.url }}
+              style={{ flex: 1, width: "100%", marginBottom: space(3) }}
+              resizeMode="contain"
+            />
+          </Touchable>
         ) : (
           <ImagePlaceholder height={400} />
         )}

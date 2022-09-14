@@ -1,6 +1,6 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useState } from "react"
 import { Image } from "react-native"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { ImageModal } from "app/sharedUI"
 import { Flex, Touchable } from "palette"
 
 interface ArtworkImageGridItemProps {
@@ -8,13 +8,17 @@ interface ArtworkImageGridItemProps {
 }
 
 export const ArtworkImageGridItem: React.FC<ArtworkImageGridItemProps> = ({ url }) => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const [modalVisible, setModalVisible] = useState(false)
 
   return (
-    <Touchable testID={url} onPress={() => navigation.navigate("InstallImage", { url })}>
-      <Flex mb={4} pl={2}>
+    <Flex mb={4} pl={2} testID={url}>
+      <ImageModal modalVisible={modalVisible} setModalVisible={setModalVisible} uri={url} />
+      <Touchable
+        style={{ width: "100%", height: "100%" }}
+        onPress={() => setModalVisible(!modalVisible)}
+      >
         <Image source={{ uri: url }} style={{ aspectRatio: 1 }} />
-      </Flex>
-    </Touchable>
+      </Touchable>
+    </Flex>
   )
 }
