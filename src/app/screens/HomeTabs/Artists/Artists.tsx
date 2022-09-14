@@ -1,5 +1,7 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { zip } from "lodash"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtistListItem, ListEmptyComponent } from "app/sharedUI"
@@ -13,23 +15,38 @@ export const Artists = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
+  const counts = artistsData.partner?.allArtistsConnection?.edges?.map(
+    (edge) => edge?.counts?.managedArtworks as string
+  )
+  if (!counts || !artists) {
+    return
+  }
+
+  const items = zip(artists, counts)
 
   return (
     <TabsFlatList
-      data={artists}
-      renderItem={({ item: artist }) => (
-        <Touchable
-          onPress={() =>
-            navigation.navigate("ArtistTabs", {
-              slug: artist.slug,
-            })
-          }
-        >
-          <ArtistListItem artist={artist} />
-        </Touchable>
-      )}
+      data={items}
+      renderItem={({ item }) => {
+        const artist = item[0]!
+        const count = item[1]!
+        return (
+          <Touchable
+            onPress={() =>
+              navigation.navigate("ArtistTabs", {
+                slug: artist.slug,
+              })
+            }
+          >
+            <ArtistListItem artist={artist} count={count} />
+          </Touchable>
+        )
+      }}
       ListEmptyComponent={<ListEmptyComponent text="No artists" />}
-      keyExtractor={(item) => item?.internalID}
+      keyExtractor={(item) => {
+        const artist = item[0]!
+        return artist.internalID
+      }}
     />
   )
 }
@@ -37,9 +54,12 @@ export const Artists = () => {
 export const artistsQuery = graphql`
   query ArtistsQuery($partnerID: String!) {
     partner(id: $partnerID) {
-      allArtistsConnection {
+      allArtistsConnection(includeAllFields: true) {
         totalCount
         edges {
+          counts {
+            managedArtworks
+          }
           node {
             slug
             internalID

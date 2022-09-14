@@ -4,6 +4,7 @@ import { Avatar, Flex, Text } from "palette"
 
 interface ArtistListItemProps {
   artist: ArtistListItem_artist$key
+  count: string
 }
 
 export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
@@ -14,7 +15,7 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
       <Flex mx={1}>
         <Text variant="xs">{artist.name}</Text>
         <Text variant="xs" color="onBackgroundMedium">
-          {artist.counts?.artworks} Artworks
+          {props.count} Artworks
         </Text>
       </Flex>
     </Flex>
@@ -28,8 +29,5 @@ const ArtistListItemFragment = graphql`
     slug
     imageUrl
     initials
-    counts {
-      artworks
-    }
   }
 `

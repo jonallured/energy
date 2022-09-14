@@ -4,15 +4,22 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
 import { useSpace } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
-  const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+
+  const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
+    partnerID,
+    slug,
+  })
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const artworks = extractNodes(artworksData.artist?.artworksConnection)
+  const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
+
   const space = useSpace()
 
   return (
@@ -44,10 +51,9 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
 }
 
 export const artistArtworksQuery = graphql`
-  query ArtistArtworksQuery($slug: String!) {
-    artist(id: $slug) {
-      name
-      artworksConnection(first: 100) {
+  query ArtistArtworksQuery($partnerID: String!, $slug: String!) {
+    partner(id: $partnerID) {
+      artworksConnection(first: 100, artistID: $slug, includeUnpublished: true) {
         edges {
           node {
             internalID

@@ -17,7 +17,7 @@ describe("ArtistArtworks", () => {
 })
 
 const mockProps = {
-  Artist: () => ({
+  Partner: () => ({
     artworksConnection: {
       edges: range(10).map((i) => ({
         node: {

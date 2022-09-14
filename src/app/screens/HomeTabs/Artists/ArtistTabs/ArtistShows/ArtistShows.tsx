@@ -3,15 +3,21 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
+import { imageSize } from "app/utils/imageSize"
 import { TabsFlatList } from "app/wrappers"
 import { Touchable } from "palette"
 import { extractNodes } from "shared/utils"
-import { imageSize } from "app/utils/imageSize"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, { slug, imageSize })
-  const shows = extractNodes(showsData.artist?.showsConnection)
+  const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, {
+    partnerID,
+    slug,
+    imageSize,
+  })
+  const shows = extractNodes(showsData.partner?.showsConnection)
 
   return (
     <TabsFlatList
@@ -34,9 +40,9 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
 }
 
 const artistShowsQuery = graphql`
-  query ArtistShowsQuery($slug: String!, $imageSize: Int!) {
-    artist(id: $slug) {
-      showsConnection(first: 100) {
+  query ArtistShowsQuery($partnerID: String!, $slug: String!, $imageSize: Int!) {
+    partner(id: $partnerID) {
+      showsConnection(first: 100, status: ALL, artistID: $slug) {
         edges {
           node {
             internalID
