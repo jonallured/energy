@@ -1,7 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { zip } from "lodash"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtistListItem, ListEmptyComponent } from "app/sharedUI"

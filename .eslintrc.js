@@ -54,6 +54,7 @@ module.exports = {
     "no-useless-escape": OFF,
     "react/react-in-jsx-scope": OFF,
     "react-native/no-inline-styles": OFF,
+    "react/jsx-curly-brace-presence": ERR,
     "@typescript-eslint/no-unused-vars": OFF,
     "@typescript-eslint/no-explicit-any": OFF,
     "@typescript-eslint/no-var-requires": OFF,

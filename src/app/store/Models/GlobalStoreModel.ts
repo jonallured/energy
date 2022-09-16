@@ -5,6 +5,7 @@ import { AuthModel } from "./AuthModel"
 import { ConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
 import { PresentationModeModel } from "./PresenationModeModel"
+import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
 import { assignDeep } from "../../../shared/utils/persistence"
 
 type ActiveMode = "viewer" | "manager"
@@ -14,7 +15,7 @@ interface GlobalStoreStateModel {
   albums: AlbumsModel
   devicePrefs: DevicePrefsModel
   presentationMode: PresentationModeModel
-
+  selectMode: SelectModeModel
   activePartnerID: string | null
   activeMode: ActiveMode
 }
@@ -35,7 +36,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
   albums: AlbumsModel,
   devicePrefs: getDevicePrefsModel(),
   presentationMode: PresentationModeModel,
-
+  selectMode: getSelectModeModel(),
   activePartnerID: null,
   activeMode: "viewer",
 

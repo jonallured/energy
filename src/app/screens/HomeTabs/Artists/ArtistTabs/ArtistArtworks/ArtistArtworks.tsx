@@ -6,7 +6,7 @@ import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
-import { useSpace } from "palette"
+import { Button, Flex, useSpace } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
@@ -20,33 +20,54 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
 
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
+
   const space = useSpace()
 
   return (
-    <TabsScrollView>
-      <MasonryList
-        testID="artist-artwork-list"
-        contentContainerStyle={{
-          marginTop: artworks.length ? space(2) : 0,
-          paddingRight: space(2),
-        }}
-        numColumns={2}
-        data={artworks}
-        renderItem={({ item: artwork }) => (
-          <ArtworkGridItem
-            artwork={artwork}
-            onPress={() =>
-              navigation.navigate("Artwork", {
-                slug: artwork.slug,
-                contextArtworkSlugs: artworkSlugs,
-              })
-            }
-          />
-        )}
-        keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={<ListEmptyComponent text={"No artworks"} />}
-      />
-    </TabsScrollView>
+    <>
+      <TabsScrollView>
+        <MasonryList
+          testID="artist-artwork-list"
+          contentContainerStyle={{
+            marginTop: artworks.length ? space(2) : 0,
+            paddingRight: space(2),
+          }}
+          numColumns={2}
+          data={artworks}
+          renderItem={({ item: artwork }) => (
+            <ArtworkGridItem
+              artwork={artwork}
+              onPress={() =>
+                navigation.navigate("Artwork", {
+                  slug: artwork.slug,
+                  contextArtworkSlugs: artworkSlugs,
+                })
+              }
+            />
+          )}
+          keyExtractor={(item) => item.internalID}
+          ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
+        />
+      </TabsScrollView>
+      {isSelectModeActive && (
+        <Flex
+          position="absolute"
+          zIndex={3000}
+          bottom={120}
+          width="100%"
+          justifyContent="space-between"
+          flexDirection="row"
+          px={2}
+        >
+          <Button onPress={() => console.log("Select All")}>Select All</Button>
+          <Button onPress={() => console.log("Cancel")}>Cancel</Button>
+        </Flex>
+      )}
+      <Flex position="absolute" zIndex={100} bottom={50} width="100%" alignItems="center">
+        <Button onPress={() => GlobalStore.actions.selectMode.toggleSelectMode()}>Select</Button>
+      </Flex>
+    </>
   )
 }
 
