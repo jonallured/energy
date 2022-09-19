@@ -11,8 +11,10 @@ export const DevMenu = () => {
   const currentEnvironment = GlobalStore.useAppState((s) => s.config.environment.activeEnvironment)
 
   useEffect(() => {
-    // eslint-disable-next-line
-    NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
+    if (__DEV__) {
+      // eslint-disable-next-line
+      NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
+    }
   }, [])
 
   useEffect(() => {
