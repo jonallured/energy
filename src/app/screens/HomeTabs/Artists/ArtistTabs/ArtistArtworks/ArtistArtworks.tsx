@@ -60,8 +60,12 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           flexDirection="row"
           px={2}
         >
-          <Button onPress={() => console.log("Select All")}>Select All</Button>
-          <Button onPress={() => console.log("Cancel")}>Cancel</Button>
+          <Button variant="fillGray" size="small" onPress={() => console.log("Select All")}>
+            Select All
+          </Button>
+          <Button variant="fillGray" size="small" onPress={() => console.log("Cancel")}>
+            Cancel
+          </Button>
         </Flex>
       )}
       <Flex position="absolute" zIndex={100} bottom={50} width="100%" alignItems="center">
