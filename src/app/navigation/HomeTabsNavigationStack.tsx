@@ -24,7 +24,7 @@ export type HomeTabsScreens = {
   DarkModeSettings: undefined
   FolioDesignLanguage: undefined
   EditPresentationMode: undefined
-  ArtistTabs: { slug: string }
+  ArtistTabs: { slug: string; name: string }
   InstallImage: { url: string }
   InsteadOfStorybook: undefined
   Artwork: { slug: string; contextArtworkSlugs?: string[] }

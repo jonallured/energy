@@ -34,6 +34,7 @@ export const Artists = () => {
             onPress={() =>
               navigation.navigate("ArtistTabs", {
                 slug: artist.slug,
+                name: artist.name,
               })
             }
           >
@@ -60,6 +61,7 @@ export const artistsQuery = graphql`
             managedArtworks
           }
           node {
+            name
             slug
             internalID
             ...ArtistListItem_artist
