@@ -3,8 +3,9 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { intersection } from "lodash"
 import { useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
+import { CreateOrEditAlbumChooseArtworksQuery } from "__generated__/CreateOrEditAlbumChooseArtworksQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { Header } from "app/sharedUI"
@@ -22,8 +23,16 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 export const CreateOrEditAlbumChooseArtworks = () => {
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, { slug })
-  const artworks = extractNodes(artworksData.artist?.artworksConnection)
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
+    partnerID,
+    slug,
+  })
+  const artworks = extractNodes(artworksData.partner?.artworksConnection)
+  const artistNameData = useLazyLoadQuery<CreateOrEditAlbumChooseArtworksQuery>(artistNameQuery, {
+    slug,
+  })
+
   const safeAreaInsets = useSafeAreaInsets()
   const space = useSpace()
 
@@ -106,7 +115,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
       />
       <Flex px={2} pt={1} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>
         <Text variant="xs" color="black60" mb={1} textAlign="center">
-          Selected artworks for {artworksData.artist?.name}: {selectedArtworkIds.length}
+          Selected artworks for {artistNameData.artist?.name}: {selectedArtworkIds.length}
         </Text>
         <Button
           block
@@ -119,3 +128,11 @@ export const CreateOrEditAlbumChooseArtworks = () => {
     </>
   )
 }
+
+export const artistNameQuery = graphql`
+  query CreateOrEditAlbumChooseArtworksQuery($slug: String!) {
+    artist(id: $slug) {
+      name
+    }
+  }
+`
