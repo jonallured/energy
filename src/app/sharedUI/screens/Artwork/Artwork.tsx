@@ -65,7 +65,10 @@ export const Artwork = () => {
       <Header
         safeAreaInsets
         rightElements={
-          <Touchable onPress={handlePresentModalPress}>
+          <Touchable
+            onPress={handlePresentModalPress}
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+          >
             <MoreIcon />
           </Touchable>
         }
