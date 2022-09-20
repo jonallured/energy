@@ -18,7 +18,7 @@ export const Artists = () => {
     (edge) => edge?.counts?.managedArtworks as string
   )
   if (!counts || !artists) {
-    return
+    return null
   }
 
   const items = zip(artists, counts)

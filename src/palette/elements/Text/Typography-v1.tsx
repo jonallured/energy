@@ -20,6 +20,7 @@ import {
 } from "styled-system"
 import { SansProps } from "./Sans"
 import { SerifProps } from "./Serif"
+// @ts-expect-error
 import { _test_THEMES, themeProps } from "../../Theme"
 
 export interface FullTextProps

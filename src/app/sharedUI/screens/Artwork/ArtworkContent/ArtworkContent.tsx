@@ -110,7 +110,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
       <ImageModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
-        uri={image?.resized?.url}
+        uri={image?.resized?.url ?? ""}
       />
 
       <Flex height={imageFlexHeight} px={space(2)}>

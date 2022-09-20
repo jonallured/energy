@@ -1,4 +1,5 @@
-import { useNavigation } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { DevMenu } from "app/screens/Dev/DevMenu"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"

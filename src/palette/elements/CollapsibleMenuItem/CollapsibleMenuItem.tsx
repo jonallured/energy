@@ -64,6 +64,7 @@ export const CollapsibleMenuItem = forwardRef<
     )
 
     return (
+      // @ts-expect-error
       <Flex ref={componentRef} collapsable={false}>
         <Touchable
           onPress={() => {

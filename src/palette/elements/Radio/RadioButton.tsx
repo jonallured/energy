@@ -96,8 +96,10 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
             >
               {!!selected &&
                 (!!disabled ? (
+                  // @ts-expect-error
                   <DisabledDot size={radioButtonSize} />
                 ) : (
+                  // @ts-expect-error
                   <RadioDot size={radioButtonSize} />
                 ))}
             </CssTransition>
@@ -147,9 +149,18 @@ interface RadioDotProps {
 // properties with styled-component.
 // Height, Width, and Border Radius calculations are used to maintain the size of the white dot when scaling
 export const RadioDot = styled.View.attrs<RadioDotProps>({})`
-  height: ${({ size }) => size * 0.625};
-  width: ${({ size }) => size * 0.625};
-  border-radius: ${({ size }) => `${size * 0.3125}px`};
+  height: ${({
+    // @ts-expect-error
+    size,
+  }) => size * 0.625};
+  width: ${({
+    // @ts-expect-error
+    size,
+  }) => size * 0.625};
+  border-radius: ${({
+    // @ts-expect-error
+    size,
+  }) => `${size * 0.3125}px`};
   background-color: white;
 `
 

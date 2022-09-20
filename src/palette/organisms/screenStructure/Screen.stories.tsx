@@ -1,3 +1,4 @@
+// @ts-expect-error
 import { ComponentMeta, ComponentStory } from "@storybook/react-native"
 import { Button, Flex, Input, Text } from "palette"
 import { Screen } from "./Screen"

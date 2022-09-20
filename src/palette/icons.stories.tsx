@@ -1,5 +1,7 @@
+// @ts-expect-error
 import { storiesOf } from "@storybook/react-native"
 import { StyleSheet, View } from "react-native"
+// @ts-expect-error
 import { List } from "storybook/helpers"
 import { Text } from "./elements/Text"
 

@@ -26,10 +26,10 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
         }}
         numColumns={2}
         data={installs}
+        keyExtractor={(item, index) => item?.internalID ?? `${index}`}
         renderItem={({ item: showInstall }) => (
-          <ArtworkImageGridItem url={showInstall.resized.url} />
+          <ArtworkImageGridItem url={showInstall?.resized?.url ?? ""} />
         )}
-        keyExtractor={(item) => item.internalID!}
         ListEmptyComponent={<ListEmptyComponent text="No show installs shots to display" />}
       />
     </TabsScrollView>

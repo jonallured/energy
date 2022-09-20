@@ -289,9 +289,11 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
 
   if (theme === "v5") {
+    // @ts-expect-error
     return THEMES.v5
   }
   if (theme === "v5dark") {
+    // @ts-expect-error
     return THEMES.v5dark
   }
 
