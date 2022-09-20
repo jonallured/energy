@@ -86,6 +86,8 @@ derived_data/*
 
 metaflags.json
 
+.vscode/settings.json
+
 # ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
