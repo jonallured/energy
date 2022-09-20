@@ -8,14 +8,14 @@ interface ArtworkImageGridItemProps {
 }
 
 export const ArtworkImageGridItem: React.FC<ArtworkImageGridItemProps> = ({ url }) => {
-  const [modalVisible, setModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   return (
     <Flex mb={4} pl={2} testID={url}>
-      <ImageModal modalVisible={modalVisible} setModalVisible={setModalVisible} uri={url} />
+      <ImageModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} uri={url} />
       <Touchable
         style={{ width: "100%", height: "100%" }}
-        onPress={() => setModalVisible(!modalVisible)}
+        onPress={() => setIsModalVisible(!isModalVisible)}
       >
         <Image source={{ uri: url }} style={{ aspectRatio: 1 }} />
       </Touchable>
