@@ -1,10 +1,10 @@
 import { action, Action, State } from "easy-peasy"
 import { DeepPartial } from "global"
-import { AlbumsModel } from "./AlbumsModel"
-import { AuthModel } from "./AuthModel"
-import { ConfigModel } from "./ConfigModel"
+import { AlbumsModel, getAlbumsModel } from "./AlbumsModel"
+import { AuthModel, getAuthModel } from "./AuthModel"
+import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
-import { PresentationModeModel } from "./PresenationModeModel"
+import { getPresentationModeModel, PresentationModeModel } from "./PresenationModeModel"
 import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
 import { assignDeep } from "../../../shared/utils/persistence"
 
@@ -30,12 +30,12 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   __inject: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
 }
 
-export const GlobalStoreModel: GlobalStoreModel = {
-  auth: AuthModel,
-  config: ConfigModel,
-  albums: AlbumsModel,
+export const getGlobalStoreModel = (): GlobalStoreModel => ({
+  auth: getAuthModel(),
+  config: getConfigModel(),
+  albums: getAlbumsModel(),
   devicePrefs: getDevicePrefsModel(),
-  presentationMode: PresentationModeModel,
+  presentationMode: getPresentationModeModel(),
   selectMode: getSelectModeModel(),
   activePartnerID: null,
   activeMode: "viewer",
@@ -60,6 +60,6 @@ export const GlobalStoreModel: GlobalStoreModel = {
     : action(() => {
         console.error("Do not use this function outside of tests!!")
       }),
-}
+})
 
 export type GlobalStoreState = State<GlobalStoreModel>

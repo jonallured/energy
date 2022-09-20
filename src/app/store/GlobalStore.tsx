@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
 import { Platform } from "react-native"
 import { DeepPartial } from "global"
-import { GlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
+import { GlobalStoreModel, getGlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 
 const STORE_VERSION = 0
 
@@ -40,7 +40,7 @@ const asyncStorage = {
 
 function createGlobalStore() {
   const store = createStore<GlobalStoreModel>(
-    persist(GlobalStoreModel, {
+    persist(getGlobalStoreModel(), {
       storage: asyncStorage,
     }),
     {

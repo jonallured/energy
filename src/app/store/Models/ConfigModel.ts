@@ -6,6 +6,6 @@ interface ConfigModelState {
 
 export type ConfigModel = ConfigModelState
 
-export const ConfigModel: ConfigModel = {
+export const getConfigModel = (): ConfigModel => ({
   environment: getEnvironmentModel(),
-}
+})

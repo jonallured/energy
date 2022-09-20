@@ -27,7 +27,7 @@ export interface AlbumsModel {
   clearSelectedArtworksForEditAlbum: Action<this>
 }
 
-export const AlbumsModel: AlbumsModel = {
+export const getAlbumsModel = (): AlbumsModel => ({
   sessionState: {
     selectedArtworksForNewAlbum: {},
     selectedArtworksForExistingAlbum: {},
@@ -75,4 +75,4 @@ export const AlbumsModel: AlbumsModel = {
   clearSelectedArtworksForEditAlbum: action((state) => {
     state.sessionState.selectedArtworksForExistingAlbum = {}
   }),
-}
+})

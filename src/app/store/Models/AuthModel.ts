@@ -46,7 +46,7 @@ export interface AuthModel extends AuthModelState {
   signOut: Thunk<this, void, {}, GlobalStoreModel>
 }
 
-export const AuthModel: AuthModel = {
+export const getAuthModel = (): AuthModel => ({
   ...authModelInitialState,
 
   setState: action((state, payload) => Object.assign(state, payload)),
@@ -84,7 +84,7 @@ export const AuthModel: AuthModel = {
     })}`
 
     try {
-      const res = await await fetch(tokenURL, {
+      const res = await fetch(tokenURL, {
         headers: {
           "User-Agent": getUserAgent(),
         },
@@ -187,4 +187,4 @@ export const AuthModel: AuthModel = {
     actions.setState(authModelInitialState)
     await CookieManager.clearAll()
   }),
-}
+})
