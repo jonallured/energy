@@ -1,6 +1,7 @@
 import { action, Action, State } from "easy-peasy"
 import { DeepPartial } from "global"
 import { AlbumsModel, getAlbumsModel } from "./AlbumsModel"
+import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
@@ -14,6 +15,7 @@ interface GlobalStoreStateModel {
   config: ConfigModel
   albums: AlbumsModel
   devicePrefs: DevicePrefsModel
+  artsyPrefs: ArtsyPrefsModel
   presentationMode: PresentationModeModel
   selectMode: SelectModeModel
   activePartnerID: string | null
@@ -34,6 +36,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   auth: getAuthModel(),
   config: getConfigModel(),
   albums: getAlbumsModel(),
+  artsyPrefs: getArtsyPrefsModel(),
   devicePrefs: getDevicePrefsModel(),
   presentationMode: getPresentationModeModel(),
   selectMode: getSelectModeModel(),

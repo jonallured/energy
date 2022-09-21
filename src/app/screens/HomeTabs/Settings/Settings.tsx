@@ -1,4 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useState } from "react"
+import { getVersion } from "react-native-device-info"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { DevMenu } from "app/screens/Dev/DevMenu"
 import { Header } from "app/sharedUI"
@@ -11,6 +13,10 @@ export const Settings = () => {
   const isPresenationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresenationModeEnabled
   )
+  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+
+  const appVersion = getVersion()
+  const [tapCount, updateTapCount] = useState(0)
 
   return (
     <Screen>
@@ -59,8 +65,26 @@ export const Settings = () => {
         <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
           Instead Of Storybook
         </Button>
-        <Spacer y={1} />
-        <DevMenu />
+        <Spacer m={1} />
+        <Touchable
+          onPress={() => {
+            if (tapCount < 5) updateTapCount(tapCount + 1)
+            else {
+              GlobalStore.actions.artsyPrefs.switchIsUserDev()
+              updateTapCount(0)
+            }
+          }}
+        >
+          <Flex alignItems="center">
+            <Text variant="xs" color="onBackgroundMedium">
+              App version: {appVersion}
+            </Text>
+            <Text variant="xs" color="onBackgroundMedium">
+              {isUserDev && "on Developer mode"}
+            </Text>
+          </Flex>
+        </Touchable>
+        {isUserDev && <DevMenu />}
       </Screen.Body>
     </Screen>
   )

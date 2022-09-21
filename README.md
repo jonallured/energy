@@ -48,6 +48,7 @@ You can learn more about this work from [our blog][footer_blog] and by following
 [our API][footer_api]. If you're interested in a career at Artsy, read through
 our [job postings][footer_jobs]!
 
+
 [footer_website]: https://www.artsy.net/
 [footer_principles]: https://github.com/artsy/README/blob/main/culture/engineering-principles.md
 [footer_open]: https://github.com/artsy/README/blob/main/culture/engineering-principles.md#open-source-by-default
