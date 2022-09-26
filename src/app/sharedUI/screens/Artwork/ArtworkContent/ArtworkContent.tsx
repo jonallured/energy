@@ -228,12 +228,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               borderColor="onBackgroundLow"
               borderBottomColor={exhibitionHistory && literature ? "background" : "onBackgroundLow"}
             >
-              <ArtworkDetail size="big" label="Exhibition history" value={exhibitionHistory} />
+              <ArtworkDetail label="Exhibition history" value={exhibitionHistory} />
             </Flex>
           )}
           {!!literature && (
             <Flex px={2} pt={2} pb={1} border={1} borderColor="onBackgroundLow">
-              <ArtworkDetail size="big" label="Bibliography" value={literature} />
+              <ArtworkDetail label="Bibliography" value={literature} />
             </Flex>
           )}
           <Spacer mt={2} />
