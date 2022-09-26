@@ -27,7 +27,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
           }}
         />
         <Text italic variant="xs" color="black60" mt={1}>
-          <AvailabilityDot availability={artwork.availability} /> {artwork.title}{" "}
+          <AvailabilityDot availability={artwork.availability} /> {artwork.title}
           {!!artwork.date && (
             <>
               ,{" "}
