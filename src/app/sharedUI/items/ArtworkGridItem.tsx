@@ -27,10 +27,15 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
           }}
         />
         <Text italic variant="xs" color="black60" mt={1}>
-          <AvailabilityDot availability={artwork.availability} /> {artwork.title},{" "}
-          <Text variant="xs" color="black60">
-            {artwork.date}
-          </Text>
+          <AvailabilityDot availability={artwork.availability} /> {artwork.title}{" "}
+          {!!artwork.date && (
+            <>
+              ,{" "}
+              <Text variant="xs" color="onBackgroundMedium">
+                {artwork.date}
+              </Text>
+            </>
+          )}
         </Text>
       </Flex>
       {!disable && selectedToAdd && (

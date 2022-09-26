@@ -155,7 +155,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
         >
           <Text>{artistNames}</Text>
           <Text italic color="onBackgroundMedium">
-            {title}, <Text color="onBackgroundMedium">{date}</Text>
+            {title}
+            {!!date && (
+              <>
+                , <Text color="onBackgroundMedium">{date}</Text>
+              </>
+            )}
           </Text>
           <Spacer mt={0.5} />
           {!(isPriceHidden && !price) && (
