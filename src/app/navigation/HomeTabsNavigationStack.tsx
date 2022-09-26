@@ -6,6 +6,10 @@ import { AlbumArtworks } from "app/screens/HomeTabs/Albums/AlbumArtworks"
 import { CreateOrEditAlbum } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
 import { CreateOrEditAlbumChooseArtist } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
 import { CreateOrEditAlbumChooseArtworks } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtworks"
+import { EmailScreen } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/EmailScreen"
+import { MultipleArtworksAndArtists } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/MultipleArtworksAndArtists"
+import { MultipleArtworksBySameArtist } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/MultipleArtworksBySameArtist"
+import { OneArtwork } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/OneArtwork"
 import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { HomeTabs } from "app/screens/HomeTabs/HomeTabs"
 import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings"
@@ -21,6 +25,10 @@ import { useColor } from "palette"
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined
   Settings: undefined
+  EmailScreen: undefined
+  OneArtwork: undefined
+  MultipleArtworksBySameArtist: undefined
+  MultipleArtworksAndArtists: undefined
   DarkModeSettings: undefined
   FolioDesignLanguage: undefined
   EditPresentationMode: undefined
@@ -53,6 +61,10 @@ export const HomeTabsNavigationStack = () => {
         initialRouteName="HomeTabs"
       >
         <Screen name="HomeTabs" component={HomeTabs} />
+        <Screen name="EmailScreen" component={EmailScreen} />
+        <Screen name="OneArtwork" component={OneArtwork} />
+        <Screen name="MultipleArtworksBySameArtist" component={MultipleArtworksBySameArtist} />
+        <Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
         <Screen name="Settings" component={Settings} />
         <Screen name="DarkModeSettings" component={DarkModeSettings} />
         <Screen name="InsteadOfStorybook" component={InsteadOfStorybook} />

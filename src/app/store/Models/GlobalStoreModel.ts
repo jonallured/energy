@@ -5,21 +5,23 @@ import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
+import { EmailModel, getEmailModel } from "./EmailModel"
 import { getPresentationModeModel, PresentationModeModel } from "./PresenationModeModel"
 import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
 import { assignDeep } from "../../../shared/utils/persistence"
 
 type ActiveMode = "viewer" | "manager"
 interface GlobalStoreStateModel {
+  activeMode: ActiveMode
+  activePartnerID: string | null
+  albums: AlbumsModel
+  artsyPrefs: ArtsyPrefsModel
   auth: AuthModel
   config: ConfigModel
-  albums: AlbumsModel
   devicePrefs: DevicePrefsModel
-  artsyPrefs: ArtsyPrefsModel
+  email: EmailModel
   presentationMode: PresentationModeModel
   selectMode: SelectModeModel
-  activePartnerID: string | null
-  activeMode: ActiveMode
 }
 
 export interface GlobalStoreModel extends GlobalStoreStateModel {
@@ -33,26 +35,25 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
-  auth: getAuthModel(),
-  config: getConfigModel(),
+  activeMode: "viewer",
+  activePartnerID: null,
   albums: getAlbumsModel(),
   artsyPrefs: getArtsyPrefsModel(),
+  auth: getAuthModel(),
+  config: getConfigModel(),
   devicePrefs: getDevicePrefsModel(),
+  email: getEmailModel(),
   presentationMode: getPresentationModeModel(),
+  reset: action((state) => {
+    state.activePartnerID = null
+    state.activeMode = "viewer"
+  }),
   selectMode: getSelectModeModel(),
-  activePartnerID: null,
-  activeMode: "viewer",
-
   setActivePartnerID: action((state, partnerID) => {
     state.activePartnerID = partnerID
   }),
   setActiveMode: action((state, mode) => {
     state.activeMode = mode
-  }),
-
-  reset: action((state) => {
-    state.activePartnerID = null
-    state.activeMode = "viewer"
   }),
 
   // for testing only. noop otherwise.

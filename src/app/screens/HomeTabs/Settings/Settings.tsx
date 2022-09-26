@@ -23,11 +23,13 @@ export const Settings = () => {
       <Screen.RawHeader>
         <Header label="Settings" />
       </Screen.RawHeader>
-      <Screen.Body>
+      <Screen.Body fullwidth>
         <Spacer y={2} />
-        <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
-          Dark Mode
-        </Button>
+        <Flex mx={2}>
+          <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
+            Dark Mode
+          </Button>
+        </Flex>
         <Spacer y={2} />
         <SwitchContainer
           label="Presentation Mode"
@@ -50,21 +52,31 @@ export const Settings = () => {
             </Text>
           </Flex>
         </Touchable>
-        <Spacer m={1} />
-        <Separator />
+        <Separator my={2} />
 
-        <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
-          Log out
-        </Button>
+        <Touchable onPress={() => navigation.navigate("EmailScreen")}>
+          <Flex mx={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Text>Email</Text>
+            <ArrowRightIcon />
+          </Flex>
+        </Touchable>
+        <Separator my={2} />
 
-        <Spacer y={1} />
-        <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
-          Folio Design Language
-        </Button>
-        <Spacer y={1} />
-        <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
-          Instead Of Storybook
-        </Button>
+        <Spacer m={2} />
+        <Flex mx={2}>
+          <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
+            Log out
+          </Button>
+
+          <Spacer y={1} />
+          <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
+            Folio Design Language
+          </Button>
+          <Spacer y={1} />
+          <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
+            Instead Of Storybook
+          </Button>
+        </Flex>
         <Spacer m={1} />
         <Touchable
           onPress={() => {
