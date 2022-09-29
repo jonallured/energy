@@ -37,7 +37,7 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
           />
         )}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<ListEmptyComponent text={"No documents"} />}
+        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
       />
     </TabsScrollView>
   )
