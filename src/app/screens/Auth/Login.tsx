@@ -176,7 +176,7 @@ export const LoginScreen = () => {
             value={values.password}
             error={errors.password}
           />
-          {!showOtpInputField && (
+          {showOtpInputField && (
             <>
               <Spacer mt={2} />
               <Input
