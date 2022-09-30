@@ -5,7 +5,6 @@ import {
 } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { ReactElement, useCallback, useMemo, useRef } from "react"
-import { Dimensions } from "react-native"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header, ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -46,9 +45,7 @@ export const Artwork = () => {
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null)
 
-  const height = Dimensions.get("window").height
-
-  const snapPoints = useMemo(() => [height > 800 ? "65%" : "75%"], [])
+  const snapPoints = useMemo(() => [500], [])
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present()
