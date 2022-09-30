@@ -32,8 +32,6 @@ const PLAY_STORE_SCHEME_URL = "artsy://"
 const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
 const APP_SCHEME_URL = "artsy:///"
 
-const initialValues: LoginSchema = { email: "", password: "", otp: "" }
-
 export const LoginScreen = () => {
   const color = useColor()
   const insets = useSafeAreaInsets()
@@ -41,6 +39,13 @@ export const LoginScreen = () => {
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
   const otpInputRef = useRef<Input>(null)
+  const initialValues: LoginSchema = __DEV__
+    ? {
+        email: GlobalStore.useAppState((state) => state.auth.devEmail),
+        password: GlobalStore.useAppState((state) => state.auth.devPassword),
+        otp: "",
+      }
+    : { email: "", password: "", otp: "" }
 
   const [showOtpInputField, setShowOtpInputField] = useState(false)
 
@@ -124,6 +129,7 @@ export const LoginScreen = () => {
             keyboardType="email-address"
             onChangeText={(text) => {
               handleChange("email")(text.trim())
+              GlobalStore.actions.auth.saveDevEmail(text)
             }}
             onSubmitEditing={() => {
               validateForm()
@@ -149,6 +155,7 @@ export const LoginScreen = () => {
             autoCorrect={false}
             onChangeText={(text) => {
               // Hide error when the user starts to type again
+              GlobalStore.actions.auth.saveDevPassword(text)
               if (errors.password) {
                 setErrors({
                   password: undefined,
@@ -169,7 +176,7 @@ export const LoginScreen = () => {
             value={values.password}
             error={errors.password}
           />
-          {showOtpInputField && (
+          {!showOtpInputField && (
             <>
               <Spacer mt={2} />
               <Input
@@ -185,6 +192,9 @@ export const LoginScreen = () => {
                     validateForm()
                   }
                   handleChange("otp")(text)
+                  if (__DEV__ && text.length > 5) {
+                    handleSubmit()
+                  }
                 }}
                 onSubmitEditing={handleSubmit}
                 onBlur={() => validateForm()}
@@ -199,7 +209,7 @@ export const LoginScreen = () => {
               />
             </>
           )}
-          {!showOtpInputField && (
+          {/* {!showOtpInputField && (
             <>
               <Spacer mt={1} />
               <TouchableOpacity
@@ -212,7 +222,7 @@ export const LoginScreen = () => {
                 </Text>
               </TouchableOpacity>
             </>
-          )}
+          )} */}
           <Spacer mb={4} />
           <Button
             onPress={handleSubmit}
