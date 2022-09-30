@@ -1,9 +1,9 @@
 import { Image, ImageProps } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"
+import { imageSize } from "app/utils/imageSize"
 import { useScreenDimensions } from "shared/hooks"
 import { ImagePlaceholder } from "../molecules"
-import { imageSize } from "app/utils/imageSize"
 
 interface AlbumListImageProps {
   slug: string

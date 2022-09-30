@@ -4,10 +4,10 @@ import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { imageSize } from "app/utils/imageSize"
 import { TabsFlatList } from "app/wrappers"
 import { Touchable } from "palette"
 import { extractNodes } from "shared/utils"
-import { imageSize } from "app/utils/imageSize"
 
 export const Shows = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

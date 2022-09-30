@@ -4,13 +4,13 @@ import { ShowInstalls } from "./ShowInstalls"
 
 describe("ShowInstalls", () => {
   it("renders ListEmptyComponent", async () => {
-    const { getByText } = renderWithWrappers(<ShowInstalls slug={"someSlug"} />)
+    const { getByText } = renderWithWrappers(<ShowInstalls slug="someSlug" />)
     await mockEnvironmentPayloadMaybe(mockPropsEmptyList)
     expect(getByText("No show installs shots to display")).toBeTruthy()
   })
 
   it("renders the list of installs", async () => {
-    const { getByTestId } = renderWithWrappers(<ShowInstalls slug={"someSlug"} />)
+    const { getByTestId } = renderWithWrappers(<ShowInstalls slug="someSlug" />)
     await mockEnvironmentPayloadMaybe(mockProps)
     images.forEach((image) => {
       expect(getByTestId(image.resized.url)).toBeTruthy()

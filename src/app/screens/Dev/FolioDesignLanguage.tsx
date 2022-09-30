@@ -74,7 +74,7 @@ const ColorBlock = ({ value }: { value: Color }) => {
 
   return (
     <Flex mb={0.5} flex={1} mt={1}>
-      <Flex backgroundColor={value} borderWidth={1} borderColor={"black30"} p={0.5}>
+      <Flex backgroundColor={value} borderWidth={1} borderColor="black30" p={0.5}>
         <Text color={on[value]}>{value}</Text>
         <Text variant="sm" color={on[value]}>
           {color(value)}

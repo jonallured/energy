@@ -4,12 +4,12 @@ import { ArtworkItem } from "./ArtworkItem"
 
 describe("ArtworkItem", () => {
   it("renders without throwing an error", async () => {
-    renderWithWrappers(<ArtworkItem artworkId={"some-id"} />)
+    renderWithWrappers(<ArtworkItem artworkId="some-id" />)
     await mockEnvironmentPayloadMaybe(mockProps)
   })
 
   it("renders the artwork item", async () => {
-    const { queryByText } = renderWithWrappers(<ArtworkItem artworkId={"some-id"} />)
+    const { queryByText } = renderWithWrappers(<ArtworkItem artworkId="some-id" />)
 
     await mockEnvironmentPayloadMaybe(mockProps)
 

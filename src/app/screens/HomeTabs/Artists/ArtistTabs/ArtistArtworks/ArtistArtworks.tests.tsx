@@ -5,12 +5,12 @@ import { ArtistArtworks } from "./ArtistArtworks"
 
 describe("ArtistArtworks", () => {
   it("renders without throwing an error", async () => {
-    renderWithWrappers(<ArtistArtworks slug={"some"} />)
+    renderWithWrappers(<ArtistArtworks slug="some" />)
     await mockEnvironmentPayloadMaybe(mockProps)
   })
 
   it("renders the list of works", async () => {
-    const { getByTestId } = renderWithWrappers(<ArtistArtworks slug={"some"} />)
+    const { getByTestId } = renderWithWrappers(<ArtistArtworks slug="some" />)
     await mockEnvironmentPayloadMaybe(mockProps)
     expect(getByTestId("artist-artwork-list").props.data).toHaveLength(10)
   })
