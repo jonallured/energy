@@ -21,8 +21,8 @@ export const OneArtwork = () => {
             One Artwork
           </Text>
           <Input
-            placeholder="More information about $title by $artist."
             multiline
+            defaultValue={GlobalStore.useAppState((state) => state.email.oneArtworkSubject)}
             onChangeText={(e) => GlobalStore.actions.email.saveOneArtworkSubject(e)}
           />
           <Text m={1} color="onBackgroundMedium">

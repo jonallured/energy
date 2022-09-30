@@ -21,8 +21,10 @@ export const MultipleArtworksBySameArtist = () => {
             Multiple artworks by the same artist
           </Text>
           <Input
-            placeholder="More information about $artist's artworks."
             multiline
+            defaultValue={GlobalStore.useAppState(
+              (state) => state.email.multipleArtworksBySameArtistSubject
+            )}
             onChangeText={(e) =>
               GlobalStore.actions.email.saveMultipleArtworksBySameArtistSubject(e)
             }

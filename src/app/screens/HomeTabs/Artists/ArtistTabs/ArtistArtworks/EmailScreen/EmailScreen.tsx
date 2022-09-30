@@ -22,21 +22,24 @@ export const EmailScreen = () => {
       <Screen.Body scroll>
         <Flex>
           <Text my={1}>CC EMAIL</Text>
-          <Input onChangeText={(e) => GlobalStore.actions.email.saveEmailsCC(e)} />
+          <Input
+            defaultValue={GlobalStore.useAppState((state) => state.email.emailsCC)}
+            onChangeText={(e) => GlobalStore.actions.email.saveEmailsCC(e)}
+          />
           <Text my={1} mt={2} mb={1}>
             GREETING
           </Text>
           <Input
-            placeholder="Here is more information about the artwork(s) we discussed."
             multiline
+            defaultValue={GlobalStore.useAppState((state) => state.email.greetings)}
             onChangeText={(e) => GlobalStore.actions.email.saveGreetings(e)}
           />
           <Text my={1} mt={2} mb={1}>
             SIGNATURE
           </Text>
           <Input
-            placeholder=""
             multiline
+            defaultValue={GlobalStore.useAppState((state) => state.email.signature)}
             onChangeText={(e) => GlobalStore.actions.email.saveSignature(e)}
           />
           <Text my={1} mt={2} mb={1} color="onBackgroundMedium">

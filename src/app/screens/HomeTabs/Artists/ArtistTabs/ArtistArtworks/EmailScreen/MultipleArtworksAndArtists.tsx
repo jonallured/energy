@@ -21,11 +21,11 @@ export const MultipleArtworksAndArtists = () => {
             Multiple artworks and artists
           </Text>
           <Input
-            placeholder="More information about the artworks we discussed."
             multiline
-            onChangeText={(e) =>
-              GlobalStore.actions.email.saveMultipleArtworksAndArtistsSubject(e)
-            }
+            defaultValue={GlobalStore.useAppState(
+              (state) => state.email.multipleArtworksAndArtistsSubject
+            )}
+            onChangeText={(e) => GlobalStore.actions.email.saveMultipleArtworksAndArtistsSubject(e)}
           />
         </Flex>
       </Screen.Body>

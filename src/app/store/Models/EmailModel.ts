@@ -18,11 +18,11 @@ export interface EmailModel {
 
 export const getEmailModel = (): EmailModel => ({
   emailsCC: "",
-  greetings: "",
+  greetings: "Here is more information about the artwork(s) we discussed.",
   signature: "",
-  oneArtworkSubject: "",
-  multipleArtworksAndArtistsSubject: "",
-  multipleArtworksBySameArtistSubject: "",
+  oneArtworkSubject: "More information about $title by $artist.",
+  multipleArtworksAndArtistsSubject: "More information about the artworks we discussed.",
+  multipleArtworksBySameArtistSubject: "More information about $artist's artworks.",
   saveEmailsCC: action((state, value) => {
     state.emailsCC = value
   }),
