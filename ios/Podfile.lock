@@ -359,7 +359,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.17.5):
     - React-Core
-  - RNDeviceInfo (8.7.1):
+  - RNDeviceInfo (10.2.0):
     - React-Core
   - RNFileViewer (2.1.5):
     - React-Core
@@ -641,7 +641,7 @@ SPEC CHECKSUMS:
   ReactCommon: c0263c1a41509aeb94be3214fa7bc3b71eae5ef6
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: 81187912cc9a5c2591ddb161e03e587688afb764
-  RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
+  RNDeviceInfo: 8b83e99e290deaf1bab71673cc636776ef647b6f
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
