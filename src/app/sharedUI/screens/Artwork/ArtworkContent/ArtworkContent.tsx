@@ -2,6 +2,7 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Image } from "react-native"
+import QRCode from 'react-native-qrcode-generator'
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
@@ -54,6 +55,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
   // For Presentation Mode
   const isPriceHidden = GlobalStore.useAppState((state) => state.presentationMode.hiddenItems.price)
+  const showQRCode = GlobalStore.useAppState((state) => state.presentationMode.isPresenationModeEnabled)
 
   if (!artworkData.artwork) {
     return <ListEmptyComponent />
@@ -153,30 +155,43 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           style={{ paddingHorizontal: space(2), backgroundColor: color("background") }}
           scrollEnabled={isScrollEnabled}
         >
-          <Text>{artistNames}</Text>
-          <Text italic color="onBackgroundMedium">
-            {title}
-            {!!date && (
+          <Flex flexDirection="row">
+            {showQRCode && (
+              <Flex style={{ marginRight: 20 }}>
+                <QRCode
+                  value={`https://artsy.net/artwork/${slug}`}
+                  size={100}
+                  bgColor='black'
+                  fgColor='white'/>
+              </Flex>
+            )}
+          <Flex>
+            <Text>{artistNames}</Text>
+            <Text italic color="onBackgroundMedium">
+              {title}
+              {!!date && (
+                <>
+                  , <Text color="onBackgroundMedium">{date}</Text>
+                </>
+              )}
+            </Text>
+            <Spacer mt={0.5} />
+            {!(isPriceHidden && !price) && (
               <>
-                , <Text color="onBackgroundMedium">{date}</Text>
+                <Text weight="medium">{price}</Text>
+                <Spacer mt={0.5} />
               </>
             )}
-          </Text>
-          <Spacer mt={0.5} />
-          {!(isPriceHidden && !price) && (
-            <>
-              <Text weight="medium">{price}</Text>
-              <Spacer mt={0.5} />
-            </>
-          )}
-          <Text variant="xs" color="onBackgroundMedium">
-            {medium}
-          </Text>
-          {(dimensions?.in || dimensions?.cm) && (
             <Text variant="xs" color="onBackgroundMedium">
-              {dimensions?.in} - {dimensions?.cm}
+              {medium}
             </Text>
-          )}
+            {(dimensions?.in || dimensions?.cm) && (
+              <Text variant="xs" color="onBackgroundMedium">
+                {dimensions?.in} - {dimensions?.cm}
+              </Text>
+            )}
+            </Flex>
+          </Flex>
           <Spacer mt={2} />
           <Separator />
           {!!shouldShowAboutTheArtworkTitle && (
