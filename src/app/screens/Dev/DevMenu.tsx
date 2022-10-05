@@ -19,7 +19,7 @@ export const DevMenu = () => {
 
   useEffect(() => {
     const subscription = RNShake.addListener(() => {
-      if (currentEnvironment !== "production") setModalVisible((x) => !x)
+      setModalVisible((x) => !x)
     })
 
     return () => subscription.remove()
