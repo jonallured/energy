@@ -11,6 +11,7 @@ interface HeaderProps {
   rightElements?: React.ReactNode
   safeAreaInsets?: boolean
   positionAbsolute?: boolean
+  onPress?: () => void
 }
 
 export const Header = ({
@@ -20,9 +21,15 @@ export const Header = ({
   rightElements,
   safeAreaInsets,
   positionAbsolute,
+  onPress,
 }: HeaderProps) => {
   const navigation = useNavigation()
   const insets = useSafeAreaInsets()
+
+  const onBackButtonPress = () => {
+    navigation.goBack()
+    onPress?.()
+  }
 
   return (
     <Flex
@@ -42,7 +49,7 @@ export const Header = ({
         !withoutBackButton && (
           <>
             <Touchable
-              onPress={() => navigation.goBack()}
+              onPress={onBackButtonPress}
               underlayColor="transparent"
               hitSlop={{
                 top: 10,

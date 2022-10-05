@@ -4,7 +4,7 @@ import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
 import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from "rn-fetch-blob"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, Text, Touchable } from "palette"
+import { Button, CheckCircleFillIcon, Flex, Text, Touchable } from "palette"
 import { getUrlExtension } from "shared/utils"
 import { formatBytes } from "shared/utils/formatBytes"
 import { FileTypeIcon } from "./FileTypeIcon"
@@ -18,15 +18,18 @@ export interface DocumentEntity {
 
 interface DocumentGridItemProps {
   document: DocumentEntity
+  onPress?: () => void
+  selectedToAdd?: boolean
 }
 
 export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
-  const { document } = props
+  const { document, selectedToAdd, onPress } = props
   const [isDownloading, setIsDownloading] = useState(false)
   const formattedSize = formatBytes(document.size)
   const downloadTask = useRef<StatefulPromise<FetchBlobResponse> | null>(null)
   const fileExtension = last(document.url.split("."))
   const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
 
   const downloadFile = async (fileUrl: string, dest: string) => {
     try {
@@ -90,8 +93,8 @@ export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
   }, [])
 
   return (
-    <Touchable disabled={isDownloading} onPress={openFile}>
-      <Flex mb={4} pl={2}>
+    <Touchable disabled={isDownloading} onPress={isSelectModeActive ? onPress : openFile}>
+      <Flex mb={4} pl={2} opacity={selectedToAdd ? 0.4 : 1}>
         <Flex height={200} position="relative">
           <Flex flex={1} bg="black10" />
           <Flex
@@ -126,6 +129,11 @@ export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
           {formattedSize}
         </Text>
       </Flex>
+      {selectedToAdd && (
+        <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
+          <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+        </Flex>
+      )}
     </Touchable>
   )
 }

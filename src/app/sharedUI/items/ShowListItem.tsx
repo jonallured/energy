@@ -6,13 +6,14 @@ import { Flex, Text } from "palette"
 
 interface ShowListItemProps {
   show: ShowListItem_show$key
+  disabled?: boolean
 }
 
 export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const show = useFragment<ShowListItem_show$key>(ShowListItemFragment, props.show)
 
   return (
-    <Flex m={2}>
+    <Flex m={2} opacity={props.disabled ? 0.4 : 1}>
       {show.coverImage?.resized?.url ? (
         <Image
           style={{ height: 200 }}

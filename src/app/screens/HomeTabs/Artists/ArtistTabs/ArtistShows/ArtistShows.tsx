@@ -11,6 +11,7 @@ import { extractNodes } from "shared/utils"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, {
     partnerID,
@@ -29,8 +30,9 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
               slug: show.slug,
             })
           }
+          disabled={isSelectModeActive}
         >
-          <ShowListItem show={show} />
+          <ShowListItem show={show} disabled={isSelectModeActive} />
         </Touchable>
       )}
       keyExtractor={(item) => item?.internalID}

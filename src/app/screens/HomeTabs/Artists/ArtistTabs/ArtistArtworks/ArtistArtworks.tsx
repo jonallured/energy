@@ -1,5 +1,6 @@
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
@@ -21,8 +22,36 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
 
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
+  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.items.works)
+  const [areAllArtworkSelected, setAreAllArtworkSelected] = useState<boolean>(
+    selectedArtworkIds.length === artworks.length
+  )
 
   const space = useSpace()
+
+  const selectArtworkHandler = (artwork: string) => {
+    GlobalStore.actions.selectMode.selectItems({ itemType: "works", item: artwork })
+    setAreAllArtworkSelected(false)
+  }
+
+  const selectAllArtworkHandler = (toggleSelectAllArtwork: boolean) => {
+    if (toggleSelectAllArtwork) {
+      GlobalStore.actions.selectMode.selectAllItems({
+        itemType: "works",
+        allItems: artworks.map((artwork) => artwork.internalID),
+      })
+    } else {
+      GlobalStore.actions.selectMode.selectAllItems({
+        itemType: "works",
+        allItems: [],
+      })
+    }
+    setAreAllArtworkSelected(toggleSelectAllArtwork)
+  }
+
+  const cancelButtonHandler = () => {
+    GlobalStore.actions.selectMode.cancelSelectMode()
+  }
 
   return (
     <>
@@ -35,21 +64,33 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           }}
           numColumns={2}
           data={artworks}
-          renderItem={({ item: artwork }) => (
-            <ArtworkGridItem
-              artwork={artwork}
-              onPress={() =>
-                navigation.navigate("Artwork", {
-                  slug: artwork.slug,
-                  contextArtworkSlugs: artworkSlugs,
-                })
-              }
-            />
-          )}
+          renderItem={({ item: artwork }) => {
+            if (isSelectModeActive) {
+              return (
+                <ArtworkGridItem
+                  artwork={artwork}
+                  onPress={() => selectArtworkHandler(artwork.internalID)}
+                  selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+                />
+              )
+            }
+            return (
+              <ArtworkGridItem
+                artwork={artwork}
+                onPress={() =>
+                  navigation.navigate("Artwork", {
+                    slug: artwork.slug,
+                    contextArtworkSlugs: artworkSlugs,
+                  })
+                }
+              />
+            )
+          }}
           keyExtractor={(item) => item.internalID}
           ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
         />
       </TabsScrollView>
+      {/* This should be moved to Headers */}
       {isSelectModeActive && (
         <Flex
           position="absolute"
@@ -60,16 +101,23 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           flexDirection="row"
           px={2}
         >
-          <Button variant="fillGray" size="small" onPress={() => console.log("Select All")}>
-            Select All
+          <Button
+            variant="fillGray"
+            size="small"
+            onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}
+          >
+            {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
           </Button>
-          <Button variant="fillGray" size="small" onPress={() => console.log("Cancel")}>
+          <Button variant="fillGray" size="small" onPress={cancelButtonHandler}>
             Cancel
           </Button>
         </Flex>
       )}
+      {/* This should be moved to Headers */}
       <Flex position="absolute" zIndex={100} bottom={50} width="100%" alignItems="center">
-        <Button onPress={() => GlobalStore.actions.selectMode.toggleSelectMode()}>Select</Button>
+        {!isSelectModeActive && (
+          <Button onPress={() => GlobalStore.actions.selectMode.toggleSelectMode()}>Select</Button>
+        )}
       </Flex>
     </>
   )
