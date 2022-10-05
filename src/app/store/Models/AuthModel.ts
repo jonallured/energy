@@ -30,9 +30,10 @@ const authModelInitialState: AuthModelState = {
   xAppToken: null,
   xApptokenExpiresIn: null,
 }
+
 export interface AuthModel extends AuthModelState {
   setState: Action<this, Partial<AuthModelState>>
-  saveDevEmail: Action<this, string>
+  saveDevEmail: Action<this, this["devEmail"]>
   saveDevPassword: Action<this, string>
   getUserID: Thunk<this, void, {}, GlobalStoreModel>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
@@ -56,8 +57,8 @@ export const getAuthModel = (): AuthModel => ({
   ...authModelInitialState,
 
   setState: action((state, payload) => Object.assign(state, payload)),
-  saveDevEmail: action((state, devEmail) => (state.devEmail = devEmail)),
-  saveDevPassword: action((state, devPassword) => (state.devPassword = devPassword)),
+  saveDevEmail: action((state, devEmail) => void (state.devEmail = devEmail)),
+  saveDevPassword: action((state, devPassword) => void (state.devPassword = devPassword)),
   getUserID: thunk(async (actions, _payload, context) => {
     try {
       const user = await (

@@ -41,7 +41,6 @@ export const CreateOrEditAlbumChooseArtworks = () => {
 
   const selectedArtworks = useArtworksByMode(mode, slug)
   const selectedArtworksForThisArtist = intersection(
-    // @ts-expect-error
     artworks.map((artwork) => artwork.internalID),
     selectedArtworks
   )
@@ -61,7 +60,6 @@ export const CreateOrEditAlbumChooseArtworks = () => {
 
   const selectAllArtworkHandler = (toggleSelectAllArtwork: boolean) => {
     if (toggleSelectAllArtwork) {
-      // @ts-expect-error
       setSelectedArtworkIds(artworks.map((artwork) => artwork.internalID))
     } else {
       setSelectedArtworkIds([])
@@ -101,21 +99,15 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         }}
         numColumns={2}
         data={artworks}
-        // @ts-expect-error
         keyExtractor={(item) => item?.internalID}
         renderItem={({ item: artwork }) => {
-          // @ts-expect-error
           if (album?.artworkIds.includes(artwork.internalID)) {
-            // @ts-expect-error
             return <ArtworkGridItem artwork={artwork} disable />
           }
           return (
             <ArtworkGridItem
-              // @ts-expect-error
               artwork={artwork}
-              // @ts-expect-error
               onPress={() => selectArtworkHandler(artwork.internalID)}
-              // @ts-expect-error
               selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
             />
           )

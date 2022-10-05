@@ -26,6 +26,8 @@ module.exports = {
       "|@react-native-seoul/masonry-list" +
       "|rn-fetch-blob" +
       "|react-native-file-viewer" +
+      "|react-native-qrcode-generator" +
+      "|react-native-webview" +
       ")/)",
   ],
   watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],

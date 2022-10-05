@@ -34,7 +34,7 @@ export const Artists = () => {
             onPress={() =>
               navigation.navigate("ArtistTabs", {
                 slug: artist.slug,
-                name: artist.name,
+                name: artist.name!,
               })
             }
           >

@@ -25,9 +25,11 @@ export const CreateOrEditAlbumChooseArtist = () => {
   const counts = artistsData.partner?.allArtistsConnection?.edges?.map(
     (edge) => edge?.counts?.managedArtworks as string
   )
+
   if (!counts || !artists) {
-    return
+    return null
   }
+
   const items = zip(artists, counts)
 
   return (
@@ -43,11 +45,11 @@ export const CreateOrEditAlbumChooseArtist = () => {
               navigation.navigate("CreateOrEditAlbumChooseArtworks", {
                 mode,
                 albumId,
-                slug: artist.slug,
+                slug: artist!.slug,
               })
             }
           >
-            <ArtistListItem artist={artist} count={count} />
+            <ArtistListItem artist={artist!} count={count!} />
           </Touchable>
         )}
       />
