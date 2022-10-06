@@ -1,7 +1,6 @@
 import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "../Icon"
 
-/** Stopwatch */
 export const Stopwatch = ({ fill, ...restProps }: IconProps) => {
   const color = useColor()
   return (

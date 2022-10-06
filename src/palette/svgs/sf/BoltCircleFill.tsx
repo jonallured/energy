@@ -2,7 +2,6 @@ import { EMaskUnits } from "react-native-svg"
 import { useColor } from "palette/hooks"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
-/** BoltCircleFill */
 export const BoltCircleFill = ({ fill, ...restProps }: IconProps) => {
   const color = useColor()
   console.warn(EMaskUnits)
