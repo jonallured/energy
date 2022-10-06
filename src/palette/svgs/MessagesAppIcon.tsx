@@ -1,9 +1,9 @@
 import { Defs, LinearGradient, Path, Stop } from "react-native-svg"
 import { Icon, IconProps } from "./Icon"
 
-export const MessagesAppIcon: React.FC<IconProps> = (props) => {
+export const MessagesAppIcon = ({ fill, ...restProps }: IconProps) => {
   return (
-    <Icon {...props} viewBox="0 0 23 23">
+    <Icon {...restProps} viewBox="0 0 23 23">
       <Path
         d="M17.375 1H5.625C3.07068 1 1 3.07069 1 5.625V17.375C1 19.9293 3.07068 22 5.625 22H17.375C19.9293 22 22 19.9293 22 17.375V5.625C22 3.07069 19.9293 1 17.375 1Z"
         fill="url(#paint0_linear)"

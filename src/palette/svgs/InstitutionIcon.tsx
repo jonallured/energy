@@ -1,12 +1,11 @@
 import { useColor } from "palette/hooks"
 import { G, Icon, IconProps, Path } from "./Icon"
 
-/** InstitutionIcon */
-export const InstitutionIcon: React.FC<IconProps> = (props) => {
+export const InstitutionIcon = ({ fill, ...restProps }: IconProps) => {
   const color = useColor()
   return (
-    <Icon {...props} viewBox="0 0 18 18">
-      <G fill={color(props.fill)} fillRule="evenodd">
+    <Icon {...restProps} viewBox="0 0 18 18">
+      <G fill={color(fill)} fillRule="evenodd">
         <Path d="M4.381 6.686h1v7.378h-1z" />
         <Path d="M3 14h12v1H3z" />
         <Path d="M6.388 6.686h1v7.378h-1zM8.385 6.686h1v7.378h-1zM10.377 6.686h1v7.378h-1zM12.385 6.686h1v7.378h-1z" />
@@ -20,5 +19,4 @@ export const InstitutionIcon: React.FC<IconProps> = (props) => {
 }
 
 // TODO: remove this alias once clients have been updated
-/** MuseumIcon */
 export const MuseumIcon = InstitutionIcon

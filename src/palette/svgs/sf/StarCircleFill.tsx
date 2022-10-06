@@ -2,10 +2,10 @@ import { Circle, EMaskUnits } from "react-native-svg"
 import { useColor } from "palette/hooks"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
-export const StarCircleFill: React.FC<IconProps> = (props) => {
+export const StarCircleFill = ({ fill, ...restProps }: IconProps) => {
   const color = useColor()
   return (
-    <Icon {...props} viewBox="0 0 20 20">
+    <Icon {...restProps} viewBox="0 0 20 20">
       <Mask
         id="path-1-outside-1"
         maskUnits={"userSpaceOnUse" as EMaskUnits}

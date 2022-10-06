@@ -31,11 +31,7 @@ export interface IconProps
  * Wraps `Svg` and returns a scaled version depending on the font scale of the system.
  * If width and height are specified as strings, the SVG will not be scaled
  */
-const ScaledSvg: React.FC<SvgProps> = ({
-  width = DEFAULT_SIZE,
-  height = DEFAULT_SIZE,
-  ...restProps
-}) => {
+const ScaledSvg = ({ width = DEFAULT_SIZE, height = DEFAULT_SIZE, ...restProps }: SvgProps) => {
   const fontScale = PixelRatio.getFontScale()
 
   // Only scale if the width and height are not specified or provided as numbers

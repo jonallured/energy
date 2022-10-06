@@ -1,8 +1,8 @@
 import { G, Icon, IconProps, Path } from "./Icon"
 
-export const ArtsyMarkWhiteIcon: React.FC<IconProps> = (props) => {
+export const ArtsyMarkWhiteIcon = ({ fill, ...restProps }: IconProps) => {
   return (
-    <Icon {...props} viewBox="0 0 32 32">
+    <Icon {...restProps} viewBox="0 0 32 32">
       <G fill="none" fillRule="evenodd">
         <Path fill="none" d="M0 0h32v32H0z" />
         <Path

@@ -3,11 +3,11 @@ import { useColor } from "palette/hooks"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** BoltCircleFill */
-export const BoltCircleFill: React.FC<IconProps> = (props) => {
+export const BoltCircleFill = ({ fill, ...restProps }: IconProps) => {
   const color = useColor()
   console.warn(EMaskUnits)
   return (
-    <Icon {...props} viewBox="0 0 20 20">
+    <Icon {...restProps} viewBox="0 0 20 20">
       <Mask
         id="path-1-outside-1"
         maskUnits={"userSpaceOnUse" as EMaskUnits}

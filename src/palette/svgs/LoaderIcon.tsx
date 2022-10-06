@@ -1,12 +1,11 @@
 import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "./Icon"
 
-/** LoaderIcon */
-export const LoaderIcon: React.FC<IconProps> = (props) => {
+export const LoaderIcon = ({ fill, ...restProps }: IconProps) => {
   const color = useColor()
   return (
-    <Icon {...props} viewBox="0 0 18 18">
-      <Path fill={color(props.fill)} d="M2 9.55v-1h14v1z" fillRule="nonzero" />
+    <Icon {...restProps} viewBox="0 0 18 18">
+      <Path fill={color(fill)} d="M2 9.55v-1h14v1z" fillRule="nonzero" />
     </Icon>
   )
 }
