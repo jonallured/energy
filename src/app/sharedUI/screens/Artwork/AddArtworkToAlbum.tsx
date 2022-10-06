@@ -15,13 +15,12 @@ type AddArtworkToAlbumProps = {
 }
 
 export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
-  const { slug } = useRoute<HomeTabsRoute>().params
+  const { slug, contextArtworkSlugs } = useRoute<HomeTabsRoute>().params
   const artworkData = useLazyLoadQuery<AddArtworkToAlbumQuery>(addArtworkToAlbumQuery, { slug })
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const safeAreaInsets = useSafeAreaInsets()
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
-  const [loading, setLoading] = useState(false)
   const space = useSpace()
 
   const selectAlbumHandler = (albumId: string) => {
@@ -35,17 +34,43 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
 
   const addArtworkToTheSelectedAlbums = () => {
     try {
-      setLoading(false)
       GlobalStore.actions.albums.addArtworksInAlbums({
         albumIds: selectedAlbumIds,
         artworkIdsToAdd: [artworkData.artwork?.internalID!],
       })
-      setLoading(true)
       navigation.goBack()
     } catch (error) {
-      setLoading(false)
       console.error(error)
     }
+  }
+
+  const renderButton = () => {
+    if (
+      albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
+        .length === albums.length ||
+      selectedAlbumIds.length <= 0
+    ) {
+      return (
+        <Button
+          block
+          onPress={() =>
+            navigation.navigate("CreateOrEditAlbum", {
+              mode: "create",
+              artworkFromArtistTab: artworkData.artwork?.internalID,
+              slug,
+              contextArtworkSlugs,
+            })
+          }
+        >
+          Create New Album
+        </Button>
+      )
+    }
+    return (
+      <Button block onPress={addArtworkToTheSelectedAlbums}>
+        Add
+      </Button>
+    )
   }
 
   return (
@@ -57,32 +82,44 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
         renderItem={({ item: album }) => {
           return (
             <Flex key={album.id} mx={2}>
-              {/* Condition to only display album when the artwork is not included already */}
-              {!album.artworkIds.includes(artworkData.artwork?.internalID!) && (
-                <Touchable onPress={() => selectAlbumHandler(album.id)}>
-                  {/* Change opacity based on selection */}
-                  <Flex mb={3} mt={1} opacity={selectedAlbumIds.includes(album.id) ? 0.4 : 1}>
-                    <AlbumListItem album={album} />
+              <Touchable
+                onPress={
+                  album.artworkIds.includes(artworkData.artwork?.internalID)
+                    ? undefined
+                    : () => selectAlbumHandler(album.id)
+                }
+              >
+                {/* Change opacity based on selection */}
+                <Flex
+                  mb={3}
+                  mt={1}
+                  opacity={
+                    selectedAlbumIds.includes(album.id) ||
+                    album.artworkIds.includes(artworkData.artwork?.internalID)
+                      ? 0.4
+                      : 1
+                  }
+                >
+                  <AlbumListItem album={album} />
+                </Flex>
+                {selectedAlbumIds.includes(album.id) && (
+                  <Flex
+                    position="absolute"
+                    top={2}
+                    right={1}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <CheckCircleFillIcon height={30} width={30} fill="blue100" />
                   </Flex>
-                  {selectedAlbumIds.includes(album.id) && (
-                    <Flex
-                      position="absolute"
-                      top={2}
-                      right={1}
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <CheckCircleFillIcon height={30} width={30} fill="blue100" />
-                    </Flex>
-                  )}
-                </Touchable>
-              )}
+                )}
+              </Touchable>
             </Flex>
           )
         }}
         style={{
-          marginBottom: space(12) + space(2),
-          marginTop: space(2),
+          top: space(2),
+          marginBottom: space(12),
         }}
       />
       <Flex
@@ -93,13 +130,7 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
         pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}
         width="100%"
       >
-        <Button
-          block
-          onPress={addArtworkToTheSelectedAlbums}
-          disabled={selectedAlbumIds.length <= 0 || loading}
-        >
-          Add
-        </Button>
+        {renderButton()}
       </Flex>
     </>
   )

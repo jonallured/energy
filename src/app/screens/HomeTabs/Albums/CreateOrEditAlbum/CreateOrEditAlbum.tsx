@@ -30,10 +30,10 @@ const createAlbumSchema = Yup.object().shape({
 type CreateOrEditAlbumRoute = RouteProp<HomeTabsScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
-  const { mode, albumId } = useRoute<CreateOrEditAlbumRoute>().params || {
-    mode: "create",
-    albumId: undefined,
-  }
+  const { mode, albumId, artworkFromArtistTab, slug, contextArtworkSlugs } =
+    useRoute<CreateOrEditAlbumRoute>().params || {
+      mode: "create",
+    }
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const safeAreaInsets = useSafeAreaInsets()
   const [selectedArtworksToRemove, setSelectedArtworksToRemove] = useState<string[]>([])
@@ -41,7 +41,9 @@ export const CreateOrEditAlbum = () => {
   const selectedArtworksInModel = useArtworksByMode(mode)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
-  const selectedArtworks = uniq([...(album?.artworkIds || []), ...selectedArtworksInModel])
+  const selectedArtworks = !artworkFromArtistTab
+    ? uniq([...(album?.artworkIds || []), ...selectedArtworksInModel])
+    : [artworkFromArtistTab]
   const space = useSpace()
 
   const { handleSubmit, handleChange, values, errors, validateForm, isValid, dirty, isSubmitting } =
@@ -64,19 +66,26 @@ export const CreateOrEditAlbum = () => {
               artworkIds: selectedArtworks,
             })
           }
-          navigation.dispatch({
-            ...CommonActions.reset({
-              index: 0,
-              routes: [
-                {
-                  name: "HomeTabs",
-                  params: {
-                    tabName: "Albums",
+          if (artworkFromArtistTab) {
+            navigation.navigate("Artwork", {
+              slug: slug || "",
+              contextArtworkSlugs,
+            })
+          } else {
+            navigation.dispatch({
+              ...CommonActions.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: "HomeTabs",
+                    params: {
+                      tabName: "Albums",
+                    },
                   },
-                },
-              ],
-            }),
-          })
+                ],
+              }),
+            })
+          }
         } catch (error) {
           console.error(error)
         }
@@ -118,14 +127,16 @@ export const CreateOrEditAlbum = () => {
           />
         </Flex>
         <Spacer mt={2} />
-        <Touchable
-          onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
-        >
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Text>Add Items to Album</Text>
-            <ArrowRightIcon fill="onBackgroundHigh" />
-          </Flex>
-        </Touchable>
+        {!artworkFromArtistTab && (
+          <Touchable
+            onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
+          >
+            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Text>Add Items to Album</Text>
+              <ArrowRightIcon fill="onBackgroundHigh" />
+            </Flex>
+          </Touchable>
+        )}
       </Flex>
       {mode === "edit" && (
         <Text ml={2} mt={2} variant="xs" color="black60">

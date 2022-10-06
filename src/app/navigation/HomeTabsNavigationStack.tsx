@@ -38,9 +38,15 @@ export type HomeTabsScreens = {
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
-  AddArtworkToAlbum: { slug: string }
+  AddArtworkToAlbum: { slug: string; contextArtworkSlugs?: string[] }
   ArtworkWebView: { uri: string }
-  CreateOrEditAlbum: { mode: "create" | "edit"; albumId?: string }
+  CreateOrEditAlbum: {
+    mode: "create" | "edit"
+    albumId?: string
+    artworkFromArtistTab?: string
+    slug?: string
+    contextArtworkSlugs?: string[]
+  }
   CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
   CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
 }

@@ -1,6 +1,8 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header, ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
 import {
@@ -17,10 +19,14 @@ import { EditArtworkInCms } from "./EditArtworkInCms"
 type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
 
 export const Artwork = () => {
-  const { params } = useRoute<ArtworkRoute>()
-  const artworkSlugs = params.contextArtworkSlugs ?? [params.slug]
+  const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
+  const artworkSlugs = contextArtworkSlugs ?? [slug]
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
+  const artworkData = useLazyLoadQuery<ArtworkQuery>(artworkQuery, {
+    slug,
+  })
+  const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
     name: slug,
     content: (
@@ -29,6 +35,11 @@ export const Artwork = () => {
       </SuspenseWrapper>
     ),
   }))
+
+  const numberOfAlbumsIncludingArtwork = useMemo(() => {
+    return albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
+      .length
+  }, [albums])
 
   const isEditArtworkHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.editArtwork
@@ -52,7 +63,7 @@ export const Artwork = () => {
         }
       />
       <Flex flex={1}>
-        <ScrollableScreensView screens={screens} initialScreenName={params.slug} />
+        <ScrollableScreensView screens={screens} initialScreenName={slug} />
       </Flex>
       <BottomSheetModalView
         ref={bottomSheetRef}
@@ -72,12 +83,31 @@ export const Artwork = () => {
             <BottomSheetModalRow
               Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
               label="Add to Album"
-              navigateTo={() => navigation.navigate("AddArtworkToAlbum", { slug: params.slug })}
+              subtitle={
+                numberOfAlbumsIncludingArtwork === 0
+                  ? null
+                  : numberOfAlbumsIncludingArtwork === albums.length
+                  ? "Currently in all albums"
+                  : numberOfAlbumsIncludingArtwork === 1
+                  ? "Currently in 1 album"
+                  : `Currently in ${numberOfAlbumsIncludingArtwork} albums`
+              }
+              navigateTo={() =>
+                navigation.navigate("AddArtworkToAlbum", { slug, contextArtworkSlugs })
+              }
             />
           </>
         }
-        extraButtons={!isEditArtworkHidden && <EditArtworkInCms slug={params.slug} />}
+        extraButtons={!isEditArtworkHidden && <EditArtworkInCms slug={slug} />}
       />
     </BottomSheetModalProvider>
   )
 }
+
+const artworkQuery = graphql`
+  query ArtworkQuery($slug: String!) {
+    artwork(id: $slug) {
+      internalID
+    }
+  }
+`

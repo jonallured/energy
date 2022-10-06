@@ -95,10 +95,16 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
 interface BottomSheetModalRowProps {
   Icon: ReactElement
   label: string
+  subtitle?: string | null
   navigateTo: () => void
 }
 
-export const BottomSheetModalRow = ({ Icon, label, navigateTo }: BottomSheetModalRowProps) => {
+export const BottomSheetModalRow = ({
+  Icon,
+  label,
+  subtitle,
+  navigateTo,
+}: BottomSheetModalRowProps) => {
   return (
     <Touchable
       onPress={navigateTo}
@@ -112,6 +118,13 @@ export const BottomSheetModalRow = ({ Icon, label, navigateTo }: BottomSheetModa
           </Flex>
           <Flex justifyContent="center" flex={1} ml="1">
             <Text>{label}</Text>
+            {subtitle && (
+              <Flex flexDirection="row" alignItems="center">
+                <Text variant="xs" color="onBackgroundMedium">
+                  {subtitle}
+                </Text>
+              </Flex>
+            )}
           </Flex>
           <Flex alignItems="center" justifyContent="center" width="25px">
             <ArrowRightIcon fill="onBackgroundHigh" />
