@@ -20,6 +20,8 @@ module.exports = {
       "@react-native" + // no `|` on the first one
       "|react-native" +
       "|react-native-reanimated" +
+      "|expo-modules-core" +
+      "|expo-mail-composer" +
       "|@babel" +
       "|react-native-safe-area-context" +
       "|react-native-linear-gradient" +

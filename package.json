@@ -42,6 +42,8 @@
     "easy-peasy": "^5.0.4",
     "events": "^3.3.0",
     "expect": "^28.1.0",
+    "expo": "^45.0.0",
+    "expo-mail-composer": "~11.2.0",
     "formik": "^2.2.9",
     "html-entities": "^2.3.3",
     "jest-extended": "1.2.1",

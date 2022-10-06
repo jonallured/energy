@@ -96,21 +96,17 @@ interface BottomSheetModalRowProps {
   Icon: ReactElement
   label: string
   subtitle?: string | null
-  navigateTo: () => void
+  onPress: () => void
 }
 
 export const BottomSheetModalRow = ({
   Icon,
   label,
   subtitle,
-  navigateTo,
+  onPress,
 }: BottomSheetModalRowProps) => {
   return (
-    <Touchable
-      onPress={navigateTo}
-      underlayColor="transparent"
-      style={{ width: "100%", height: 100 }}
-    >
+    <Touchable onPress={onPress} underlayColor="transparent" style={{ width: "100%", height: 100 }}>
       <Flex flex={1}>
         <Flex flexDirection="row" flex={1}>
           <Flex width={25} alignItems="center" justifyContent="center">
