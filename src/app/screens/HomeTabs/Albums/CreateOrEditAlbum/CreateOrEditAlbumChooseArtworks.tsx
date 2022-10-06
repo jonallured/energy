@@ -114,7 +114,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         }}
       />
       <Flex px={2} pt={1} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>
-        <Text variant="xs" color="black60" mb={1} textAlign="center">
+        <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
           Selected artworks for {artistNameData.artist?.name}: {selectedArtworkIds.length}
         </Text>
         <Button

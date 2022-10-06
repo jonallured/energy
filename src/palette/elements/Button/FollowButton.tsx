@@ -14,7 +14,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({ isFollowed, ...rest 
       variant={isFollowed ? "outline" : "outlineGray"}
       size="small"
       longestText="Following"
-      icon={isFollowed && <CheckIcon fill="black60" width="16px" height="16px" />}
+      icon={isFollowed && <CheckIcon fill="onBackgroundMedium" width="16px" height="16px" />}
       {...rest}
     >
       {isFollowed ? "Following" : "Follow"}

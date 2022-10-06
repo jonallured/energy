@@ -9,7 +9,7 @@ interface BackButtonProps {
 export const BackButton: React.FC<BackButtonProps> = ({ onPress, showX = false }) => (
   <TouchableOpacity onPress={onPress}>
     {showX ? (
-      <CloseIcon fill="black100" width={26} height={26} />
+      <CloseIcon fill="onBackground" width={26} height={26} />
     ) : (
       <ChevronIcon direction="left" fill="onBackgroundHigh" />
     )}
@@ -27,7 +27,7 @@ export const BackButtonWithBackground: React.FC<BackButtonProps> = ({ onPress, s
       justifyContent="center"
     >
       {showX ? (
-        <CloseIcon fill="black100" width={26} height={26} />
+        <CloseIcon fill="onBackground" width={26} height={26} />
       ) : (
         <ChevronIcon direction="left" />
       )}

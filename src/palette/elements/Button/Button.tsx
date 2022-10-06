@@ -255,8 +255,8 @@ const useStyleForVariantAndState = (
           retval.borderColor = color("primary")
           break
         case DisplayState.Disabled:
-          retval.backgroundColor = color("black30")
-          retval.borderColor = color("black30")
+          retval.backgroundColor = color("onBackgroundLow")
+          retval.borderColor = color("onBackgroundLow")
           break
         case DisplayState.Pressed:
           retval.backgroundColor = color("blue100")
@@ -273,11 +273,11 @@ const useStyleForVariantAndState = (
         case DisplayState.Enabled:
           retval.backgroundColor = color("white100")
           retval.borderColor = color("white100")
-          retval.textColor = color("black100")
+          retval.textColor = color("onBackground")
           break
         case DisplayState.Disabled:
-          retval.backgroundColor = color("black30")
-          retval.borderColor = color("black30")
+          retval.backgroundColor = color("onBackgroundLow")
+          retval.borderColor = color("onBackgroundLow")
           retval.textColor = color("white100")
           break
         case DisplayState.Pressed:
@@ -296,11 +296,11 @@ const useStyleForVariantAndState = (
         case DisplayState.Enabled:
           retval.backgroundColor = color("black10")
           retval.borderColor = color("black10")
-          retval.textColor = color("black100")
+          retval.textColor = color("onBackground")
           break
         case DisplayState.Disabled:
-          retval.backgroundColor = color("black30")
-          retval.borderColor = color("black30")
+          retval.backgroundColor = color("onBackgroundLow")
+          retval.borderColor = color("onBackgroundLow")
           retval.textColor = color("white100")
           break
         case DisplayState.Pressed:
@@ -362,13 +362,13 @@ const useStyleForVariantAndState = (
       switch (state) {
         case DisplayState.Enabled:
           retval.backgroundColor = color("white100")
-          retval.borderColor = color("black30")
-          retval.textColor = color("black100")
+          retval.borderColor = color("onBackgroundLow")
+          retval.textColor = color("onBackground")
           break
         case DisplayState.Disabled:
           retval.backgroundColor = color("white100")
-          retval.borderColor = color("black30")
-          retval.textColor = color("black30")
+          retval.borderColor = color("onBackgroundLow")
+          retval.textColor = color("onBackgroundLow")
           break
         case DisplayState.Pressed:
           retval.backgroundColor = color("blue100")
@@ -390,8 +390,8 @@ const useStyleForVariantAndState = (
           break
         case DisplayState.Disabled:
           retval.backgroundColor = "rgba(0, 0, 0, 0)"
-          retval.borderColor = color("black30")
-          retval.textColor = color("black30")
+          retval.borderColor = color("onBackgroundLow")
+          retval.textColor = color("onBackgroundLow")
           break
         case DisplayState.Pressed:
           retval.backgroundColor = color("blue100")
@@ -409,10 +409,10 @@ const useStyleForVariantAndState = (
       retval.borderColor = "rgba(0, 0, 0, 0)"
       switch (state) {
         case DisplayState.Enabled:
-          retval.textColor = color("black100")
+          retval.textColor = color("onBackground")
           break
         case DisplayState.Disabled:
-          retval.textColor = color("black30")
+          retval.textColor = color("onBackgroundLow")
           break
         case DisplayState.Pressed:
           retval.backgroundColor = color("black10")

@@ -61,7 +61,7 @@ export const TabBarContainer: React.FC<TabBarContainerProps> = ({
             left: 0,
             right: 0,
             borderBottomWidth: 1,
-            borderBottomColor: color("black30"),
+            borderBottomColor: color("onBackgroundLow"),
           }}
         />
         <View
@@ -122,7 +122,7 @@ export const ActiveTabBorder: React.FC<{
       style={{
         height: 1,
         width: preTransformSpan,
-        backgroundColor: color("black100"),
+        backgroundColor: color("onBackground"),
         position: "absolute",
         bottom: 0,
         transform: [

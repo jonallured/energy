@@ -122,10 +122,10 @@ export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
             </Flex>
           )}
         </Flex>
-        <Text italic variant="xs" color="black60" mt={1}>
+        <Text italic variant="xs" color="onBackgroundMedium" mt={1}>
           {document.title}
         </Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="onBackgroundMedium">
           {formattedSize}
         </Text>
       </Flex>

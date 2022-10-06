@@ -26,7 +26,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
             aspectRatio: artwork.image?.aspectRatio ?? 1,
           }}
         />
-        <Text italic variant="xs" color="black60" mt={1}>
+        <Text italic variant="xs" color="onBackgroundMedium" mt={1}>
           <AvailabilityDot availability={artwork.availability} /> {artwork.title}
           {!!artwork.date && (
             <>

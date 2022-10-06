@@ -16,7 +16,7 @@ export const MenuItem: React.FC<{
   value,
   onPress,
   disabled = false,
-  chevron = <ChevronIcon direction="right" fill="black60" />,
+  chevron = <ChevronIcon direction="right" fill="onBackgroundMedium" />,
   style,
 }) => {
   const color = useColor()
@@ -35,7 +35,7 @@ export const MenuItem: React.FC<{
         </Flex>
         {!!value && (
           <Flex flex={1}>
-            <Sans size="4" color="black60" numberOfLines={1} textAlign="right">
+            <Sans size="4" color="onBackgroundMedium" numberOfLines={1} textAlign="right">
               {value}
             </Sans>
           </Flex>
@@ -43,7 +43,7 @@ export const MenuItem: React.FC<{
         {!!(onPress && chevron) && <Flex ml="1">{chevron}</Flex>}
 
         {!!text && (
-          <Sans size="4" color={color("black60")}>
+          <Sans size="4" color={color("onBackgroundMedium")}>
             {text}
           </Sans>
         )}

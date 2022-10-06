@@ -17,7 +17,7 @@ export const TouchableHighlightColor: React.FC<TouchableHighlightColorProps> = (
   const {
     activeOpacity = 1,
     activeColor = "blue100",
-    normalColor = "black100",
+    normalColor = "onBackground",
     onPressIn,
     onPressOut,
     render,

@@ -155,7 +155,11 @@ export const Input = forwardRef<TextInput, InputProps>(
             accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
-            {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
+            {!showPassword ? (
+              <EyeClosedIcon fill="onBackgroundLow" />
+            ) : (
+              <EyeOpenedIcon fill="onBackgroundMedium" />
+            )}
           </TouchableOpacity>
         </Flex>
       )
@@ -234,14 +238,14 @@ export const Input = forwardRef<TextInput, InputProps>(
             {title}
           </InputTitle>
           {!!maxLength && !!showLimit && (
-            <Text color="black60" variant="xs" marginLeft="auto">
+            <Text color="onBackgroundMedium" variant="xs" marginLeft="auto">
               {maxLength - value.length}
             </Text>
           )}
         </Flex>
 
         {!!description && (
-          <Text color={descriptionColor ?? "black60"} variant="xs" mb={0.5}>
+          <Text color={descriptionColor ?? "onBackgroundMedium"} variant="xs" mb={0.5}>
             {description}
           </Text>
         )}
@@ -281,7 +285,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                   }
                 }}
                 ref={input}
-                placeholderTextColor={color("black60")}
+                placeholderTextColor={color("onBackgroundMedium")}
                 style={{
                   flex: 1,
                   fontSize,
@@ -318,7 +322,7 @@ export const Input = forwardRef<TextInput, InputProps>(
             </Flex>
             {!!fixedRightPlaceholder && value === "" && (
               <Flex pr={1} justifyContent="center" alignItems="center">
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="onBackgroundMedium">
                   {fixedRightPlaceholder}
                 </Text>
               </Flex>
@@ -328,7 +332,12 @@ export const Input = forwardRef<TextInput, InputProps>(
               <Flex pr="3" justifyContent="center" flexGrow={0}>
                 <Spinner
                   size="medium"
-                  style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
+                  style={{
+                    marginLeft: 3,
+                    width: 15,
+                    height: 4,
+                    backgroundColor: color("onBackgroundMedium"),
+                  }}
                 />
               </Flex>
             ) : (
@@ -341,7 +350,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                     hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
                     accessibilityLabel="Clear input button"
                   >
-                    <XCircleIcon fill="black30" />
+                    <XCircleIcon fill="onBackgroundLow" />
                   </TouchableOpacity>
                 </Flex>
               )
@@ -371,15 +380,15 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
   const { disabled, error, focused } = inputStatus
 
   if (disabled) {
-    return "black30"
+    return "onBackgroundLow"
   }
   if (error) {
     return "red100"
   }
   if (focused) {
-    return "black60"
+    return "onBackgroundMedium"
   }
-  return "black30"
+  return "onBackgroundLow"
 }
 
 const StyledInput = styled(TextInput)`

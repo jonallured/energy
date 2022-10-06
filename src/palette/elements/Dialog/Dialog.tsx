@@ -111,7 +111,7 @@ export const Dialog = (props: DialogProps) => {
               alwaysBounceVertical={false}
               contentContainerStyle={{ paddingHorizontal: space(2) }}
             >
-              <Text testID="dialog-detail" variant="sm" color="black60">
+              <Text testID="dialog-detail" variant="sm" color="onBackgroundMedium">
                 {detail}
               </Text>
             </ScrollView>

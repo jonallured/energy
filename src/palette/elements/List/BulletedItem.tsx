@@ -8,7 +8,7 @@ interface BulletedItemProps extends FlexProps {
 
 export const BulletedItem: React.FC<BulletedItemProps> = ({
   children,
-  color = "black60",
+  color = "onBackgroundMedium",
   ...otherFlexProps
 }) => {
   return (

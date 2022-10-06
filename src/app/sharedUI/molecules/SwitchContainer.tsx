@@ -14,7 +14,7 @@ export const SwitchContainer = ({ label, onValueChange, value }: SwitchContainer
       <Text>{label}</Text>
       <Switch
         trackColor={{ false: "white", true: "blue" }}
-        ios_backgroundColor={color("black30")}
+        ios_backgroundColor={color("onBackgroundLow")}
         onValueChange={onValueChange}
         value={value}
       />

@@ -10,8 +10,12 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
   return (
     <>
       <Flex flexDirection="row-reverse" alignItems="flex-end" pl={overlapSize} overflow="hidden">
-        {first3Artworks.length < 3 && <Flex backgroundColor="black30" flex={1} mr={-overlapSize} />}
-        {first3Artworks.length < 2 && <Flex backgroundColor="black30" flex={1} mr={-overlapSize} />}
+        {first3Artworks.length < 3 && (
+          <Flex backgroundColor="onBackgroundLow" flex={1} mr={-overlapSize} />
+        )}
+        {first3Artworks.length < 2 && (
+          <Flex backgroundColor="onBackgroundLow" flex={1} mr={-overlapSize} />
+        )}
         {first3Artworks.reverse().map((artworkId) => (
           <AlbumListImage
             slug={artworkId}
@@ -25,7 +29,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
       </Flex>
       <Flex mt={1}>
         <Text variant="xs">{album.name}</Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="onBackgroundMedium">
           {album.artworkIds.length} Artworks
         </Text>
       </Flex>

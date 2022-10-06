@@ -27,7 +27,7 @@ export const SimpleMessage: React.FC<SimpleMessageProps> = ({
 }) => {
   return (
     <StyledFlex p={2} {...others}>
-      <Text color="black60">{children}</Text>
+      <Text color="onBackgroundMedium">{children}</Text>
     </StyledFlex>
   )
 }

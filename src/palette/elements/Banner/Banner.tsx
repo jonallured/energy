@@ -60,7 +60,7 @@ export const Banner: React.FC<BannerProps> = ({
             <Text fontSize="13px" color={color("blue100")} {...titleStyle}>
               {title}
             </Text>
-            <Text fontSize="13px" color={color("black100")} {...bodyTextStyle}>
+            <Text fontSize="13px" color={color("onBackground")} {...bodyTextStyle}>
               {text}
             </Text>
           </Flex>
@@ -74,7 +74,7 @@ export const Banner: React.FC<BannerProps> = ({
               >
                 <Image
                   source={require("images/close-x.webp")}
-                  style={{ tintColor: color("black100") }}
+                  style={{ tintColor: color("onBackground") }}
                 />
               </TouchableOpacity>
             </Flex>

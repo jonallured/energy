@@ -199,7 +199,7 @@ export const LoginScreen = () => {
                 onSubmitEditing={handleSubmit}
                 onBlur={() => validateForm()}
                 placeholder="Enter an authentication code"
-                placeholderTextColor={color("black30")}
+                placeholderTextColor={color("onBackgroundLow")}
                 ref={otpInputRef}
                 title="Authentication code"
                 // We need to to set textContentType to password here
@@ -217,7 +217,7 @@ export const LoginScreen = () => {
                   Alert.alert("Oups, not yet implemented")
                 }}
               >
-                <Text variant="xs" textAlign="right" underline color="black60">
+                <Text variant="xs" textAlign="right" underline color="onBackgroundMedium">
                   Forgot password?
                 </Text>
               </TouchableOpacity>
@@ -236,7 +236,7 @@ export const LoginScreen = () => {
             Log in
           </Button>
           <Spacer mt={2} />
-          <Text variant="xs" pb={1} textAlign="center" color="black60">
+          <Text variant="xs" pb={1} textAlign="center" color="onBackgroundMedium">
             Once you log in. Artsy Folio will begin downloading your artworks. We recommend using a
             stable Wifi connection.
           </Text>

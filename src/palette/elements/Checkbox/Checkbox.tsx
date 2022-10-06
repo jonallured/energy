@@ -42,12 +42,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   const defaultCheckboxStyle = {
     backgroundColor: color("white100"),
-    borderColor: color("black60"),
+    borderColor: color("onBackgroundMedium"),
   }
 
   const checkedCheckboxStyle = {
-    backgroundColor: color("black100"),
-    borderColor: color("black100"),
+    backgroundColor: color("onBackground"),
+    borderColor: color("onBackground"),
   }
 
   const disabledCheckboxStyle = {
@@ -70,8 +70,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     ? disabledCheckboxStyle
     : checkboxStyles[error ? "error" : "default"][isChecked ? "checked" : "unchecked"]
 
-  const textColor = error ? color("red100") : disabled ? color("black30") : color("black100")
-  const subtitleColor = error ? color("red100") : color("black30")
+  const textColor = error
+    ? color("red100")
+    : disabled
+    ? color("onBackgroundLow")
+    : color("onBackground")
+  const subtitleColor = error ? color("red100") : color("onBackgroundLow")
 
   return (
     <TouchableWithoutFeedback

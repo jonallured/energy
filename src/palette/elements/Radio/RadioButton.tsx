@@ -40,12 +40,12 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
   const defaultRadioButtonStyle = {
     backgroundColor: color("white100"),
-    borderColor: color("black60"),
+    borderColor: color("onBackgroundMedium"),
   }
 
   const selectedRadioButtonStyle = {
-    backgroundColor: color("black100"),
-    borderColor: color("black100"),
+    backgroundColor: color("onBackground"),
+    borderColor: color("onBackground"),
   }
 
   const disabledRadioButtonStyle = {
@@ -68,8 +68,12 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
     ? disabledRadioButtonStyle
     : radioButtonStyles[error ? "error" : "default"][selected ? "selected" : "notSelected"]
 
-  const textColor = error ? color("red100") : disabled ? color("black30") : color("black100")
-  const subtitleColor = error ? color("red100") : color("black30")
+  const textColor = error
+    ? color("red100")
+    : disabled
+    ? color("onBackgroundLow")
+    : color("onBackground")
+  const subtitleColor = error ? color("red100") : color("onBackgroundLow")
 
   return (
     <TouchableWithoutFeedback

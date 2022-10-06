@@ -9,7 +9,7 @@ type ShieldIconProps = IconProps & {
 
 export const ShieldIcon: React.FC<ShieldIconProps> = ({
   checkColor = "blue100",
-  shieldColor = "black100",
+  shieldColor = "onBackground",
   width = 22,
   height = 22,
   ...props

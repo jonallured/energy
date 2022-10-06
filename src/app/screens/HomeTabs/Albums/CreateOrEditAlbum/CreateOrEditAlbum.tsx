@@ -139,7 +139,7 @@ export const CreateOrEditAlbum = () => {
         )}
       </Flex>
       {mode === "edit" && (
-        <Text ml={2} mt={2} variant="xs" color="black60">
+        <Text ml={2} mt={2} variant="xs" color="onBackgroundMedium">
           Select artworks to remove from album
         </Text>
       )}

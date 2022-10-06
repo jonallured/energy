@@ -18,7 +18,7 @@ export const AvailabilityDot = ({ availability }: AvailabilityDotProps) => {
       color = "red100"
       break
     default:
-      color = "black60"
+      color = "onBackgroundMedium"
   }
 
   return <Flex height={10} width={10} backgroundColor={color} borderRadius="10" />

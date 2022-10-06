@@ -42,7 +42,13 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   )
 
   const headerMeta = !!meta && (
-    <Sans ellipsizeMode="tail" numberOfLines={1} size="2" color="black60" style={{ flexShrink: 1 }}>
+    <Sans
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      size="2"
+      color="onBackgroundMedium"
+      style={{ flexShrink: 1 }}
+    >
       {meta}
     </Sans>
   )
