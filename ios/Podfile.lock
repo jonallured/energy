@@ -384,7 +384,7 @@ PODS:
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNReactNativeHapticFeedback (1.13.1):
+  - RNReactNativeHapticFeedback (1.14.0):
     - React-Core
   - RNReanimated (2.8.0):
     - DoubleConversion
@@ -699,7 +699,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 8b83e99e290deaf1bab71673cc636776ef647b6f
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
+  RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
   RNReanimated: 58b57be69a237fb02ec8099d25171057638cf41a
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
