@@ -88,7 +88,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     provenance
 
   const shouldShowAboutTheArtworkTitle =
-    additionalInformation || shouldDisplayTheDetailBox || !exhibitionHistory || literature
+    additionalInformation || shouldDisplayTheDetailBox || exhibitionHistory || literature
 
   return (
     <Flex flex={1}>
@@ -176,10 +176,10 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               )}
             </Flex>
           </Flex>
-          <Spacer mt={2} />
-          <Separator />
           {!!shouldShowAboutTheArtworkTitle && (
             <>
+              <Spacer mt={2} />
+              <Separator />
               <Spacer mt={2} />
               <Text>About the artwork</Text>
               <Spacer mt={1} />
