@@ -11,9 +11,10 @@ import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/Art
 import { Header } from "app/sharedUI"
 import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Spacer, Button, Text, useSpace } from "palette"
+import { Flex, Button, Text, useSpace } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
 import { useArtworksByMode } from "./useArtworksByMode"
+import { Spacer } from "@artsy/palette-mobile"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
   HomeTabsScreens,

@@ -1,8 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArrowRightIcon, Flex, Input, Screen, Separator, Spacer, Text, Touchable } from "palette"
+import { ArrowRightIcon, Flex, Input, Screen, Separator, Text, Touchable } from "palette"
 
 export const EmailScreen = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

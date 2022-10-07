@@ -23,6 +23,7 @@ module.exports = {
       "|expo-modules-core" +
       "|expo-mail-composer" +
       "|@babel" +
+      "|@artsy/palette-mobile" +
       "|react-native-safe-area-context" +
       "|react-native-linear-gradient" +
       "|@react-native-seoul/masonry-list" +
