@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { ArrowLeftIcon, Flex, Spacer, Text, Touchable } from "palette"
+import { ArrowLeftIcon, Flex, Text, Touchable } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
 
 export const HEADER_HEIGHT = 44
 

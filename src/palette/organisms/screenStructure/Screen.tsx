@@ -8,8 +8,9 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { BackButton, Flex, FlexProps, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
+import { BackButton, Flex, FlexProps, BackButtonWithBackground, SpacingUnit } from "palette"
 import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
+import { Spacer } from "@artsy/palette-mobile"
 
 interface ScreenContextState {
   handleTopSafeArea: boolean

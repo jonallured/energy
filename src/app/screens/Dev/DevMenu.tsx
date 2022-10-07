@@ -3,8 +3,9 @@ import { useEffect } from "react"
 import { Modal, NativeModules } from "react-native"
 import RNShake from "react-native-shake"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import { Button } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
 
 export const DevMenu = () => {
   const [modalVisible, setModalVisible] = useState(false)

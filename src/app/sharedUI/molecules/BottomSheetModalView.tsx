@@ -1,15 +1,7 @@
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
-import {
-  ArrowRightIcon,
-  CloseIcon,
-  Flex,
-  Separator,
-  Spacer,
-  Text,
-  Touchable,
-  useTheme,
-} from "palette"
+import { ArrowRightIcon, CloseIcon, Flex, Separator, Text, Touchable, useTheme } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
 
 interface BottomSheetModalViewProps {
   modalHeight: string | number

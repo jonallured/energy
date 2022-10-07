@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Album } from "app/store/Models/AlbumsModel"
-import { Flex, Spacer, Text, useSpace } from "palette"
+import { Flex, Text, useSpace } from "palette"
 import { AlbumListImage } from "./AlbumListImage"
 
 export const AlbumListItem = ({ album }: { album: Album }) => {

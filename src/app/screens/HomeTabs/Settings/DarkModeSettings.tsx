@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Header, SettingsItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Screen, Spacer } from "palette"
+import { Screen } from "palette"
 
 export const DarkModeSettings = () => {
   const syncWithSystem = GlobalStore.useAppState(

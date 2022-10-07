@@ -26,6 +26,7 @@
     "@types/react": "^17"
   },
   "dependencies": {
+    "@artsy/palette-mobile": "^1.0.0",
     "@artsy/palette-tokens": "^4.0.0",
     "@gorhom/bottom-sheet": "^4",
     "@openspacelabs/react-native-zoomable-view": "^2.0.4",

@@ -8,8 +8,9 @@ import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent, ImageModal } from 
 import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
-import { Flex, Separator, Spacer, Text, Touchable, useColor, useSpace } from "palette"
+import { Flex, Separator, Text, Touchable, useColor, useSpace } from "palette"
 import { useScreenDimensions } from "shared/hooks"
+import { Spacer } from "@artsy/palette-mobile"
 
 const BOTTOM_SHEET_HEIGHT = 180
 

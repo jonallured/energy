@@ -8,8 +8,9 @@ import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
 import { Header } from "app/sharedUI"
 import { ArtistListItem } from "app/sharedUI/items/ArtistListItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Spacer, Touchable } from "palette"
+import { Touchable } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
+import { Spacer } from "@artsy/palette-mobile"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
   HomeTabsScreens,

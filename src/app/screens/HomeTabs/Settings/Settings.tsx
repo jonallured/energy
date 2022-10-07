@@ -6,7 +6,8 @@ import { DevMenu } from "app/screens/Dev/DevMenu"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Spacer, Button, Screen, Text, Separator, Touchable, Flex, ArrowRightIcon } from "palette"
+import { Button, Screen, Text, Separator, Touchable, Flex, ArrowRightIcon } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
 
 export const Settings = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
