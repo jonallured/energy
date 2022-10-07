@@ -2,6 +2,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkItemQuery } from "__generated__/ArtworkItemQuery.graphql"
 import { ArtworkGridItem } from "app/sharedUI"
 import { imageSize } from "app/utils/imageSize"
+
 interface ArtworkItemProps {
   artworkId: string
   onPress?: () => void
