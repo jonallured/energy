@@ -240,6 +240,7 @@ const THEMES = {
     colors: {
       ...colors,
       background: colors.black100,
+      onBackground: colors.white100,
       onBackgroundHigh: colors.white100,
       onBackgroundMedium: colors.black30,
       onBackgroundLow: colors.black30,

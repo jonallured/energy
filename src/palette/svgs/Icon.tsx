@@ -53,7 +53,8 @@ export const Icon = styled(ScaledSvg)<IconProps>`
 `
 
 Icon.defaultProps = {
-  fill: "onBackground",
+  // @ts-ignore
+  fill: "black",
   height: DEFAULT_SIZE,
   width: DEFAULT_SIZE,
 }
