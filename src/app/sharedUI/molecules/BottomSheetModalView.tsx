@@ -1,7 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
 import { ArrowRightIcon, CloseIcon, Flex, Separator, Text, Touchable, useTheme } from "palette"
-import { Spacer } from "@artsy/palette-mobile"
 
 interface BottomSheetModalViewProps {
   modalHeight: string | number
@@ -11,6 +11,7 @@ interface BottomSheetModalViewProps {
 
 export interface BottomSheetRef {
   showBottomSheetModal(): void
+  closeBottomSheetModal(): void
 }
 
 export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalViewProps>(
@@ -23,12 +24,19 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
 
     useImperativeHandle(ref, () => ({
       showBottomSheetModal() {
-        handlePresentModalPress()
+        presentModal()
+      },
+      closeBottomSheetModal() {
+        closeModal()
       },
     }))
 
-    const handlePresentModalPress = useCallback(() => {
+    const presentModal = useCallback(() => {
       bottomSheetModalRef.current?.present()
+    }, [])
+
+    const closeModal = useCallback(() => {
+      bottomSheetModalRef.current?.close()
     }, [])
 
     return (

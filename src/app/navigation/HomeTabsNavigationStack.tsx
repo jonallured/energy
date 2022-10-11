@@ -16,7 +16,7 @@ import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings
 import { EditPresentationMode } from "app/screens/HomeTabs/Settings/EditPresentationMode"
 import { Settings } from "app/screens/HomeTabs/Settings/Settings"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
-import { AddArtworkToAlbum } from "app/sharedUI/screens/Artwork/AddArtworkToAlbum"
+import { AddArtworksToAlbum } from "app/sharedUI/screens/Artwork/AddArtworksToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -32,20 +32,28 @@ export type HomeTabsScreens = {
   DarkModeSettings: undefined
   FolioDesignLanguage: undefined
   EditPresentationMode: undefined
-  ArtistTabs: { slug: string; name: string }
+  ArtistTabs: { slug: string; name?: string }
   InstallImage: { url: string }
   InsteadOfStorybook: undefined
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
-  AddArtworkToAlbum: { slug: string; contextArtworkSlugs?: string[] }
+  AddArtworksToAlbum: {
+    slug: string
+    areMultipleArtworks?: boolean
+    name?: string
+    contextArtworkSlugs?: string[]
+    closeBottomSheetModal?: () => void
+  }
   ArtworkWebView: { uri: string }
   CreateOrEditAlbum: {
     mode: "create" | "edit"
     albumId?: string
     artworkFromArtistTab?: string
+    name?: string
     slug?: string
     contextArtworkSlugs?: string[]
+    closeBottomSheetModal?: () => void
   }
   CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
   CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
@@ -79,7 +87,7 @@ export const HomeTabsNavigationStack = () => {
         <Screen name="Artwork" component={Artwork} />
         <Screen name="AlbumArtworks" component={AlbumArtworks} />
         <Screen name="ShowTabs" component={ShowTabs} />
-        <Screen name="AddArtworkToAlbum" component={AddArtworkToAlbum} />
+        <Screen name="AddArtworksToAlbum" component={AddArtworksToAlbum} />
         <Screen name="ArtworkWebView" component={ArtworkWebView} />
         <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
         <Screen name="CreateOrEditAlbumChooseArtist" component={CreateOrEditAlbumChooseArtist} />

@@ -44,7 +44,7 @@ export const Artwork = () => {
   })
 
   const numberOfAlbumsIncludingArtwork = useMemo(() => {
-    return albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
+    return albums.filter((album) => album.artworkIds?.includes(artworkData.artwork?.internalID!))
       .length
   }, [albums])
 
@@ -130,7 +130,7 @@ export const Artwork = () => {
                   : `Currently in ${numberOfAlbumsIncludingArtwork} albums`
               }
               onPress={() =>
-                navigation.navigate("AddArtworkToAlbum", { slug, contextArtworkSlugs })
+                navigation.navigate("AddArtworksToAlbum", { slug, contextArtworkSlugs })
               }
             />
           </>

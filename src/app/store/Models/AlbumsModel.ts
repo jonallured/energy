@@ -6,19 +6,21 @@ import uuid from "react-native-uuid"
 export interface Album {
   id: Readonly<string>
   name: string
-  artworkIds: string[]
+  artworkIds?: string[]
+  documentIds?: string[]
   createdAt: string
 }
 
 type ArtistSlug = string
 type ArtworkId = string
+type DocumentId = string
 export interface AlbumsModel {
   sessionState: {
     selectedArtworksForNewAlbum: Record<ArtistSlug, ArtworkId[]>
     selectedArtworksForExistingAlbum: Record<ArtistSlug, ArtworkId[]>
   }
   albums: Album[]
-  addAlbum: Action<this, { name: string; artworkIds: ArtworkId[] }>
+  addAlbum: Action<this, { name: string; artworkIds?: ArtworkId[]; documentIds?: DocumentId[] }>
   removeAlbum: Action<this, string>
   editAlbum: Action<this, { albumId: string; name: string; artworkIds: ArtworkId[] }>
   addArtworksInAlbums: Action<this, { albumIds: string[]; artworkIdsToAdd: ArtworkId[] }>
@@ -60,7 +62,7 @@ export const getAlbumsModel = (): AlbumsModel => ({
       const index = state.albums.findIndex((x) => x.id === albumId)
       if (index !== -1) {
         state.albums[index].artworkIds = uniq([
-          ...state.albums[index].artworkIds,
+          ...state.albums[index].artworkIds!,
           ...artworkIdsToAdd,
         ])
       }

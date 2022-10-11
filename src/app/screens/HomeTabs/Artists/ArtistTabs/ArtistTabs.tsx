@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -26,12 +26,17 @@ type ArtistTabsProps = {
 export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
   const { slug, name } = useRoute<ArtistTabsRoute>().params
   const safeAreaInsets = useSafeAreaInsets()
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
   const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)
 
   const addToButtonHandler = () => {
     bottomSheetRef.current?.showBottomSheetModal()
+  }
+
+  const closeBottomSheetModal = () => {
+    bottomSheetRef.current?.closeBottomSheetModal()
   }
 
   return (
@@ -87,12 +92,19 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
             <BottomSheetModalRow
               Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
               label="Add to Album"
-              navigateTo={() => console.log("Do nothing")}
+              onPress={() =>
+                navigation.navigate("AddArtworksToAlbum", {
+                  areMultipleArtworks: true,
+                  slug,
+                  name,
+                  closeBottomSheetModal,
+                })
+              }
             />
             <BottomSheetModalRow
               Icon={<EnvelopeIcon fill="onBackgroundHigh" />}
               label="Share by Email"
-              navigateTo={() => console.log("Do nothing")}
+              onPress={() => console.log("Do nothing")}
             />
           </>
         }

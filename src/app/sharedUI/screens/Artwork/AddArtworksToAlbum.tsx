@@ -3,20 +3,29 @@ import { useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { AddArtworkToAlbumQuery } from "__generated__/AddArtworkToAlbumQuery.graphql"
+import { AddArtworksToAlbumQuery } from "__generated__/AddArtworksToAlbumQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { AlbumListItem, Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "palette"
 
-type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworkToAlbum">
-type AddArtworkToAlbumProps = {
+type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworksToAlbum">
+type AddArtworksToAlbumProps = {
   slug: string
 }
 
-export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
-  const { slug, contextArtworkSlugs } = useRoute<HomeTabsRoute>().params
-  const artworkData = useLazyLoadQuery<AddArtworkToAlbumQuery>(addArtworkToAlbumQuery, { slug })
+export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
+  const { slug, areMultipleArtworks, name, contextArtworkSlugs, closeBottomSheetModal } =
+    useRoute<HomeTabsRoute>().params
+
+  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
+
+  const artworkData = !areMultipleArtworks
+    ? useLazyLoadQuery<AddArtworksToAlbumQuery>(addArtworksToAlbumQuery, {
+        slug,
+      })
+    : null
+
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const safeAreaInsets = useSafeAreaInsets()
@@ -34,11 +43,24 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
 
   const addArtworkToTheSelectedAlbums = () => {
     try {
-      GlobalStore.actions.albums.addArtworksInAlbums({
-        albumIds: selectedAlbumIds,
-        artworkIdsToAdd: [artworkData.artwork?.internalID!],
-      })
-      navigation.goBack()
+      if (areMultipleArtworks) {
+        GlobalStore.actions.albums.addArtworksInAlbums({
+          albumIds: selectedAlbumIds,
+          artworkIdsToAdd: selectedWorks,
+        })
+        navigation.navigate("ArtistTabs", {
+          slug,
+          name,
+        })
+        closeBottomSheetModal?.()
+        GlobalStore.actions.selectMode.cancelSelectMode()
+      } else {
+        GlobalStore.actions.albums.addArtworksInAlbums({
+          albumIds: selectedAlbumIds,
+          artworkIdsToAdd: [artworkData?.artwork?.internalID!],
+        })
+        navigation.goBack()
+      }
     } catch (error) {
       console.error(error)
     }
@@ -46,21 +68,23 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
 
   const renderButton = () => {
     if (
-      albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
+      albums.filter((album) => album.artworkIds?.includes(artworkData?.artwork?.internalID!))
         .length === albums.length ||
       selectedAlbumIds.length <= 0
     ) {
       return (
         <Button
           block
-          onPress={() =>
+          onPress={() => {
             navigation.navigate("CreateOrEditAlbum", {
               mode: "create",
-              artworkFromArtistTab: artworkData.artwork?.internalID,
+              artworkFromArtistTab: artworkData?.artwork?.internalID,
               slug,
+              name,
               contextArtworkSlugs,
+              closeBottomSheetModal,
             })
-          }
+          }}
         >
           Create New Album
         </Button>
@@ -75,7 +99,10 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
 
   return (
     <>
-      <Header label={artworkData.artwork?.title!} safeAreaInsets />
+      <Header
+        label={!areMultipleArtworks ? artworkData?.artwork?.title! : "Add to Album"}
+        safeAreaInsets
+      />
       <FlatList
         data={albums}
         keyExtractor={(item) => item?.id}
@@ -84,7 +111,7 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
             <Flex key={album.id} mx={2}>
               <Touchable
                 onPress={
-                  album.artworkIds.includes(artworkData.artwork?.internalID)
+                  album.artworkIds?.includes(artworkData?.artwork?.internalID)
                     ? undefined
                     : () => selectAlbumHandler(album.id)
                 }
@@ -95,7 +122,7 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
                   mt={1}
                   opacity={
                     selectedAlbumIds.includes(album.id) ||
-                    album.artworkIds.includes(artworkData.artwork?.internalID)
+                    album.artworkIds?.includes(artworkData?.artwork?.internalID)
                       ? 0.4
                       : 1
                   }
@@ -136,8 +163,8 @@ export const AddArtworkToAlbum: React.FC<AddArtworkToAlbumProps> = () => {
   )
 }
 
-const addArtworkToAlbumQuery = graphql`
-  query AddArtworkToAlbumQuery($slug: String!) {
+const addArtworksToAlbumQuery = graphql`
+  query AddArtworksToAlbumQuery($slug: String!) {
     artwork(id: $slug) {
       internalID
       title

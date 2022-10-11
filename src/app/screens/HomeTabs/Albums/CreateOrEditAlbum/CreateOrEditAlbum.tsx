@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import {
   CommonActions,
@@ -7,7 +8,7 @@ import {
   useRoute,
 } from "@react-navigation/native"
 import { useFormik } from "formik"
-import { uniq } from "lodash"
+import { compact, uniq } from "lodash"
 import { useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
@@ -18,7 +19,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { ArrowRightIcon, Button, Flex, Input, Text, Touchable, useSpace } from "palette"
 import { ShadowSeparator } from "palette/elements/Separator/ShadowSeparator"
 import { useArtworksByMode } from "./useArtworksByMode"
-import { Spacer } from "@artsy/palette-mobile"
 
 interface CreateAlbumValuesSchema {
   albumName: string
@@ -31,21 +31,31 @@ const createAlbumSchema = Yup.object().shape({
 type CreateOrEditAlbumRoute = RouteProp<HomeTabsScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
-  const { mode, albumId, artworkFromArtistTab, slug, contextArtworkSlugs } =
-    useRoute<CreateOrEditAlbumRoute>().params || {
-      mode: "create",
-    }
+  const {
+    mode,
+    albumId,
+    artworkFromArtistTab,
+    slug,
+    name,
+    contextArtworkSlugs,
+    closeBottomSheetModal,
+  } = useRoute<CreateOrEditAlbumRoute>().params || {
+    mode: "create",
+  }
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const safeAreaInsets = useSafeAreaInsets()
   const [selectedArtworksToRemove, setSelectedArtworksToRemove] = useState<string[]>([])
-
+  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
   const selectedArtworksInModel = useArtworksByMode(mode)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
-  const selectedArtworks = !artworkFromArtistTab
-    ? uniq([...(album?.artworkIds || []), ...selectedArtworksInModel])
-    : [artworkFromArtistTab]
   const space = useSpace()
+
+  //Docs will be added later
+  const selectedArtworks =
+    artworkFromArtistTab || selectedWorks.length > 0
+      ? compact([artworkFromArtistTab, selectedWorks].flat())
+      : uniq([...(album?.artworkIds || []), ...selectedArtworksInModel])
 
   const { handleSubmit, handleChange, values, errors, validateForm, isValid, dirty, isSubmitting } =
     useFormik<CreateAlbumValuesSchema>({
@@ -72,6 +82,13 @@ export const CreateOrEditAlbum = () => {
               slug: slug || "",
               contextArtworkSlugs,
             })
+          } else if (selectedWorks.length > 0) {
+            navigation.navigate("ArtistTabs", {
+              slug: slug || "",
+              name,
+            })
+            closeBottomSheetModal?.()
+            GlobalStore.actions.selectMode.cancelSelectMode()
           } else {
             navigation.dispatch({
               ...CommonActions.reset({
@@ -106,7 +123,7 @@ export const CreateOrEditAlbum = () => {
     if (mode === "edit") {
       return (
         selectedArtworksToRemove.length <= 0 &&
-        selectedArtworks.length === album?.artworkIds.length &&
+        selectedArtworks.length === album?.artworkIds?.length &&
         (!isValid || !dirty || isSubmitting)
       )
     } else {
@@ -128,7 +145,7 @@ export const CreateOrEditAlbum = () => {
           />
         </Flex>
         <Spacer mt={2} />
-        {!artworkFromArtistTab && (
+        {!artworkFromArtistTab && selectedWorks.length === 0 && (
           <Touchable
             onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
           >
