@@ -86,7 +86,7 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
       )}
       <BottomSheetModalView
         ref={bottomSheetRef}
-        modalHeight={250}
+        modalHeight={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom + 230 : 250}
         modalRows={
           <>
             <BottomSheetModalRow
@@ -105,6 +105,7 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
               Icon={<EnvelopeIcon fill="onBackgroundHigh" />}
               label="Share by Email"
               onPress={() => console.log("Do nothing")}
+              isLastRow
             />
           </>
         }

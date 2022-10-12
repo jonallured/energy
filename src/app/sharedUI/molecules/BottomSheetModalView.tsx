@@ -96,6 +96,7 @@ interface BottomSheetModalRowProps {
   Icon: ReactElement
   label: string
   subtitle?: string | null
+  isLastRow?: boolean
   onPress: () => void
 }
 
@@ -103,6 +104,7 @@ export const BottomSheetModalRow = ({
   Icon,
   label,
   subtitle,
+  isLastRow,
   onPress,
 }: BottomSheetModalRowProps) => {
   return (
@@ -126,7 +128,7 @@ export const BottomSheetModalRow = ({
             <ArrowRightIcon fill="onBackgroundHigh" />
           </Flex>
         </Flex>
-        <Separator />
+        {!isLastRow && <Separator />}
       </Flex>
     </Touchable>
   )
