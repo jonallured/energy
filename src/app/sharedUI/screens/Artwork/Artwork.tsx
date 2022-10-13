@@ -30,6 +30,8 @@ export const Artwork = () => {
     imageSize,
   })
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
+  const oneArtworkSubject = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)
+
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
     name: slug,
     content: (
@@ -105,9 +107,9 @@ export const Artwork = () => {
               label="Send by Email"
               onPress={() => {
                 MailComposer.composeAsync({
-                  subject: `Information about "${title ? title : ""}" by ${
-                    artistNames ? artistNames : ""
-                  }`,
+                  subject: oneArtworkSubject
+                    .replace("$title", title!)
+                    .replace("$artist", artistNames!),
                   isHtml: true,
                   body: bodyHTML,
                 })
