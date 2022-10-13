@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useState } from "react"
 import { useEffect } from "react"
 import { Modal, NativeModules } from "react-native"
@@ -5,7 +6,7 @@ import RNShake from "react-native-shake"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex } from "palette"
 import { Button } from "palette"
-import { Spacer } from "@artsy/palette-mobile"
+import { ARTNativeModules } from "app/native_modules/ARTNativeModules"
 
 export const DevMenu = () => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -52,6 +53,29 @@ export const DevMenu = () => {
         {/* eslint-disable-next-line */}
         <Button block onPress={() => NativeModules.DevMenu.show()}>
           Show native dev menu
+        </Button>
+        <Spacer m={1} />
+        <Button block onPress={() => {
+          ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()
+        }}>
+          Add native test albums
+        </Button>
+        <Spacer m={1} />
+        <Button block onPress={() => {
+          const albums = ARTNativeModules.ARTAlbumMigrationModule.readAlbums()
+          if (albums) {
+            albums.forEach((nativeAlbum) => {
+              const album = {
+                name: nativeAlbum.name,
+                artworkIds: nativeAlbum.artworkIDs
+              }
+              console.log('Got album name', album.name)
+              console.log('Got album artworkIDs', album.artworkIds)
+              GlobalStore.actions.albums.addAlbum(album)
+            })
+          }
+        }}>
+          Read albums
         </Button>
       </Flex>
     </Modal>

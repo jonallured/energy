@@ -68,5 +68,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function": OFF,
     "@typescript-eslint/ban-types": OFF,
     "@typescript-eslint/explicit-module-boundary-types": OFF,
+    "@typescript-eslint/no-unsafe-assignment": OFF,
+    "@typescript-eslint/no-unsafe-call": OFF
   },
 }

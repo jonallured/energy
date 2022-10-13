@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable import/no-named-as-default-member */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { decode } from "html-entities"
 import _ from "lodash"
 import { Linking, Text as RNText, View } from "react-native"

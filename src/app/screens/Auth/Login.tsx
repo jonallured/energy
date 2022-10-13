@@ -15,6 +15,7 @@ import { Button, Flex, Input, Text, useColor } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { MeasuredView } from "shared/utils"
 import { Spacer } from "@artsy/palette-mobile"
+import { attemptAlbumMigration } from "shared/utils/attemptAlbumMigration"
 
 export interface LoginSchema {
   email: string
@@ -82,6 +83,10 @@ export const LoginScreen = () => {
       if (!success && message !== "otp_missing" && message !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+      }
+
+      if (success) {
+        attemptAlbumMigration()
       }
     },
     validationSchema: loginSchema,
