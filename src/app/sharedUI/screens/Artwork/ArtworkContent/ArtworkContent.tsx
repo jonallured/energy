@@ -1,7 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Image } from "react-native"
+import { Image, Linking } from "react-native"
 import QRCode from "react-native-qrcode-generator"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent, ImageModal } from "app/sharedUI"
@@ -10,7 +12,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { Flex, Separator, Text, Touchable, useColor, useSpace } from "palette"
 import { useScreenDimensions } from "shared/hooks"
-import { Spacer } from "@artsy/palette-mobile"
+import { defaultRules } from "shared/utils/renderMarkdown"
 
 const BOTTOM_SHEET_HEIGHT = 180
 
@@ -20,10 +22,41 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const space = useSpace()
   const bottomSheetRef = useRef<BottomSheet>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const safeAreaInsets = useSafeAreaInsets()
 
   const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, {
     slug,
     imageSize,
+  })
+
+  const markdownRules = defaultRules({
+    ruleOverrides: {
+      heading: {
+        react: (node, output, state) => {
+          return (
+            <Text mb="1" key={state.key} variant="md">
+              {output(node.content, state)}
+            </Text>
+          )
+        },
+      },
+      link: {
+        react: (node, output, state) => {
+          state.withinText = true
+          return (
+            <Text
+              key={state.key}
+              testID={`linktext-${state.key}`}
+              onPress={() => Linking.openURL(node.target)}
+              variant="md"
+              style={{ textDecorationLine: "underline" }}
+            >
+              {output(node.content, state)}
+            </Text>
+          )
+        },
+      },
+    },
   })
 
   const screenHeight = useScreenDimensions().height
@@ -136,7 +169,11 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
         style={{ shadowColor: "black", shadowOpacity: 0.08, shadowRadius: 5 }}
       >
         <BottomSheetScrollView
-          style={{ paddingHorizontal: space(2), backgroundColor: color("background") }}
+          style={{
+            marginBottom: safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : space(2),
+            paddingHorizontal: space(2),
+            backgroundColor: color("background"),
+          }}
           scrollEnabled={isScrollEnabled}
         >
           <Flex flexDirection="row">
@@ -179,7 +216,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           </Flex>
           {!!shouldShowAboutTheArtworkTitle && (
             <>
-              <Spacer mt={2} />
+              <Spacer mt={3} />
               <Separator />
               <Spacer mt={2} />
               <Text>About the artwork</Text>
@@ -188,7 +225,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           )}
           {!!additionalInformation && (
             <>
-              <Markdown>{additionalInformation}</Markdown>
+              <Markdown rules={markdownRules}>{additionalInformation}</Markdown>
               <Spacer mt={2} />
             </>
           )}
@@ -220,7 +257,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 {!!provenance && <ArtworkDetail label="Provenance" value={provenance} />}
                 <Spacer mt={1} />
               </Flex>
-              <Spacer mt={2} />
+              <Spacer mt={3} />
             </>
           )}
 
