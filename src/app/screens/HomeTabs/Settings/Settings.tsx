@@ -3,7 +3,6 @@ import { useState } from "react"
 import { getVersion } from "react-native-device-info"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { DevMenu } from "app/screens/Dev/DevMenu"
-import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Button, Screen, Text, Separator, Touchable, Flex, ArrowRightIcon } from "palette"
@@ -21,16 +20,11 @@ export const Settings = () => {
 
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Header label="Settings" />
-      </Screen.RawHeader>
-      <Screen.Body fullwidth>
-        <Spacer y={2} />
-        <Flex mx={2}>
-          <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
-            Dark Mode
-          </Button>
-        </Flex>
+      <Screen.AnimatedTitleHeader title="Settings" />
+      <Screen.Body scroll>
+        <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
+          Dark Mode
+        </Button>
         <Spacer y={2} />
         <SwitchContainer
           label="Presentation Mode"
@@ -39,11 +33,13 @@ export const Settings = () => {
           }
           value={isPresenationModeEnabled}
         />
-        <Spacer m={1} />
-        <Separator />
-        <Spacer m={1} />
+
+        <Screen.FullWidthItem>
+          <Separator my="2" />
+        </Screen.FullWidthItem>
+
         <Touchable onPress={() => navigation.navigate("EditPresentationMode")}>
-          <Flex mx={2}>
+          <Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
               <Text>Presentation Mode Settings</Text>
               <ArrowRightIcon />
@@ -53,36 +49,40 @@ export const Settings = () => {
             </Text>
           </Flex>
         </Touchable>
-        <Separator my={2} />
+
+        <Screen.FullWidthItem>
+          <Separator my={2} />
+        </Screen.FullWidthItem>
 
         <Touchable onPress={() => navigation.navigate("EmailScreen")}>
-          <Flex mx={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text>Email</Text>
             <ArrowRightIcon />
           </Flex>
         </Touchable>
-        <Separator my={2} />
 
-        <Spacer m={2} />
-        <Flex mx={2}>
-          <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
-            Log out
-          </Button>
+        <Screen.FullWidthItem>
+          <Separator my={2} />
+        </Screen.FullWidthItem>
 
-          <Spacer y={1} />
-          <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
-            Folio Design Language
-          </Button>
-          <Spacer y={1} />
-          <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
-            Instead Of Storybook
-          </Button>
-        </Flex>
-        <Spacer m={1} />
+        <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
+          Log out
+        </Button>
+
+        <Spacer y={1} />
+        <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
+          Folio Design Language
+        </Button>
+        <Spacer y={1} />
+        <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
+          Instead Of Storybook
+        </Button>
+        <Spacer y="1" />
         <Touchable
           onPress={() => {
-            if (tapCount < 5) updateTapCount(tapCount + 1)
-            else {
+            if (tapCount < 5) {
+              updateTapCount(tapCount + 1)
+            } else {
               GlobalStore.actions.artsyPrefs.switchIsUserDev()
               updateTapCount(0)
             }

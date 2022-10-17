@@ -4,27 +4,26 @@ import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { Header } from "app/sharedUI"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
   BottomSheetRef,
 } from "app/sharedUI/molecules/BottomSheetModalView"
 import { GlobalStore } from "app/store/GlobalStore"
-import { SuspenseWrapper, TabsContainer } from "app/wrappers"
-import { BriefcaseIcon, Button, EnvelopeIcon, Flex, Text } from "palette"
+import { SuspenseWrapper } from "app/wrappers"
+import { BriefcaseIcon, Screen, Button, EnvelopeIcon, Flex, Text } from "palette"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 
 type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
-type ArtistTabsProps = {
-  slug: string
-  name: string
-}
 
-export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
-  const { slug, name } = useRoute<ArtistTabsRoute>().params
+export const ArtistTabs = () => {
+  const { slug } = useRoute<ArtistTabsRoute>().params
+  const data = useLazyLoadQuery<ArtistTabsQuery>(artistQuery, { slug })
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
@@ -41,31 +40,45 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
 
   return (
     <BottomSheetModalProvider>
-      <TabsContainer
-        header={(props) => (
-          <Header
-            label={name}
-            onPress={() => GlobalStore.actions.selectMode.cancelSelectMode()}
-            {...props}
-          />
-        )}
-      >
-        <Tabs.Tab name="ArtistArtworks" label="Works">
-          <SuspenseWrapper withTabs>
-            <ArtistArtworks slug={slug} />
-          </SuspenseWrapper>
-        </Tabs.Tab>
-        <Tabs.Tab name="ArtistShows" label="Shows">
-          <SuspenseWrapper withTabs>
-            <ArtistShows slug={slug} />
-          </SuspenseWrapper>
-        </Tabs.Tab>
-        <Tabs.Tab name="ArtistDocuments" label="Documents">
-          <SuspenseWrapper withTabs>
-            <ArtistDocuments slug={slug} />
-          </SuspenseWrapper>
-        </Tabs.Tab>
-      </TabsContainer>
+      <Screen>
+        <Screen.AnimatedTitleHeader
+          title={data.artist?.name ?? ""}
+          rightElements={
+            isSelectModeActive ? (
+              <>
+                <Text onPress={() => GlobalStore.actions.selectMode.cancelSelectMode()}>
+                  cancel
+                </Text>
+              </>
+            ) : (
+              <Button
+                size="small"
+                onPress={() => GlobalStore.actions.selectMode.toggleSelectMode()}
+              >
+                Select
+              </Button>
+            )
+          }
+        />
+        <Screen.AnimatedTitleTabsBody>
+          <Tabs.Tab name="ArtistArtworks" label="Works">
+            <SuspenseWrapper withTabs>
+              <ArtistArtworks slug={slug} />
+            </SuspenseWrapper>
+          </Tabs.Tab>
+          <Tabs.Tab name="ArtistShows" label="Shows">
+            <SuspenseWrapper withTabs>
+              <ArtistShows slug={slug} />
+            </SuspenseWrapper>
+          </Tabs.Tab>
+          <Tabs.Tab name="ArtistDocuments" label="Documents">
+            <SuspenseWrapper withTabs>
+              <ArtistDocuments slug={slug} />
+            </SuspenseWrapper>
+          </Tabs.Tab>
+        </Screen.AnimatedTitleTabsBody>
+      </Screen>
+
       {(selectedWorks.length > 0 || selectedDocs.length > 0) && (
         <Flex
           position="absolute"
@@ -84,6 +97,7 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
           </Button>
         </Flex>
       )}
+
       <BottomSheetModalView
         ref={bottomSheetRef}
         modalHeight={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom + 230 : 250}
@@ -113,3 +127,11 @@ export const ArtistTabs: React.FC<ArtistTabsProps> = () => {
     </BottomSheetModalProvider>
   )
 }
+
+const artistQuery = graphql`
+  query ArtistTabsQuery($slug: String!) {
+    artist(id: $slug) {
+      name
+    }
+  }
+`

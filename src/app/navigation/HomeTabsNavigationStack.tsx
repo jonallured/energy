@@ -2,6 +2,13 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/
 import { createStackNavigator } from "@react-navigation/stack"
 import { FolioDesignLanguage } from "app/screens/Dev/FolioDesignLanguage"
 import { InsteadOfStorybook } from "app/screens/Dev/InsteadOfStorybook"
+import { StorybookScreenAnimatedTitleHeader } from "app/screens/Dev/StorybookScreenAnimatedTitleHeader"
+import { StorybookScreenAnimatedTitleHeaderTabs } from "app/screens/Dev/StorybookScreenAnimatedTitleHeaderTabs"
+import { StorybookScreenBottomView } from "app/screens/Dev/StorybookScreenBottomView"
+import { StorybookScreenFullWidthItem } from "app/screens/Dev/StorybookScreenFullWidthItem"
+import { StorybookScreenHeader } from "app/screens/Dev/StorybookScreenHeader"
+import { StorybookScreenHeaderElements } from "app/screens/Dev/StorybookScreenHeaderElements"
+import { StorybookScreenRawHeader } from "app/screens/Dev/StorybookScreenRawHeader"
 import { AlbumArtworks } from "app/screens/HomeTabs/Albums/AlbumArtworks"
 import { CreateOrEditAlbum } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
 import { CreateOrEditAlbumChooseArtist } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
@@ -96,6 +103,21 @@ export const HomeTabsNavigationStack = () => {
           name="CreateOrEditAlbumChooseArtworks"
           component={CreateOrEditAlbumChooseArtworks}
         />
+
+        {/* storybook screens */}
+        <Screen
+          name="StorybookScreenAnimatedTitleHeader"
+          component={StorybookScreenAnimatedTitleHeader}
+        />
+        <Screen
+          name="StorybookScreenAnimatedTitleHeaderTabs"
+          component={StorybookScreenAnimatedTitleHeaderTabs}
+        />
+        <Screen name="StorybookScreenHeader" component={StorybookScreenHeader} />
+        <Screen name="StorybookScreenHeaderElements" component={StorybookScreenHeaderElements} />
+        <Screen name="StorybookScreenBottomView" component={StorybookScreenBottomView} />
+        <Screen name="StorybookScreenFullWidthItem" component={StorybookScreenFullWidthItem} />
+        <Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
       </Navigator>
     </NavigationContainer>
   )

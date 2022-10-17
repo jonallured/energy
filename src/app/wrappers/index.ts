@@ -1,3 +1,3 @@
 export * from "./SuspenseWrapper"
 export * from "./TabsContainer"
-export * from "./TabsTestWrappers"
+export * from "./TabsContent"

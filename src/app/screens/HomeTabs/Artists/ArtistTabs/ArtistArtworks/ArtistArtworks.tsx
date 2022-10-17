@@ -17,6 +17,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
     partnerID,
     slug,
   })
+
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
@@ -47,10 +48,6 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
       })
     }
     setAreAllArtworkSelected(toggleSelectAllArtwork)
-  }
-
-  const cancelButtonHandler = () => {
-    GlobalStore.actions.selectMode.cancelSelectMode()
   }
 
   return (
@@ -108,17 +105,8 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           >
             {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
           </Button>
-          <Button variant="fillGray" size="small" onPress={cancelButtonHandler}>
-            Cancel
-          </Button>
         </Flex>
       )}
-      {/* This should be moved to Headers */}
-      <Flex position="absolute" zIndex={100} bottom={50} width="100%" alignItems="center">
-        {!isSelectModeActive && (
-          <Button onPress={() => GlobalStore.actions.selectMode.toggleSelectMode()}>Select</Button>
-        )}
-      </Flex>
     </>
   )
 }

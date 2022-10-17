@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/palette-mobile@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-1.4.0.tgz#dbd4cdfd5df2f697474324a30076870f04244375"
-  integrity sha512-K5SDWDHB54skupMAqmv56di7XHAuIlEVb+Dq4/Qooo0+G7YLTo9Bd9rHR3c9UDyRauJ+EpoPR/VydO7JxJOSaQ==
+"@artsy/palette-mobile@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-1.4.1.tgz#0b60a03dc842402e935f14baac754676a1fe345b"
+  integrity sha512-puIXgz6mt04Eo8S4NdarqwujsckP9E3n+J2XDHjpQNB4Ki/aEQU6Gz/0goL/uDzhXNZjDrRnxWcwMN9DL8S43A==
   dependencies:
     "@artsy/palette-tokens" "^4.0.0"
     "@styled-system/theme-get" "^5.1.2"
@@ -7971,6 +7971,11 @@ join-component@^1.1.0:
   resolved "https://registry.yarnpkg.com/join-component/-/join-component-1.1.0.tgz#b8417b750661a392bee2c2537c68b2a9d4977cd5"
   integrity sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==
 
+jotai@^1.8.4:
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-1.8.5.tgz#a1d64682cc7b12697782488d5b6c6cfb54051520"
+  integrity sha512-c6MGQ3S0X8VctRUEmRLEL3FMib3F7Ppsx3x86c5XL+Gm6JjH6qIt0lb0F4yE2V5/9Tg+KhGiagfsdA5lg0D7cQ==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -10051,10 +10056,10 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-collapsible-tab-view@^4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-4.5.2.tgz#e5fd7b81d76f3ee98cc0a0ea54439674591e9055"
-  integrity sha512-QXj4bMqfD+erREZNS51mqyPxJ8Xid4Kef/vqu1PqExNCAo30WjSKOpeNVHmXt4vcs/6ln+qFzLby4cbJ5AkoBw==
+react-native-collapsible-tab-view@^5.0.0-rc.13:
+  version "5.0.0-rc.13"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-5.0.0-rc.13.tgz#d0ad05e20a872a52fc259b5fc8914a79fb56a3eb"
+  integrity sha512-8cRh1VmwWdNIdoqfOIvMX5GxZu6ln0tXB45uACQdRW8bEXSrzT4wSw76et1WWkVHJyfTqPw8S6NGyZ7JND+x6Q==
   dependencies:
     use-deep-compare "^1.1.0"
 

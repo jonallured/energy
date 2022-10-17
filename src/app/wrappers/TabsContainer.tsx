@@ -1,60 +1,47 @@
-import { ReactElement } from "react"
-import { Tabs, MaterialTabBar, TabBarProps } from "react-native-collapsible-tab-view"
-import { TabName, TabReactElement } from "react-native-collapsible-tab-view/lib/typescript/types"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Flex, useColor, useSpace } from "palette"
+import { Tabs, MaterialTabBar, CollapsibleProps } from "react-native-collapsible-tab-view"
+import { useColor, useSpace } from "palette"
 
-type TabsContainerProps = {
-  header: (props: TabBarProps<TabName>) => ReactElement
-  initialTabName?: TabName
-  children: TabReactElement<TabName> | TabReactElement<TabName>[]
+const TAB_BAR_HEIGHT = 60
+
+export type TabsContainerProps = {
+  header?: CollapsibleProps["renderHeader"]
+  initialTabName?: CollapsibleProps["initialTabName"]
+  children: CollapsibleProps["children"]
 }
 
-export const TabsContainer: React.FC<TabsContainerProps> = ({
-  header,
-  children,
-  initialTabName,
-}) => {
+export const TabsContainer = ({ header, children, initialTabName }: TabsContainerProps) => {
   const space = useSpace()
   const color = useColor()
-  const insets = useSafeAreaInsets()
 
   return (
-    <>
-      <Flex height={insets.top} backgroundColor="background" />
-      <Tabs.Container
-        renderHeader={header}
-        headerContainerStyle={{
-          shadowOpacity: 0,
-          shadowRadius: 0,
-          elevation: 0,
-          backgroundColor: color("background"),
-        }}
-        initialTabName={initialTabName}
-        containerStyle={{ paddingTop: space(2) }}
-        TabBarComponent={(props) => (
-          <MaterialTabBar
-            scrollEnabled
-            {...props}
-            style={{ marginHorizontal: space(1) }}
-            activeColor={color("onBackgroundHigh")}
-            inactiveColor={color("onBackgroundMedium")}
-            labelStyle={{ margin: -space(1) }} // only way to match the design without patching the library
-            tabStyle={{ margin: space(1) }}
-            indicatorStyle={{ backgroundColor: color("onBackgroundHigh"), width: "20%", height: 1 }}
-          />
-        )}
-      >
-        {children}
-      </Tabs.Container>
-      <Flex
-        height={insets.top}
-        backgroundColor="background"
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-      />
-    </>
+    <Tabs.Container
+      renderHeader={header}
+      headerContainerStyle={{
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0,
+        backgroundColor: color("background"),
+      }}
+      initialTabName={initialTabName}
+      containerStyle={{ paddingTop: space(2) }}
+      renderTabBar={(props) => (
+        <MaterialTabBar
+          scrollEnabled
+          {...props}
+          style={{ paddingHorizontal: space(1), height: TAB_BAR_HEIGHT }}
+          activeColor={color("onBackground")}
+          inactiveColor={color("onBackgroundMedium")}
+          labelStyle={{ marginTop: -5, marginHorizontal: -10 }} // removing the horizonal margin from the lib
+          tabStyle={{ marginHorizontal: 10 }} // adding the margin back here
+          indicatorStyle={{
+            backgroundColor: color("onBackground"),
+            height: 1,
+            marginBottom: 10,
+          }}
+        />
+      )}
+    >
+      {children}
+    </Tabs.Container>
   )
 }

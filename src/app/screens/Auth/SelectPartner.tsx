@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react"
-import { FlatList } from "react-native"
+import { useState, useEffect, useRef, Suspense } from "react"
+import { ActivityIndicator, FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
@@ -25,7 +25,17 @@ export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartn
   </Flex>
 )
 
-export const SelectPartner = ({}) => {
+export const SelectPartnerScreen = () => (
+  <Screen>
+    <Screen.Body>
+      <Suspense fallback={<ActivityIndicator />}>
+        <SelectPartner />
+      </Suspense>
+    </Screen.Body>
+  </Screen>
+)
+
+const SelectPartner = () => {
   const data = useLazyLoadQuery<SelectPartnerQuery>(
     graphql`
       query SelectPartnerQuery {
@@ -75,11 +85,3 @@ export const SelectPartner = ({}) => {
     />
   )
 }
-
-export const SelectPartnerScreen = () => (
-  <Screen>
-    <Screen.Body>
-      <SelectPartner />
-    </Screen.Body>
-  </Screen>
-)

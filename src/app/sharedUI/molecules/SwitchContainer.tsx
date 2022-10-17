@@ -10,7 +10,7 @@ interface SwitchContainerProps {
 export const SwitchContainer = ({ label, onValueChange, value }: SwitchContainerProps) => {
   const color = useColor()
   return (
-    <Flex flexDirection="row" mx={2} alignItems="center" justifyContent="space-between">
+    <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
       <Text>{label}</Text>
       <Switch
         trackColor={{ false: "white", true: "blue" }}

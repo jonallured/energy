@@ -1,16 +1,16 @@
-import { getChildrenByTypeDeep } from "react-nanny"
+import { getChildrenByType, getChildrenByTypeDeep } from "react-nanny"
+
+const Content = ({ children }: { children?: React.ReactNode }) => <>{children}</>
 
 interface WrapProps {
   if: boolean
   children?: React.ReactNode
 }
 
-export const Wrap = ({ if: condition, children }: WrapProps) => {
-  if (condition) {
-    return <>{children}</>
-  }
+const WrapRoot = ({ if: condition, children }: WrapProps) => {
+  if (condition) return <>{children}</>
 
-  const wrapContentChildren = getChildrenByTypeDeep(children, Wrap.Content)
+  const wrapContentChildren = getChildrenByTypeDeep(children, Content)
   if (wrapContentChildren.length === 0) {
     throw new Error("Wrap.Content is required")
   }
@@ -22,4 +22,4 @@ export const Wrap = ({ if: condition, children }: WrapProps) => {
   return <>{actualWrapContent}</>
 }
 
-Wrap.Content = ({ children }: { children?: React.ReactNode }) => <>{children}</>
+export const Wrap = Object.assign(WrapRoot, { Content })

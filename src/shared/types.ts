@@ -4,3 +4,7 @@
  * It's useful for then we get a type that has `undefined` inside it, and we want to remove it.
  */
 export type NoUndefined<T> = T extends undefined ? never : T
+
+export type Children = {
+  children?: React.ReactNode
+}

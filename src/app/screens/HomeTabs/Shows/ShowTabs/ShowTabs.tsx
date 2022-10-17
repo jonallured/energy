@@ -10,11 +10,8 @@ import { ShowDocuments } from "./ShowDocuments/ShowDocuments"
 import { ShowInstalls } from "./ShowInstalls/ShowInstalls"
 
 type ShowTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
-type ShowTabsProps = {
-  slug: string
-}
 
-export const ShowTabs: React.FC<ShowTabsProps> = () => {
+export const ShowTabs = () => {
   const { slug } = useRoute<ShowTabsRoute>().params
 
   const data = useLazyLoadQuery<ShowTabsQuery>(

@@ -1,1 +1,1 @@
-export * from "./screenStructure"
+export * from "./Screen"

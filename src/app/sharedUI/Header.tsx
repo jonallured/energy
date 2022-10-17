@@ -8,17 +8,20 @@ export const HEADER_HEIGHT = 44
 interface HeaderProps {
   leftElements?: React.ReactNode
   label?: string
-  withoutBackButton?: boolean
+  noBackButton?: boolean
   rightElements?: React.ReactNode
   safeAreaInsets?: boolean
   positionAbsolute?: boolean
   onPress?: () => void
 }
 
+/**
+ * @deprecated Start using `Screen` with `Screen.Header`.
+ */
 export const Header = ({
   leftElements,
   label,
-  withoutBackButton,
+  noBackButton,
   rightElements,
   safeAreaInsets,
   positionAbsolute,
@@ -47,7 +50,7 @@ export const Header = ({
           <Spacer x={1} />
         </>
       ) : (
-        !withoutBackButton && (
+        !noBackButton && (
           <>
             <Touchable
               onPress={onBackButtonPress}

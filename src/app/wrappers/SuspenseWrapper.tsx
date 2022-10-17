@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { Flex } from "palette"
-import { TabsScrollView } from "./TabsTestWrappers"
+import { TabsScrollView } from "./TabsContent"
 
 type ArtsySuspenseProps = {
   withTabs?: boolean
