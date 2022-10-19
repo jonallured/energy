@@ -1,5 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
 import { ImagePlaceholder } from "app/sharedUI"
@@ -11,9 +12,10 @@ interface ShowListItemProps {
 
 export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const show = useFragment<ShowListItem_show$key>(ShowListItemFragment, props.show)
+  const fontSize = isTablet() ? "sm" : "xs"
 
   return (
-    <Flex m={2} opacity={props.disabled ? 0.4 : 1}>
+    <Flex m={4} opacity={props.disabled ? 0.4 : 1}>
       {show.coverImage?.resized?.url ? (
         <Image
           style={{ height: 200 }}
@@ -23,10 +25,10 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
       ) : (
         <ImagePlaceholder height={200} />
       )}
-      <Text variant="xs" mt={1}>
+      <Text variant={fontSize} mt={1}>
         {show?.name}
       </Text>
-      <Text variant="xs" color="onBackgroundMedium">
+      <Text variant={fontSize} color="onBackgroundMedium">
         {show.formattedStartAt} - {show.formattedEndAt}
       </Text>
     </Flex>

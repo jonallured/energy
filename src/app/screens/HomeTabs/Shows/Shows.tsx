@@ -1,5 +1,7 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
@@ -14,10 +16,16 @@ export const Shows = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID!, imageSize })
   const shows = extractNodes(data.partner?.showsConnection)
+  const screenWidth = useWindowDimensions().width
 
   return (
     <TabsFlatList
+      columnWrapperStyle={ isTablet() ?
+        { justifyContent: "space-between", alignItems: "flex-start" } :
+        null
+      }
       data={shows}
+      numColumns={isTablet() ? 2 : 1}
       renderItem={({ item: show }) => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (
@@ -27,6 +35,7 @@ export const Shows = () => {
                   slug: show.slug,
                 })
               }
+              style={{ width: isTablet() ? (screenWidth - 60) / 2 : "auto" }}
             >
               <ShowListItem show={show} />
             </Touchable>
@@ -37,7 +46,10 @@ export const Shows = () => {
       }}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
-    />
+      style={{
+        paddingHorizontal: 20
+      }}
+  />
   )
 }
 

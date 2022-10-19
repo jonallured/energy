@@ -1,4 +1,5 @@
 import { Spacer, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { isTablet } from "react-native-device-info"
 import { Album } from "app/store/Models/AlbumsModel"
 import { AlbumListImage } from "./AlbumListImage"
 
@@ -6,9 +7,10 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
   const space = useSpace()
   const overlapSize = space("2")
   const first3Artworks = album.artworkIds!.slice(0, 3)
+  const variant = isTablet() ? "sm" : "xs"
 
   return (
-    <>
+    <Flex mb={2}>
       <Flex flexDirection="row-reverse" alignItems="flex-end" pl={overlapSize} overflow="hidden">
         {first3Artworks.length < 3 && (
           <Flex backgroundColor="onBackgroundLow" flex={1} mr={-overlapSize} />
@@ -28,12 +30,12 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
         ))}
       </Flex>
       <Flex mt={1}>
-        <Text variant="xs">{album.name}</Text>
-        <Text variant="xs" color="onBackgroundMedium">
+        <Text variant={variant}>{album.name}</Text>
+        <Text variant={variant} color="onBackgroundMedium">
           {album.artworkIds?.length ?? 0} Artworks
         </Text>
       </Flex>
       <Spacer y={1} />
-    </>
+    </Flex>
   )
 }

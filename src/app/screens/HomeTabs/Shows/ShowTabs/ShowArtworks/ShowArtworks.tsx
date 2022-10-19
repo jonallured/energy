@@ -8,6 +8,7 @@ import { ArtworkGridItem } from "app/sharedUI"
 import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
 import { extractNodes } from "shared/utils"
+import { isTablet } from "react-native-device-info"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
@@ -24,7 +25,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
           marginTop: space(2),
           paddingRight: space(2),
         }}
-        numColumns={2}
+        numColumns={ isTablet() ? 3 : 2}
         data={artworks}
         renderItem={({ item: artwork }) => (
           <ArtworkGridItem

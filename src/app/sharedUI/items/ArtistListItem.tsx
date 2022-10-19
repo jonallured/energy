@@ -1,4 +1,5 @@
 import { Avatar, Flex, Text } from "@artsy/palette-mobile"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtistListItem_artist$key } from "__generated__/ArtistListItem_artist.graphql"
 
@@ -9,12 +10,13 @@ interface ArtistListItemProps {
 
 export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
   const artist = useFragment<ArtistListItem_artist$key>(ArtistListItemFragment, props.artist)
+  const variant = isTablet() ? "sm" : "xs"
   return (
     <Flex px={2} py={1} flexDirection="row">
-      <Avatar src={artist.imageUrl!} size="xs" initials={artist.imageUrl ? "" : artist.initials!} />
+      <Avatar src={artist.imageUrl!} size={variant} initials={artist.imageUrl ? "" : artist.initials!} />
       <Flex mx={1}>
-        <Text variant="xs">{artist.name}</Text>
-        <Text variant="xs" color="onBackgroundMedium">
+        <Text variant={variant}>{artist.name}</Text>
+        <Text variant={variant} color="onBackgroundMedium">
           {props.count} Artworks
         </Text>
       </Flex>

@@ -1,38 +1,43 @@
 import { Button, Flex, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { AlbumListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { TabsScrollView } from "app/wrappers"
+import { TabsFlatList, TabsScrollView } from "app/wrappers"
 
 export const Albums = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const screenWidth = useWindowDimensions().width
 
   return (
     <>
-      <TabsScrollView>
-        <Flex>
-          {albums.length > 0 ? (
-            <Flex mx={2} mb={6}>
-              {albums.map((album) => (
-                <Touchable
-                  onPress={() => navigation.navigate("AlbumArtworks", { albumId: album.id })}
-                  key={album.id}
-                >
-                  <Flex mb={3} mt={1}>
-                    <AlbumListItem album={album} />
-                  </Flex>
-                </Touchable>
-              ))}
-            </Flex>
-          ) : (
-            <ListEmptyComponent />
-          )}
-        </Flex>
-      </TabsScrollView>
+    <TabsFlatList
+        columnWrapperStyle={ isTablet() ?
+          { justifyContent: "space-between", alignItems: "flex-end" } :
+          null
+        }
+        data={albums}
+        numColumns={isTablet() ? 2 : 1}
+        renderItem={({ item: album }) => (
+          <Touchable
+            onPress={() => navigation.navigate("AlbumArtworks", { albumId: album.id })}
+            key={album.id}
+            style={{ width: isTablet() ? (screenWidth - 60) / 2 : "auto" }}
+          >
+            <AlbumListItem album={album} />
+          </Touchable>
+        )}
+        keyExtractor={(item) => item?.id}
+        ListEmptyComponent={<ListEmptyComponent />}
+        style={{
+          paddingHorizontal: 20
+        }}
+      />
       <Flex
         position="absolute"
         bottom={0}

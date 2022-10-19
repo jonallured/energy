@@ -2,6 +2,7 @@ import { Flex, Touchable, TrashIcon, EditIcon, useSpace } from "@artsy/palette-m
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Alert } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header, ArtworkItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -67,7 +68,7 @@ export const AlbumArtworks = () => {
           paddingRight: space(2),
           marginTop: space(2),
         }}
-        numColumns={2}
+        numColumns={ isTablet() ? 3 : 2}
         data={album.artworkIds!}
         renderItem={({ item: artworkId }) => <ArtworkItem artworkId={artworkId} />}
         keyExtractor={(item: string) => item}

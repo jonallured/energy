@@ -1,6 +1,8 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { zip } from "lodash"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
@@ -20,12 +22,16 @@ export const Artists = () => {
   if (!counts || !artists) {
     return null
   }
+  const screenWidth = useWindowDimensions().width
+  const margin = 20
+  const width = isTablet() ? (screenWidth - 2*margin) / 2 : undefined
 
   const items = zip(artists, counts)
 
   return (
     <TabsFlatList
       data={items}
+      numColumns={ isTablet() ? 2 : 1 }
       renderItem={({ item }) => {
         const artist = item[0]!
         const count = item[1]!
@@ -37,6 +43,7 @@ export const Artists = () => {
                 name: artist.name!,
               })
             }
+            style={{ width }}
           >
             <ArtistListItem artist={artist} count={count} />
           </Touchable>

@@ -1,5 +1,6 @@
 import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "@artsy/palette-mobile"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { AvailabilityDot } from "app/sharedUI"
@@ -14,6 +15,7 @@ interface ArtworkGridItemProps {
 
 export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
   const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, props.artwork)
+  const fontSize = isTablet() ? "sm" : "xs"
 
   const { disable, selectedToAdd, selectedToRemove, onPress } = props
 
@@ -26,12 +28,12 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
             aspectRatio: artwork.image?.aspectRatio ?? 1,
           }}
         />
-        <Text italic variant="xs" color="onBackgroundMedium" mt={1}>
+        <Text italic variant={fontSize} color="onBackgroundMedium" mt={1}>
           <AvailabilityDot availability={artwork.availability} /> {artwork.title}
           {!!artwork.date && (
             <>
               ,{" "}
-              <Text variant="xs" color="onBackgroundMedium">
+              <Text variant={fontSize} color="onBackgroundMedium">
                 {artwork.date}
               </Text>
             </>

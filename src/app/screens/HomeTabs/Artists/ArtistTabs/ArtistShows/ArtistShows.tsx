@@ -1,5 +1,7 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
@@ -19,10 +21,17 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
     imageSize,
   })
   const shows = extractNodes(showsData.partner?.showsConnection)
+  const screenWidth = useWindowDimensions().width
+  const margin = 20
 
   return (
     <TabsFlatList
-      data={shows}
+    columnWrapperStyle={ isTablet() ?
+      { justifyContent: "space-between", alignItems: "flex-start" } :
+      null
+    }
+    data={shows}
+      numColumns={isTablet() ? 2 : 1}
       renderItem={({ item: show }) => (
         <Touchable
           onPress={() =>
@@ -30,6 +39,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
               slug: show.slug,
             })
           }
+          style={{ width: isTablet() ? (screenWidth - margin*3) / 2 : undefined }}
           disabled={isSelectModeActive}
         >
           <ShowListItem show={show} disabled={isSelectModeActive} />
@@ -37,6 +47,9 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
       )}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
+      style={{
+        paddingHorizontal: margin
+      }}
     />
   )
 }

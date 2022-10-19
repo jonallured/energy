@@ -9,6 +9,7 @@ import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
 import { extractNodes } from "shared/utils"
+import { isTablet } from "react-native-device-info"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
@@ -59,7 +60,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
             marginTop: artworks.length ? space(2) : 0,
             paddingRight: space(2),
           }}
-          numColumns={2}
+          numColumns={ isTablet() ? 3 : 2}
           data={artworks}
           renderItem={({ item: artwork }) => {
             if (isSelectModeActive) {
