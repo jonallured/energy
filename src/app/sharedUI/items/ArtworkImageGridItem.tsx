@@ -1,7 +1,7 @@
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { useState } from "react"
 import { Image } from "react-native"
 import { ImageModal } from "app/sharedUI"
-import { Flex, Touchable } from "palette"
 
 interface ArtworkImageGridItemProps {
   url: string

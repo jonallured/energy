@@ -1,6 +1,6 @@
+import { Avatar, Flex, Text } from "@artsy/palette-mobile"
 import { graphql, useFragment } from "react-relay"
 import { ArtistListItem_artist$key } from "__generated__/ArtistListItem_artist.graphql"
-import { Avatar, Flex, Text } from "palette"
 
 interface ArtistListItemProps {
   artist: ArtistListItem_artist$key

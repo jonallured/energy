@@ -1,3 +1,4 @@
+import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
@@ -7,7 +8,6 @@ import { AddArtworksToAlbumQuery } from "__generated__/AddArtworksToAlbumQuery.g
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { AlbumListItem, Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "palette"
 
 type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworksToAlbum">
 type AddArtworksToAlbumProps = {

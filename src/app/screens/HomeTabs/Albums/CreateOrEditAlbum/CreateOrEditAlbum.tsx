@@ -1,4 +1,14 @@
-import { Spacer } from "@artsy/palette-mobile"
+import {
+  ShadowSeparator,
+  Spacer,
+  ArrowRightIcon,
+  Button,
+  Flex,
+  Input,
+  Text,
+  Touchable,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import {
   CommonActions,
@@ -16,8 +26,6 @@ import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI/Header"
 import { ArtworkItem } from "app/sharedUI/items/ArtworkItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArrowRightIcon, Button, Flex, Input, Text, Touchable, useSpace } from "palette"
-import { ShadowSeparator } from "palette/elements/Separator/ShadowSeparator"
 import { useArtworksByMode } from "./useArtworksByMode"
 
 interface CreateAlbumValuesSchema {

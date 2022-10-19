@@ -15,7 +15,7 @@ export function attemptAlbumMigration() {
       // slight delta from native format and typescript
       const album = {
         name: nativeAlbum.name,
-        artworkIds: nativeAlbum.artworkIDs
+        artworkIds: nativeAlbum.artworkIDs,
       }
       GlobalStore.actions.albums.addAlbum(album)
     })

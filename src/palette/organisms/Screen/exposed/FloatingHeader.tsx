@@ -1,5 +1,5 @@
+import { BackButtonWithBackground, Flex } from "@artsy/palette-mobile"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Flex, BackButtonWithBackground } from "palette"
 import { useSetHandledTopSafeArea } from "../atoms"
 import { NAVBAR_HEIGHT } from "../notExposed/ActualHeader"
 

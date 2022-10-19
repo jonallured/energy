@@ -1,3 +1,4 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { zip } from "lodash"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -6,7 +7,6 @@ import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtistListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
-import { Touchable } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const Artists = () => {

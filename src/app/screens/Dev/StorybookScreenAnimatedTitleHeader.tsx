@@ -1,7 +1,8 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { range } from "lodash"
 import { useState } from "react"
 import { Switch } from "react-native"
-import { Flex, Screen, Text } from "palette"
+import { Screen } from "palette"
 
 export const StorybookScreenAnimatedTitleHeader = () => {
   const [longTitle, setLongTitle] = useState(false)

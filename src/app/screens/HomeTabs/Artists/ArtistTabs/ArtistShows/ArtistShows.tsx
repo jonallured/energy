@@ -1,3 +1,4 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
@@ -6,7 +7,6 @@ import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { TabsFlatList } from "app/wrappers"
-import { Touchable } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {

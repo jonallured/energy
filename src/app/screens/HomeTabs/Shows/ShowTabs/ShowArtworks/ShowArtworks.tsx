@@ -1,3 +1,4 @@
+import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -6,7 +7,6 @@ import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtworkGridItem } from "app/sharedUI"
 import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
-import { useSpace } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {

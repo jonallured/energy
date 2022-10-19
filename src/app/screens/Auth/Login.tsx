@@ -1,18 +1,10 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Input, Text, useColor, Spacer } from "@artsy/palette-mobile"
 import { useFormik } from "formik"
 import { useRef, useState } from "react"
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Linking,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native"
+import { KeyboardAvoidingView, Linking, Platform, ScrollView, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, Input, Text, useColor } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { MeasuredView } from "shared/utils"
 import { attemptAlbumMigration } from "shared/utils/attemptAlbumMigration"

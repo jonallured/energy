@@ -1,3 +1,4 @@
+import { BriefcaseIcon, Button, EnvelopeIcon, Flex, Text } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useRef } from "react"
@@ -13,7 +14,7 @@ import {
 } from "app/sharedUI/molecules/BottomSheetModalView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { SuspenseWrapper } from "app/wrappers"
-import { BriefcaseIcon, Screen, Button, EnvelopeIcon, Flex, Text } from "palette"
+import { Screen } from "palette"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
 import { ArtistShows } from "./ArtistShows/ArtistShows"

@@ -1,4 +1,4 @@
-import { Flex, FlexProps } from "palette"
+import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { SCREEN_HORIZONTAL_PADDING } from "./Body"
 import { useScreenIsFullWidthBody } from "../atoms"
 

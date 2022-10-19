@@ -1,3 +1,4 @@
+import { Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -5,7 +6,6 @@ import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql
 import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
-import { Button, Flex, useSpace } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ArtistDocuments = ({ slug }: { slug: string }) => {

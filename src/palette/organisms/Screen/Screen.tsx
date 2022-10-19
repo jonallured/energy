@@ -1,6 +1,6 @@
+import { Flex } from "@artsy/palette-mobile"
 import { getChildByType, getChildrenByTypeDeep } from "react-nanny"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Flex } from "palette"
 import { Children } from "shared/types"
 import { AnimatedTitleHeader, PlaceholderAnimatedTitleHeader } from "./exposed/AnimatedTitleHeader"
 import {

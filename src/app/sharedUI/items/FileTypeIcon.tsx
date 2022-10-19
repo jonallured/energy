@@ -1,4 +1,4 @@
-import { useColor, Icon, Path } from "palette"
+import { useColor, Icon, Path } from "@artsy/palette-mobile"
 
 export const FileTypeIcon = ({ fileType }: { fileType?: string }) => {
   const color = useColor()

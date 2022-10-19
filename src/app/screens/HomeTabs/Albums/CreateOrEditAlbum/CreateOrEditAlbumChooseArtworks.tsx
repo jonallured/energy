@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Button, Text, useSpace, Spacer } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { intersection } from "lodash"
@@ -12,7 +12,6 @@ import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/Art
 import { Header } from "app/sharedUI"
 import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Button, useSpace, Text } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
 import { useArtworksByMode } from "./useArtworksByMode"
 

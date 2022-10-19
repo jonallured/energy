@@ -1,9 +1,8 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { ScrollView } from "react-native"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Separator, Text } from "palette"
 
 export const EditPresentationMode = () => {
   const presentationConfigs = [

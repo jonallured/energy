@@ -1,4 +1,4 @@
-import { ArtsyMarkIcon, Flex } from "palette"
+import { ArtsyMarkIcon, Flex } from "@artsy/palette-mobile"
 
 export const ImagePlaceholder = ({ height = 100 }: { height: number }) => {
   return (

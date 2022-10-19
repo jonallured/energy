@@ -40,7 +40,7 @@ export const errorMiddleware = () => {
     }
 
     const allErrorsAreOptional =
-    // @ts-ignore RELAY 12 MIGRATION
+      // @ts-ignore RELAY 12 MIGRATION
       resJson.extensions?.optionalFields?.length === resJson.errors?.length
     if (allErrorsAreOptional) {
       trackError(req.operation.name, req.operation.kind, "optionalField")
@@ -61,7 +61,7 @@ export const errorMiddleware = () => {
     // This represents whether or not the query experienced an error and that error was thrown while resolving
     // a field marked with the @principalField directive, or any sub-selection of such a field.
     const principalFieldWasInvolvedInError = isErrorStatus(
-    // @ts-ignore RELAY 12 MIGRATION
+      // @ts-ignore RELAY 12 MIGRATION
       resJson.extensions?.principalField?.httpStatusCode
     )
 

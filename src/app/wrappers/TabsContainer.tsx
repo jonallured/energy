@@ -1,5 +1,5 @@
+import { useColor, useSpace } from "@artsy/palette-mobile"
 import { Tabs, MaterialTabBar, CollapsibleProps } from "react-native-collapsible-tab-view"
-import { useColor, useSpace } from "palette"
 
 const TAB_BAR_HEIGHT = 60
 

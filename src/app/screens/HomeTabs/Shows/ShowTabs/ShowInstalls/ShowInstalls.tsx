@@ -1,3 +1,4 @@
+import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
@@ -5,7 +6,6 @@ import { ListEmptyComponent } from "app/sharedUI"
 import { ArtworkImageGridItem } from "app/sharedUI/items/ArtworkImageGridItem"
 import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
-import { useSpace } from "palette"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
   const installsData = useLazyLoadQuery<ShowInstallsQuery>(showInstallsQuery, {

@@ -5,7 +5,7 @@ const noop: any = (name: string) => () =>
 
 interface ARTNativeModules {
   ARTAlbumMigrationModule: {
-    readAlbums(): { name: string, artworkIDs: string[] }[] | null
+    readAlbums(): { name: string; artworkIDs: string[] }[] | null
     addTestAlbums(): void
   }
 }
@@ -17,7 +17,7 @@ const NativeModulesIOS: ARTNativeModules = {
 const NativeModulesAndroid: ARTNativeModules = {
   ARTAlbumMigrationModule: {
     readAlbums: noop("readAlbums"),
-    addTestAlbums: noop("addTestAlbums")
+    addTestAlbums: noop("addTestAlbums"),
   },
 }
 

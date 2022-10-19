@@ -1,6 +1,7 @@
+import { Flex, Input, Text } from "@artsy/palette-mobile"
 import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Input, Screen, Text } from "palette"
+import { Screen } from "palette"
 
 export const MultipleArtworksBySameArtist = () => {
   return (

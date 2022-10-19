@@ -1,7 +1,8 @@
+import { Text } from "@artsy/palette-mobile"
 import { range } from "lodash"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { TabsFlatList, TabsScrollView } from "app/wrappers"
-import { Screen, Text } from "palette"
+import { Screen } from "palette"
 
 export const StorybookScreenAnimatedTitleHeaderTabs = () => (
   <Screen>

@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 
 interface AvailabilityDotProps {
   availability?: string | null

@@ -1,5 +1,5 @@
+import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { Switch } from "react-native"
-import { Flex, Text, useColor } from "palette"
 
 interface SwitchContainerProps {
   label: string

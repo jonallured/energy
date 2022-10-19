@@ -4,11 +4,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable import/no-named-as-default-member */
+import { ClassTheme, Separator, Text, TextProps } from "@artsy/palette-mobile"
 import { decode } from "html-entities"
 import _ from "lodash"
 import { Linking, Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
-import { ClassTheme, Separator, Text, TextProps } from "palette"
 
 interface OurReactRule extends Partial<ParserRule> {
   // simpler typings here, for better intellisense

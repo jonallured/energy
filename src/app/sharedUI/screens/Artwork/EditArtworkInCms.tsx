@@ -1,9 +1,9 @@
+import { Button, EditIcon } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { EditArtworkInCmsQuery } from "__generated__/EditArtworkInCmsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, EditIcon } from "palette"
 
 export const EditArtworkInCms = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)

@@ -1,5 +1,6 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { range } from "lodash"
-import { Box, Screen, Text } from "palette"
+import { Screen } from "palette"
 
 export const StorybookScreenRawHeader = () => (
   <Screen>

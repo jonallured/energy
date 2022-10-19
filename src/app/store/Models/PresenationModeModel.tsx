@@ -33,7 +33,7 @@ export interface PresentationModeModel {
   toggleIsHideArtworkEditButtonEnabled: Action<this>
 }
 
-export const getPresentationModeModel = (): PresentationModeModel =>( {
+export const getPresentationModeModel = (): PresentationModeModel => ({
   isPresenationModeEnabled: false,
   isHidePriceEnabled: true,
   isHidePriceForSoldWorksEnabled: true,

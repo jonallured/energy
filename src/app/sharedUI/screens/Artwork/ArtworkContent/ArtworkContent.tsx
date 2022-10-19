@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Separator, Text, Touchable, useColor, useSpace } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Image, Linking } from "react-native"
@@ -10,7 +10,6 @@ import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent, ImageModal } from 
 import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
-import { Flex, Separator, Text, Touchable, useColor, useSpace } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { defaultRules } from "shared/utils/renderMarkdown"
 

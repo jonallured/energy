@@ -1,11 +1,11 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Button, SearchInput, Separator, Text, Spacer } from "@artsy/palette-mobile"
 import { useState, useEffect, useRef, Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Flex, Screen, SearchInput, Separator, Text } from "palette"
+import { Screen } from "palette"
 
 interface SelectPartnerHeaderProps {
   onSearchChange: (term: string) => void

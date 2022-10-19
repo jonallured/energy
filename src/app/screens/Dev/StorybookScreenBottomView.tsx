@@ -1,5 +1,6 @@
+import { Button, Input, Text } from "@artsy/palette-mobile"
 import { range } from "lodash"
-import { Button, Input, Screen, Text } from "palette"
+import { Screen } from "palette"
 
 export const StorybookScreenBottomView = () => (
   <Screen>

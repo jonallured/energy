@@ -1,10 +1,10 @@
+import { Flex, ProgressBar } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { useEffect, useState } from "react"
 import { WebView } from "react-native-webview"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, ProgressBar } from "palette"
 
 type ArtworkWebViewRoute = RouteProp<HomeTabsScreens, "ArtworkWebView">
 

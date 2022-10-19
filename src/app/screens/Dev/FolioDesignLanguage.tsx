@@ -1,6 +1,7 @@
+import { Button, Color, Flex, Text, useColor } from "@artsy/palette-mobile"
 import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Color, Flex, Screen, Text, useColor } from "palette"
+import { Screen } from "palette"
 
 export const FolioDesignLanguage = () => {
   const colorScheme = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme)

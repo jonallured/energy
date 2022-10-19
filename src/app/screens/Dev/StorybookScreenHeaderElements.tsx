@@ -1,5 +1,6 @@
+import { BellIcon, MagnifyingGlassIcon, Text } from "@artsy/palette-mobile"
 import { range } from "lodash"
-import { BellIcon, MagnifyingGlassIcon, Screen, Text } from "palette"
+import { Screen } from "palette"
 
 export const StorybookScreenHeaderElements = () => (
   <Screen>

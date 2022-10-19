@@ -1,5 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { range } from "lodash"
-import { Screen, Text } from "palette"
+import { Screen } from "palette"
 import { FullWidthItem } from "palette/organisms/Screen/exposed/FullWidthItem"
 
 export const StorybookScreenFullWidthItem = () => (

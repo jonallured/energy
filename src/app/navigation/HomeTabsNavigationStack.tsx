@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { FolioDesignLanguage } from "app/screens/Dev/FolioDesignLanguage"
@@ -27,7 +28,6 @@ import { AddArtworksToAlbum } from "app/sharedUI/screens/Artwork/AddArtworksToAl
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useColor } from "palette"
 
 export type HomeTabsScreens = {
   HomeTabs: { tabName: string } | undefined

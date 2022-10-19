@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Touchable, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { zip } from "lodash"
 import { FlatList } from "react-native"
@@ -9,7 +9,6 @@ import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
 import { Header } from "app/sharedUI"
 import { ArtistListItem } from "app/sharedUI/items/ArtistListItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Touchable } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<

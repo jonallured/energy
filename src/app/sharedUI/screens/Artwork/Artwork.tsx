@@ -1,3 +1,11 @@
+import {
+  Flex,
+  MoreIcon,
+  Touchable,
+  ArtworkIcon,
+  EditIcon,
+  BriefcaseIcon,
+} from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import * as MailComposer from "expo-mail-composer"
@@ -14,7 +22,6 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { SuspenseWrapper } from "app/wrappers"
-import { Flex, MoreIcon, Touchable, ArtworkIcon, EditIcon, BriefcaseIcon } from "palette"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
 

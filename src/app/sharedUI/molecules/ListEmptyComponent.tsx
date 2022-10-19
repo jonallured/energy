@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 
 export const ListEmptyComponent = ({ text = "No results to display" }: { text?: string }) => (
   <Flex ml={2}>

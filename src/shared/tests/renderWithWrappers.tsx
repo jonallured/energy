@@ -1,10 +1,10 @@
+import { Theme } from "@artsy/palette-mobile"
 import { render } from "@testing-library/react-native"
-import { Suspense , ReactElement } from "react"
+import { Suspense, ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { Theme } from "palette"
 import { combineProviders } from "shared/utils"
 
 const Wrappers: React.FC = ({ children }) =>

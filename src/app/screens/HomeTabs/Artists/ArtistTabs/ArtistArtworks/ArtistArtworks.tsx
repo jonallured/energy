@@ -1,3 +1,4 @@
+import { Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useState } from "react"
@@ -7,7 +8,6 @@ import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
-import { Button, Flex, useSpace } from "palette"
 import { extractNodes } from "shared/utils"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {

@@ -8,6 +8,7 @@
     "start:reset-cache": "concurrently 'yarn relay:watch' 'react-native start --reset-cache'",
     "test": "jest",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix; yarn prettier-project",
     "setup:artsy": "./scripts/setup-env-for-artsy",
     "bundle-install": "cd ios && bundle install && cd ..",
     "pod-install": "cd ios && bundle exec pod install && cd ..",

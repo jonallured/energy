@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { useAnimatedHeaderTitle } from "../atoms"
 
 export const LARGE_TITLE_HEIGHT = 64

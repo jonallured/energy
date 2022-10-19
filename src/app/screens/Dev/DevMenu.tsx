@@ -1,10 +1,9 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { useState , useEffect } from "react"
+import { Button, Spacer, Flex } from "@artsy/palette-mobile"
+import { useState, useEffect } from "react"
 import { Modal, NativeModules } from "react-native"
 import RNShake from "react-native-shake"
 import { ARTNativeModules } from "app/native_modules/ARTNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex , Button } from "palette"
 
 export const DevMenu = () => {
   const [modalVisible, setModalVisible] = useState(false)

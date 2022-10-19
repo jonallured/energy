@@ -1,7 +1,7 @@
+import { BackButton, Flex } from "@artsy/palette-mobile"
 import { ReactNativeZoomableView } from "@openspacelabs/react-native-zoomable-view"
 import { Image, Modal } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { BackButton, Flex } from "palette"
 
 interface ImageModalProps {
   isModalVisible: boolean
@@ -32,4 +32,3 @@ export const ImageModal = ({ isModalVisible, setIsModalVisible, uri }: ImageModa
     </Modal>
   )
 }
-
