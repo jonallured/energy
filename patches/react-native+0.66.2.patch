@@ -1,0 +1,17 @@
+diff --git a/node_modules/react-native/scripts/find-node.sh b/node_modules/react-native/scripts/find-node.sh
+index c498ba6..85f4d6b 100755
+--- a/node_modules/react-native/scripts/find-node.sh
++++ b/node_modules/react-native/scripts/find-node.sh
+@@ -37,3 +37,12 @@ if [[ ! -x node && -d ${HOME}/.anyenv/bin ]]; then
+     eval "$(anyenv init -)"
+   fi
+ fi
++
++# Set up asdf-vm if present
++if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
++  # shellcheck source=/dev/null
++  . "$HOME/.asdf/asdf.sh"
++elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
++  # shellcheck source=/dev/null
++  . "$(brew --prefix asdf)/libexec/asdf.sh"
++fi

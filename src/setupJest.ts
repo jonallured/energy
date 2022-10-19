@@ -19,12 +19,12 @@ jest.mock("react-native-config", () => {
   return { ...mockConfig, Config: mockConfig }
 })
 
-jest.mock("@react-navigation/native", () => {
-  return {
-    useNavigation: jest.fn(),
-    useRoute: jest.fn(),
-  }
-})
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: jest.fn(),
+  useRoute: jest.fn(),
+}))
+
+jest.mock("expo-mail-composer", () => ({ composeAsync: jest.fn() }))
 
 jest.mock("@gorhom/bottom-sheet", () => {
   const react = require("react-native")

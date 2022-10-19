@@ -87,8 +87,9 @@ derived_data/*
 metaflags.json
 
 
+ios/.xcode.env.local
+
 # ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
 # ################## Keep this rule last. ##################
-
