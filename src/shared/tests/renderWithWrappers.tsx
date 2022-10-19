@@ -1,6 +1,5 @@
 import { render } from "@testing-library/react-native"
-import { Suspense } from "react"
-import { ReactElement } from "react"
+import { Suspense , ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"

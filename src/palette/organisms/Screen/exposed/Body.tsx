@@ -1,9 +1,11 @@
 import { getChildrenByType, removeChildrenByType } from "react-nanny"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
+import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Flex, FlexProps, SpacingUnit } from "palette"
 import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 import { BottomView } from "./BottomView"
+import { LargeTitle } from "./LargeTitle"
 import {
   useHandledTopSafeArea,
   useScreenBottomViewHeight,
@@ -11,8 +13,6 @@ import {
   useSetScreenIsFullWidthBody,
 } from "../atoms"
 import { useAnimatedHeaderScrolling } from "../hooks"
-import { useSharedValue } from "react-native-reanimated"
-import { LargeTitle } from "./LargeTitle"
 
 export const SCREEN_HORIZONTAL_PADDING: SpacingUnit = 2
 

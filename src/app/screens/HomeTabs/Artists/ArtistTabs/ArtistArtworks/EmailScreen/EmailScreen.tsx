@@ -64,7 +64,7 @@ export const EmailScreen = () => {
             navigateTo={() => navigation.navigate("MultipleArtworksAndArtists")}
           />
         </Flex>
-        <Spacer m={6} />
+        <Spacer y={6} />
       </Screen.Body>
     </Screen>
   )

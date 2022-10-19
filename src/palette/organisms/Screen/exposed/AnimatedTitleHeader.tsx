@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
+import { RawHeader } from "./RawHeader"
 import {
   useAnimatedHeaderSetTitle,
   useAnimatedTitleSmallTitleShown,
@@ -6,7 +7,6 @@ import {
   useSetHandledTopSafeArea,
   useSetScreenTitleIsAnimated,
 } from "../atoms"
-import { RawHeader } from "./RawHeader"
 import { ActualHeader, ActualHeaderProps } from "../notExposed/ActualHeader"
 
 type AnimatedTitleHeaderProps = Omit<ActualHeaderProps, "animatedTitle" | "titleShown"> &

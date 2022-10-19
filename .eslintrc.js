@@ -40,16 +40,19 @@ module.exports = {
       },
     ],
     "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
+    "import/no-duplicates": ERR,
+
     // we want to enable some of these
     "import/no-named-as-default": OFF,
     "no-empty-pattern": OFF,
+    "import/default": OFF,
+    "import/namespace": OFF,
     "no-control-regex": OFF,
     "no-extra-boolean-cast": OFF,
     "no-redeclare": OFF,
     "no-undef": OFF,
     "no-unused-vars": OFF,
     "import/no-unresolved": OFF,
-    "import/no-duplicates": OFF, // re-enable this
     "no-useless-catch": OFF,
     "no-useless-escape": OFF,
     "react/react-in-jsx-scope": OFF,
@@ -57,11 +60,16 @@ module.exports = {
     "react/jsx-curly-brace-presence": ERR,
     "@typescript-eslint/no-unused-vars": OFF,
     "@typescript-eslint/no-explicit-any": OFF,
+    "@typescript-eslint/no-unsafe-argument": OFF,
     "@typescript-eslint/no-var-requires": OFF,
+    "@typescript-eslint/no-unsafe-member-access": OFF,
     "@typescript-eslint/ban-ts-comment": OFF,
     "@typescript-eslint/strict-boolean-expressions": OFF,
     "@typescript-eslint/no-floating-promises": OFF,
     "@typescript-eslint/no-misused-promises": OFF,
+    "@typescript-eslint/restrict-plus-operands": OFF,
+    "@typescript-eslint/no-unsafe-return": OFF,
+    "@typescript-eslint/restrict-template-expressions": OFF,
     "@typescript-eslint/no-non-null-assertion": OFF,
     "@typescript-eslint/no-non-null-asserted-optional-chain": OFF,
     "@typescript-eslint/unbound-method": OFF,
@@ -69,6 +77,6 @@ module.exports = {
     "@typescript-eslint/ban-types": OFF,
     "@typescript-eslint/explicit-module-boundary-types": OFF,
     "@typescript-eslint/no-unsafe-assignment": OFF,
-    "@typescript-eslint/no-unsafe-call": OFF
+    "@typescript-eslint/no-unsafe-call": OFF,
   },
 }

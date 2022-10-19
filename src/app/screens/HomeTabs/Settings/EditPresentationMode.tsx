@@ -1,9 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ScrollView } from "react-native"
 import { Header } from "app/sharedUI"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, Separator, Text } from "palette"
-import { Spacer } from "@artsy/palette-mobile"
 
 export const EditPresentationMode = () => {
   const presentationConfigs = [
@@ -66,7 +66,7 @@ export const EditPresentationMode = () => {
     <>
       <Header label="Edit Presentation Mode" safeAreaInsets />
       <ScrollView>
-        <Spacer m={1} />
+        <Spacer y={1} />
         {presentationConfigs.map((presentationConfig, index, row) => (
           <Flex key={index}>
             <SwitchContainer
@@ -77,7 +77,7 @@ export const EditPresentationMode = () => {
             {index + 1 !== row.length && <Separator m={2} />}
           </Flex>
         ))}
-        <Spacer m={2} />
+        <Spacer y={2} />
         <Text mx={2} variant="xs">
           When Presentation Mode is enabled, all the information and features toggled ON will be
           hidden. Features toggled OFF will be visible.

@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { getVersion } from "react-native-device-info"
@@ -6,7 +7,6 @@ import { DevMenu } from "app/screens/Dev/DevMenu"
 import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Button, Screen, Text, Separator, Touchable, Flex, ArrowRightIcon } from "palette"
-import { Spacer } from "@artsy/palette-mobile"
 
 export const Settings = () => {
   const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()

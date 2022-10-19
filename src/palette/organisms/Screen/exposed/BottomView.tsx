@@ -1,10 +1,10 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import { EmitterSubscription, Keyboard } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Flex } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "./Body"
-import { Spacer } from "@artsy/palette-mobile"
 import { useScreenBottomViewHeightSetter } from "../atoms"
 
 export const BottomView = ({ children }: { children: React.ReactNode }) => {

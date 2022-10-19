@@ -1,9 +1,11 @@
-import { useNavigation } from "@react-navigation/native"
-import { Button, Flex, Screen, Text } from "palette"
-import * as IconsObject from "palette/svgs"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
+import * as IconsObject from "@artsy/palette-mobile/dist/svgs"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { Screen } from "palette"
 
 export const InsteadOfStorybook = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
   const allIcons = Object.entries(IconsObject)
 
   return (

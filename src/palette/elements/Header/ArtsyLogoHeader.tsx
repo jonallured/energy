@@ -1,6 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { StyleSheet } from "react-native"
 import { ArtsyLogoIcon, Box, Flex } from "palette"
-import { Spacer } from "@artsy/palette-mobile"
 
 interface Props {
   shadow?: boolean

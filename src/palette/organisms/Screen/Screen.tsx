@@ -3,6 +3,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Flex } from "palette"
 import { Children } from "shared/types"
 import { AnimatedTitleHeader, PlaceholderAnimatedTitleHeader } from "./exposed/AnimatedTitleHeader"
+import {
+  AnimatedTitleTabsBody,
+  PlaceholderAnimatedTitleTabsBody,
+} from "./exposed/AnimatedTitleTabsBody"
 import { Background } from "./exposed/Background"
 import { Body } from "./exposed/Body"
 import { FloatingHeader } from "./exposed/FloatingHeader"
@@ -10,10 +14,6 @@ import { FloatingHeaderBackButton } from "./exposed/FloatingHeaderBackButton"
 import { Header } from "./exposed/Header"
 import { RawHeader } from "./exposed/RawHeader"
 import { PlaceholderTabsBody, TabsBody } from "./exposed/TabsBody"
-import {
-  AnimatedTitleTabsBody,
-  PlaceholderAnimatedTitleTabsBody,
-} from "./exposed/AnimatedTitleTabsBody"
 
 export type ScreenProps = Children & {
   raw?: boolean

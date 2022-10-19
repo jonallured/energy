@@ -68,7 +68,7 @@ export const AlbumArtworks = () => {
           marginTop: space(2),
         }}
         numColumns={2}
-        data={album.artworkIds}
+        data={album.artworkIds!}
         renderItem={({ item: artworkId }) => <ArtworkItem artworkId={artworkId} />}
         keyExtractor={(item: string) => item}
       />

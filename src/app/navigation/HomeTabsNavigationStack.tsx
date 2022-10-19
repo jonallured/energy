@@ -64,6 +64,14 @@ export type HomeTabsScreens = {
   }
   CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
   CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
+
+  StorybookScreenAnimatedTitleHeaderTabs: undefined
+  StorybookScreenAnimatedTitleHeader: undefined
+  StorybookScreenHeader: undefined
+  StorybookScreenFullWidthItem: undefined
+  StorybookScreenHeaderElements: undefined
+  StorybookScreenBottomView: undefined
+  StorybookScreenRawHeader: undefined
 }
 
 const { Navigator, Screen } = createStackNavigator<HomeTabsScreens>()

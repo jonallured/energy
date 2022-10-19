@@ -1,7 +1,7 @@
 import { range } from "lodash"
-import { Flex, MenuIcon, Screen, Text } from "palette"
 import { useState } from "react"
 import { Switch } from "react-native"
+import { Flex, MenuIcon, Screen, Text } from "palette"
 
 export const StorybookScreenHeader = () => {
   const [longTitle, setLongTitle] = useState(false)

@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useFormik } from "formik"
 import { useRef, useState } from "react"
 import {
@@ -14,7 +15,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { Button, Flex, Input, Text, useColor } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { MeasuredView } from "shared/utils"
-import { Spacer } from "@artsy/palette-mobile"
 import { attemptAlbumMigration } from "shared/utils/attemptAlbumMigration"
 
 export interface LoginSchema {
@@ -269,7 +269,7 @@ const CloseToTheBottomOfScrollView = ({ children }: { children: React.ReactNode 
   const inner = (
     <>
       {children}
-      <Spacer pb={2} />
+      <Spacer y={2} />
     </>
   )
 

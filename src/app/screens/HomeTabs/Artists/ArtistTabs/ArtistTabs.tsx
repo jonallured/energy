@@ -3,6 +3,8 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import {
   BottomSheetModalRow,
@@ -15,13 +17,11 @@ import { BriefcaseIcon, Screen, Button, EnvelopeIcon, Flex, Text } from "palette
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 
 type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
 
 export const ArtistTabs = () => {
-  const { slug } = useRoute<ArtistTabsRoute>().params
+  const { slug, name } = useRoute<ArtistTabsRoute>().params
   const data = useLazyLoadQuery<ArtistTabsQuery>(artistQuery, { slug })
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const safeAreaInsets = useSafeAreaInsets()

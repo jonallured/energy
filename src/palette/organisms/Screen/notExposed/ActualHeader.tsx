@@ -1,8 +1,8 @@
 import { Spacer } from "@artsy/palette-mobile"
-import { ArrowLeftIcon } from "palette/svgs"
-import { Flex, Text, Touchable } from "palette/elements"
 import { useNavigation } from "@react-navigation/native"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
+import { Flex, Text, Touchable } from "palette/elements"
+import { ArrowLeftIcon } from "palette/svgs"
 import { useSetHandledTopSafeArea } from "../atoms"
 
 export const NAVBAR_HEIGHT = 44

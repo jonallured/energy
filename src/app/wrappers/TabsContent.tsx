@@ -32,6 +32,7 @@ export const TabsScrollView = (props: ScrollViewProps) => {
   const scrollY = useCurrentTabScrollY()
   useAnimatedHeaderScrolling(scrollY, true)
 
+  // @ts-expect-error
   return <Tabs.ScrollView {...props} />
 }
 

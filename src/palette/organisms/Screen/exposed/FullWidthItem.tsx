@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from "palette"
-import { useScreenIsFullWidthBody } from "../atoms"
 import { SCREEN_HORIZONTAL_PADDING } from "./Body"
+import { useScreenIsFullWidthBody } from "../atoms"
 
 export const FullWidthItem = (props: FlexProps) => {
   const fullWidthBody = useScreenIsFullWidthBody()

@@ -1,6 +1,5 @@
 import { useState } from "react"
-import { TouchableOpacity } from "react-native"
-import { LayoutRectangle } from "react-native"
+import { TouchableOpacity , LayoutRectangle } from "react-native"
 import { CheckIcon, ChevronIcon, Tab, TabsProps } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { TabBarContainer } from "./TabBarContainer"

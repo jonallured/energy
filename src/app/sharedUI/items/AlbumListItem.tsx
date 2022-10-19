@@ -6,7 +6,7 @@ import { AlbumListImage } from "./AlbumListImage"
 export const AlbumListItem = ({ album }: { album: Album }) => {
   const space = useSpace()
   const overlapSize = space("2")
-  const first3Artworks = album.artworkIds.slice(0, 3)
+  const first3Artworks = album.artworkIds!.slice(0, 3)
 
   return (
     <>
@@ -31,7 +31,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
       <Flex mt={1}>
         <Text variant="xs">{album.name}</Text>
         <Text variant="xs" color="onBackgroundMedium">
-          {album.artworkIds.length} Artworks
+          {album.artworkIds?.length ?? 0} Artworks
         </Text>
       </Flex>
       <Spacer y={1} />

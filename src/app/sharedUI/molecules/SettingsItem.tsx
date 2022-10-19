@@ -1,6 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Switch } from "react-native"
 import { Flex, Separator, Text } from "palette"
-import { Spacer } from "@artsy/palette-mobile"
 
 interface SettingsItemProps {
   title: string

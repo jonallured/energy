@@ -1,6 +1,6 @@
 import { RawHeader } from "./RawHeader"
-import { ActualHeader, ActualHeaderProps } from "../notExposed/ActualHeader"
 import { useSetHandledTopSafeArea, useSetScreenTitleIsAnimated } from "../atoms"
+import { ActualHeader, ActualHeaderProps } from "../notExposed/ActualHeader"
 
 type HeaderProps = Omit<ActualHeaderProps, "animatedTitle" | "titleShown">
 

@@ -1,7 +1,7 @@
-import { TabsFlatList, TabsScrollView } from "app/wrappers"
 import { range } from "lodash"
-import { Screen, Text } from "palette"
 import { Tabs } from "react-native-collapsible-tab-view"
+import { TabsFlatList, TabsScrollView } from "app/wrappers"
+import { Screen, Text } from "palette"
 
 export const StorybookScreenAnimatedTitleHeaderTabs = () => (
   <Screen>

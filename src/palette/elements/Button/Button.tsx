@@ -1,6 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useState } from "react"
-import { PressableProps, TextStyle } from "react-native"
-import { GestureResponderEvent, Pressable } from "react-native"
+import { PressableProps, TextStyle , GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { config } from "react-spring"
 // @ts-ignore
@@ -12,7 +12,6 @@ import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
 import { Text, useTextStyleForPalette } from "../Text"
-import { Spacer } from "@artsy/palette-mobile"
 
 export interface ButtonProps extends BoxProps {
   children: React.ReactNode

@@ -52,7 +52,7 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
             underlayColor="transparent"
             onPress={() => bottomSheetModalRef.current?.close()}
           >
-            <Flex background="black" height="100%" />
+            <Flex backgroundColor="black" height="100%" />
           </Touchable>
         )}
         enablePanDownToClose

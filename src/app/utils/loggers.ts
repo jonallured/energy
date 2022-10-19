@@ -7,6 +7,7 @@ if (__DEV__ || __TEST__) {
   try {
     const fileContents = require("../../metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
+    // eslint-disable-next-line no-empty
   } catch {}
 }
 
