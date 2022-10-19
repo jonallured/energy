@@ -3,9 +3,14 @@ import { Tabs } from "react-native-collapsible-tab-view"
 import { TabsContainer, TabsContainerProps } from "app/wrappers"
 import { Body } from "./Body"
 
-export const TabsBody = ({ children }: { children: TabsContainerProps["children"] }) => (
+interface TabsBodyProps {
+  children: TabsContainerProps["children"]
+  initialTabName: TabsContainerProps["initialTabName"]
+}
+
+export const TabsBody = ({ children, initialTabName }: TabsBodyProps) => (
   <Body fullwidth>
-    <TabsContainer>{children}</TabsContainer>
+    <TabsContainer initialTabName={initialTabName}>{children}</TabsContainer>
   </Body>
 )
 

@@ -2,9 +2,8 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { Tabs } from "react-native-collapsible-tab-view"
 import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
-import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { SuspenseWrapper, TabsContainer } from "app/wrappers"
+import { SuspenseWrapper } from "app/wrappers"
 import { MenuIcon, Screen, Touchable } from "palette"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
@@ -44,7 +43,7 @@ export const HomeTabs = () => {
           </Touchable>
         }
       />
-      <Screen.TabsBody>
+      <Screen.TabsBody initialTabName={tabName}>
         <Tabs.Tab name="Artists" label="Artists">
           <SuspenseWrapper withTabs>
             <Artists />
