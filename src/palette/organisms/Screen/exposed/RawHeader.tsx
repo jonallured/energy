@@ -16,7 +16,7 @@ interface RawHeaderProps {
  * Use `RawHeader` when you need to make a custom header that we have no support for yet.
  */
 export const RawHeader = ({ children, nosafe = false }: RawHeaderProps) => {
-  useSetHandledTopSafeArea(nosafe)
+  useSetHandledTopSafeArea(!nosafe)
   const saInsets = useSafeAreaInsets()
 
   return (

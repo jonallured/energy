@@ -1,19 +1,12 @@
-import {
-  Flex,
-  MoreIcon,
-  Touchable,
-  ArtworkIcon,
-  EditIcon,
-  BriefcaseIcon,
-} from "@artsy/palette-mobile"
+import { ArtworkIcon, EditIcon, BriefcaseIcon, Touchable, MoreIcon } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import * as MailComposer from "expo-mail-composer"
 import { useMemo, useRef } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { Header, ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
+import { NavigationScreens } from "app/navigation/Main"
+import { ScrollableScreenEntity, ScrollableScreensView } from "app/sharedUI"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -22,15 +15,16 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { SuspenseWrapper } from "app/wrappers"
+import { Screen } from "palette"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
 
-type ArtworkRoute = RouteProp<HomeTabsScreens, "Artwork">
+type ArtworkRoute = RouteProp<NavigationScreens, "Artwork">
 
 export const Artwork = () => {
   const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
   const artworkSlugs = contextArtworkSlugs ?? [slug]
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const artworkData = useLazyLoadQuery<ArtworkQuery>(artworkQuery, {
     slug,
@@ -85,20 +79,22 @@ export const Artwork = () => {
 `
   return (
     <BottomSheetModalProvider>
-      <Header
-        safeAreaInsets
-        rightElements={
-          <Touchable
-            onPress={addToButtonHandler}
-            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          >
-            <MoreIcon />
-          </Touchable>
-        }
-      />
-      <Flex flex={1}>
-        <ScrollableScreensView screens={screens} initialScreenName={slug} />
-      </Flex>
+      <Screen>
+        <Screen.FloatingHeader
+          rightElements={
+            <Touchable
+              onPress={addToButtonHandler}
+              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+            >
+              <MoreIcon />
+            </Touchable>
+          }
+        />
+        <Screen.Body fullwidth>
+          <ScrollableScreensView screens={screens} initialScreenName={slug} />
+        </Screen.Body>
+      </Screen>
+
       <BottomSheetModalView
         ref={bottomSheetRef}
         modalHeight={500}

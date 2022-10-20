@@ -10,7 +10,6 @@ import {
 import { Background } from "./exposed/Background"
 import { Body } from "./exposed/Body"
 import { FloatingHeader } from "./exposed/FloatingHeader"
-import { FloatingHeaderBackButton } from "./exposed/FloatingHeaderBackButton"
 import { Header } from "./exposed/Header"
 import { RawHeader } from "./exposed/RawHeader"
 import { PlaceholderTabsBody, TabsBody } from "./exposed/TabsBody"
@@ -20,9 +19,9 @@ export type ScreenProps = Children & {
 }
 
 export const ScreenWrapper = ({ children, raw = false }: ScreenProps) => {
-  const Root = (p: Children) => (raw ? <Flex flex={1} {...p} /> : <ScreenRoot {...p} />)
+  if (raw) return <Flex flex={1}>{children}</Flex>
 
-  return <Root>{children}</Root>
+  return <ScreenRoot>{children}</ScreenRoot>
 }
 
 const warnIfAnimatedTitleHeaderWithoutBodySupport = (children: React.ReactNode) => {
@@ -51,7 +50,7 @@ const ScreenRoot = ({ children }: Children) => {
   // some checks first!
   warnIfAnimatedTitleHeaderWithoutBodySupport(children)
 
-  const headerFloating = getChildByType(children, [FloatingHeader, FloatingHeaderBackButton])
+  const headerFloating = getChildByType(children, [FloatingHeader])
   const header = getChildByType(children, [
     Header,
     RawHeader,

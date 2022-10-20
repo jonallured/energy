@@ -15,7 +15,11 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => (
         {/* @ts-expect-error */}
         <RelayEnvironmentProvider environment={defaultEnvironment}>
           <SafeAreaProvider>
-            <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+            <ProvideScreenDimensions>
+              {/*  */}
+              {children}
+              {/*  */}
+            </ProvideScreenDimensions>
           </SafeAreaProvider>
         </RelayEnvironmentProvider>
       </SuspenseWrapper>

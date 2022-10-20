@@ -54,11 +54,9 @@ export const ActualHeader = ({
   }
 
   const actualTitle = (
-    <Flex flex={1} flexDirection="row" alignItems="center">
-      <Text variant="md" numberOfLines={1}>
-        {title}
-      </Text>
-    </Flex>
+    <Text variant="md" numberOfLines={1}>
+      {title}
+    </Text>
   )
 
   return (
@@ -70,22 +68,24 @@ export const ActualHeader = ({
         </Flex>
       )}
 
-      {title !== undefined &&
-        (animatedTitle
-          ? titleShown && (
-              <Animated.View
-                entering={FadeInLeft}
-                exiting={FadeOutLeft}
-                style={{
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  flex: 1,
-                }}
-              >
-                {actualTitle}
-              </Animated.View>
-            )
-          : actualTitle)}
+      <Flex flex={1} flexDirection="row" alignItems="center">
+        {title !== undefined &&
+          (animatedTitle
+            ? titleShown && (
+                <Animated.View
+                  entering={FadeInLeft}
+                  exiting={FadeOutLeft}
+                  style={{
+                    alignItems: "flex-start",
+                    justifyContent: "flex-start",
+                    flex: 1,
+                  }}
+                >
+                  {actualTitle}
+                </Animated.View>
+              )
+            : actualTitle)}
+      </Flex>
 
       {!!rightElements && (
         <Flex flexDirection="row" alignItems="center">

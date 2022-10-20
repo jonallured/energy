@@ -8,55 +8,44 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { Header } from "app/sharedUI"
+import { NavigationScreens } from "app/navigation/Main"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 
 export const EmailScreen = () => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const emailCC = GlobalStore.useAppState((state) => state.email.emailsCC)
+  const greeting = GlobalStore.useAppState((state) => state.email.greetings)
+  const signature = GlobalStore.useAppState((state) => state.email.signature)
 
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Flex flexDirection="row" alignItems="center">
-          <Flex width="100%" position="absolute">
-            <Text textAlign="center" weight="medium">
-              EMAIL
-            </Text>
-          </Flex>
-          <Header />
-        </Flex>
-      </Screen.RawHeader>
+      <Screen.Header title="Email" />
       <Screen.Body scroll>
         <Flex>
-          <Text my={1}>CC EMAIL</Text>
           <Input
-            defaultValue={GlobalStore.useAppState((state) => state.email.emailsCC)}
+            title="CC Email"
+            value={emailCC}
             onChangeText={(e) => GlobalStore.actions.email.saveEmailsCC(e)}
           />
-          <Text my={1} mt={2} mb={1}>
-            GREETING
-          </Text>
           <Input
+            title="Greeting"
             multiline
-            defaultValue={GlobalStore.useAppState((state) => state.email.greetings)}
+            value={greeting}
             onChangeText={(e) => GlobalStore.actions.email.saveGreetings(e)}
           />
-          <Text my={1} mt={2} mb={1}>
-            SIGNATURE
-          </Text>
           <Input
+            title="Signature"
             multiline
-            defaultValue={GlobalStore.useAppState((state) => state.email.signature)}
+            value={signature}
             onChangeText={(e) => GlobalStore.actions.email.saveSignature(e)}
           />
-          <Text my={1} mt={2} mb={1} color="onBackgroundMedium">
+          <Text mt={2} mb={1} color="onBackgroundMedium">
             This signature will be displayed together with any signature you specified in your iOS
             Mail settings.
           </Text>
           <Text my={1} mt={2} mb={1}>
-            SUBJECT LINES
+            Subject lines
           </Text>
           <Separator my={1} />
           <SubjectLineRow

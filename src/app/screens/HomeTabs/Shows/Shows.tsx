@@ -4,7 +4,7 @@ import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
@@ -12,7 +12,7 @@ import { TabsFlatList } from "app/wrappers"
 import { extractNodes } from "shared/utils"
 
 export const Shows = () => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID!, imageSize })
   const shows = extractNodes(data.partner?.showsConnection)
@@ -20,9 +20,8 @@ export const Shows = () => {
 
   return (
     <TabsFlatList
-      columnWrapperStyle={ isTablet() ?
-        { justifyContent: "space-between", alignItems: "flex-start" } :
-        null
+      columnWrapperStyle={
+        isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
@@ -46,10 +45,7 @@ export const Shows = () => {
       }}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
-      style={{
-        paddingHorizontal: 20
-      }}
-  />
+    />
   )
 }
 

@@ -12,8 +12,6 @@ interface EmailOAuthParams {
 }
 
 interface AuthModelState {
-  devEmail: string
-  devPassword: string
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   userID: string | null
@@ -22,8 +20,6 @@ interface AuthModelState {
 }
 
 const authModelInitialState: AuthModelState = {
-  devEmail: "",
-  devPassword: "",
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   userID: null,
@@ -33,8 +29,6 @@ const authModelInitialState: AuthModelState = {
 
 export interface AuthModel extends AuthModelState {
   setState: Action<this, Partial<AuthModelState>>
-  saveDevEmail: Action<this, this["devEmail"]>
-  saveDevPassword: Action<this, string>
   getUserID: Thunk<this, void, {}, GlobalStoreModel>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   gravityUnauthenticatedRequest: Thunk<
@@ -57,8 +51,6 @@ export const getAuthModel = (): AuthModel => ({
   ...authModelInitialState,
 
   setState: action((state, payload) => Object.assign(state, payload)),
-  saveDevEmail: action((state, devEmail) => void (state.devEmail = devEmail)),
-  saveDevPassword: action((state, devPassword) => void (state.devPassword = devPassword)),
   getUserID: thunk(async (actions, _payload, context) => {
     try {
       const user = await (
@@ -191,22 +183,8 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
   signOut: thunk(async (actions, _, context) => {
-    // console.log("authModelInitialState", authModelInitialState)
-    // console.log("context", context.getStoreState().auth.devEmail)
     context.getStoreActions().reset()
-    actions.setState(
-      __DEV__
-        ? {
-            devEmail: context.getStoreState().auth.devEmail,
-            devPassword: context.getStoreState().auth.devPassword,
-            userAccessToken: null,
-            userAccessTokenExpiresIn: null,
-            userID: null,
-            xAppToken: null,
-            xApptokenExpiresIn: null,
-          }
-        : authModelInitialState
-    )
+    actions.setState(authModelInitialState)
     await CookieManager.clearAll()
   }),
 })

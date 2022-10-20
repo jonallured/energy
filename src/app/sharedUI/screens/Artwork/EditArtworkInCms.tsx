@@ -2,12 +2,12 @@ import { Button, EditIcon } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { EditArtworkInCmsQuery } from "__generated__/EditArtworkInCmsQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { GlobalStore } from "app/store/GlobalStore"
 
 export const EditArtworkInCms = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const artworkData = useLazyLoadQuery<EditArtworkInCmsQuery>(editArtworkInCmsQuery, { slug })
   const internalID = artworkData.artwork?.internalID
 

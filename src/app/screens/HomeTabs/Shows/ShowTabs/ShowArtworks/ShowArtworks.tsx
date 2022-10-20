@@ -1,17 +1,17 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { ArtworkGridItem } from "app/sharedUI"
 import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
 import { extractNodes } from "shared/utils"
-import { isTablet } from "react-native-device-info"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const artworksData = useLazyLoadQuery<ShowArtworksQuery>(showArtworksQuery, { slug, imageSize })
   const artworks = extractNodes(artworksData.show?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
@@ -23,11 +23,11 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
         testID="show-artwork-list"
         contentContainerStyle={{
           marginTop: space(2),
-          paddingRight: space(2),
+          paddingHorizontal: space(2),
         }}
-        numColumns={ isTablet() ? 3 : 2}
+        numColumns={isTablet() ? 3 : 2}
         data={artworks}
-        renderItem={({ item: artwork }) => (
+        renderItem={({ item: artwork, i }) => (
           <ArtworkGridItem
             artwork={artwork}
             onPress={() =>
@@ -36,6 +36,10 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
                 contextArtworkSlugs: artworkSlugs,
               })
             }
+            style={{
+              marginLeft: i % 2 === 0 ? 0 : space("1"),
+              marginRight: i % 2 === 0 ? space("1") : 0,
+            }}
           />
         )}
         keyExtractor={(item) => item.internalID}

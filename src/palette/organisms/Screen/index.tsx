@@ -9,7 +9,6 @@ import { Body } from "./exposed/Body"
 import { BodyXPadding } from "./exposed/BodyXPadding"
 import { BottomView, SafeBottomPadding } from "./exposed/BottomView"
 import { FloatingHeader } from "./exposed/FloatingHeader"
-import { FloatingHeaderBackButton } from "./exposed/FloatingHeaderBackButton"
 import { FullWidthItem } from "./exposed/FullWidthItem"
 import { Header } from "./exposed/Header"
 import { LargeTitle } from "./exposed/LargeTitle"
@@ -21,7 +20,6 @@ export const Screen = Object.assign(ScreenWrapper, {
   TabsBody,
   Header,
   FloatingHeader,
-  FloatingHeaderBackButton,
   RawHeader,
   AnimatedTitleHeader,
   AnimatedTitleTabsBody,

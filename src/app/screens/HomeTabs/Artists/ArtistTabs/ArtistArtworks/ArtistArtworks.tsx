@@ -2,14 +2,14 @@ import { Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useState } from "react"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
 import { extractNodes } from "shared/utils"
-import { isTablet } from "react-native-device-info"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
@@ -19,7 +19,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
     slug,
   })
 
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
 
@@ -58,17 +58,21 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           testID="artist-artwork-list"
           contentContainerStyle={{
             marginTop: artworks.length ? space(2) : 0,
-            paddingRight: space(2),
+            paddingHorizontal: space(2),
           }}
-          numColumns={ isTablet() ? 3 : 2}
+          numColumns={isTablet() ? 3 : 2}
           data={artworks}
-          renderItem={({ item: artwork }) => {
+          renderItem={({ item: artwork, i }) => {
             if (isSelectModeActive) {
               return (
                 <ArtworkGridItem
                   artwork={artwork}
                   onPress={() => selectArtworkHandler(artwork.internalID)}
                   selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+                  style={{
+                    marginLeft: i % 2 === 0 ? 0 : space("1"),
+                    marginRight: i % 2 === 0 ? space("1") : 0,
+                  }}
                 />
               )
             }
@@ -81,6 +85,10 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
                     contextArtworkSlugs: artworkSlugs,
                   })
                 }
+                style={{
+                  marginLeft: i % 2 === 0 ? 0 : space("1"),
+                  marginRight: i % 2 === 0 ? space("1") : 0,
+                }}
               />
             )
           }}

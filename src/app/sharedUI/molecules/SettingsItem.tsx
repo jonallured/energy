@@ -1,5 +1,6 @@
-import { Spacer, Flex, Separator, Text } from "@artsy/palette-mobile"
-import { Switch } from "react-native"
+import { Spacer, Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
+import { Switch, SwitchProps } from "react-native"
+import { Screen } from "palette"
 
 interface SettingsItemProps {
   title: string
@@ -20,11 +21,16 @@ const SettingsItemRoot = ({ title, subtitle, children }: SettingsItemProps) => (
       </Text>
     )}
     <Spacer y="2" />
-    <Separator />
+    <Screen.FullWidthItem>
+      <Separator />
+    </Screen.FullWidthItem>
   </>
 )
 
-const Toggle = Switch
+const Toggle = (props: SwitchProps) => {
+  const color = useColor()
+  return <Switch trackColor={{ true: color("brand") }} {...props} />
+}
 
 export const SettingsItem = Object.assign(SettingsItemRoot, {
   Toggle,

@@ -2,14 +2,7 @@ import { useRoute } from "@react-navigation/native"
 import { runOnJS, SharedValue, useAnimatedReaction } from "react-native-reanimated"
 import { useAnimatedTitleSmallTitleShownSetter } from "./atoms"
 
-export type Header =
-  | "none"
-  | "regular"
-  | "floating"
-  | "floating-back"
-  | "raw-safe"
-  | "raw-nosafe"
-  | "animated-title"
+export type Header = "none" | "regular" | "floating" | "raw-safe" | "raw-nosafe" | "animated-title"
 
 export const useAnimatedHeaderScrolling = (scrollY: SharedValue<number>, useHack = false) => {
   const setTitleShown = useAnimatedTitleSmallTitleShownSetter()

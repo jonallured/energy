@@ -6,10 +6,11 @@ import QRCode from "react-native-qrcode-generator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
-import { HEADER_HEIGHT, ImagePlaceholder, ListEmptyComponent, ImageModal } from "app/sharedUI"
+import { ImagePlaceholder, ListEmptyComponent, ImageModal } from "app/sharedUI"
 import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
+import { NAVBAR_HEIGHT } from "palette/organisms/Screen/notExposed/ActualHeader"
 import { useScreenDimensions } from "shared/hooks"
 import { defaultRules } from "shared/utils/renderMarkdown"
 
@@ -59,7 +60,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   })
 
   const screenHeight = useScreenDimensions().height
-  const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - HEADER_HEIGHT
+  const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - NAVBAR_HEIGHT
 
   const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, "98%"], [screenHeight])
 
@@ -124,7 +125,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     additionalInformation || shouldDisplayTheDetailBox || exhibitionHistory || literature
 
   return (
-    <Flex flex={1}>
+    <Flex flex={1} mt={safeAreaInsets.top}>
       <ImageModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
@@ -147,6 +148,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           <ImagePlaceholder height={400} />
         )}
       </Flex>
+
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -169,7 +171,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
       >
         <BottomSheetScrollView
           style={{
-            marginBottom: safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : space(2),
             paddingHorizontal: space(2),
             backgroundColor: color("background"),
           }}

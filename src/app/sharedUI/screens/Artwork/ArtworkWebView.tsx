@@ -2,11 +2,11 @@ import { Flex, ProgressBar } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { useEffect, useState } from "react"
 import { WebView } from "react-native-webview"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { Header } from "app/sharedUI"
+import { NavigationScreens } from "app/navigation/Main"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Screen } from "palette"
 
-type ArtworkWebViewRoute = RouteProp<HomeTabsScreens, "ArtworkWebView">
+type ArtworkWebViewRoute = RouteProp<NavigationScreens, "ArtworkWebView">
 
 export const ArtworkWebView = () => {
   const { params } = useRoute<ArtworkWebViewRoute>()
@@ -16,20 +16,22 @@ export const ArtworkWebView = () => {
   const uri = params.uri.startsWith("/") ? webURL + params.uri : params.uri
 
   return (
-    <Flex flex={1} pb={2}>
-      <Header safeAreaInsets />
-      <WebView
-        source={{ uri }}
-        sharedCookiesEnabled
-        onLoadProgress={(e) => setLoadProgress(e.nativeEvent.progress)}
-        onLoad={() => setIsProgressBarVisible(false)}
-      />
-      {isProgressBarVisible && (
-        <Flex height="100%">
-          <ProgressBar progress={loadProgress} />
-        </Flex>
-      )}
-    </Flex>
+    <Screen>
+      <Screen.Header />
+      <Screen.Body fullwidth>
+        <WebView
+          source={{ uri }}
+          sharedCookiesEnabled
+          onLoadProgress={(e) => setLoadProgress(e.nativeEvent.progress)}
+          onLoad={() => setIsProgressBarVisible(false)}
+        />
+        {isProgressBarVisible && (
+          <Flex height="100%">
+            <ProgressBar progress={loadProgress} />
+          </Flex>
+        )}
+      </Screen.Body>
+    </Screen>
   )
 }
 

@@ -1,34 +1,20 @@
-import { Flex, Input, Text } from "@artsy/palette-mobile"
-import { Header } from "app/sharedUI"
+import { Input, Text } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 
 export const MultipleArtworksAndArtists = () => {
+  const value = GlobalStore.useAppState((state) => state.email.multipleArtworksAndArtistsSubject)
+
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Flex flexDirection="row" alignItems="center">
-          <Flex width="100%" position="absolute">
-            <Text textAlign="center" weight="medium" caps>
-              Subject lines
-            </Text>
-          </Flex>
-          <Header />
-        </Flex>
-      </Screen.RawHeader>
+      <Screen.Header title="Subject lines" />
       <Screen.Body>
-        <Flex mt={1}>
-          <Text my={1} caps>
-            Multiple artworks and artists
-          </Text>
-          <Input
-            multiline
-            defaultValue={GlobalStore.useAppState(
-              (state) => state.email.multipleArtworksAndArtistsSubject
-            )}
-            onChangeText={(e) => GlobalStore.actions.email.saveMultipleArtworksAndArtistsSubject(e)}
-          />
-        </Flex>
+        <Text my={1}>Multiple artworks and artists</Text>
+        <Input
+          multiline
+          value={value}
+          onChangeText={(e) => GlobalStore.actions.email.saveMultipleArtworksAndArtistsSubject(e)}
+        />
       </Screen.Body>
     </Screen>
   )

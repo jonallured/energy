@@ -20,12 +20,11 @@ import {
 import { useFormik } from "formik"
 import { compact, uniq } from "lodash"
 import { useState } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { Header } from "app/sharedUI/Header"
+import { NavigationScreens } from "app/navigation/Main"
 import { ArtworkItem } from "app/sharedUI/items/ArtworkItem"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Screen } from "palette"
 import { useArtworksByMode } from "./useArtworksByMode"
 
 interface CreateAlbumValuesSchema {
@@ -36,7 +35,7 @@ const createAlbumSchema = Yup.object().shape({
   albumName: Yup.string().required("Album name is required").trim(),
 })
 
-type CreateOrEditAlbumRoute = RouteProp<HomeTabsScreens, "CreateOrEditAlbum">
+type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
   const {
@@ -50,8 +49,7 @@ export const CreateOrEditAlbum = () => {
   } = useRoute<CreateOrEditAlbumRoute>().params || {
     mode: "create",
   }
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const safeAreaInsets = useSafeAreaInsets()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const [selectedArtworksToRemove, setSelectedArtworksToRemove] = useState<string[]>([])
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
   const selectedArtworksInModel = useArtworksByMode(mode)
@@ -140,9 +138,9 @@ export const CreateOrEditAlbum = () => {
   }
 
   return (
-    <>
-      <Header label={mode === "edit" ? "Edit Album" : "Create Album"} safeAreaInsets />
-      <Flex px={2} mt={2}>
+    <Screen>
+      <Screen.Header title={mode === "edit" ? "Edit Album" : "Create Album"} />
+      <Screen.Body>
         <Flex>
           <Input
             title="Album Name"
@@ -152,7 +150,7 @@ export const CreateOrEditAlbum = () => {
             error={errors.albumName}
           />
         </Flex>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         {!artworkFromArtistTab && selectedWorks.length === 0 && (
           <Touchable
             onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
@@ -163,39 +161,52 @@ export const CreateOrEditAlbum = () => {
             </Flex>
           </Touchable>
         )}
-      </Flex>
-      {mode === "edit" && (
-        <Text ml={2} mt={2} variant="xs" color="onBackgroundMedium">
-          Select artworks to remove from album
-        </Text>
-      )}
-      <MasonryList
-        contentContainerStyle={{
-          paddingRight: space(2),
-          marginTop: space(2),
-        }}
-        numColumns={2}
-        data={selectedArtworks}
-        renderItem={({ item: artworkId }) => {
-          if (mode === "create") {
-            return <ArtworkItem artworkId={artworkId} />
-          }
-          return (
-            <ArtworkItem
-              artworkId={artworkId}
-              onPress={() => selectArtworkHandler(artworkId)}
-              selectedToRemove={selectedArtworksToRemove.includes(artworkId)}
-            />
-          )
-        }}
-        keyExtractor={(item: string) => item}
-      />
-      <ShadowSeparator />
-      <Flex px={2} pt={2} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>
-        <Button block onPress={handleSubmit} disabled={isActionButtonDisabled()}>
-          {mode === "edit" ? "Save" : "Create"}
-        </Button>
-      </Flex>
-    </>
+        {mode === "edit" && (
+          <Text mt={2} variant="xs" color="onBackgroundMedium">
+            Select artworks to remove from album
+          </Text>
+        )}
+        <MasonryList
+          contentContainerStyle={{
+            marginTop: space(2),
+          }}
+          numColumns={2}
+          data={selectedArtworks}
+          renderItem={({ item: artworkId, i }) => {
+            if (mode === "create") {
+              return (
+                <ArtworkItem
+                  artworkId={artworkId}
+                  style={{
+                    marginLeft: i % 2 === 0 ? 0 : space("1"),
+                    marginRight: i % 2 === 0 ? space("1") : 0,
+                  }}
+                />
+              )
+            }
+            return (
+              <ArtworkItem
+                artworkId={artworkId}
+                onPress={() => selectArtworkHandler(artworkId)}
+                selectedToRemove={selectedArtworksToRemove.includes(artworkId)}
+                style={{
+                  marginLeft: i % 2 === 0 ? 0 : space("1"),
+                  marginRight: i % 2 === 0 ? space("1") : 0,
+                }}
+              />
+            )
+          }}
+          keyExtractor={(item: string) => item}
+        />
+        <Screen.FullWidthItem>
+          <ShadowSeparator />
+        </Screen.FullWidthItem>
+        <Flex pt={2}>
+          <Button block onPress={handleSubmit} disabled={isActionButtonDisabled()}>
+            {mode === "edit" ? "Save" : "Create"}
+          </Button>
+        </Flex>
+      </Screen.Body>
+    </Screen>
   )
 }

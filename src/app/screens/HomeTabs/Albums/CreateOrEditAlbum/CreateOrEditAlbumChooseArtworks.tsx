@@ -2,27 +2,26 @@ import { Flex, Button, Text, useSpace, Spacer } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { intersection } from "lodash"
-import { Suspense, useState } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { CreateOrEditAlbumChooseArtworksQuery } from "__generated__/CreateOrEditAlbumChooseArtworksQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
-import { Header } from "app/sharedUI"
 import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Screen } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
 import { useArtworksByMode } from "./useArtworksByMode"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
-  HomeTabsScreens,
+  NavigationScreens,
   "CreateOrEditAlbumChooseArtworks"
 >
 
 export const CreateOrEditAlbumChooseArtworks = () => {
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
@@ -33,7 +32,6 @@ export const CreateOrEditAlbumChooseArtworks = () => {
     slug,
   })
 
-  const safeAreaInsets = useSafeAreaInsets()
   const space = useSpace()
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
@@ -81,51 +79,63 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   }
 
   return (
-    <>
-      <Header
-        label={mode === "edit" ? "Save to Album" : "Add to Album"}
+    <Screen>
+      <Screen.Header
+        title={mode === "edit" ? "Save to Album" : "Add to Album"}
         rightElements={
           <Button size="small" onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}>
             {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
           </Button>
         }
-        safeAreaInsets
       />
-      <Spacer mt={2} />
-      <MasonryList
-        contentContainerStyle={{
-          marginTop: space(2),
-          paddingRight: space(2),
-        }}
-        numColumns={2}
-        data={artworks}
-        keyExtractor={(item) => item?.internalID}
-        renderItem={({ item: artwork }) => {
-          if (album?.artworkIds?.includes(artwork.internalID)) {
-            return <ArtworkGridItem artwork={artwork} disable />
-          }
-          return (
-            <ArtworkGridItem
-              artwork={artwork}
-              onPress={() => selectArtworkHandler(artwork.internalID)}
-              selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
-            />
-          )
-        }}
-      />
-      <Flex px={2} pt={1} pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}>
-        <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
-          Selected artworks for {artistNameData.artist?.name}: {selectedArtworkIds.length}
-        </Text>
-        <Button
-          block
-          onPress={selectArtworksToAddToAnAlbum}
-          disabled={selectedArtworkIds.length <= 0}
-        >
-          {mode === "edit" ? "Save" : "Add"}
-        </Button>
-      </Flex>
-    </>
+      <Screen.Body>
+        <MasonryList
+          contentContainerStyle={{
+            marginTop: space(2),
+          }}
+          numColumns={2}
+          data={artworks}
+          keyExtractor={(item) => item?.internalID}
+          renderItem={({ item: artwork, i }) => {
+            if (album?.artworkIds?.includes(artwork.internalID)) {
+              return (
+                <ArtworkGridItem
+                  artwork={artwork}
+                  disable
+                  style={{
+                    marginLeft: i % 2 === 0 ? 0 : space("1"),
+                    marginRight: i % 2 === 0 ? space("1") : 0,
+                  }}
+                />
+              )
+            }
+            return (
+              <ArtworkGridItem
+                artwork={artwork}
+                onPress={() => selectArtworkHandler(artwork.internalID)}
+                selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+                style={{
+                  marginLeft: i % 2 === 0 ? 0 : space("1"),
+                  marginRight: i % 2 === 0 ? space("1") : 0,
+                }}
+              />
+            )
+          }}
+        />
+        <Flex pt={1}>
+          <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
+            Selected artworks for {artistNameData.artist?.name}: {selectedArtworkIds.length}
+          </Text>
+          <Button
+            block
+            onPress={selectArtworksToAddToAnAlbum}
+            disabled={selectedArtworkIds.length <= 0}
+          >
+            {mode === "edit" ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      </Screen.Body>
+    </Screen>
   )
 }
 

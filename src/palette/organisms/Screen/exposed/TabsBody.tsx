@@ -9,7 +9,7 @@ interface TabsBodyProps {
 }
 
 export const TabsBody = ({ children, initialTabName }: TabsBodyProps) => (
-  <Body fullwidth>
+  <Body fullwidth nosafe>
     <TabsContainer initialTabName={initialTabName}>{children}</TabsContainer>
   </Body>
 )

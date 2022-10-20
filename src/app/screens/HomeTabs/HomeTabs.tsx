@@ -1,25 +1,18 @@
 import { MenuIcon, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Tabs } from "react-native-collapsible-tab-view"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
-import { GlobalStore } from "app/store/GlobalStore"
+import { NavigationScreens } from "app/navigation/Main"
 import { SuspenseWrapper } from "app/wrappers"
 import { Screen } from "palette"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
 import { Shows } from "./Shows/Shows"
 
-type HomeTabsRoute = RouteProp<HomeTabsScreens, "HomeTabs">
+type HomeTabsRoute = RouteProp<NavigationScreens, "HomeTabs">
 
 export const HomeTabs = () => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
-
-  if (!selectedPartner) {
-    return <SelectPartnerScreen />
-  }
 
   return (
     <Screen>

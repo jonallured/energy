@@ -1,5 +1,5 @@
 import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "@artsy/palette-mobile"
-import { Image } from "react-native"
+import { Image, ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
@@ -11,17 +11,23 @@ interface ArtworkGridItemProps {
   selectedToAdd?: boolean
   selectedToRemove?: boolean
   disable?: boolean
+  style?: ViewProps["style"]
 }
 
-export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = (props) => {
-  const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, props.artwork)
+export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
+  artwork: propArtwork,
+  disable,
+  selectedToAdd,
+  selectedToRemove,
+  onPress,
+  style,
+}) => {
+  const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, propArtwork)
   const fontSize = isTablet() ? "sm" : "xs"
-
-  const { disable, selectedToAdd, selectedToRemove, onPress } = props
 
   return (
     <Touchable disabled={disable} onPress={onPress}>
-      <Flex mb={4} pl={2} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}>
+      <Flex mb={4} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1} style={style}>
         <Image
           source={{ uri: artwork.image?.resized?.url! }}
           style={{

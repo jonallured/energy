@@ -1,5 +1,4 @@
 import { Button, Color, Flex, Text, useColor } from "@artsy/palette-mobile"
-import { Header } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 
@@ -9,9 +8,7 @@ export const FolioDesignLanguage = () => {
 
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Header label="Folio Design Language" />
-      </Screen.RawHeader>
+      <Screen.Header title="Folio Design Language" />
       <Screen.Body scroll>
         <Text>
           Currently in <Text variant="lg">{colorScheme}</Text> mode

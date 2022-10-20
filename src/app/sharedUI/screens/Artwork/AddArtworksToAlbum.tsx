@@ -2,17 +2,19 @@ import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/p
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AddArtworksToAlbumQuery } from "__generated__/AddArtworksToAlbumQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
-import { AlbumListItem, Header } from "app/sharedUI"
+import { NavigationScreens } from "app/navigation/Main"
+import { AlbumListItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Screen } from "palette"
 
-type HomeTabsRoute = RouteProp<HomeTabsScreens, "AddArtworksToAlbum">
+type HomeTabsRoute = RouteProp<NavigationScreens, "AddArtworksToAlbum">
 type AddArtworksToAlbumProps = {
   slug: string
 }
+
+//// hometabs, scorll, then doesnt go in the artist
 
 export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
   const { slug, areMultipleArtworks, name, contextArtworkSlugs, closeBottomSheetModal } =
@@ -27,8 +29,7 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
     : null
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
-  const safeAreaInsets = useSafeAreaInsets()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
   const space = useSpace()
 
@@ -98,68 +99,60 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
   }
 
   return (
-    <>
-      <Header
-        label={!areMultipleArtworks ? artworkData?.artwork?.title! : "Add to Album"}
-        safeAreaInsets
-      />
-      <FlatList
-        data={albums}
-        keyExtractor={(item) => item?.id}
-        renderItem={({ item: album }) => {
-          return (
-            <Flex key={album.id} mx={2}>
-              <Touchable
-                onPress={
-                  album.artworkIds?.includes(artworkData?.artwork?.internalID)
-                    ? undefined
-                    : () => selectAlbumHandler(album.id)
-                }
-              >
-                {/* Change opacity based on selection */}
-                <Flex
-                  mb={3}
-                  mt={1}
-                  opacity={
-                    selectedAlbumIds.includes(album.id) ||
+    <Screen>
+      <Screen.Header title={!areMultipleArtworks ? artworkData?.artwork?.title! : "Add to Album"} />
+      <Screen.Body fullwidth>
+        <FlatList
+          contentContainerStyle={{ paddingHorizontal: space("2") }}
+          data={albums}
+          keyExtractor={(item) => item?.id}
+          renderItem={({ item: album }) => {
+            return (
+              <Flex key={album.id}>
+                <Touchable
+                  onPress={
                     album.artworkIds?.includes(artworkData?.artwork?.internalID)
-                      ? 0.4
-                      : 1
+                      ? undefined
+                      : () => selectAlbumHandler(album.id)
                   }
                 >
-                  <AlbumListItem album={album} />
-                </Flex>
-                {selectedAlbumIds.includes(album.id) && (
+                  {/* Change opacity based on selection */}
                   <Flex
-                    position="absolute"
-                    top={2}
-                    right={1}
-                    alignItems="center"
-                    justifyContent="center"
+                    mb={3}
+                    mt={1}
+                    opacity={
+                      selectedAlbumIds.includes(album.id) ||
+                      album.artworkIds?.includes(artworkData?.artwork?.internalID)
+                        ? 0.4
+                        : 1
+                    }
                   >
-                    <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+                    <AlbumListItem album={album} />
                   </Flex>
-                )}
-              </Touchable>
-            </Flex>
-          )
-        }}
-        style={{
-          top: space(2),
-          marginBottom: space(12),
-        }}
-      />
-      <Flex
-        position="absolute"
-        bottom={0}
-        px={2}
-        pt={2}
-        pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}
-        width="100%"
-      >
-        {renderButton()}
-      </Flex>
-    </>
+                  {selectedAlbumIds.includes(album.id) && (
+                    <Flex
+                      position="absolute"
+                      top={2}
+                      right={1}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+                    </Flex>
+                  )}
+                </Touchable>
+              </Flex>
+            )
+          }}
+          style={{
+            top: space(2),
+            marginBottom: space(12),
+          }}
+        />
+
+        <Screen.BottomView>{renderButton()}</Screen.BottomView>
+      </Screen.Body>
+    </Screen>
   )
 }
 

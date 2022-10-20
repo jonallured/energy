@@ -1,18 +1,19 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { zip } from "lodash"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { ArtistListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { extractNodes } from "shared/utils"
 
 export const Artists = () => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
@@ -24,14 +25,14 @@ export const Artists = () => {
   }
   const screenWidth = useWindowDimensions().width
   const margin = 20
-  const width = isTablet() ? (screenWidth - 2*margin) / 2 : undefined
+  const width = isTablet() ? (screenWidth - 2 * margin) / 2 : undefined
 
   const items = zip(artists, counts)
 
   return (
     <TabsFlatList
       data={items}
-      numColumns={ isTablet() ? 2 : 1 }
+      numColumns={isTablet() ? 2 : 1}
       renderItem={({ item }) => {
         const artist = item[0]!
         const count = item[1]!
@@ -45,7 +46,9 @@ export const Artists = () => {
             }
             style={{ width }}
           >
-            <ArtistListItem artist={artist} count={count} />
+            <Flex mx={SCREEN_HORIZONTAL_PADDING}>
+              <ArtistListItem artist={artist} count={count} />
+            </Flex>
           </Touchable>
         )
       }}

@@ -12,8 +12,12 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
   const artist = useFragment<ArtistListItem_artist$key>(ArtistListItemFragment, props.artist)
   const variant = isTablet() ? "sm" : "xs"
   return (
-    <Flex px={2} py={1} flexDirection="row">
-      <Avatar src={artist.imageUrl!} size={variant} initials={artist.imageUrl ? "" : artist.initials!} />
+    <Flex py={1} flexDirection="row">
+      <Avatar
+        src={artist.imageUrl!}
+        size={variant}
+        initials={artist.imageUrl ? "" : artist.initials!}
+      />
       <Flex mx={1}>
         <Text variant={variant}>{artist.name}</Text>
         <Text variant={variant} color="onBackgroundMedium">

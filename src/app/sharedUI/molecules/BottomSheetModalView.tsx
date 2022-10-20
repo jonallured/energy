@@ -114,30 +114,28 @@ export const BottomSheetModalRow = ({
   subtitle,
   isLastRow,
   onPress,
-}: BottomSheetModalRowProps) => {
-  return (
-    <Touchable onPress={onPress} underlayColor="transparent" style={{ width: "100%", height: 100 }}>
-      <Flex flex={1}>
-        <Flex flexDirection="row" flex={1}>
-          <Flex width={25} alignItems="center" justifyContent="center">
-            {Icon}
-          </Flex>
-          <Flex justifyContent="center" flex={1} ml="1">
-            <Text>{label}</Text>
-            {subtitle && (
-              <Flex flexDirection="row" alignItems="center">
-                <Text variant="xs" color="onBackgroundMedium">
-                  {subtitle}
-                </Text>
-              </Flex>
-            )}
-          </Flex>
-          <Flex alignItems="center" justifyContent="center" width="25px">
-            <ArrowRightIcon fill="onBackgroundHigh" />
-          </Flex>
+}: BottomSheetModalRowProps) => (
+  <Touchable onPress={onPress} underlayColor="transparent" style={{ width: "100%", height: 100 }}>
+    <Flex flex={1}>
+      <Flex flexDirection="row" flex={1}>
+        <Flex width={25} alignItems="center" justifyContent="center">
+          {Icon}
         </Flex>
-        {!isLastRow && <Separator />}
+        <Flex justifyContent="center" flex={1} ml="1">
+          <Text>{label}</Text>
+          {subtitle && (
+            <Flex flexDirection="row" alignItems="center">
+              <Text variant="xs" color="onBackgroundMedium">
+                {subtitle}
+              </Text>
+            </Flex>
+          )}
+        </Flex>
+        <Flex alignItems="center" justifyContent="center" width="25px">
+          <ArrowRightIcon fill="onBackgroundHigh" />
+        </Flex>
       </Flex>
-    </Touchable>
-  )
-}
+      {!isLastRow && <Separator />}
+    </Flex>
+  </Touchable>
+)

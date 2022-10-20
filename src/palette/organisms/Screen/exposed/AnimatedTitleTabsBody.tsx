@@ -9,7 +9,7 @@ export const AnimatedTitleTabsBody = ({
 }: {
   children: TabsContainerProps["children"]
 }) => (
-  <Body fullwidth>
+  <Body fullwidth nosafe>
     <TabsContainer header={() => <LargeTitle />}>{children}</TabsContainer>
   </Body>
 )

@@ -3,7 +3,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { AlbumListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList, TabsScrollView } from "app/wrappers"
@@ -11,15 +11,14 @@ import { TabsFlatList, TabsScrollView } from "app/wrappers"
 export const Albums = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const safeAreaInsets = useSafeAreaInsets()
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const screenWidth = useWindowDimensions().width
 
   return (
     <>
-    <TabsFlatList
-        columnWrapperStyle={ isTablet() ?
-          { justifyContent: "space-between", alignItems: "flex-end" } :
-          null
+      <TabsFlatList
+        columnWrapperStyle={
+          isTablet() ? { justifyContent: "space-between", alignItems: "flex-end" } : null
         }
         data={albums}
         numColumns={isTablet() ? 2 : 1}
@@ -35,7 +34,7 @@ export const Albums = () => {
         keyExtractor={(item) => item?.id}
         ListEmptyComponent={<ListEmptyComponent />}
         style={{
-          paddingHorizontal: 20
+          paddingHorizontal: 20,
         }}
       />
       <Flex

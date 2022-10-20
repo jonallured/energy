@@ -4,7 +4,7 @@ import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
@@ -14,7 +14,7 @@ import { extractNodes } from "shared/utils"
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, {
     partnerID,
     slug,
@@ -26,11 +26,10 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
 
   return (
     <TabsFlatList
-    columnWrapperStyle={ isTablet() ?
-      { justifyContent: "space-between", alignItems: "flex-start" } :
-      null
-    }
-    data={shows}
+      columnWrapperStyle={
+        isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
+      }
+      data={shows}
       numColumns={isTablet() ? 2 : 1}
       renderItem={({ item: show }) => (
         <Touchable
@@ -39,7 +38,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
               slug: show.slug,
             })
           }
-          style={{ width: isTablet() ? (screenWidth - margin*3) / 2 : undefined }}
+          style={{ width: isTablet() ? (screenWidth - margin * 3) / 2 : undefined }}
           disabled={isSelectModeActive}
         >
           <ShowListItem show={show} disabled={isSelectModeActive} />
@@ -47,9 +46,6 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
       )}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
-      style={{
-        paddingHorizontal: margin
-      }}
     />
   )
 }

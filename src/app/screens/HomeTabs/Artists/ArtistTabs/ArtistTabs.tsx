@@ -6,7 +6,7 @@ import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -19,14 +19,14 @@ import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
 
-type ArtistTabsRoute = RouteProp<HomeTabsScreens, "ArtistTabs">
+type ArtistTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
 export const ArtistTabs = () => {
   const { slug, name } = useRoute<ArtistTabsRoute>().params
   const data = useLazyLoadQuery<ArtistTabsQuery>(artistQuery, { slug })
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const safeAreaInsets = useSafeAreaInsets()
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
   const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)

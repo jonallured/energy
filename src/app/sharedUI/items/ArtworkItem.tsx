@@ -1,3 +1,4 @@
+import { ViewProps } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkItemQuery } from "__generated__/ArtworkItemQuery.graphql"
 import { ArtworkGridItem } from "app/sharedUI"
@@ -7,9 +8,10 @@ interface ArtworkItemProps {
   artworkId: string
   onPress?: () => void
   selectedToRemove?: boolean
+  style?: ViewProps["style"]
 }
 
-export const ArtworkItem = ({ artworkId, onPress, selectedToRemove }: ArtworkItemProps) => {
+export const ArtworkItem = ({ artworkId, onPress, selectedToRemove, style }: ArtworkItemProps) => {
   const artworkData = useLazyLoadQuery<ArtworkItemQuery>(artworkItemQuery, {
     id: artworkId,
     imageSize,
@@ -19,6 +21,7 @@ export const ArtworkItem = ({ artworkId, onPress, selectedToRemove }: ArtworkIte
       artwork={artworkData.artwork!}
       onPress={onPress}
       selectedToRemove={selectedToRemove}
+      style={style}
     />
   )
 }

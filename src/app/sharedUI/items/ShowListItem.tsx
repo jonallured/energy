@@ -15,7 +15,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const fontSize = isTablet() ? "sm" : "xs"
 
   return (
-    <Flex m={4} opacity={props.disabled ? 0.4 : 1}>
+    <Flex mx="2" my={4} opacity={props.disabled ? 0.4 : 1}>
       {show.coverImage?.resized?.url ? (
         <Image
           style={{ height: 200 }}

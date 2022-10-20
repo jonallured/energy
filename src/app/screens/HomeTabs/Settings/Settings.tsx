@@ -10,14 +10,14 @@ import {
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { getVersion } from "react-native-device-info"
-import { HomeTabsScreens } from "app/navigation/HomeTabsNavigationStack"
+import { NavigationScreens } from "app/navigation/Main"
 import { DevMenu } from "app/screens/Dev/DevMenu"
-import { SwitchContainer } from "app/sharedUI/molecules/SwitchContainer"
+import { SettingsItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 
 export const Settings = () => {
-  const navigation = useNavigation<NavigationProp<HomeTabsScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isPresenationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresenationModeEnabled
   )
@@ -34,23 +34,21 @@ export const Settings = () => {
           Dark Mode
         </Button>
         <Spacer y={2} />
-        <SwitchContainer
-          label="Presentation Mode"
-          onValueChange={() =>
-            GlobalStore.actions.presentationMode.toggleIsPresenationModeEnabled()
-          }
-          value={isPresenationModeEnabled}
-        />
+        <SettingsItem title="Presentation Mode">
+          <SettingsItem.Toggle
+            value={isPresenationModeEnabled}
+            onValueChange={() =>
+              GlobalStore.actions.presentationMode.toggleIsPresenationModeEnabled()
+            }
+          />
+        </SettingsItem>
 
-        <Screen.FullWidthItem>
-          <Separator my="2" />
-        </Screen.FullWidthItem>
-
+        <Spacer y="2" />
         <Touchable onPress={() => navigation.navigate("EditPresentationMode")}>
           <Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
               <Text>Presentation Mode Settings</Text>
-              <ArrowRightIcon />
+              <ArrowRightIcon fill="onBackground" />
             </Flex>
             <Text variant="xs" color="onBackgroundMedium">
               Presentation Mode hides sensitive information when showing artworks to clients.
@@ -65,7 +63,7 @@ export const Settings = () => {
         <Touchable onPress={() => navigation.navigate("EmailScreen")}>
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text>Email</Text>
-            <ArrowRightIcon />
+            <ArrowRightIcon fill="onBackground" />
           </Flex>
         </Touchable>
 

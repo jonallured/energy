@@ -1,5 +1,4 @@
-import { Flex, FlexProps } from "@artsy/palette-mobile"
-import { SpacingUnit } from "@artsy/palette-tokens"
+import { Flex, FlexProps, SpacingUnit } from "@artsy/palette-mobile"
 import { getChildrenByType, removeChildrenByType } from "react-nanny"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { useSharedValue } from "react-native-reanimated"
@@ -15,7 +14,7 @@ import {
 } from "../atoms"
 import { useAnimatedHeaderScrolling } from "../hooks"
 
-export const SCREEN_HORIZONTAL_PADDING: SpacingUnit = 2
+export const SCREEN_HORIZONTAL_PADDING: SpacingUnit = "2"
 
 interface BodyProps extends Pick<FlexProps, "backgroundColor"> {
   children?: React.ReactNode
@@ -68,9 +67,10 @@ export const Body = ({
                 <Flex flex={1} px={fullwidth ? undefined : SCREEN_HORIZONTAL_PADDING}>
                   {childrenExceptBottomView}
                 </Flex>
+                {!scroll && bottomView}
               </Wrap.Content>
             </ScrollView>
-            {bottomView}
+            {scroll && bottomView}
           </ArtsyKeyboardAvoidingView>
         </Wrap>
       </Flex>
