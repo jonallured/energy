@@ -21,5 +21,13 @@ export const AvailabilityDot = ({ availability }: AvailabilityDotProps) => {
       color = "onBackgroundMedium"
   }
 
-  return <Flex height={10} width={10} backgroundColor={color} borderRadius="10" />
+  return (
+    <Flex
+      testID="availability-dot"
+      height={10}
+      width={10}
+      backgroundColor={color}
+      borderRadius="10"
+    />
+  )
 }

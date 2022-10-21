@@ -5,6 +5,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { ArtworkGridItem } from "app/sharedUI"
 import { imageSize } from "app/utils/imageSize"
 import { TabsScrollView } from "app/wrappers"
@@ -17,6 +18,9 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
   const space = useSpace()
 
+  // Filterering based on presentation mode
+  const presentedArtworks = usePresentationFilteredArtworks(artworks)
+
   return (
     <TabsScrollView>
       <MasonryList
@@ -26,7 +30,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
           paddingHorizontal: space(2),
         }}
         numColumns={isTablet() ? 3 : 2}
-        data={artworks}
+        data={presentedArtworks}
         renderItem={({ item: artwork, i }) => (
           <ArtworkGridItem
             artwork={artwork}
@@ -56,6 +60,8 @@ const showArtworksQuery = graphql`
           node {
             internalID
             slug
+            published
+            availability
             ...ArtworkGridItem_artwork @arguments(imageSize: $imageSize)
           }
         }

@@ -75,8 +75,14 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
   // For Presentation Mode
   const isPriceHidden = GlobalStore.useAppState((state) => state.presentationMode.hiddenItems.price)
+  const isPriceForSoldWorksHidden = GlobalStore.useAppState(
+    (state) => state.presentationMode.hiddenItems.priceForSoldWorks
+  )
+  const isConfidentialNotesHidden = GlobalStore.useAppState(
+    (state) => state.presentationMode.hiddenItems.confidentialNotes
+  )
   const showQRCode = GlobalStore.useAppState(
-    (state) => state.presentationMode.isPresenationModeEnabled
+    (state) => state.presentationMode.isPresentationModeEnabled
   )
 
   if (!artworkData.artwork) {
@@ -106,6 +112,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     provenance,
     exhibitionHistory,
     literature,
+    availability,
   } = artworkData.artwork
 
   const shouldDisplayTheDetailBox =
@@ -123,6 +130,19 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
   const shouldShowAboutTheArtworkTitle =
     additionalInformation || shouldDisplayTheDetailBox || exhibitionHistory || literature
+
+  const renderPrice = () => {
+    if (!price) return null
+    if (isPriceHidden) return null
+    if (availability === "sold" && isPriceForSoldWorksHidden) return null
+
+    return (
+      <>
+        <Text weight="medium">{price}</Text>
+        <Spacer mt={0.5} />
+      </>
+    )
+  }
 
   return (
     <Flex flex={1} mt={safeAreaInsets.top}>
@@ -198,12 +218,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 )}
               </Text>
               <Spacer mt={0.5} />
-              {!(isPriceHidden && !price) && (
-                <>
-                  <Text weight="medium">{price}</Text>
-                  <Spacer mt={0.5} />
-                </>
-              )}
+              {renderPrice()}
               <Text variant="xs" color="onBackgroundMedium">
                 {medium}
               </Text>
@@ -248,7 +263,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 {!!series && <ArtworkDetail label="Series" value={series} />}
                 {!!imageRights && <ArtworkDetail label="Image Rights" value={imageRights} />}
                 {!!inventoryId && <ArtworkDetail label="Inventory ID" value={inventoryId} />}
-                {!!confidentialNotes && (
+                {!!confidentialNotes && !isConfidentialNotesHidden && (
                   <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
                 )}
                 {!!internalDisplayPrice && (
@@ -340,6 +355,7 @@ const artworkContentQuery = graphql`
       framed {
         details
       }
+      availability
       confidentialNotes
       internalDisplayPrice
       additionalInformation

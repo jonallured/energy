@@ -6,6 +6,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
@@ -51,6 +52,9 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
     setAreAllArtworkSelected(toggleSelectAllArtwork)
   }
 
+  // Filterering based on presentation mode
+  const presentedArtworks = usePresentationFilteredArtworks(artworks)
+
   return (
     <>
       <TabsScrollView>
@@ -61,7 +65,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
             paddingHorizontal: space(2),
           }}
           numColumns={isTablet() ? 3 : 2}
-          data={artworks}
+          data={presentedArtworks}
           renderItem={({ item: artwork, i }) => {
             if (isSelectModeActive) {
               return (
@@ -128,6 +132,8 @@ export const artistArtworksQuery = graphql`
           node {
             internalID
             slug
+            published
+            availability
             ...ArtworkGridItem_artwork
           }
         }

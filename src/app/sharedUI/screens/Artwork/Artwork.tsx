@@ -97,7 +97,7 @@ export const Artwork = () => {
 
       <BottomSheetModalView
         ref={bottomSheetRef}
-        modalHeight={500}
+        modalHeight={!isEditArtworkHidden ? 500 : 370}
         modalRows={
           <>
             <BottomSheetModalRow
@@ -137,6 +137,7 @@ export const Artwork = () => {
               onPress={() =>
                 navigation.navigate("AddArtworksToAlbum", { slug, contextArtworkSlugs })
               }
+              isLastRow={isEditArtworkHidden}
             />
           </>
         }

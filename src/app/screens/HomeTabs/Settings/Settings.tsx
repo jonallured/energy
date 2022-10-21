@@ -18,8 +18,8 @@ import { Screen } from "palette"
 
 export const Settings = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const isPresenationModeEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isPresenationModeEnabled
+  const isPresentationModeEnabled = GlobalStore.useAppState(
+    (state) => state.presentationMode.isPresentationModeEnabled
   )
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
 
@@ -36,9 +36,9 @@ export const Settings = () => {
         <Spacer y={2} />
         <SettingsItem title="Presentation Mode">
           <SettingsItem.Toggle
-            value={isPresenationModeEnabled}
+            value={isPresentationModeEnabled}
             onValueChange={() =>
-              GlobalStore.actions.presentationMode.toggleIsPresenationModeEnabled()
+              GlobalStore.actions.presentationMode.toggleIsPresentationModeEnabled()
             }
           />
         </SettingsItem>

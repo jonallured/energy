@@ -20,12 +20,17 @@ import {
 import { useFormik } from "formik"
 import { compact, uniq } from "lodash"
 import { useState } from "react"
+import { useLazyLoadQuery } from "react-relay"
 import * as Yup from "yup"
+import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
-import { ArtworkItem } from "app/sharedUI/items/ArtworkItem"
+import { ArtworkGridItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
+import { extractNodes } from "shared/utils"
 import { useArtworksByMode } from "./useArtworksByMode"
+import { usePresentationFilteredArtworks } from "../../usePresentationFilteredArtworks"
+import { albumArtworksQuery } from "../AlbumArtworks"
 
 interface CreateAlbumValuesSchema {
   albumName: string
@@ -51,6 +56,7 @@ export const CreateOrEditAlbum = () => {
   }
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const [selectedArtworksToRemove, setSelectedArtworksToRemove] = useState<string[]>([])
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
   const selectedArtworksInModel = useArtworksByMode(mode)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
@@ -62,6 +68,21 @@ export const CreateOrEditAlbum = () => {
     artworkFromArtistTab || selectedWorks.length > 0
       ? compact([artworkFromArtistTab, selectedWorks].flat())
       : uniq([...(album?.artworkIds || []), ...selectedArtworksInModel])
+
+  const artworksData = useLazyLoadQuery<AlbumArtworksQuery>(albumArtworksQuery, {
+    partnerID,
+    artworkIDs: selectedArtworks,
+  })
+
+  /* If we pass empty ids(selectedArtworks) as parameter in the albumArtworksQuery API,
+  MP returns random artworks(instead of returning empty object),
+  To avoid we have this condition to assign the artworks with fetched data only 
+  when the selectedArtworks is not empty */
+  const artworks =
+    selectedArtworks.length > 0 ? extractNodes(artworksData.partner?.artworksConnection) : []
+
+  // Filterering based on presentation mode
+  const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   const { handleSubmit, handleChange, values, errors, validateForm, isValid, dirty, isSubmitting } =
     useFormik<CreateAlbumValuesSchema>({
@@ -171,12 +192,12 @@ export const CreateOrEditAlbum = () => {
             marginTop: space(2),
           }}
           numColumns={2}
-          data={selectedArtworks}
-          renderItem={({ item: artworkId, i }) => {
+          data={presentedArtworks}
+          renderItem={({ item: artwork, i }) => {
             if (mode === "create") {
               return (
-                <ArtworkItem
-                  artworkId={artworkId}
+                <ArtworkGridItem
+                  artwork={artwork}
                   style={{
                     marginLeft: i % 2 === 0 ? 0 : space("1"),
                     marginRight: i % 2 === 0 ? space("1") : 0,
@@ -185,10 +206,10 @@ export const CreateOrEditAlbum = () => {
               )
             }
             return (
-              <ArtworkItem
-                artworkId={artworkId}
-                onPress={() => selectArtworkHandler(artworkId)}
-                selectedToRemove={selectedArtworksToRemove.includes(artworkId)}
+              <ArtworkGridItem
+                artwork={artwork}
+                onPress={() => selectArtworkHandler(artwork.internalID)}
+                selectedToRemove={selectedArtworksToRemove.includes(artwork.internalID)}
                 style={{
                   marginLeft: i % 2 === 0 ? 0 : space("1"),
                   marginRight: i % 2 === 0 ? space("1") : 0,
@@ -196,7 +217,7 @@ export const CreateOrEditAlbum = () => {
               />
             )
           }}
-          keyExtractor={(item: string) => item}
+          keyExtractor={(item) => item.internalID}
         />
         <Screen.FullWidthItem>
           <ShadowSeparator />

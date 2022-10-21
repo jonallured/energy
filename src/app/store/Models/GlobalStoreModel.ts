@@ -6,7 +6,7 @@ import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
 import { EmailModel, getEmailModel } from "./EmailModel"
-import { getPresentationModeModel, PresentationModeModel } from "./PresenationModeModel"
+import { getPresentationModeModel, PresentationModeModel } from "./PresentationModeModel"
 import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
 import { assignDeep } from "../../../shared/utils/persistence"
 

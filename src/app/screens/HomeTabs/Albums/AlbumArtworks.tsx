@@ -3,16 +3,21 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Alert } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
-import { ArtworkItem, ListEmptyComponent } from "app/sharedUI"
+import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
+import { extractNodes } from "shared/utils"
+import { usePresentationFilteredArtworks } from "../usePresentationFilteredArtworks"
 
 type AlbumArtworksRoute = RouteProp<NavigationScreens, "AlbumArtworks">
 
 export const AlbumArtworks = () => {
   const { albumId } = useRoute<AlbumArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
   const space = useSpace()
@@ -20,6 +25,16 @@ export const AlbumArtworks = () => {
   if (!album) {
     return <ListEmptyComponent />
   }
+
+  const artworksData = useLazyLoadQuery<AlbumArtworksQuery>(albumArtworksQuery, {
+    partnerID,
+    artworkIDs: album.artworkIds,
+  })
+
+  const artworks = extractNodes(artworksData.partner?.artworksConnection)
+
+  // Filterering based on presentation mode
+  const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   const deleteAlbumHandler = () => {
     return Alert.alert(
@@ -69,19 +84,37 @@ export const AlbumArtworks = () => {
             marginTop: space(2),
           }}
           numColumns={isTablet() ? 3 : 2}
-          data={album.artworkIds ?? []}
-          renderItem={({ item: artworkId, i }) => (
-            <ArtworkItem
-              artworkId={artworkId}
+          data={presentedArtworks}
+          renderItem={({ item: artwork, i }) => (
+            <ArtworkGridItem
+              artwork={artwork}
               style={{
                 marginLeft: i % 2 === 0 ? 0 : space("1"),
                 marginRight: i % 2 === 0 ? space("1") : 0,
               }}
             />
           )}
-          keyExtractor={(item: string) => item}
+          keyExtractor={(item) => item.internalID}
         />
       </Screen.Body>
     </Screen>
   )
 }
+
+export const albumArtworksQuery = graphql`
+  query AlbumArtworksQuery($partnerID: String!, $artworkIDs: [String]) {
+    partner(id: $partnerID) {
+      artworksConnection(first: 100, artworkIDs: $artworkIDs, includeUnpublished: true) {
+        edges {
+          node {
+            internalID
+            slug
+            published
+            availability
+            ...ArtworkGridItem_artwork
+          }
+        }
+      }
+    }
+  }
+`

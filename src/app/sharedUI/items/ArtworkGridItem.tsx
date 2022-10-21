@@ -4,8 +4,9 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { AvailabilityDot } from "app/sharedUI"
+import { GlobalStore } from "app/store/GlobalStore"
 
-interface ArtworkGridItemProps {
+export interface ArtworkGridItemProps {
   artwork: ArtworkGridItem_artwork$key
   onPress?: () => void
   selectedToAdd?: boolean
@@ -25,6 +26,10 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
   const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, propArtwork)
   const fontSize = isTablet() ? "sm" : "xs"
 
+  const isAvailabilityHidden = GlobalStore.useAppState(
+    (state) => state.presentationMode.hiddenItems.worksAvailability
+  )
+
   return (
     <Touchable disabled={disable} onPress={onPress}>
       <Flex mb={4} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1} style={style}>
@@ -35,7 +40,8 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
           }}
         />
         <Text italic variant={fontSize} color="onBackgroundMedium" mt={1}>
-          <AvailabilityDot availability={artwork.availability} /> {artwork.title}
+          {!isAvailabilityHidden && <AvailabilityDot availability={artwork.availability} />}{" "}
+          {artwork.title}
           {!!artwork.date && (
             <>
               ,{" "}

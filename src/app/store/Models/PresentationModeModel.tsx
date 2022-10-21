@@ -1,7 +1,7 @@
 import { action, Action, Computed, computed } from "easy-peasy"
 
 export interface PresentationModeModel {
-  isPresenationModeEnabled: boolean
+  isPresentationModeEnabled: boolean
   isHidePriceEnabled: boolean
   isHidePriceForSoldWorksEnabled: boolean
   isHideUnpublishedWorksEnabled: boolean
@@ -23,7 +23,7 @@ export interface PresentationModeModel {
     }
   >
 
-  toggleIsPresenationModeEnabled: Action<this>
+  toggleIsPresentationModeEnabled: Action<this>
   toggleIsHidePriceEnabled: Action<this>
   toggleIsHidePriceForSoldWorksEnabled: Action<this>
   toggleIsHideUnpublishedWorksEnabled: Action<this>
@@ -34,7 +34,7 @@ export interface PresentationModeModel {
 }
 
 export const getPresentationModeModel = (): PresentationModeModel => ({
-  isPresenationModeEnabled: false,
+  isPresentationModeEnabled: false,
   isHidePriceEnabled: true,
   isHidePriceForSoldWorksEnabled: true,
   isHideUnpublishedWorksEnabled: true,
@@ -44,17 +44,17 @@ export const getPresentationModeModel = (): PresentationModeModel => ({
   isHideArtworkEditButtonEnabled: true,
 
   hiddenItems: computed((state) => ({
-    price: state.isPresenationModeEnabled && state.isHidePriceEnabled,
-    priceForSoldWorks: state.isPresenationModeEnabled && state.isHidePriceForSoldWorksEnabled,
-    unpublishedWorks: state.isPresenationModeEnabled && state.isHideUnpublishedWorksEnabled,
-    worksNotForSale: state.isPresenationModeEnabled && state.isHideWorksNotForSaleEnabled,
-    worksAvailability: state.isPresenationModeEnabled && state.isHideWorksAvailabilityEnabled,
-    confidentialNotes: state.isPresenationModeEnabled && state.isHideConfidentialNotesEnabled,
-    editArtwork: state.isPresenationModeEnabled && state.isHideArtworkEditButtonEnabled,
+    price: state.isPresentationModeEnabled && state.isHidePriceEnabled,
+    priceForSoldWorks: state.isPresentationModeEnabled && state.isHidePriceForSoldWorksEnabled,
+    unpublishedWorks: state.isPresentationModeEnabled && state.isHideUnpublishedWorksEnabled,
+    worksNotForSale: state.isPresentationModeEnabled && state.isHideWorksNotForSaleEnabled,
+    worksAvailability: state.isPresentationModeEnabled && state.isHideWorksAvailabilityEnabled,
+    confidentialNotes: state.isPresentationModeEnabled && state.isHideConfidentialNotesEnabled,
+    editArtwork: state.isPresentationModeEnabled && state.isHideArtworkEditButtonEnabled,
   })),
 
-  toggleIsPresenationModeEnabled: action((state) => {
-    state.isPresenationModeEnabled = !state.isPresenationModeEnabled
+  toggleIsPresentationModeEnabled: action((state) => {
+    state.isPresentationModeEnabled = !state.isPresentationModeEnabled
   }),
   toggleIsHidePriceEnabled: action((state) => {
     state.isHidePriceEnabled = !state.isHidePriceEnabled

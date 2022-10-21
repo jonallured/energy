@@ -13,6 +13,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
 import { useArtworksByMode } from "./useArtworksByMode"
+import { usePresentationFilteredArtworks } from "../../usePresentationFilteredArtworks"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
   NavigationScreens,
@@ -44,6 +45,9 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   )
   const [selectedArtworkIds, setSelectedArtworkIds] = useState(selectedArtworksForThisArtist)
   const [areAllArtworkSelected, setAreAllArtworkSelected] = useState<boolean>(false)
+
+  // Filterering based on presentation mode
+  const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   const selectArtworkHandler = (artworkId: string) => {
     if (!selectedArtworkIds.includes(artworkId)) {
@@ -94,7 +98,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
             marginTop: space(2),
           }}
           numColumns={2}
-          data={artworks}
+          data={presentedArtworks}
           keyExtractor={(item) => item?.internalID}
           renderItem={({ item: artwork, i }) => {
             if (album?.artworkIds?.includes(artwork.internalID)) {

@@ -1,3 +1,4 @@
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ArtworkContent } from "./ArtworkContent"
@@ -8,41 +9,123 @@ jest.mock("@react-navigation/native", () => ({
 
 describe("ArtworkContent", () => {
   it("renders without throwing an error", async () => {
-    renderWithWrappers(<ArtworkContent slug="slug" />)
-    await mockEnvironmentPayloadMaybe(mockProps)
+    const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+    await mockEnvironmentPayloadMaybe({
+      Artwork: () => ({
+        provenance: "some provenance",
+        price: "some price",
+        medium: "some medium",
+      }),
+    })
+
+    expect(queryByText("some provenance")).toBeTruthy()
+    expect(queryByText("some price")).toBeTruthy()
+    expect(queryByText("some medium")).toBeTruthy()
   })
 
-  it("renders the list of artists", async () => {
-    const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
-    await mockEnvironmentPayloadMaybe(mockProps)
+  describe("show/hide price based on presentation mode settings", () => {
+    it("should not hide the price if the Presantation Mode = OFF and Hide Price switch = OFF", async () => {
+      const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+      __globalStoreTestUtils__?.injectState({
+        presentationMode: {
+          isPresentationModeEnabled: false,
+          isHidePriceEnabled: false,
+        },
+      })
+      await mockEnvironmentPayloadMaybe({
+        Artwork: () => ({
+          price: "5000$",
+        }),
+      })
+      expect(queryByText("5000$")).toBeTruthy()
+    })
 
-    expect(queryByText("some title")).toBeDefined()
-    expect(queryByText("some price")).toBeDefined()
-    expect(queryByText("some medium type")).toBeDefined()
+    it("should not hide the price if the Presantation Mode = ON and Hide Price switch = OFF", async () => {
+      const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+      __globalStoreTestUtils__?.injectState({
+        presentationMode: {
+          isPresentationModeEnabled: true,
+          isHidePriceEnabled: false,
+        },
+      })
+      await mockEnvironmentPayloadMaybe({
+        Artwork: () => ({
+          price: "5000$",
+        }),
+      })
+      expect(queryByText("5000$")).toBeTruthy()
+    })
+
+    describe("For sold works", () => {
+      it("should hide the price if the 'Presantation Mode' = ON and 'Hide Price For Sold Works' switch = ON", async () => {
+        const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+        __globalStoreTestUtils__?.injectState({
+          presentationMode: {
+            isPresentationModeEnabled: true,
+            isHidePriceEnabled: false,
+            isHidePriceForSoldWorksEnabled: true,
+          },
+        })
+        await mockEnvironmentPayloadMaybe({
+          Artwork: () => ({
+            price: "5000$",
+            availability: "sold",
+          }),
+        })
+        expect(queryByText("5000$")).toBeFalsy()
+      })
+
+      it("should NOT hide the price if the 'Presantation Mode' = ON and 'Hide Price For Sold Works' switch = OFF", async () => {
+        const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+        __globalStoreTestUtils__?.injectState({
+          presentationMode: {
+            isPresentationModeEnabled: true,
+            isHidePriceEnabled: false,
+            isHidePriceForSoldWorksEnabled: false,
+          },
+        })
+        await mockEnvironmentPayloadMaybe({
+          Artwork: () => ({
+            price: "5000$",
+            availability: "sold",
+          }),
+        })
+        expect(queryByText("5000$")).toBeTruthy()
+      })
+    })
+
+    describe("For Confidential Notes", () => {
+      it("should not hide the Confidential Notes if the Presantation Mode = OFF and Hide Confidential Notes = OFF", async () => {
+        const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+        __globalStoreTestUtils__?.injectState({
+          presentationMode: {
+            isPresentationModeEnabled: false,
+            isHideConfidentialNotesEnabled: false,
+          },
+        })
+        await mockEnvironmentPayloadMaybe({
+          Artwork: () => ({
+            confidentialNotes: "This is love",
+          }),
+        })
+        expect(queryByText("This is love")).toBeTruthy()
+      })
+
+      it("should not hide the Confidential Notes if the Presantation Mode = OFF and Hide Confidential Notes = OFF", async () => {
+        const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
+        __globalStoreTestUtils__?.injectState({
+          presentationMode: {
+            isPresentationModeEnabled: true,
+            isHideConfidentialNotesEnabled: true,
+          },
+        })
+        await mockEnvironmentPayloadMaybe({
+          Artwork: () => ({
+            confidentialNotes: "This is love",
+          }),
+        })
+        expect(queryByText("This is love")).toBeFalsy()
+      })
+    })
   })
 })
-
-const mockProps = {
-  Artwork: () => ({
-    artwork: {
-      title: "some title",
-      price: "some price",
-      date: "some date",
-      mediumType: {
-        name: "some medium type",
-      },
-      dimensions: {
-        in: "some dimensions in",
-        cm: "some dimensions cm",
-      },
-      inventoryId: "some inventory id",
-      artist: {
-        name: "some artist anem",
-      },
-    },
-  }),
-  Image: () => ({
-    url: "some artwork url",
-    aspectRatio: 1,
-  }),
-}
