@@ -13,10 +13,10 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
     <Flex mb={2}>
       <Flex flexDirection="row-reverse" alignItems="flex-end" pl={overlapSize} overflow="hidden">
         {first3Artworks.length < 3 && (
-          <Flex backgroundColor="onBackgroundLow" flex={1} mr={-overlapSize} />
+          <Flex backgroundColor="onBackgroundLow" flex={1} height={150} mr={-overlapSize} />
         )}
         {first3Artworks.length < 2 && (
-          <Flex backgroundColor="onBackgroundLow" flex={1} mr={-overlapSize} />
+          <Flex backgroundColor="onBackgroundLow" flex={1} height={100} mr={-overlapSize} />
         )}
         {first3Artworks.reverse().map((artworkId) => (
           <AlbumListImage
