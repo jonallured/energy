@@ -1,0 +1,5 @@
+#include "Pods/Target Support Files/Pods-Energy/Pods-Energy.debug.xcconfig"
+#include "App.xcconfig"
+
+
+DISPLAY_NAME = Φolio

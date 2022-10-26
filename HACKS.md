@@ -46,3 +46,13 @@ We can remove once we move to anything above 0.67
 #### Explanation/Context:
 
 There was a file called `find-node.sh` in 0.66 that was trying to find `node` on every machine. They added `asdf` in there but in 0.67, and they removed the file in 0.68 for a better way to find `node` on a machine.
+
+## react-native patch-package (EXCLUDED_ARCHS part only).
+
+#### When can we remove this:
+
+When we upgrade to react-native 0.67 or later.
+
+#### Explanation/Context:
+
+This is an old restriction for an old hermes version. It's messing with our xcodeproj file for non-M1 macs, so we patch it out for now. That restriction is fixed and removed on RN 0.67.

@@ -1,0 +1,2 @@
+#include "Pods/Target Support Files/Pods-Energy-EnergyTests/Pods-Energy-EnergyTests.store.xcconfig"
+#include "Tests.xcconfig"
