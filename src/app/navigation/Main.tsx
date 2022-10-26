@@ -24,6 +24,7 @@ import { MultipleArtworksBySameArtist } from "app/screens/HomeTabs/Artists/Artis
 import { OneArtwork } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/OneArtwork"
 import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { HomeTabs } from "app/screens/HomeTabs/HomeTabs"
+import { Search } from "app/screens/HomeTabs/Search/Search"
 import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings"
 import { EditPresentationMode } from "app/screens/HomeTabs/Settings/EditPresentationMode"
 import { Settings } from "app/screens/HomeTabs/Settings/Settings"
@@ -50,6 +51,7 @@ export type RegularScreens = {
   ArtistTabs: { slug: string; name?: string }
   InstallImage: { url: string }
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
+  Search: undefined
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
   AddArtworksToAlbum: {
@@ -126,6 +128,7 @@ export const Main = () => {
             <Screen name="DarkModeSettings" component={DarkModeSettings} />
             <Screen name="EditPresentationMode" component={EditPresentationMode} />
             <Screen name="Artwork" component={Artwork} />
+            <Screen name="Search" component={Search} />
             <Screen name="ShowTabs" component={ShowTabs} />
             <Screen name="ArtistTabs" component={ArtistTabs} />
             <Screen name="AlbumArtworks" component={AlbumArtworks} />

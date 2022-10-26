@@ -1,4 +1,4 @@
-import { MenuIcon, Touchable } from "@artsy/palette-mobile"
+import { MenuIcon, Touchable, MagnifyingGlassIcon } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/navigation/Main"
@@ -32,8 +32,8 @@ export const HomeTabs = () => {
           </Touchable>
         }
         rightElements={
-          <Touchable onPress={() => navigation.navigate("FolioDesignLanguage")}>
-            <MenuIcon fill="onBackgroundHigh" />
+          <Touchable onPress={() => navigation.navigate("Search")}>
+            <MagnifyingGlassIcon fill="onBackgroundHigh" />
           </Touchable>
         }
       />
