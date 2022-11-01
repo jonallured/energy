@@ -70,9 +70,12 @@ export const DevMenu = () => {
                 const album = {
                   name: nativeAlbum.name,
                   artworkIds: nativeAlbum.artworkIDs,
+                  documentIds: [],
+                  installShotUrls: [],
                 }
                 console.log("Got album name", album.name)
                 console.log("Got album artworkIDs", album.artworkIds)
+                console.log("Got album artworkIDs", album)
                 GlobalStore.actions.albums.addAlbum(album)
               })
             }

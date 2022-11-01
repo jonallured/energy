@@ -30,7 +30,7 @@ import { Screen } from "palette"
 import { extractNodes } from "shared/utils"
 import { useArtworksByMode } from "./useArtworksByMode"
 import { usePresentationFilteredArtworks } from "../../usePresentationFilteredArtworks"
-import { albumArtworksQuery } from "../AlbumArtworks"
+import { albumArtworksQuery } from "../AlbumTabs/AlbumArtworks"
 
 interface CreateAlbumValuesSchema {
   albumName: string
@@ -102,6 +102,8 @@ export const CreateOrEditAlbum = () => {
             GlobalStore.actions.albums.addAlbum({
               name: values.albumName.trim(),
               artworkIds: selectedArtworks,
+              documentIds: [],
+              installShotUrls: [],
             })
           }
           if (artworkFromArtistTab) {

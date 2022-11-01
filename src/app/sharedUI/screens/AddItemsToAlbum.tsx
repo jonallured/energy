@@ -3,27 +3,28 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { AddArtworksToAlbumQuery } from "__generated__/AddArtworksToAlbumQuery.graphql"
+import { AddItemsToAlbumQuery } from "__generated__/AddItemsToAlbumQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { AlbumListItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 
-type HomeTabsRoute = RouteProp<NavigationScreens, "AddArtworksToAlbum">
-type AddArtworksToAlbumProps = {
+type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
+type AddItemsToAlbumProps = {
   slug: string
 }
 
 //// hometabs, scorll, then doesnt go in the artist
 
-export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
+export const AddItemsToAlbum: React.FC<AddItemsToAlbumProps> = () => {
   const { slug, areMultipleArtworks, name, contextArtworkSlugs, closeBottomSheetModal } =
     useRoute<HomeTabsRoute>().params
 
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
+  const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)
 
   const artworkData = !areMultipleArtworks
-    ? useLazyLoadQuery<AddArtworksToAlbumQuery>(addArtworksToAlbumQuery, {
+    ? useLazyLoadQuery<AddItemsToAlbumQuery>(addItemsToAlbumQuery, {
         slug,
       })
     : null
@@ -45,9 +46,11 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
   const addArtworkToTheSelectedAlbums = () => {
     try {
       if (areMultipleArtworks) {
-        GlobalStore.actions.albums.addArtworksInAlbums({
+        GlobalStore.actions.albums.addItemsInAlbums({
           albumIds: selectedAlbumIds,
           artworkIdsToAdd: selectedWorks,
+          documentIdsToAdd: selectedDocs,
+          installShotUrlsToAdd: [],
         })
         navigation.navigate("ArtistTabs", {
           slug,
@@ -56,9 +59,11 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
         closeBottomSheetModal?.()
         GlobalStore.actions.selectMode.cancelSelectMode()
       } else {
-        GlobalStore.actions.albums.addArtworksInAlbums({
+        GlobalStore.actions.albums.addItemsInAlbums({
           albumIds: selectedAlbumIds,
           artworkIdsToAdd: [artworkData?.artwork?.internalID!],
+          documentIdsToAdd: [],
+          installShotUrlsToAdd: [],
         })
         navigation.goBack()
       }
@@ -69,7 +74,7 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
 
   const renderButton = () => {
     if (
-      albums.filter((album) => album.artworkIds?.includes(artworkData?.artwork?.internalID!))
+      albums.filter((album) => album.artworkIds.includes(artworkData?.artwork?.internalID!))
         .length === albums.length ||
       selectedAlbumIds.length <= 0
     ) {
@@ -111,7 +116,7 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
               <Flex key={album.id}>
                 <Touchable
                   onPress={
-                    album.artworkIds?.includes(artworkData?.artwork?.internalID)
+                    album.artworkIds.includes(artworkData?.artwork?.internalID)
                       ? undefined
                       : () => selectAlbumHandler(album.id)
                   }
@@ -122,7 +127,7 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
                     mt={1}
                     opacity={
                       selectedAlbumIds.includes(album.id) ||
-                      album.artworkIds?.includes(artworkData?.artwork?.internalID)
+                      album.artworkIds.includes(artworkData?.artwork?.internalID)
                         ? 0.4
                         : 1
                     }
@@ -156,8 +161,8 @@ export const AddArtworksToAlbum: React.FC<AddArtworksToAlbumProps> = () => {
   )
 }
 
-const addArtworksToAlbumQuery = graphql`
-  query AddArtworksToAlbumQuery($slug: String!) {
+const addItemsToAlbumQuery = graphql`
+  query AddItemsToAlbumQuery($slug: String!) {
     artwork(id: $slug) {
       internalID
       title

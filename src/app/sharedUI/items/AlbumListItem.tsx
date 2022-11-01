@@ -6,7 +6,7 @@ import { AlbumListImage } from "./AlbumListImage"
 export const AlbumListItem = ({ album }: { album: Album }) => {
   const space = useSpace()
   const overlapSize = space("2")
-  const first3Artworks = album.artworkIds!.slice(0, 3)
+  const first3Artworks = album.artworkIds.slice(0, 3)
   const variant = isTablet() ? "sm" : "xs"
 
   return (
@@ -32,7 +32,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
       <Flex mt={1}>
         <Text variant={variant}>{album.name}</Text>
         <Text variant={variant} color="onBackgroundMedium">
-          {album.artworkIds?.length ?? 0} Artworks
+          {album.artworkIds.length} Artworks
         </Text>
       </Flex>
       <Spacer y={1} />

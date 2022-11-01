@@ -16,6 +16,8 @@ export function attemptAlbumMigration() {
       const album = {
         name: nativeAlbum.name,
         artworkIds: nativeAlbum.artworkIDs,
+        documentIds: [],
+        installShotUrls: [],
       }
       GlobalStore.actions.albums.addAlbum(album)
     })

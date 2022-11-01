@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationScreens } from "app/navigation/Main"
 import { AlbumListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
-import { TabsFlatList, TabsScrollView } from "app/wrappers"
+import { TabsFlatList } from "app/wrappers"
 
 export const Albums = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
@@ -24,7 +24,7 @@ export const Albums = () => {
         numColumns={isTablet() ? 2 : 1}
         renderItem={({ item: album }) => (
           <Touchable
-            onPress={() => navigation.navigate("AlbumArtworks", { albumId: album.id })}
+            onPress={() => navigation.navigate("AlbumTabs", { albumId: album.id })}
             key={album.id}
             style={{ width: isTablet() ? (screenWidth - 60) / 2 : "auto" }}
           >

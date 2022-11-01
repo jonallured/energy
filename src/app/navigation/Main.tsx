@@ -14,7 +14,7 @@ import { StorybookScreenFullWidthItem } from "app/screens/Dev/StorybookScreenFul
 import { StorybookScreenHeader } from "app/screens/Dev/StorybookScreenHeader"
 import { StorybookScreenHeaderElements } from "app/screens/Dev/StorybookScreenHeaderElements"
 import { StorybookScreenRawHeader } from "app/screens/Dev/StorybookScreenRawHeader"
-import { AlbumArtworks } from "app/screens/HomeTabs/Albums/AlbumArtworks"
+import { AlbumTabs } from "app/screens/HomeTabs/Albums/AlbumTabs/AlbumTabs"
 import { CreateOrEditAlbum } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
 import { CreateOrEditAlbumChooseArtist } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
 import { CreateOrEditAlbumChooseArtworks } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtworks"
@@ -29,7 +29,7 @@ import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings
 import { EditPresentationMode } from "app/screens/HomeTabs/Settings/EditPresentationMode"
 import { Settings } from "app/screens/HomeTabs/Settings/Settings"
 import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
-import { AddArtworksToAlbum } from "app/sharedUI/screens/Artwork/AddArtworksToAlbum"
+import { AddItemsToAlbum } from "app/sharedUI/screens/AddItemsToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView, useWebViewCookies } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -49,12 +49,13 @@ export type RegularScreens = {
   DarkModeSettings: undefined
   EditPresentationMode: undefined
   ArtistTabs: { slug: string; name?: string }
+  AlbumTabs: { albumId: string }
   InstallImage: { url: string }
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
   Search: undefined
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
-  AddArtworksToAlbum: {
+  AddItemsToAlbum: {
     slug: string
     areMultipleArtworks?: boolean
     name?: string
@@ -131,7 +132,7 @@ export const Main = () => {
             <Screen name="Search" component={Search} />
             <Screen name="ShowTabs" component={ShowTabs} />
             <Screen name="ArtistTabs" component={ArtistTabs} />
-            <Screen name="AlbumArtworks" component={AlbumArtworks} />
+            <Screen name="AlbumTabs" component={AlbumTabs} />
             <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
             <Screen
               name="CreateOrEditAlbumChooseArtist"
@@ -142,7 +143,7 @@ export const Main = () => {
               component={CreateOrEditAlbumChooseArtworks}
             />
             <Screen name="ArtworkWebView" component={ArtworkWebView} />
-            <Screen name="AddArtworksToAlbum" component={AddArtworksToAlbum} />
+            <Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
 
             {/* storybook screens */}
             <Screen name="InsteadOfStorybook" component={InsteadOfStorybook} />

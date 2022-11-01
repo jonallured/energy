@@ -108,7 +108,7 @@ export const ArtistTabs = () => {
               Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
               label="Add to Album"
               onPress={() =>
-                navigation.navigate("AddArtworksToAlbum", {
+                navigation.navigate("AddItemsToAlbum", {
                   areMultipleArtworks: true,
                   slug,
                   name,
