@@ -10,11 +10,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
-type AddItemsToAlbumProps = {
-  slug: string
-}
 
-export const AddItemsToAlbum: React.FC<AddItemsToAlbumProps> = () => {
+export const AddItemsToAlbum = () => {
   const { slug, areMultipleArtworks, name, contextArtworkSlugs, closeBottomSheetModal } =
     useRoute<HomeTabsRoute>().params
 

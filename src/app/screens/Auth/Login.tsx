@@ -3,7 +3,7 @@ import { useFormik } from "formik"
 import { useRef, useState } from "react"
 import { Linking, Platform, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import * as Yup from "yup"
+import { object, string } from "yup"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
@@ -17,10 +17,10 @@ export interface LoginSchema {
   otp: string
 }
 
-export const loginSchema = Yup.object().shape({
-  email: Yup.string().email("Please provide a valid email address"),
-  password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
-  otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
+export const loginSchema = object().shape({
+  email: string().email("Please provide a valid email address"),
+  password: string().test("password", "Password field is required", (value) => value !== ""),
+  otp: string().test("otp", "This field is required", (value) => value !== ""),
 })
 
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=net.artsy.app"

@@ -231,7 +231,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                   </>
                 )}
               </Text>
-              <Spacer mt={0.5} />
+              <Spacer y="0.5" />
               {editionSets?.length === 0 &&
                 (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
               <Text variant="xs" color="onBackgroundMedium">
@@ -242,12 +242,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                   {dimensions?.in} - {dimensions?.cm}
                 </Text>
               )}
-              <Spacer mt={0.5} />
+              <Spacer y="0.5" />
               {editionSets?.length! > 0 && (
                 <>
                   <Text weight="medium">Editions</Text>
-                  {editionSets?.map((set) => (
-                    <Flex>
+                  {editionSets?.map((set, idx) => (
+                    <Flex key={`${idx}`}>
                       <Text variant="xs" color="onBackgroundMedium">
                         {set?.dimensions?.in}
                       </Text>

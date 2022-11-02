@@ -108,12 +108,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-pods-{{ checksum ".manifests/cocoapods" }}
+            - v2-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v1-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v2-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI

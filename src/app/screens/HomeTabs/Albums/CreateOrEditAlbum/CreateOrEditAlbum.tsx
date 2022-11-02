@@ -21,7 +21,7 @@ import { useFormik } from "formik"
 import { compact, uniq } from "lodash"
 import { useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
-import * as Yup from "yup"
+import { object, string } from "yup"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { ArtworkGridItem } from "app/sharedUI"
@@ -36,8 +36,8 @@ interface CreateAlbumValuesSchema {
   albumName: string
 }
 
-const createAlbumSchema = Yup.object().shape({
-  albumName: Yup.string().required("Album name is required").trim(),
+const createAlbumSchema = object().shape({
+  albumName: string().required("Album name is required").trim(),
 })
 
 type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
