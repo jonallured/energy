@@ -81,6 +81,10 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const isConfidentialNotesHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.confidentialNotes
   )
+  const isAvailabilityHidden = GlobalStore.useAppState(
+    (state) => state.presentationMode.hiddenItems.worksAvailability
+  )
+
   const showQRCode = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )
@@ -109,6 +113,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     inventoryId,
     confidentialNotes,
     internalDisplayPrice,
+    editionSets,
     provenance,
     exhibitionHistory,
     literature,
@@ -131,16 +136,25 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const shouldShowAboutTheArtworkTitle =
     additionalInformation || shouldDisplayTheDetailBox || exhibitionHistory || literature
 
-  const renderPrice = () => {
+  const renderPrice = (price?: string | null) => {
     if (!price) return null
     if (isPriceHidden) return null
     if (availability === "sold" && isPriceForSoldWorksHidden) return null
 
     return (
       <>
-        <Text weight="medium">{price}</Text>
+        <Text weight="regular">{price}</Text>
         <Spacer mt={0.5} />
       </>
+    )
+  }
+
+  const renderSalesMessage = (saleMessage?: string | null) => {
+    if (isAvailabilityHidden) return null
+    return (
+      <Text variant="xs" color="onBackgroundMedium">
+        {saleMessage}
+      </Text>
     )
   }
 
@@ -218,14 +232,41 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 )}
               </Text>
               <Spacer mt={0.5} />
-              {renderPrice()}
+              {editionSets?.length === 0 &&
+                (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
               <Text variant="xs" color="onBackgroundMedium">
                 {medium}
               </Text>
-              {(dimensions?.in || dimensions?.cm) && (
+              {editionSets?.length === 0 && (dimensions?.in || dimensions?.cm) && (
                 <Text variant="xs" color="onBackgroundMedium">
                   {dimensions?.in} - {dimensions?.cm}
                 </Text>
+              )}
+              <Spacer mt={0.5} />
+              {editionSets?.length! > 0 && (
+                <>
+                  <Text weight="medium">Editions</Text>
+                  {editionSets?.map((set) => (
+                    <Flex>
+                      <Text variant="xs" color="onBackgroundMedium">
+                        {set?.dimensions?.in}
+                      </Text>
+                      <Text variant="xs" color="onBackgroundMedium">
+                        {set?.dimensions?.cm}
+                      </Text>
+                      {set?.editionOf !== "" && (
+                        <Text variant="xs" color="onBackgroundMedium">
+                          {set?.editionOf}
+                        </Text>
+                      )}
+                      {set?.saleMessage !== set?.price && renderSalesMessage(set?.saleMessage)}
+                      {set?.internalDisplayPrice
+                        ? renderPrice(set?.internalDisplayPrice)
+                        : renderPrice(set?.price)}
+                      <Spacer mt={0.5} />
+                    </Flex>
+                  ))}
+                </>
               )}
             </Flex>
           </Flex>
@@ -265,9 +306,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 {!!inventoryId && <ArtworkDetail label="Inventory ID" value={inventoryId} />}
                 {!!confidentialNotes && !isConfidentialNotesHidden && (
                   <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
-                )}
-                {!!internalDisplayPrice && (
-                  <ArtworkDetail label="Editions" value={internalDisplayPrice} />
                 )}
                 {!!provenance && <ArtworkDetail label="Provenance" value={provenance} />}
                 <Spacer mt={1} />
@@ -334,9 +372,19 @@ const artworkContentQuery = graphql`
       mediumType {
         name
       }
+      editionSets {
+        dimensions {
+          cm
+          in
+        }
+        editionOf
+        saleMessage
+        internalDisplayPrice
+        price
+      }
       dimensions {
-        in
         cm
+        in
       }
       inventoryId
       artistNames
