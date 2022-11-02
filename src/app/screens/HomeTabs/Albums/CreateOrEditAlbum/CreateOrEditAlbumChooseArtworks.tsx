@@ -1,4 +1,4 @@
-import { Flex, Button, Text, useSpace, Spacer } from "@artsy/palette-mobile"
+import { Flex, Button, Text, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { intersection } from "lodash"

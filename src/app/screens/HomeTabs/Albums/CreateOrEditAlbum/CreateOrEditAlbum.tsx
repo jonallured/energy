@@ -76,7 +76,7 @@ export const CreateOrEditAlbum = () => {
 
   /* If we pass empty ids(selectedArtworks) as parameter in the albumArtworksQuery API,
   MP returns random artworks(instead of returning empty object),
-  To avoid we have this condition to assign the artworks with fetched data only 
+  To avoid we have this condition to assign the artworks with fetched data only
   when the selectedArtworks is not empty */
   const artworks =
     selectedArtworks.length > 0 ? extractNodes(artworksData.partner?.artworksConnection) : []
@@ -221,14 +221,16 @@ export const CreateOrEditAlbum = () => {
           }}
           keyExtractor={(item) => item.internalID}
         />
-        <Screen.FullWidthItem>
-          <ShadowSeparator />
-        </Screen.FullWidthItem>
-        <Flex pt={2}>
-          <Button block onPress={handleSubmit} disabled={isActionButtonDisabled()}>
-            {mode === "edit" ? "Save" : "Create"}
-          </Button>
-        </Flex>
+        <Screen.BottomView>
+          <Screen.FullWidthItem>
+            <ShadowSeparator />
+          </Screen.FullWidthItem>
+          <Flex px={2} pt={2}>
+            <Button block onPress={handleSubmit} disabled={isActionButtonDisabled()}>
+              {mode === "edit" ? "Save" : "Create"}
+            </Button>
+          </Flex>
+        </Screen.BottomView>
       </Screen.Body>
     </Screen>
   )
