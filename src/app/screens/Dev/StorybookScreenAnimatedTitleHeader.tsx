@@ -20,7 +20,7 @@ export const StorybookScreenAnimatedTitleHeader = () => {
           <Switch value={longTitle} onValueChange={setLongTitle} />
         </Flex>
         {range(100).map((x) => (
-          <Text>wow content {x}</Text>
+          <Text key={`${x}`}>wow content {x}</Text>
         ))}
       </Screen.Body>
     </Screen>

@@ -14,8 +14,6 @@ type AddItemsToAlbumProps = {
   slug: string
 }
 
-//// hometabs, scorll, then doesnt go in the artist
-
 export const AddItemsToAlbum: React.FC<AddItemsToAlbumProps> = () => {
   const { slug, areMultipleArtworks, name, contextArtworkSlugs, closeBottomSheetModal } =
     useRoute<HomeTabsRoute>().params
