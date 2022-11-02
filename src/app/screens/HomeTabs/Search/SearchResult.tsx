@@ -10,7 +10,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { extractNodes } from "shared/utils"
 
-export const SearchResult = ({ searchInput }: { searchInput: string }) => {
+interface SearchResultProps {
+  searchInput: string
+  selectedFilter: string[]
+}
+
+export const SearchResult = ({ searchInput, selectedFilter }: SearchResultProps) => {
   return (
     <Suspense
       fallback={
@@ -19,7 +24,7 @@ export const SearchResult = ({ searchInput }: { searchInput: string }) => {
         </Flex>
       }
     >
-      <SearchResultView searchInput={searchInput} />
+      <SearchResultView searchInput={searchInput} selectedFilter={selectedFilter} />
     </Suspense>
   )
 }
@@ -31,7 +36,7 @@ type SearchResult = {
   imageUrl?: string | null
 }
 
-const SearchResultView = ({ searchInput }: { searchInput: string }) => {
+const SearchResultView = ({ searchInput, selectedFilter }: SearchResultProps) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const data = useLazyLoadQuery<SearchResultQuery>(searchResultQuery, {
@@ -76,8 +81,21 @@ const SearchResultView = ({ searchInput }: { searchInput: string }) => {
   })
 
   useEffect(() => {
-    setSearchResult(search)
-  }, [searchInput])
+    // Logic for Album filteration will be added later
+    if (["Artists", "Shows"].every((f) => selectedFilter.includes(f))) {
+      const filteredArtists = search.filter((searchObj) => searchObj.type === "Artist")
+      const filteredShows = search.filter((searchObj) => searchObj.type === "Show")
+      setSearchResult([...filteredArtists, ...filteredShows])
+    } else if (selectedFilter.includes("Artists")) {
+      const filteredArtists = search.filter((searchObj) => searchObj.type === "Artist")
+      setSearchResult(filteredArtists)
+    } else if (selectedFilter.includes("Shows")) {
+      const filteredShows = search.filter((searchObj) => searchObj.type === "Show")
+      setSearchResult(filteredShows)
+    } else {
+      setSearchResult(search)
+    }
+  }, [searchInput, selectedFilter])
 
   const handleNavigation = (item: SearchResult) => {
     switch (item.type) {
