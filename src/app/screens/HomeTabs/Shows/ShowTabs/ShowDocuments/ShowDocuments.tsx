@@ -1,10 +1,11 @@
-import { useSpace } from "@artsy/palette-mobile"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowDocumentsQuery } from "__generated__/ShowDocumentsQuery.graphql"
 import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { extractNodes } from "shared/utils"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
@@ -36,7 +37,11 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
           />
         )}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
+        ListEmptyComponent={
+          <Flex ml={SCREEN_HORIZONTAL_PADDING}>
+            <ListEmptyComponent text="No documents" />
+          </Flex>
+        }
       />
     </TabsScrollView>
   )

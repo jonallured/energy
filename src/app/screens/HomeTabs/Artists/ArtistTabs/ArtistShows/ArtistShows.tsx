@@ -1,4 +1,4 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -9,6 +9,7 @@ import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { TabsFlatList } from "app/wrappers"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { extractNodes } from "shared/utils"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
@@ -45,7 +46,11 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
         </Touchable>
       )}
       keyExtractor={(item) => item?.internalID}
-      ListEmptyComponent={<ListEmptyComponent text="No shows" />}
+      ListEmptyComponent={
+        <Flex ml={SCREEN_HORIZONTAL_PADDING}>
+          <ListEmptyComponent text="No shows" />
+        </Flex>
+      }
     />
   )
 }

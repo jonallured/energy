@@ -6,6 +6,7 @@ import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql
 import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { extractNodes } from "shared/utils"
 
 export const ArtistDocuments = ({ slug }: { slug: string }) => {
@@ -69,7 +70,11 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
             />
           )}
           keyExtractor={(item) => item.id}
-          ListEmptyComponent={<ListEmptyComponent text="No documents" />}
+          ListEmptyComponent={
+            <Flex ml={SCREEN_HORIZONTAL_PADDING}>
+              <ListEmptyComponent text="No documents" />
+            </Flex>
+          }
         />
       </TabsScrollView>
       {/* This should be moved to Headers */}
