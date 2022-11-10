@@ -15,7 +15,7 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
     slug,
     partnerID: selectedPartner,
   })
-  const documents = extractNodes(showDocumentsData.partnerShowDocumentsConnection)
+  const documents = extractNodes(showDocumentsData.partner?.documentsConnection)
 
   return (
     <TabsScrollView>
@@ -29,14 +29,14 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
         renderItem={({ item: document }) => (
           <DocumentGridItem
             document={{
-              url: document.publicUrl,
+              url: document.publicURL,
               title: document.title,
-              id: document.id,
-              size: document.size,
+              id: document.internalID,
+              size: document.filesize,
             }}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.internalID}
         ListEmptyComponent={
           <Flex ml={SCREEN_HORIZONTAL_PADDING}>
             <ListEmptyComponent text="No documents" />
@@ -49,13 +49,15 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
 
 const showDocumentsQuery = graphql`
   query ShowDocumentsQuery($slug: String!, $partnerID: String!) {
-    partnerShowDocumentsConnection(showID: $slug, partnerID: $partnerID, first: 100) {
-      edges {
-        node {
-          id
-          title
-          size
-          publicUrl
+    partner(id: $partnerID) {
+      documentsConnection(first: 100, showID: $slug) {
+        edges {
+          node {
+            internalID
+            title
+            filesize
+            publicURL
+          }
         }
       }
     }

@@ -15,7 +15,8 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
     slug,
     partnerID: selectedPartner,
   })
-  const documents = extractNodes(artistDocumentsData.partnerArtistDocumentsConnection)
+
+  const documents = extractNodes(artistDocumentsData.partner?.documentsConnection)
   const space = useSpace()
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.items.documents)
@@ -32,7 +33,7 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
     if (toggleSelectAllDocument) {
       GlobalStore.actions.selectMode.selectAllItems({
         itemType: "documents",
-        allItems: documents.map((doc) => doc.id),
+        allItems: documents.map((doc) => doc.internalID),
       })
     } else {
       GlobalStore.actions.selectMode.selectAllItems({
@@ -60,16 +61,16 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
           renderItem={({ item: document }) => (
             <DocumentGridItem
               document={{
-                url: document.publicUrl,
+                url: document.publicURL,
                 title: document.title,
-                id: document.id,
-                size: document.size,
+                id: document.internalID,
+                size: document.filesize,
               }}
-              onPress={() => selectDocumentHandler(document.id)}
-              selectedToAdd={selectedDocumentIds.includes(document.id)}
+              onPress={() => selectDocumentHandler(document.internalID)}
+              selectedToAdd={selectedDocumentIds.includes(document.internalID)}
             />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.internalID}
           ListEmptyComponent={
             <Flex ml={SCREEN_HORIZONTAL_PADDING}>
               <ListEmptyComponent text="No documents" />
@@ -112,13 +113,15 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
 
 const artistDocumentsQuery = graphql`
   query ArtistDocumentsQuery($slug: String!, $partnerID: String!) {
-    partnerArtistDocumentsConnection(artistID: $slug, partnerID: $partnerID, first: 100) {
-      edges {
-        node {
-          id
-          title
-          size
-          publicUrl
+    partner(id: $partnerID) {
+      documentsConnection(first: 100, artistID: $slug) {
+        edges {
+          node {
+            internalID
+            title
+            filesize
+            publicURL
+          }
         }
       }
     }

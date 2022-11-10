@@ -71,14 +71,14 @@ export const AlbumTabs = () => {
             <AlbumArtworks artworkIds={album.artworkIds} />
           </SuspenseWrapper>
         </Tabs.Tab>
-        <Tabs.Tab name="AlbumDocuments" label="Documents">
-          <SuspenseWrapper withTabs>
-            <AlbumDocuments documentIds={album.documentIds} />
-          </SuspenseWrapper>
-        </Tabs.Tab>
         <Tabs.Tab name="AlbumInstalls" label="Installs">
           <SuspenseWrapper withTabs>
             <AlbumInstalls installShotUrls={album.installShotUrls} />
+          </SuspenseWrapper>
+        </Tabs.Tab>
+        <Tabs.Tab name="AlbumDocuments" label="Documents">
+          <SuspenseWrapper withTabs>
+            <AlbumDocuments documentIDs={album.documentIds} />
           </SuspenseWrapper>
         </Tabs.Tab>
       </Screen.AnimatedTitleTabsBody>
