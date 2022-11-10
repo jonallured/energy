@@ -101,7 +101,7 @@ export const LoginScreen = () => {
   return (
     <Screen>
       <Screen.RawHeader>
-        <Text variant="lg" ml={SCREEN_HORIZONTAL_PADDING}>
+        <Text variant="lg" mx={SCREEN_HORIZONTAL_PADDING}>
           Folio
         </Text>
       </Screen.RawHeader>

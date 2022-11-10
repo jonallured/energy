@@ -117,7 +117,7 @@ export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
             >
               <ActivityIndicator accessibilityLabel="Loading Indicator" />
               <Button size="small" mt={2} onPress={cancelDownload}>
-                <Text>Cancel</Text>
+                Cancel
               </Button>
             </Flex>
           )}

@@ -4,6 +4,11 @@ import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ArtistArtworks } from "./ArtistArtworks"
 
+jest.mock("react-native-collapsible-tab-view", () => ({
+  ...jest.requireActual("react-native-collapsible-tab-view"),
+  useFocusedTab: () => "Wow",
+}))
+
 describe("ArtistArtworks", () => {
   it("renders the list of works", async () => {
     const { getByTestId } = renderWithWrappers(<ArtistArtworks slug="some" />)

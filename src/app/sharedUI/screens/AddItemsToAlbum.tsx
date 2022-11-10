@@ -19,9 +19,7 @@ export const AddItemsToAlbum = () => {
   const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)
 
   const artworkData = !areMultipleArtworks
-    ? useLazyLoadQuery<AddItemsToAlbumQuery>(addItemsToAlbumQuery, {
-        slug,
-      })
+    ? useLazyLoadQuery<AddItemsToAlbumQuery>(addItemsToAlbumQuery, { slug })
     : null
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
@@ -47,10 +45,7 @@ export const AddItemsToAlbum = () => {
           documentIdsToAdd: selectedDocs,
           installShotUrlsToAdd: [],
         })
-        navigation.navigate("ArtistTabs", {
-          slug,
-          name,
-        })
+        navigation.goBack()
         closeBottomSheetModal?.()
         GlobalStore.actions.selectMode.cancelSelectMode()
       } else {

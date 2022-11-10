@@ -232,18 +232,18 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 )}
               </Text>
               <Spacer y="0.5" />
-              {editionSets?.length === 0 &&
+              {(editionSets ?? []).length === 0 &&
                 (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
               <Text variant="xs" color="onBackgroundMedium">
                 {medium}
               </Text>
-              {editionSets?.length === 0 && (dimensions?.in || dimensions?.cm) && (
+              {(editionSets ?? []).length === 0 && (dimensions?.in || dimensions?.cm) && (
                 <Text variant="xs" color="onBackgroundMedium">
                   {dimensions?.in} - {dimensions?.cm}
                 </Text>
               )}
               <Spacer y="0.5" />
-              {editionSets?.length! > 0 && (
+              {(editionSets ?? []).length > 0 && (
                 <>
                   <Text weight="medium">Editions</Text>
                   {editionSets?.map((set, idx) => (

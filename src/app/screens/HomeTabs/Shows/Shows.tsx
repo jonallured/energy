@@ -46,7 +46,7 @@ export const Shows = () => {
       }}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={
-        <Flex ml={SCREEN_HORIZONTAL_PADDING}>
+        <Flex mx={SCREEN_HORIZONTAL_PADDING}>
           <ListEmptyComponent text="No shows" />
         </Flex>
       }

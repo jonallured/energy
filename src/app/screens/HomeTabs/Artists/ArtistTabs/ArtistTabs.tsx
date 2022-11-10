@@ -13,6 +13,7 @@ import {
   BottomSheetRef,
 } from "app/sharedUI/molecules/BottomSheetModalView"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useHeaderSelectModeConfig } from "app/store/selectModeAtoms"
 import { SuspenseWrapper } from "app/wrappers"
 import { Screen } from "palette"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
@@ -24,7 +25,6 @@ type ArtistTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 export const ArtistTabs = () => {
   const { slug, name } = useRoute<ArtistTabsRoute>().params
   const data = useLazyLoadQuery<ArtistTabsQuery>(artistQuery, { slug })
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
@@ -39,27 +39,14 @@ export const ArtistTabs = () => {
     bottomSheetRef.current?.closeBottomSheetModal()
   }
 
+  const selectModeConfig = useHeaderSelectModeConfig()
+
   return (
     <BottomSheetModalProvider>
       <Screen>
         <Screen.AnimatedTitleHeader
           title={data.artist?.name ?? ""}
-          rightElements={
-            isSelectModeActive ? (
-              <>
-                <Text onPress={() => GlobalStore.actions.selectMode.cancelSelectMode()}>
-                  cancel
-                </Text>
-              </>
-            ) : (
-              <Button
-                size="small"
-                onPress={() => GlobalStore.actions.selectMode.toggleSelectMode()}
-              >
-                Select
-              </Button>
-            )
-          }
+          selectModeConfig={selectModeConfig}
         />
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="ArtistArtworks" label="Works">

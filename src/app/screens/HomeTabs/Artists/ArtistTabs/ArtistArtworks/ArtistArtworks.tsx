@@ -1,7 +1,7 @@
-import { Button, Flex, useSpace } from "@artsy/palette-mobile"
+import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useState } from "react"
+import { isEqual } from "lodash"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
@@ -9,6 +9,7 @@ import { NavigationScreens } from "app/navigation/Main"
 import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useHeaderSelectModeInTab } from "app/store/selectModeAtoms"
 import { TabsScrollView } from "app/wrappers"
 import { extractNodes } from "shared/utils"
 
@@ -26,34 +27,32 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
 
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
   const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.items.works)
-  const [areAllArtworkSelected, setAreAllArtworkSelected] = useState<boolean>(
-    selectedArtworkIds.length === artworks.length
-  )
 
   const space = useSpace()
 
   const selectArtworkHandler = (artwork: string) => {
-    GlobalStore.actions.selectMode.selectItems({ itemType: "works", item: artwork })
-    setAreAllArtworkSelected(false)
-  }
-
-  const selectAllArtworkHandler = (toggleSelectAllArtwork: boolean) => {
-    if (toggleSelectAllArtwork) {
-      GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "works",
-        allItems: artworks.map((artwork) => artwork.internalID),
-      })
-    } else {
-      GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "works",
-        allItems: [],
-      })
-    }
-    setAreAllArtworkSelected(toggleSelectAllArtwork)
+    GlobalStore.actions.selectMode.selectItem({ itemType: "works", item: artwork })
   }
 
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
+
+  useHeaderSelectModeInTab("ArtistArtworks", {
+    allSelected: isEqual(
+      new Set(selectedArtworkIds),
+      new Set(presentedArtworks.map((a) => a.internalID))
+    ),
+    selectAllFn: () =>
+      void GlobalStore.actions.selectMode.selectAllItems({
+        itemType: "works",
+        allItems: artworks.map((a) => a.internalID),
+      }),
+    unselectAllFn: () =>
+      void GlobalStore.actions.selectMode.selectAllItems({
+        itemType: "works",
+        allItems: [],
+      }),
+  })
 
   return (
     <>
@@ -67,28 +66,18 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           numColumns={isTablet() ? 3 : 2}
           data={presentedArtworks}
           renderItem={({ item: artwork, i }) => {
-            if (isSelectModeActive) {
-              return (
-                <ArtworkGridItem
-                  artwork={artwork}
-                  onPress={() => selectArtworkHandler(artwork.internalID)}
-                  selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
-                  style={{
-                    marginLeft: i % 2 === 0 ? 0 : space("1"),
-                    marginRight: i % 2 === 0 ? space("1") : 0,
-                  }}
-                />
-              )
-            }
             return (
               <ArtworkGridItem
                 artwork={artwork}
                 onPress={() =>
-                  navigation.navigate("Artwork", {
-                    slug: artwork.slug,
-                    contextArtworkSlugs: artworkSlugs,
-                  })
+                  isSelectModeActive
+                    ? selectArtworkHandler(artwork.internalID)
+                    : navigation.navigate("Artwork", {
+                        slug: artwork.slug,
+                        contextArtworkSlugs: artworkSlugs,
+                      })
                 }
+                selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
                 style={{
                   marginLeft: i % 2 === 0 ? 0 : space("1"),
                   marginRight: i % 2 === 0 ? space("1") : 0,
@@ -100,26 +89,6 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
           ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
         />
       </TabsScrollView>
-      {/* This should be moved to Headers */}
-      {isSelectModeActive && (
-        <Flex
-          position="absolute"
-          zIndex={3000}
-          bottom={120}
-          width="100%"
-          justifyContent="space-between"
-          flexDirection="row"
-          px={2}
-        >
-          <Button
-            variant="fillGray"
-            size="small"
-            onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}
-          >
-            {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
-          </Button>
-        </Flex>
-      )}
     </>
   )
 }

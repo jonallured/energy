@@ -7,7 +7,7 @@ export interface SelectModeModel {
   items: Record<ItemType, string[]>
   toggleSelectMode: Action<this>
   cancelSelectMode: Action<this>
-  selectItems: Action<this, { itemType: ItemType; item: string }>
+  selectItem: Action<this, { itemType: ItemType; item: string }>
   selectAllItems: Action<this, { itemType: ItemType; allItems: string[] }>
 }
 
@@ -16,13 +16,17 @@ export const getSelectModeModel = (): SelectModeModel => ({
   items: { works: [], documents: [] },
   toggleSelectMode: action((state) => {
     state.isSelectModeActive = !state.isSelectModeActive
+    if (state.isSelectModeActive === false) {
+      state.items.works = []
+      state.items.documents = []
+    }
   }),
   cancelSelectMode: action((state) => {
     state.isSelectModeActive = false
     state.items.works = []
     state.items.documents = []
   }),
-  selectItems: action((state, { itemType, item }) => {
+  selectItem: action((state, { itemType, item }) => {
     if (!state.items[itemType].includes(item)) {
       state.items[itemType].push(item)
     } else {
