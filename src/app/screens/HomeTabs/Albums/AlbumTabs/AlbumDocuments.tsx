@@ -12,11 +12,13 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const space = useSpace()
 
-  const artworksData = useLazyLoadQuery<AlbumDocumentsQuery>(albumDocumentsQuery, {
+  const documentsData = useLazyLoadQuery<AlbumDocumentsQuery>(albumDocumentsQuery, {
     partnerID,
-    documentIDs: documentIDs,
+    documentIDs,
   })
-  const documents = extractNodes(artworksData.partner?.documentsConnection)
+
+  const documents =
+    documentIDs.length > 0 ? extractNodes(documentsData.partner?.documentsConnection) : []
 
   return (
     <TabsScrollView>
