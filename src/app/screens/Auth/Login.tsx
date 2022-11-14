@@ -68,13 +68,15 @@ export const LoginScreen = () => {
         otpInputRef.current?.focus()
       }
 
-      if (!success && message !== "otp_missing" && message !== "on_demand_otp_missing") {
-        // For security purposes, we are returning a generic error message
-        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-      }
-
       if (success) {
         attemptAlbumMigration()
+        return
+      }
+
+      if (["otp_missing", "on_demand_otp_missing", "invalid_otp"].includes(message)) {
+        setErrors({ otp: "Incorrect authentication code" })
+      } else {
+        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
       }
     },
     validationSchema: loginSchema,
@@ -187,8 +189,6 @@ export const LoginScreen = () => {
               placeholderTextColor={color("onBackgroundLow")}
               ref={otpInputRef}
               title="Authentication code"
-              // We need to to set textContentType to password here
-              // enable autofill of login details from the device keychain.
               value={values.otp}
               error={errors.otp}
             />

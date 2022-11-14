@@ -142,7 +142,7 @@ export const getAuthModel = (): AuthModel => ({
       },
     })
     const resJson = await result.json()
-    // // The user has successfully logged in
+    // The user has successfully logged in
     if (result.status === 201) {
       const { expires_in, access_token } = resJson
       const userId = await actions.getUserID()
