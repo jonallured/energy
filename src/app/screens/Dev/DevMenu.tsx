@@ -52,12 +52,7 @@ export const DevMenu = () => {
           Show native dev menu
         </Button>
         <Spacer y={1} />
-        <Button
-          block
-          onPress={() => {
-            ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()
-          }}
-        >
+        <Button block onPress={() => void ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}>
           Add native test albums
         </Button>
         <Spacer y={1} />
@@ -70,8 +65,8 @@ export const DevMenu = () => {
                 const album = {
                   name: nativeAlbum.name,
                   artworkIds: nativeAlbum.artworkIDs,
-                  documentIds: [],
                   installShotUrls: [],
+                  documentIds: [],
                 }
                 console.log("Got album name", album.name)
                 console.log("Got album artworkIDs", album.artworkIds)

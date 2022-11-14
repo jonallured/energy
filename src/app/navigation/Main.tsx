@@ -56,20 +56,14 @@ export type RegularScreens = {
   AlbumArtworks: { albumId: string }
   ShowTabs: { slug: string }
   AddItemsToAlbum: {
-    slug: string
-    areMultipleArtworks?: boolean
-    name?: string
-    contextArtworkSlugs?: string[]
+    artworkIdToAdd?: string
     closeBottomSheetModal?: () => void
   }
   ArtworkWebView: { uri: string }
   CreateOrEditAlbum: {
     mode: "create" | "edit"
     albumId?: string
-    artworkFromArtistTab?: string
-    name?: string
-    slug?: string
-    contextArtworkSlugs?: string[]
+    artworkIdToAdd?: string
     closeBottomSheetModal?: () => void
   }
   CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }

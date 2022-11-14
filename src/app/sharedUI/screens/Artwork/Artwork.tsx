@@ -134,7 +134,12 @@ export const Artwork = () => {
                   ? "Currently in 1 album"
                   : `Currently in ${numberOfAlbumsIncludingArtwork} albums`
               }
-              onPress={() => navigation.navigate("AddItemsToAlbum", { slug, contextArtworkSlugs })}
+              onPress={() =>
+                navigation.navigate("AddItemsToAlbum", {
+                  artworkIdToAdd: artwork?.internalID,
+                  closeBottomSheetModal: () => bottomSheetRef.current?.closeBottomSheetModal(),
+                })
+              }
               isLastRow={isEditArtworkHidden}
             />
           </>

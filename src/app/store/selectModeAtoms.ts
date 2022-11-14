@@ -4,9 +4,9 @@ import { useEffect } from "react"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { GlobalStore } from "./GlobalStore"
 
-export const allSelectedAtom = atom(false)
-export const selectAllAtom = atom<(() => void) | null>(null)
-export const unselectAllAtom = atom<(() => void) | null>(null)
+const allSelectedAtom = atom(false)
+const selectAllAtom = atom<(() => void) | null>(null)
+const unselectAllAtom = atom<(() => void) | null>(null)
 
 export interface SelectModeConfig {
   selectModeActive: boolean
@@ -17,7 +17,7 @@ export interface SelectModeConfig {
 }
 
 export function useHeaderSelectModeConfig(): SelectModeConfig {
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
   const toggle = () => GlobalStore.actions.selectMode.toggleSelectMode()
   const [allSelected] = useAtom(allSelectedAtom)
   const [selectAllFn] = useAtom(selectAllAtom)

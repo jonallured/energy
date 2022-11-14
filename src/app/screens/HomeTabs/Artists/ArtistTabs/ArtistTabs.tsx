@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useNavigationSave } from "app/navigation/navAtoms"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -23,13 +24,14 @@ import { ArtistShows } from "./ArtistShows/ArtistShows"
 type ArtistTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
 export const ArtistTabs = () => {
-  const { slug, name } = useRoute<ArtistTabsRoute>().params
+  const { slug } = useRoute<ArtistTabsRoute>().params
   const data = useLazyLoadQuery<ArtistTabsQuery>(artistQuery, { slug })
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
-  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
-  const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)
+  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.items)
+
+  const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
 
   const addToButtonHandler = () => {
     bottomSheetRef.current?.showBottomSheetModal()
@@ -67,7 +69,7 @@ export const ArtistTabs = () => {
         </Screen.AnimatedTitleTabsBody>
       </Screen>
 
-      {(selectedWorks.length > 0 || selectedDocs.length > 0) && (
+      {selectedItems.length > 0 && (
         <Flex
           position="absolute"
           bottom={0}
@@ -78,7 +80,7 @@ export const ArtistTabs = () => {
           width="100%"
         >
           <Text variant="xs" color="primary" mb={1} textAlign="center">
-            Selected items: {selectedWorks.length + selectedDocs.length}
+            Selected items: {selectedItems.length}
           </Text>
           <Button block onPress={addToButtonHandler}>
             Add to ...
@@ -94,14 +96,10 @@ export const ArtistTabs = () => {
             <BottomSheetModalRow
               Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
               label="Add to Album"
-              onPress={() =>
-                navigation.navigate("AddItemsToAlbum", {
-                  areMultipleArtworks: true,
-                  slug,
-                  name,
-                  closeBottomSheetModal,
-                })
-              }
+              onPress={() => {
+                saveNavBeforeAddingToAlbum()
+                navigation.navigate("AddItemsToAlbum", { closeBottomSheetModal })
+              }}
             />
             <BottomSheetModalRow
               Icon={<EnvelopeIcon fill="onBackgroundHigh" />}

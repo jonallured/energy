@@ -14,7 +14,7 @@ import { extractNodes } from "shared/utils"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, {
     partnerID,

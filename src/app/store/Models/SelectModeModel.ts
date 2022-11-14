@@ -1,39 +1,89 @@
-import { action, Action } from "easy-peasy"
+import { action, Action, computed, Thunk, Computed, thunk } from "easy-peasy"
+import { assertNever } from "shared/utils/assertNever"
 
-type ItemType = "works" | "documents"
+type ItemType = "artwork" | "install" | "document"
 
 export interface SelectModeModel {
-  isSelectModeActive: boolean
-  items: Record<ItemType, string[]>
-  toggleSelectMode: Action<this>
-  cancelSelectMode: Action<this>
-  selectItem: Action<this, { itemType: ItemType; item: string }>
-  selectAllItems: Action<this, { itemType: ItemType; allItems: string[] }>
+  // state
+  isActive: boolean
+  artworks: Array<string>
+  installs: Array<string>
+  documents: Array<string>
+  items: Computed<this, Array<{ type: ItemType; item: string }>>
+
+  // code actions
+  toggleSelectMode: Thunk<this>
+  cancelSelectMode: Thunk<this>
+  toggleSelectedItem: Action<this, { type: ItemType; item: string }>
+  setSelectedItems: Action<this, { type: ItemType; items: Array<string> }>
+
+  // supporting actions
+  setSelectMode: Action<this, this["isActive"]>
+  clearSelectedItems: Action<this>
 }
 
 export const getSelectModeModel = (): SelectModeModel => ({
-  isSelectModeActive: false,
-  items: { works: [], documents: [] },
-  toggleSelectMode: action((state) => {
-    state.isSelectModeActive = !state.isSelectModeActive
-    if (state.isSelectModeActive === false) {
-      state.items.works = []
-      state.items.documents = []
+  isActive: false,
+  artworks: [],
+  installs: [],
+  documents: [],
+  items: computed((state) => [
+    ...state.artworks.map((a): { type: ItemType; item: string } => ({ type: "artwork", item: a })),
+    ...state.installs.map((i): { type: ItemType; item: string } => ({ type: "install", item: i })),
+    ...state.documents.map((d): { type: ItemType; item: string } => ({
+      type: "document",
+      item: d,
+    })),
+  ]),
+
+  toggleSelectMode: thunk((actions, _, { getState }) => {
+    const newValue = !getState().isActive
+    actions.setSelectMode(newValue)
+    if (newValue === false) {
+      actions.clearSelectedItems()
     }
   }),
-  cancelSelectMode: action((state) => {
-    state.isSelectModeActive = false
-    state.items.works = []
-    state.items.documents = []
+  cancelSelectMode: thunk((actions) => {
+    actions.setSelectMode(false)
+    actions.clearSelectedItems()
   }),
-  selectItem: action((state, { itemType, item }) => {
-    if (!state.items[itemType].includes(item)) {
-      state.items[itemType].push(item)
+  toggleSelectedItem: action((state, { type, item }) => {
+    const arrayToLookAt = findStateArrayByType(type)
+    if (state[arrayToLookAt].includes(item)) {
+      state[arrayToLookAt] = state[arrayToLookAt].filter((i) => i !== item)
     } else {
-      state.items[itemType] = state.items[itemType].filter((i) => i !== item)
+      state[arrayToLookAt].push(item)
     }
   }),
-  selectAllItems: action((state, { itemType, allItems }) => {
-    state.items[itemType] = allItems
+  setSelectedItems: action((state, { type, items }) => {
+    const arrayToLookAt = findStateArrayByType(type)
+    state[arrayToLookAt] = items
+  }),
+
+  setSelectMode: action((state, value) => {
+    state.isActive = value
+  }),
+  clearSelectedItems: action((state) => {
+    state.artworks = []
+    state.installs = []
+    state.documents = []
   }),
 })
+
+function findStateArrayByType(type: ItemType) {
+  let arrayToLookAt: Extract<keyof SelectModeModel, "artworks" | "installs" | "documents">
+  switch (type) {
+    case "artwork":
+      arrayToLookAt = "artworks"
+      break
+    case "install":
+      arrayToLookAt = "installs"
+      break
+    case "document":
+      arrayToLookAt = "documents"
+      break
+    default:
+      assertNever(type)
+  }
+  return arrayToLookAt
+}

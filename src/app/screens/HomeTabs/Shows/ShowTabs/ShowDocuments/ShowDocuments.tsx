@@ -19,16 +19,16 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
   })
   const documents = extractNodes(showDocumentsData.partner?.documentsConnection)
 
-  const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.items.documents)
+  const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.documents)
   useHeaderSelectModeInTab("ShowDocuments", {
     allSelected: isEqual(new Set(selectedDocumentIds), new Set(documents.map((d) => d.internalID))),
     selectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "documents",
-        allItems: documents.map((d) => d.internalID),
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "document",
+        items: documents.map((d) => d.internalID),
       }),
     unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({ itemType: "documents", allItems: [] }),
+      void GlobalStore.actions.selectMode.setSelectedItems({ type: "document", items: [] }),
   })
 
   return (
@@ -49,8 +49,8 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
               size: document.filesize,
             }}
             onPress={() =>
-              GlobalStore.actions.selectMode.selectItem({
-                itemType: "documents",
+              GlobalStore.actions.selectMode.toggleSelectedItem({
+                type: "document",
                 item: document.internalID,
               })
             }

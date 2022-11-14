@@ -4,5 +4,3 @@ declare module "" {
     const __STORYBOOK__: boolean
   }
 }
-
-declare function assertNever(val: never): void

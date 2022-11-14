@@ -2,9 +2,8 @@ import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/p
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { AddItemsToAlbumQuery } from "__generated__/AddItemsToAlbumQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useNavigationSavedForKey } from "app/navigation/navAtoms"
 import { AlbumListItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
@@ -12,15 +11,13 @@ import { Screen } from "palette"
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
-  const { slug, areMultipleArtworks, name, contextArtworkSlugs, closeBottomSheetModal } =
-    useRoute<HomeTabsRoute>().params
+  const { closeBottomSheetModal, artworkIdToAdd } = useRoute<HomeTabsRoute>().params
 
-  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
-  const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)
-
-  const artworkData = !areMultipleArtworks
-    ? useLazyLoadQuery<AddItemsToAlbumQuery>(addItemsToAlbumQuery, { slug })
-    : null
+  const [hasSavedNav, navigateToSaved] = useNavigationSavedForKey("before-adding-to-album")
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const selectedArtworks = GlobalStore.useAppState((state) => state.selectMode.artworks)
+  const selectedInstalls = GlobalStore.useAppState((state) => state.selectMode.installs)
+  const selectedDocuments = GlobalStore.useAppState((state) => state.selectMode.documents)
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
@@ -38,24 +35,25 @@ export const AddItemsToAlbum = () => {
 
   const addArtworkToTheSelectedAlbums = () => {
     try {
-      if (areMultipleArtworks) {
+      if (isSelectModeActive) {
         GlobalStore.actions.albums.addItemsInAlbums({
           albumIds: selectedAlbumIds,
-          artworkIdsToAdd: selectedWorks,
-          documentIdsToAdd: selectedDocs,
-          installShotUrlsToAdd: [],
+          artworkIdsToAdd: selectedArtworks,
+          installShotUrlsToAdd: selectedInstalls,
+          documentIdsToAdd: selectedDocuments,
         })
-        navigation.goBack()
-        closeBottomSheetModal?.()
-        GlobalStore.actions.selectMode.cancelSelectMode()
-      } else {
+      } else if (artworkIdToAdd !== undefined) {
         GlobalStore.actions.albums.addItemsInAlbums({
           albumIds: selectedAlbumIds,
-          artworkIdsToAdd: [artworkData?.artwork?.internalID!],
+          artworkIdsToAdd: [artworkIdToAdd],
+          installShotUrlsToAdd: [],
           documentIdsToAdd: [],
-          installShotUrlsToAdd: [],
         })
-        navigation.goBack()
+      }
+      hasSavedNav ? navigateToSaved() : navigation.goBack()
+      closeBottomSheetModal?.()
+      if (isSelectModeActive) {
+        GlobalStore.actions.selectMode.cancelSelectMode()
       }
     } catch (error) {
       console.error(error)
@@ -63,21 +61,14 @@ export const AddItemsToAlbum = () => {
   }
 
   const renderButton = () => {
-    if (
-      albums.filter((album) => album.artworkIds.includes(artworkData?.artwork?.internalID!))
-        .length === albums.length ||
-      selectedAlbumIds.length <= 0
-    ) {
+    if (selectedAlbumIds.length <= 0) {
       return (
         <Button
           block
           onPress={() => {
             navigation.navigate("CreateOrEditAlbum", {
               mode: "create",
-              artworkFromArtistTab: artworkData?.artwork?.internalID,
-              slug,
-              name,
-              contextArtworkSlugs,
+              artworkIdToAdd,
               closeBottomSheetModal,
             })
           }}
@@ -95,7 +86,7 @@ export const AddItemsToAlbum = () => {
 
   return (
     <Screen>
-      <Screen.Header title={!areMultipleArtworks ? artworkData?.artwork?.title! : "Add to Album"} />
+      <Screen.Header title="Add to Album" />
       <Screen.Body fullwidth>
         <FlatList
           contentContainerStyle={{ paddingHorizontal: space("2") }}
@@ -104,24 +95,8 @@ export const AddItemsToAlbum = () => {
           renderItem={({ item: album }) => {
             return (
               <Flex key={album.id}>
-                <Touchable
-                  onPress={
-                    album.artworkIds.includes(artworkData?.artwork?.internalID)
-                      ? undefined
-                      : () => selectAlbumHandler(album.id)
-                  }
-                >
-                  {/* Change opacity based on selection */}
-                  <Flex
-                    mb={3}
-                    mt={1}
-                    opacity={
-                      selectedAlbumIds.includes(album.id) ||
-                      album.artworkIds.includes(artworkData?.artwork?.internalID)
-                        ? 0.4
-                        : 1
-                    }
-                  >
+                <Touchable onPress={() => selectAlbumHandler(album.id)}>
+                  <Flex mb={3} mt={1}>
                     <AlbumListItem album={album} />
                   </Flex>
                   {selectedAlbumIds.includes(album.id) && (
@@ -150,12 +125,3 @@ export const AddItemsToAlbum = () => {
     </Screen>
   )
 }
-
-const addItemsToAlbumQuery = graphql`
-  query AddItemsToAlbumQuery($slug: String!) {
-    artwork(id: $slug) {
-      internalID
-      title
-    }
-  }
-`

@@ -5,14 +5,14 @@ import uuid from "react-native-uuid"
 
 type ArtistSlug = string
 type ArtworkId = string
-type DocumentId = string
 type InstallShotUrl = string
+type DocumentId = string
 export interface Album {
   id: Readonly<string>
   name: string
   artworkIds: ArtworkId[]
-  documentIds: DocumentId[]
   installShotUrls: InstallShotUrl[]
+  documentIds: DocumentId[]
   createdAt: string
 }
 
@@ -27,8 +27,8 @@ export interface AlbumsModel {
     {
       name: string
       artworkIds: ArtworkId[]
-      documentIds: DocumentId[]
       installShotUrls: InstallShotUrl[]
+      documentIds: DocumentId[]
     }
   >
   removeAlbum: Action<this, string>
@@ -38,8 +38,8 @@ export interface AlbumsModel {
     {
       albumIds: string[]
       artworkIdsToAdd: ArtworkId[]
-      documentIdsToAdd: DocumentId[]
       installShotUrlsToAdd: InstallShotUrl[]
+      documentIdsToAdd: DocumentId[]
     }
   >
   selectArtworksForNewAlbum: Action<this, { artistSlug: ArtistSlug; artworkIds: ArtworkId[] }>
@@ -78,7 +78,7 @@ export const getAlbumsModel = (): AlbumsModel => ({
   addItemsInAlbums: action(
     (
       state,
-      { albumIds, artworkIdsToAdd = [], documentIdsToAdd = [], installShotUrlsToAdd = [] }
+      { albumIds, artworkIdsToAdd = [], installShotUrlsToAdd = [], documentIdsToAdd = [] }
     ) => {
       albumIds.forEach((albumId) => {
         const index = state.albums.findIndex((x) => x.id === albumId)
@@ -87,12 +87,12 @@ export const getAlbumsModel = (): AlbumsModel => ({
             ...state.albums[index].artworkIds,
             ...artworkIdsToAdd,
           ])
-          state.albums[index].documentIds = state.albums[index].documentIds
-            ? uniq([...state.albums[index].documentIds, ...documentIdsToAdd])
-            : documentIdsToAdd
           state.albums[index].installShotUrls = state.albums[index].installShotUrls
             ? uniq([...state.albums[index].installShotUrls, ...installShotUrlsToAdd])
             : installShotUrlsToAdd
+          state.albums[index].documentIds = state.albums[index].documentIds
+            ? uniq([...state.albums[index].documentIds, ...documentIdsToAdd])
+            : documentIdsToAdd
         }
       })
     }

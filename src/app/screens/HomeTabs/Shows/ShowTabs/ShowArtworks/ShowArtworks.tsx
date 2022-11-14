@@ -24,22 +24,22 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
-  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.items.works)
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.artworks)
   useHeaderSelectModeInTab("ShowArtworks", {
     allSelected: isEqual(
       new Set(selectedArtworkIds),
       new Set(presentedArtworks.map((a) => a.internalID))
     ),
     selectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "works",
-        allItems: artworks.map((a) => a.internalID),
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "artwork",
+        items: artworks.map((a) => a.internalID),
       }),
     unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "works",
-        allItems: [],
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "artwork",
+        items: [],
       }),
   })
 
@@ -58,8 +58,8 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
             artwork={artwork}
             onPress={() =>
               isSelectModeActive
-                ? GlobalStore.actions.selectMode.selectItem({
-                    itemType: "works",
+                ? GlobalStore.actions.selectMode.toggleSelectedItem({
+                    type: "artwork",
                     item: artwork.internalID,
                   })
                 : navigation.navigate("Artwork", {

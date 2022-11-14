@@ -19,24 +19,24 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
 
   const documents = extractNodes(artistDocumentsData.partner?.documentsConnection)
   const space = useSpace()
-  const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.items.documents)
+  const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.documents)
 
   useHeaderSelectModeInTab("ArtistDocuments", {
     allSelected: isEqual(new Set(selectedDocumentIds), new Set(documents.map((d) => d.internalID))),
     selectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "documents",
-        allItems: documents.map((doc) => doc.internalID),
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "document",
+        items: documents.map((doc) => doc.internalID),
       }),
     unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "documents",
-        allItems: [],
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "document",
+        items: [],
       }),
   })
 
   const selectDocumentHandler = (doc: string) => {
-    GlobalStore.actions.selectMode.selectItem({ itemType: "documents", item: doc })
+    GlobalStore.actions.selectMode.toggleSelectedItem({ type: "document", item: doc })
   }
 
   return (

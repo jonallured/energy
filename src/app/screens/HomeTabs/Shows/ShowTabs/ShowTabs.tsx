@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useNavigationSave } from "app/navigation/navAtoms"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -37,12 +38,12 @@ export const ShowTabs = () => {
   )
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
   const safeAreaInsets = useSafeAreaInsets()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
 
   const selectModeConfig = useHeaderSelectModeConfig()
-  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.items.works)
-  const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.items.documents)
+  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.items)
 
   return (
     <BottomSheetModalProvider>
@@ -67,7 +68,7 @@ export const ShowTabs = () => {
         </Screen.AnimatedTitleTabsBody>
       </Screen>
 
-      {(selectedWorks.length > 0 || selectedDocs.length > 0) && (
+      {selectedItems.length > 0 && (
         <Flex
           position="absolute"
           bottom={0}
@@ -78,7 +79,7 @@ export const ShowTabs = () => {
           width="100%"
         >
           <Text variant="xs" color="primary" mb={1} textAlign="center">
-            Selected items: {selectedWorks.length + selectedDocs.length}
+            Selected items: {selectedItems.length}
           </Text>
           <Button block onPress={bottomSheetRef.current?.showBottomSheetModal}>
             Add to ...
@@ -94,13 +95,12 @@ export const ShowTabs = () => {
             <BottomSheetModalRow
               Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
               label="Add to Album"
-              onPress={() =>
+              onPress={() => {
+                saveNavBeforeAddingToAlbum()
                 navigation.navigate("AddItemsToAlbum", {
-                  areMultipleArtworks: true,
-                  slug,
                   closeBottomSheetModal: bottomSheetRef.current?.closeBottomSheetModal,
                 })
-              }
+              }}
             />
             <BottomSheetModalRow
               Icon={<EnvelopeIcon fill="onBackgroundHigh" />}

@@ -2,6 +2,11 @@ import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ShowInstalls } from "./ShowInstalls"
 
+jest.mock("react-native-collapsible-tab-view", () => ({
+  ...jest.requireActual("react-native-collapsible-tab-view"),
+  useFocusedTab: () => "Wow",
+}))
+
 describe("ShowInstalls", () => {
   it("renders ListEmptyComponent", async () => {
     const { getByText } = renderWithWrappers(<ShowInstalls slug="someSlug" />)

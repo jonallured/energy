@@ -15,14 +15,14 @@ export interface ArtworkGridItemProps {
   style?: ViewProps["style"]
 }
 
-export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
+export const ArtworkGridItem = ({
   artwork: propArtwork,
   disable,
   selectedToAdd,
   selectedToRemove,
   onPress,
   style,
-}) => {
+}: ArtworkGridItemProps) => {
   const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, propArtwork)
   const fontSize = isTablet() ? "sm" : "xs"
 
@@ -86,6 +86,7 @@ const ArtworkGridItemFragment = graphql`
       }
       aspectRatio
     }
+    published
     availability
   }
 `

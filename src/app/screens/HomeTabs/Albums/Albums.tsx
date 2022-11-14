@@ -22,6 +22,7 @@ export const Albums = () => {
         }
         data={albums}
         numColumns={isTablet() ? 2 : 1}
+        contentContainerStyle={{ paddingBottom: 80 }}
         renderItem={({ item: album }) => (
           <Touchable
             onPress={() => navigation.navigate("AlbumTabs", { albumId: album.id })}

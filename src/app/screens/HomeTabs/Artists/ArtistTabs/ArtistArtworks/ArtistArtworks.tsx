@@ -25,13 +25,13 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
 
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
-  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.items.works)
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.artworks)
 
   const space = useSpace()
 
   const selectArtworkHandler = (artwork: string) => {
-    GlobalStore.actions.selectMode.selectItem({ itemType: "works", item: artwork })
+    GlobalStore.actions.selectMode.toggleSelectedItem({ type: "artwork", item: artwork })
   }
 
   // Filterering based on presentation mode
@@ -43,14 +43,14 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
       new Set(presentedArtworks.map((a) => a.internalID))
     ),
     selectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "works",
-        allItems: artworks.map((a) => a.internalID),
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "artwork",
+        items: artworks.map((a) => a.internalID),
       }),
     unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.selectAllItems({
-        itemType: "works",
-        allItems: [],
+      void GlobalStore.actions.selectMode.setSelectedItems({
+        type: "artwork",
+        items: [],
       }),
   })
 

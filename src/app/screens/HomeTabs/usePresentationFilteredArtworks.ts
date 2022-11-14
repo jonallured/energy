@@ -1,18 +1,16 @@
 import { useMemo } from "react"
-import { FragmentRefs } from "relay-runtime"
 import { GlobalStore } from "app/store/GlobalStore"
 
-export interface PresentedArtworkProps {
+interface PresentedArtworkProps {
   readonly internalID: string
   readonly slug: string
   readonly published: boolean
   readonly availability: string | null
-  readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">
 }
 
-export const usePresentationFilteredArtworks = (
-  artworks: Array<PresentedArtworkProps>
-): Array<PresentedArtworkProps> => {
+export const usePresentationFilteredArtworks = <T extends PresentedArtworkProps>(
+  artworks: Array<T>
+): Array<T> => {
   const isUnpublishedWorksHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.unpublishedWorks
   )

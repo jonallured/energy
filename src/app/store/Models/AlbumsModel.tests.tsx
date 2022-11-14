@@ -44,8 +44,8 @@ describe("AlbumsModel", () => {
     const newAlbum = {
       name: "album-name-3",
       artworkIds: ["artwork-1-album-id-3", "artwork-2-album-id-3"],
-      documentIds: [],
       installShotUrls: [],
+      documentIds: [],
     }
     GlobalStore.actions.albums.addAlbum(newAlbum)
     const albumState = __globalStoreTestUtils__?.getCurrentState().albums.albums
@@ -69,8 +69,8 @@ describe("AlbumsModel", () => {
     GlobalStore.actions.albums.addItemsInAlbums({
       albumIds,
       artworkIdsToAdd,
-      documentIdsToAdd: [],
       installShotUrlsToAdd: [],
+      documentIdsToAdd: [],
     })
     const albumState = __globalStoreTestUtils__?.getCurrentState().albums.albums
     const selectedArtworksForCreateAlbum =

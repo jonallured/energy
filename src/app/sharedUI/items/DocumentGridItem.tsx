@@ -22,21 +22,18 @@ interface DocumentGridItemProps {
   selectedToAdd?: boolean
 }
 
-export const DocumentGridItem: React.FC<DocumentGridItemProps> = (props) => {
-  const { document, selectedToAdd, onPress } = props
+export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentGridItemProps) => {
   const [isDownloading, setIsDownloading] = useState(false)
   const formattedSize = formatBytes(document.size)
   const downloadTask = useRef<StatefulPromise<FetchBlobResponse> | null>(null)
   const fileExtension = last(document.url.split("."))
   const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isSelectModeActive)
+  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
 
   const downloadFile = async (fileUrl: string, dest: string) => {
     try {
       setIsDownloading(true)
-      const fetchInstance = RNFetchBlob.config({
-        path: dest,
-      })
+      const fetchInstance = RNFetchBlob.config({ path: dest })
 
       downloadTask.current = fetchInstance.fetch("GET", fileUrl, {
         "X-ACCESS-TOKEN": userAccessToken,
