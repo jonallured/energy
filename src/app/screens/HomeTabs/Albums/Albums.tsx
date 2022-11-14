@@ -1,4 +1,4 @@
-import { Button, Flex, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -7,8 +7,10 @@ import { NavigationScreens } from "app/navigation/Main"
 import { AlbumListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const Albums = () => {
+  const space = useSpace()
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
@@ -22,7 +24,7 @@ export const Albums = () => {
         }
         data={albums}
         numColumns={isTablet() ? 2 : 1}
-        contentContainerStyle={{ paddingBottom: 80 }}
+        contentContainerStyle={{ paddingTop: space("2"), paddingBottom: space("2") + 60 }}
         renderItem={({ item: album }) => (
           <Touchable
             onPress={() => navigation.navigate("AlbumTabs", { albumId: album.id })}
@@ -34,9 +36,7 @@ export const Albums = () => {
         )}
         keyExtractor={(item) => item?.id}
         ListEmptyComponent={<ListEmptyComponent />}
-        style={{
-          paddingHorizontal: 20,
-        }}
+        style={{ paddingHorizontal: space(SCREEN_HORIZONTAL_PADDING) }}
       />
       <Flex
         position="absolute"

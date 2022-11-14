@@ -1,7 +1,7 @@
 import { useColor, useSpace } from "@artsy/palette-mobile"
 import { Tabs, MaterialTabBar, CollapsibleProps } from "react-native-collapsible-tab-view"
 
-const TAB_BAR_HEIGHT = 60
+const TAB_BAR_HEIGHT = 50
 
 export type TabsContainerProps = {
   header?: CollapsibleProps["renderHeader"]
@@ -28,15 +28,17 @@ export const TabsContainer = ({ header, children, initialTabName }: TabsContaine
         <MaterialTabBar
           scrollEnabled
           {...props}
-          style={{ paddingHorizontal: space(1), height: TAB_BAR_HEIGHT }}
+          style={{
+            paddingHorizontal: space(1),
+            height: TAB_BAR_HEIGHT,
+          }}
           activeColor={color("onBackground")}
           inactiveColor={color("onBackgroundMedium")}
-          labelStyle={{ marginTop: -5, marginHorizontal: -10 }} // removing the horizonal margin from the lib
+          labelStyle={{ marginTop: 0, marginHorizontal: -10 }} // removing the horizonal margin from the lib
           tabStyle={{ marginHorizontal: 10 }} // adding the margin back here
           indicatorStyle={{
             backgroundColor: color("onBackground"),
             height: 1,
-            marginBottom: 10,
           }}
         />
       )}

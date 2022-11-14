@@ -1,4 +1,4 @@
-import { Flex, Touchable } from "@artsy/palette-mobile"
+import { Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { zip } from "lodash"
 import { useWindowDimensions } from "react-native"
@@ -13,6 +13,7 @@ import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body
 import { extractNodes } from "shared/utils"
 
 export const Artists = () => {
+  const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })
@@ -33,6 +34,7 @@ export const Artists = () => {
     <TabsFlatList
       data={items}
       numColumns={isTablet() ? 2 : 1}
+      contentContainerStyle={{ paddingTop: space("1"), paddingBottom: space("1") }}
       renderItem={({ item }) => {
         const artist = item[0]!
         const count = item[1]!

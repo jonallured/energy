@@ -1,4 +1,4 @@
-import { Flex, Touchable } from "@artsy/palette-mobile"
+import { Flex, Separator, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -13,6 +13,7 @@ import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body
 import { extractNodes } from "shared/utils"
 
 export const Shows = () => {
+  const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID!, imageSize })
@@ -26,6 +27,7 @@ export const Shows = () => {
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
+      contentContainerStyle={{ paddingTop: space("2"), paddingBottom: space("2") }}
       renderItem={({ item: show }) => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (

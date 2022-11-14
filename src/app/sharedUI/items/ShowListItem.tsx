@@ -15,7 +15,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const fontSize = isTablet() ? "sm" : "xs"
 
   return (
-    <Flex mx="2" my={4} opacity={props.disabled ? 0.4 : 1}>
+    <Flex mx="2" my="2" opacity={props.disabled ? 0.4 : 1}>
       {show.coverImage?.resized?.url ? (
         <Image
           style={{ height: 200 }}
@@ -25,12 +25,14 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
       ) : (
         <ImagePlaceholder height={200} />
       )}
-      <Text variant={fontSize} mt={1}>
-        {show?.name}
-      </Text>
-      <Text variant={fontSize} color="onBackgroundMedium">
-        {show.formattedStartAt} - {show.formattedEndAt}
-      </Text>
+      <Flex width="100%">
+        <Text variant={fontSize} mt="1">
+          {show?.name}
+        </Text>
+        <Text variant={fontSize} color="onBackgroundMedium">
+          {show.formattedStartAt} - {show.formattedEndAt}
+        </Text>
+      </Flex>
     </Flex>
   )
 }

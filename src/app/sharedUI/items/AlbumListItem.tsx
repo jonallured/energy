@@ -10,7 +10,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
   const variant = isTablet() ? "sm" : "xs"
 
   return (
-    <Flex mb={2}>
+    <Flex my="2">
       <Flex flexDirection="row-reverse" alignItems="flex-end" pl={overlapSize} overflow="hidden">
         {first3Artworks.length < 3 && (
           <Flex backgroundColor="onBackgroundLow" flex={1} height={150} mr={-overlapSize} />
@@ -35,7 +35,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
           {album.artworkIds.length} Artworks
         </Text>
       </Flex>
-      <Spacer y={1} />
+      <Spacer y="1" />
     </Flex>
   )
 }
