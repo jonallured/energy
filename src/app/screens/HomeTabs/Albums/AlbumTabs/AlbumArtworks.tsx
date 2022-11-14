@@ -3,7 +3,7 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
-import { ArtworkGridItem } from "app/sharedUI"
+import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsScrollView } from "app/wrappers"
 import { extractNodes } from "shared/utils"
@@ -17,7 +17,8 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
     partnerID,
     artworkIDs: artworkIds,
   })
-  const artworks = extractNodes(artworksData.partner?.artworksConnection)
+  const artworks =
+    artworkIds.length > 0 ? extractNodes(artworksData.partner?.artworksConnection) : []
 
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
@@ -41,6 +42,7 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
           />
         )}
         keyExtractor={(item) => item.internalID}
+        ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
       />
     </TabsScrollView>
   )
