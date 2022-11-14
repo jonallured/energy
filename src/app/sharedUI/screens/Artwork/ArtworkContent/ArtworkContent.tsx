@@ -130,7 +130,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     imageRights ||
     inventoryId ||
     confidentialNotes ||
-    internalDisplayPrice ||
     provenance
 
   const shouldShowAboutTheArtworkTitle =
