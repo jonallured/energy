@@ -58,6 +58,13 @@ export const DevMenu = () => {
         <Spacer y={1} />
         <Button
           block
+          onPress={() => void ARTNativeModules.ARTAlbumMigrationModule.resetAlbumReadAttempts()}
+        >
+          Reset Album Read Attempts
+        </Button>
+        <Spacer y={1} />
+        <Button
+          block
           onPress={() => {
             const albums = ARTNativeModules.ARTAlbumMigrationModule.readAlbums()
             if (albums) {

@@ -42,6 +42,12 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(readAlbums)
   return albumData;
 }
 
+RCT_EXPORT_METHOD(resetAlbumReadAttempts)
+{
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:ARTAlbumsHaveSuccessfullyMigratedKey];
+  [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:ARTAlbumMigrationAttemptsKey];
+}
+
 - (void)persistTestAlbums
 {
   NSDictionary *testAlbums = @{

@@ -7,6 +7,7 @@ interface ARTNativeModules {
   ARTAlbumMigrationModule: {
     readAlbums(): { name: string; artworkIDs: string[] }[] | null
     addTestAlbums(): void
+    resetAlbumReadAttempts(): void
   }
 }
 
@@ -18,6 +19,7 @@ const NativeModulesAndroid: ARTNativeModules = {
   ARTAlbumMigrationModule: {
     readAlbums: noop("readAlbums"),
     addTestAlbums: noop("addTestAlbums"),
+    resetAlbumReadAttempts: noop("resetAlbumReadAttempts"),
   },
 }
 
