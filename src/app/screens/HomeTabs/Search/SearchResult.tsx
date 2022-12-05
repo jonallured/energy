@@ -1,21 +1,25 @@
-import { Avatar, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Avatar, Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { Suspense, useEffect, useState } from "react"
+import { useAtom } from "jotai"
+import { uniq } from "lodash"
+import { Suspense, useEffect } from "react"
 import { ActivityIndicator } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { FlatList } from "react-native-gesture-handler"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SearchResultQuery } from "__generated__/SearchResultQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { extractNodes } from "shared/utils"
+import { disabledPillsAtom, selectedPillAtom } from "./searchAtoms"
 
 interface SearchResultProps {
   searchInput: string
-  selectedFilter: string[]
 }
 
-export const SearchResult = ({ searchInput, selectedFilter }: SearchResultProps) => {
+export const SearchResult = ({ searchInput }: SearchResultProps) => {
   return (
     <Suspense
       fallback={
@@ -24,19 +28,19 @@ export const SearchResult = ({ searchInput, selectedFilter }: SearchResultProps)
         </Flex>
       }
     >
-      <SearchResultView searchInput={searchInput} selectedFilter={selectedFilter} />
+      <SearchResultView searchInput={searchInput} />
     </Suspense>
   )
 }
 
-type SearchResult = {
+interface SearchResult {
   type: string
   slug: string
   name: string | null
   imageUrl?: string | null
 }
 
-const SearchResultView = ({ searchInput, selectedFilter }: SearchResultProps) => {
+const SearchResultView = ({ searchInput }: SearchResultProps) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const data = useLazyLoadQuery<SearchResultQuery>(searchResultQuery, {
@@ -44,58 +48,67 @@ const SearchResultView = ({ searchInput, selectedFilter }: SearchResultProps) =>
     searchInput,
     imageSize,
   })
-  const [searchResult, setSearchResult] = useState<SearchResult[]>([])
   const variant = isTablet() ? "sm" : "xs"
-
+  const space = useSpace()
+  const [selectedPill] = useAtom(selectedPillAtom)
+  const [, setDisabledPills] = useAtom(disabledPillsAtom)
   const artists = extractNodes(data.partner?.artistsSearchConnection)
   const artworks =
     searchInput.length > 0 ? extractNodes(data.partner?.artworksSearchConnection) : []
   const shows = extractNodes(data.partner?.showsSearchConnection)
 
-  const search: SearchResult[] = []
-  artists.map((artist) => {
-    search.push({
-      slug: artist.slug,
-      type: artist.__typename,
-      name: artist.name,
-      imageUrl: artist.imageUrl,
-    })
-  })
-
-  artworks.map((artwork) => {
-    search.push({
-      slug: artwork.slug,
-      type: artwork.__typename,
-      name: artwork.title,
-      imageUrl: artwork.image?.resized?.url,
-    })
-  })
-
-  shows.map((show) => {
-    search.push({
-      slug: show.slug,
-      type: show.__typename,
-      name: show.name,
-      imageUrl: show.coverImage?.resized?.url,
-    })
-  })
-
   useEffect(() => {
-    // Logic for Album filteration will be added later
-    if (["Artists", "Shows"].every((f) => selectedFilter.includes(f))) {
-      const filteredArtists = search.filter((searchObj) => searchObj.type === "Artist")
-      const filteredShows = search.filter((searchObj) => searchObj.type === "Show")
-      setSearchResult([...filteredArtists, ...filteredShows])
-    } else if (selectedFilter.includes("Artists")) {
-      const filteredArtists = search.filter((searchObj) => searchObj.type === "Artist")
-      setSearchResult(filteredArtists)
-    } else if (selectedFilter.includes("Shows")) {
-      const filteredShows = search.filter((searchObj) => searchObj.type === "Show")
-      setSearchResult(filteredShows)
+    if (artists.length === 0) {
+      setDisabledPills((prev) => uniq([...prev, "Artists"]))
     } else {
-      setSearchResult(search)
+      setDisabledPills((prev) => prev.filter((p) => p !== "Artists"))
     }
-  }, [searchInput, selectedFilter])
+    if (shows.length === 0) {
+      setDisabledPills((prev) => uniq([...prev, "Shows"]))
+    } else {
+      setDisabledPills((prev) => prev.filter((p) => p !== "Shows"))
+    }
+  }, [artists.length, shows.length])
+
+  const searchResults: SearchResult[] = []
+  if (selectedPill === "Artists") {
+    searchResults.push(
+      ...artists.map((artist) => ({
+        ...artist,
+        type: "Artist",
+      }))
+    )
+  } else if (selectedPill === "Shows") {
+    searchResults.push(
+      ...shows.map((show) => ({
+        ...show,
+        type: "Show",
+        imageUrl: show.coverImage?.resized?.url,
+      }))
+    )
+  } else {
+    searchResults.push(
+      ...artworks.map((artwork) => ({
+        ...artwork,
+        name: artwork.title,
+        type: "Artwork",
+        imageUrl: artwork.image?.resized?.url,
+      }))
+    )
+    searchResults.push(
+      ...artists.map((artist) => ({
+        ...artist,
+        type: "Artist",
+      }))
+    )
+    searchResults.push(
+      ...shows.map((show) => ({
+        ...show,
+        type: "Show",
+        imageUrl: show.coverImage?.resized?.url,
+      }))
+    )
+  }
 
   const handleNavigation = (item: SearchResult) => {
     switch (item.type) {
@@ -118,9 +131,11 @@ const SearchResultView = ({ searchInput, selectedFilter }: SearchResultProps) =>
   }
 
   return (
-    <>
-      {searchResult.map((item, i) => (
-        <Touchable key={i} onPress={() => handleNavigation(item)}>
+    <FlatList
+      data={searchResults}
+      contentContainerStyle={{ paddingHorizontal: space(SCREEN_HORIZONTAL_PADDING) }}
+      renderItem={({ item }) => (
+        <Touchable onPress={() => handleNavigation(item)}>
           <Flex py={1} backgroundColor="background" flexDirection="row">
             <Avatar src={item.imageUrl!} size={variant} />
             <Flex mx={1}>
@@ -131,8 +146,9 @@ const SearchResultView = ({ searchInput, selectedFilter }: SearchResultProps) =>
             </Flex>
           </Flex>
         </Touchable>
-      ))}
-    </>
+      )}
+      keyExtractor={(item, index) => item?.internalID ?? `${index}`}
+    />
   )
 }
 
@@ -142,7 +158,7 @@ const searchResultQuery = graphql`
       showsSearchConnection(query: $searchInput) {
         edges {
           node {
-            __typename
+            internalID
             name
             slug
             coverImage {
@@ -156,7 +172,7 @@ const searchResultQuery = graphql`
       artistsSearchConnection(query: $searchInput) {
         edges {
           node {
-            __typename
+            internalID
             name
             slug
             imageUrl
@@ -166,7 +182,7 @@ const searchResultQuery = graphql`
       artworksSearchConnection(query: $searchInput) {
         edges {
           node {
-            __typename
+            internalID
             title
             slug
             image {
