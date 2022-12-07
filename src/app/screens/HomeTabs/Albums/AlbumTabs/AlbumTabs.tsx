@@ -6,6 +6,7 @@ import { NavigationScreens } from "app/navigation/Main"
 import { ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { SuspenseWrapper } from "app/wrappers"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundayWrapper"
 import { Screen } from "palette"
 import { AlbumArtworks } from "./AlbumArtworks"
 import { AlbumDocuments } from "./AlbumDocuments"
@@ -67,19 +68,25 @@ export const AlbumTabs = () => {
       />
       <Screen.AnimatedTitleTabsBody>
         <Tabs.Tab name="AlbumArtworks" label="Works">
-          <SuspenseWrapper withTabs>
-            <AlbumArtworks artworkIds={album.artworkIds} />
-          </SuspenseWrapper>
+          <ErrorBoundary withoutBackButton>
+            <SuspenseWrapper withTabs>
+              <AlbumArtworks artworkIds={album.artworkIds} />
+            </SuspenseWrapper>
+          </ErrorBoundary>
         </Tabs.Tab>
         <Tabs.Tab name="AlbumInstalls" label="Installs">
-          <SuspenseWrapper withTabs>
-            <AlbumInstalls installShotUrls={album.installShotUrls} />
-          </SuspenseWrapper>
+          <ErrorBoundary withoutBackButton>
+            <SuspenseWrapper withTabs>
+              <AlbumInstalls installShotUrls={album.installShotUrls} />
+            </SuspenseWrapper>
+          </ErrorBoundary>
         </Tabs.Tab>
         <Tabs.Tab name="AlbumDocuments" label="Documents">
-          <SuspenseWrapper withTabs>
-            <AlbumDocuments documentIDs={album.documentIds} />
-          </SuspenseWrapper>
+          <ErrorBoundary withoutBackButton>
+            <SuspenseWrapper withTabs>
+              <AlbumDocuments documentIDs={album.documentIds} />
+            </SuspenseWrapper>
+          </ErrorBoundary>
         </Tabs.Tab>
       </Screen.AnimatedTitleTabsBody>
     </Screen>

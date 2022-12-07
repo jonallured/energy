@@ -33,6 +33,7 @@ import { AddItemsToAlbum } from "app/sharedUI/screens/AddItemsToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView, useWebViewCookies } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ErrorBoundaryWrapper } from "app/wrappers/ErrorBoundayWrapper"
 
 export type PreAuthScreens = {
   Login: undefined
@@ -105,59 +106,95 @@ export const Main = () => {
       <Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
         {!isLoggedIn ? (
           <>
-            <Screen name="Login" component={LoginScreen} />
+            <Screen name="Login" children={() => ErrorBoundaryWrapper(LoginScreen)} />
           </>
         ) : selectedPartner === null ? (
           <>
-            <Screen name="SelectPartner" component={SelectPartnerScreen} />
+            <Screen
+              name="SelectPartner"
+              children={() => ErrorBoundaryWrapper(SelectPartnerScreen)}
+            />
           </>
         ) : (
           // logged in and partner selected
           <>
-            <Screen name="HomeTabs" component={HomeTabs} />
-            <Screen name="Settings" component={Settings} />
-            <Screen name="EmailScreen" component={EmailScreen} />
-            <Screen name="OneArtwork" component={OneArtwork} />
-            <Screen name="MultipleArtworksBySameArtist" component={MultipleArtworksBySameArtist} />
-            <Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
-            <Screen name="DarkModeSettings" component={DarkModeSettings} />
-            <Screen name="EditPresentationMode" component={EditPresentationMode} />
-            <Screen name="Artwork" component={Artwork} />
-            <Screen name="Search" component={Search} />
-            <Screen name="ShowTabs" component={ShowTabs} />
-            <Screen name="ArtistTabs" component={ArtistTabs} />
-            <Screen name="AlbumTabs" component={AlbumTabs} />
-            <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
+            <Screen name="HomeTabs" children={() => ErrorBoundaryWrapper(HomeTabs)} />
+            <Screen name="Settings" children={() => ErrorBoundaryWrapper(Settings)} />
+            <Screen name="EmailScreen" children={() => ErrorBoundaryWrapper(EmailScreen)} />
+            <Screen name="OneArtwork" children={() => ErrorBoundaryWrapper(OneArtwork)} />
+            <Screen
+              name="MultipleArtworksBySameArtist"
+              children={() => ErrorBoundaryWrapper(MultipleArtworksBySameArtist)}
+            />
+            <Screen
+              name="MultipleArtworksAndArtists"
+              children={() => ErrorBoundaryWrapper(MultipleArtworksAndArtists)}
+            />
+            <Screen
+              name="DarkModeSettings"
+              children={() => ErrorBoundaryWrapper(DarkModeSettings)}
+            />
+            <Screen
+              name="EditPresentationMode"
+              children={() => ErrorBoundaryWrapper(EditPresentationMode)}
+            />
+            <Screen name="Artwork" children={() => ErrorBoundaryWrapper(Artwork)} />
+            <Screen name="Search" children={() => ErrorBoundaryWrapper(Search)} />
+            <Screen name="ShowTabs" children={() => ErrorBoundaryWrapper(ShowTabs)} />
+            <Screen name="ArtistTabs" children={() => ErrorBoundaryWrapper(ArtistTabs)} />
+            <Screen name="AlbumTabs" children={() => ErrorBoundaryWrapper(AlbumTabs)} />
+            <Screen
+              name="CreateOrEditAlbum"
+              children={() => ErrorBoundaryWrapper(CreateOrEditAlbum)}
+            />
             <Screen
               name="CreateOrEditAlbumChooseArtist"
-              component={CreateOrEditAlbumChooseArtist}
+              children={() => ErrorBoundaryWrapper(CreateOrEditAlbumChooseArtist)}
             />
             <Screen
               name="CreateOrEditAlbumChooseArtworks"
-              component={CreateOrEditAlbumChooseArtworks}
+              children={() => ErrorBoundaryWrapper(CreateOrEditAlbumChooseArtworks)}
             />
-            <Screen name="ArtworkWebView" component={ArtworkWebView} />
-            <Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
+            <Screen name="ArtworkWebView" children={() => ErrorBoundaryWrapper(ArtworkWebView)} />
+            <Screen name="AddItemsToAlbum" children={() => ErrorBoundaryWrapper(AddItemsToAlbum)} />
 
             {/* storybook screens */}
-            <Screen name="InsteadOfStorybook" component={InsteadOfStorybook} />
-            <Screen name="FolioDesignLanguage" component={FolioDesignLanguage} />
+            <Screen
+              name="InsteadOfStorybook"
+              children={() => ErrorBoundaryWrapper(InsteadOfStorybook)}
+            />
+            <Screen
+              name="FolioDesignLanguage"
+              children={() => ErrorBoundaryWrapper(FolioDesignLanguage)}
+            />
             <Screen
               name="StorybookScreenAnimatedTitleHeader"
-              component={StorybookScreenAnimatedTitleHeader}
+              children={() => ErrorBoundaryWrapper(StorybookScreenAnimatedTitleHeader)}
             />
             <Screen
               name="StorybookScreenAnimatedTitleHeaderTabs"
-              component={StorybookScreenAnimatedTitleHeaderTabs}
+              children={() => ErrorBoundaryWrapper(StorybookScreenAnimatedTitleHeaderTabs)}
             />
-            <Screen name="StorybookScreenHeader" component={StorybookScreenHeader} />
+            <Screen
+              name="StorybookScreenHeader"
+              children={() => ErrorBoundaryWrapper(StorybookScreenHeader)}
+            />
             <Screen
               name="StorybookScreenHeaderElements"
-              component={StorybookScreenHeaderElements}
+              children={() => ErrorBoundaryWrapper(StorybookScreenHeaderElements)}
             />
-            <Screen name="StorybookScreenBottomView" component={StorybookScreenBottomView} />
-            <Screen name="StorybookScreenFullWidthItem" component={StorybookScreenFullWidthItem} />
-            <Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
+            <Screen
+              name="StorybookScreenBottomView"
+              children={() => ErrorBoundaryWrapper(StorybookScreenBottomView)}
+            />
+            <Screen
+              name="StorybookScreenFullWidthItem"
+              children={() => ErrorBoundaryWrapper(StorybookScreenFullWidthItem)}
+            />
+            <Screen
+              name="StorybookScreenRawHeader"
+              children={() => ErrorBoundaryWrapper(StorybookScreenRawHeader)}
+            />
           </>
         )}
       </Navigator>

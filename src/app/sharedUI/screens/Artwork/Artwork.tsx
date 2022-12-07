@@ -15,6 +15,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
 import { SuspenseWrapper } from "app/wrappers"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundayWrapper"
 import { Screen } from "palette"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
@@ -36,9 +37,11 @@ export const Artwork = () => {
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
     name: slug,
     content: (
-      <SuspenseWrapper key={slug}>
-        <ArtworkContent slug={slug} />
-      </SuspenseWrapper>
+      <ErrorBoundary withoutBackButton>
+        <SuspenseWrapper key={slug}>
+          <ArtworkContent slug={slug} />
+        </SuspenseWrapper>
+      </ErrorBoundary>
     ),
   }))
   const { artwork } = useLazyLoadQuery<ArtworkQuery>(artworkQuery, {

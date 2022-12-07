@@ -16,6 +16,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { useHeaderSelectModeConfig } from "app/store/selectModeAtoms"
 import { SuspenseWrapper } from "app/wrappers"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundayWrapper"
 import { Screen } from "palette"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
@@ -52,19 +53,25 @@ export const ArtistTabs = () => {
         />
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="ArtistArtworks" label="Works">
-            <SuspenseWrapper withTabs>
-              <ArtistArtworks slug={slug} />
-            </SuspenseWrapper>
+            <ErrorBoundary withoutBackButton>
+              <SuspenseWrapper withTabs>
+                <ArtistArtworks slug={slug} />
+              </SuspenseWrapper>
+            </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab name="ArtistShows" label="Shows">
-            <SuspenseWrapper withTabs>
-              <ArtistShows slug={slug} />
-            </SuspenseWrapper>
+            <ErrorBoundary withoutBackButton>
+              <SuspenseWrapper withTabs>
+                <ArtistShows slug={slug} />
+              </SuspenseWrapper>
+            </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab name="ArtistDocuments" label="Documents">
-            <SuspenseWrapper withTabs>
-              <ArtistDocuments slug={slug} />
-            </SuspenseWrapper>
+            <ErrorBoundary withoutBackButton>
+              <SuspenseWrapper withTabs>
+                <ArtistDocuments slug={slug} />
+              </SuspenseWrapper>
+            </ErrorBoundary>
           </Tabs.Tab>
         </Screen.AnimatedTitleTabsBody>
       </Screen>

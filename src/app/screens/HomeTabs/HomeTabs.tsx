@@ -3,6 +3,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/navigation/Main"
 import { SuspenseWrapper } from "app/wrappers"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundayWrapper"
 import { Screen } from "palette"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
@@ -39,19 +40,25 @@ export const HomeTabs = () => {
       />
       <Screen.TabsBody initialTabName={tabName}>
         <Tabs.Tab name="Artists" label="Artists">
-          <SuspenseWrapper withTabs>
-            <Artists />
-          </SuspenseWrapper>
+          <ErrorBoundary withoutBackButton>
+            <SuspenseWrapper withTabs>
+              <Artists />
+            </SuspenseWrapper>
+          </ErrorBoundary>
         </Tabs.Tab>
         <Tabs.Tab name="Shows" label="Shows">
-          <SuspenseWrapper withTabs>
-            <Shows />
-          </SuspenseWrapper>
+          <ErrorBoundary withoutBackButton>
+            <SuspenseWrapper withTabs>
+              <Shows />
+            </SuspenseWrapper>
+          </ErrorBoundary>
         </Tabs.Tab>
         <Tabs.Tab name="Albums" label="Albums">
-          <SuspenseWrapper withTabs>
-            <Albums />
-          </SuspenseWrapper>
+          <ErrorBoundary withoutBackButton>
+            <SuspenseWrapper withTabs>
+              <Albums />
+            </SuspenseWrapper>
+          </ErrorBoundary>
         </Tabs.Tab>
       </Screen.TabsBody>
     </Screen>
