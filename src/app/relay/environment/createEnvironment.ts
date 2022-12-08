@@ -8,6 +8,7 @@ import {
 import { Environment, RecordSource, Store } from "relay-runtime"
 import { showLoggerMiddleware, showPerfMiddleware } from "app/utils/loggers"
 import { authMiddleware } from "../middlewares/authMiddleware"
+import { checkAuthenticationMiddleware } from "../middlewares/checkAuthenticationMiddleware"
 import { errorMiddleware } from "../middlewares/errorMiddleware"
 import { metaphysicsUrlMiddleware } from "../middlewares/metaphysicsUrlMiddleware"
 
@@ -25,6 +26,7 @@ const network = new RelayNetworkLayer(
     // __DEV__ ? relayErrorMiddleware() : null,
     __DEV__ ? (showPerfMiddleware ? perfMiddleware() : null) : null,
     authMiddleware(),
+    checkAuthenticationMiddleware(),
   ],
   {
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
