@@ -16,13 +16,18 @@ export function useNavigationSavedForKey(
   key: string
 ): [hasSavedNav: true, navToSaved: () => void] | [hasSavedNav: false, navToSaved: undefined] {
   const navigation = useNavigation<NavigationProp<any>>()
-  const [savedNav] = useAtom(savedNavAtom)
-
+  const [savedNav, setSavedNav] = useAtom(savedNavAtom)
   if (savedNav[key] === undefined) return [false, undefined]
 
   const navigateToSavedNav = () => {
     const [name, params] = savedNav[key]
+    setSavedNav((prevState) => {
+      const newState = prevState
+      delete newState[key]
+      return newState
+    })
     navigation.navigate(name, params)
   }
+
   return [true, navigateToSavedNav]
 }

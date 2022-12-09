@@ -44,16 +44,42 @@ export const CreateOrEditAlbum = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const [selectedArtworksToRemove, setSelectedArtworksToRemove] = useState<string[]>([])
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const selectedArtworksForNewAlbum = GlobalStore.useAppState(
+    (state) => state.albums.sessionState.selectedArtworksForNewAlbum
+  )
+  const selectedArtworksForExistingAlbum = GlobalStore.useAppState(
+    (state) => state.albums.sessionState.selectedArtworksForExistingAlbum
+  )
 
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
-  const selectedArtworks = GlobalStore.useAppState((state) => state.selectMode.artworks)
+  const artworksFromSelectMode = GlobalStore.useAppState((state) => state.selectMode.artworks)
   const selectedInstalls = GlobalStore.useAppState((state) => state.selectMode.installs)
   const selectedDocuments = GlobalStore.useAppState((state) => state.selectMode.documents)
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
   const space = useSpace()
 
-  const artworkToAdd = selectedArtworks.length > 0 ? selectedArtworks : [artworkIdToAdd]
+  // Assigning selected artworks
+  let selectedArtworks: string[] = []
+  if (artworkIdToAdd) {
+    // Case when single artwork selected from Artwork screen
+    selectedArtworks = [artworkIdToAdd]
+  } else if (isSelectModeActive) {
+    // Case when atworks are selected from Select mode
+    selectedArtworks = artworksFromSelectMode
+  } else {
+    // Case when artworks are selected from Album tab
+    if (mode === "create") {
+      // Case when we want to create new album
+      selectedArtworks = Object.values(selectedArtworksForNewAlbum).flat()
+    } else {
+      // Case when we want to edit existing album
+      selectedArtworks = [
+        ...(album?.artworkIds ?? []),
+        ...Object.values(selectedArtworksForExistingAlbum).flat(),
+      ]
+    }
+  }
 
   const artworksData = useLazyLoadQuery<AlbumArtworksQuery>(albumArtworksQuery, {
     partnerID,
@@ -64,11 +90,8 @@ export const CreateOrEditAlbum = () => {
   MP returns random artworks(instead of returning empty object),
   To avoid we have this condition to assign the artworks with fetched data only
   when the selectedArtworks is not empty */
-  const artworks = isSelectModeActive
-    ? selectedArtworks.length > 0
-      ? extractNodes(artworksData.partner?.artworksConnection)
-      : []
-    : []
+  const artworks =
+    selectedArtworks.length > 0 ? extractNodes(artworksData.partner?.artworksConnection) : []
 
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
@@ -88,28 +111,12 @@ export const CreateOrEditAlbum = () => {
               artworkIds: selectedArtworks.filter((ids) => !selectedArtworksToRemove.includes(ids)),
             })
           } else {
-            if (isSelectModeActive) {
-              GlobalStore.actions.albums.addAlbum({
-                name: values.albumName.trim(),
-                artworkIds: selectedArtworks,
-                installShotUrls: selectedInstalls,
-                documentIds: selectedDocuments,
-              })
-            } else if (artworkIdToAdd !== undefined) {
-              GlobalStore.actions.albums.addAlbum({
-                name: values.albumName.trim(),
-                artworkIds: [artworkIdToAdd],
-                installShotUrls: [],
-                documentIds: [],
-              })
-            } else {
-              GlobalStore.actions.albums.addAlbum({
-                name: values.albumName.trim(),
-                artworkIds: [],
-                installShotUrls: [],
-                documentIds: [],
-              })
-            }
+            GlobalStore.actions.albums.addAlbum({
+              name: values.albumName.trim(),
+              artworkIds: selectedArtworks,
+              installShotUrls: selectedInstalls,
+              documentIds: selectedDocuments,
+            })
           }
 
           hasSavedNav ? navigateToSaved() : navigation.goBack()
@@ -133,14 +140,27 @@ export const CreateOrEditAlbum = () => {
     }
   }
 
-  const isActionButtonEnabled =
-    isValid &&
-    dirty &&
-    !isSubmitting &&
-    (selectedArtworks.length > 0 ||
-      selectedInstalls.length > 0 ||
-      selectedDocuments.length > 0 ||
-      artworkIdToAdd !== undefined)
+  let isActionButtonEnabled = isValid && !isSubmitting
+
+  if (mode === "create") {
+    // Case when we want to create new album
+    isActionButtonEnabled =
+      isActionButtonEnabled &&
+      dirty &&
+      (selectedArtworks.length > 0 ||
+        selectedInstalls.length > 0 ||
+        selectedDocuments.length > 0 ||
+        artworkIdToAdd !== undefined)
+  } else {
+    // Case when we want to edit existing album
+    isActionButtonEnabled =
+      isActionButtonEnabled &&
+      (dirty ||
+        Object.values(selectedArtworksForExistingAlbum).flat().length > 0 ||
+        selectedArtworksToRemove.length > 0 ||
+        selectedInstalls.length > 0 ||
+        selectedDocuments.length > 0)
+  }
 
   return (
     <Screen>
@@ -156,10 +176,8 @@ export const CreateOrEditAlbum = () => {
           />
         </Flex>
         <Spacer y={2} />
-        {selectedArtworks.length === 0 &&
-          selectedInstalls.length === 0 &&
-          selectedDocuments.length === 0 &&
-          artworkIdToAdd === undefined && (
+        {isSelectModeActive ||
+          (!artworkIdToAdd && (
             <Touchable
               onPress={() =>
                 navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })
@@ -170,7 +188,7 @@ export const CreateOrEditAlbum = () => {
                 <ArrowRightIcon fill="onBackgroundHigh" />
               </Flex>
             </Touchable>
-          )}
+          ))}
         {mode === "edit" && (
           <Text mt={2} variant="xs" color="onBackgroundMedium">
             Select artworks to remove from album
