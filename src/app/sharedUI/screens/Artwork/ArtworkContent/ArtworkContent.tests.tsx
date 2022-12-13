@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ArtworkContent } from "./ArtworkContent"
 
@@ -10,7 +10,7 @@ jest.mock("@react-navigation/native", () => ({
 describe("ArtworkContent", () => {
   it("renders without throwing an error", async () => {
     const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
-    await mockEnvironmentPayloadMaybe({
+    await mockEnvironmentPayload({
       Artwork: () => ({
         provenance: "some provenance",
         price: "some price",
@@ -28,7 +28,7 @@ describe("ArtworkContent", () => {
   describe("Price display ", () => {
     it("should display internal display price if available and not price", async () => {
       const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
-      await mockEnvironmentPayloadMaybe({
+      await mockEnvironmentPayload({
         Artwork: () => ({
           price: "some price",
           internalDisplayPrice: "internal display price",
@@ -42,7 +42,7 @@ describe("ArtworkContent", () => {
 
     it("should display internal display price if available and not parent price", async () => {
       const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
-      await mockEnvironmentPayloadMaybe({
+      await mockEnvironmentPayload({
         Artwork: () => ({
           price: "some price",
           internalDisplayPrice: null,
@@ -58,7 +58,7 @@ describe("ArtworkContent", () => {
   describe("Editions set is available ", () => {
     it("it should display details of edition set instead of parent details", async () => {
       const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
-      await mockEnvironmentPayloadMaybe({
+      await mockEnvironmentPayload({
         Artwork: () => ({
           price: "parent price",
           internalDisplayPrice: "parent internalDisplayPrice",
@@ -97,7 +97,7 @@ describe("ArtworkContent", () => {
 
     it("should only display editions set price if available and not parent price", async () => {
       const { queryByText } = renderWithWrappers(<ArtworkContent slug="slug" />)
-      await mockEnvironmentPayloadMaybe({
+      await mockEnvironmentPayload({
         Artwork: () => ({
           price: "parent price",
           internalDisplayPrice: null,
@@ -129,7 +129,7 @@ describe("ArtworkContent", () => {
           isHidePriceEnabled: false,
         },
       })
-      await mockEnvironmentPayloadMaybe({
+      await mockEnvironmentPayload({
         Artwork: () => ({
           price: "5000$",
           internalDisplayPrice: null,
@@ -147,7 +147,7 @@ describe("ArtworkContent", () => {
           isHidePriceEnabled: false,
         },
       })
-      await mockEnvironmentPayloadMaybe({
+      await mockEnvironmentPayload({
         Artwork: () => ({
           price: "5000$",
           internalDisplayPrice: null,
@@ -167,7 +167,7 @@ describe("ArtworkContent", () => {
             isHidePriceForSoldWorksEnabled: true,
           },
         })
-        await mockEnvironmentPayloadMaybe({
+        await mockEnvironmentPayload({
           Artwork: () => ({
             price: "5000$",
             availability: "sold",
@@ -187,7 +187,7 @@ describe("ArtworkContent", () => {
             isHidePriceForSoldWorksEnabled: false,
           },
         })
-        await mockEnvironmentPayloadMaybe({
+        await mockEnvironmentPayload({
           Artwork: () => ({
             price: "5000$",
             availability: "sold",
@@ -208,7 +208,7 @@ describe("ArtworkContent", () => {
             isHideConfidentialNotesEnabled: false,
           },
         })
-        await mockEnvironmentPayloadMaybe({
+        await mockEnvironmentPayload({
           Artwork: () => ({
             confidentialNotes: "This is love",
           }),
@@ -224,7 +224,7 @@ describe("ArtworkContent", () => {
             isHideConfidentialNotesEnabled: true,
           },
         })
-        await mockEnvironmentPayloadMaybe({
+        await mockEnvironmentPayload({
           Artwork: () => ({
             confidentialNotes: "This is love",
           }),

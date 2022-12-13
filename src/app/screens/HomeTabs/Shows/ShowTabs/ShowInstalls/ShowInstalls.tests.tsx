@@ -1,4 +1,4 @@
-import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ShowInstalls } from "./ShowInstalls"
 
@@ -10,13 +10,13 @@ jest.mock("react-native-collapsible-tab-view", () => ({
 describe("ShowInstalls", () => {
   it("renders ListEmptyComponent", async () => {
     const { getByText } = renderWithWrappers(<ShowInstalls slug="someSlug" />)
-    await mockEnvironmentPayloadMaybe(mockPropsEmptyList)
+    await mockEnvironmentPayload(mockPropsEmptyList)
     expect(getByText("No show installs shots to display")).toBeTruthy()
   })
 
   it("renders the list of installs", async () => {
     const { getByTestId } = renderWithWrappers(<ShowInstalls slug="someSlug" />)
-    await mockEnvironmentPayloadMaybe(mockProps)
+    await mockEnvironmentPayload(mockProps)
     images.forEach((image) => {
       expect(getByTestId(image.resized.url)).toBeTruthy()
     })

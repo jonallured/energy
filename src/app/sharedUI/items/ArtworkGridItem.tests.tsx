@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkGridItem_artwork_TestQuery } from "__generated__/ArtworkGridItem_artwork_TestQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ArtworkGridItem } from "./ArtworkGridItem"
 
@@ -32,7 +32,7 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    await mockEnvironmentPayloadMaybe({
+    await mockEnvironmentPayload({
       Artwork: () => ({
         availability: "for sale",
       }),
@@ -51,7 +51,7 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    await mockEnvironmentPayloadMaybe({
+    await mockEnvironmentPayload({
       Artwork: () => ({
         availability: "for sale",
       }),
@@ -70,7 +70,7 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    await mockEnvironmentPayloadMaybe({
+    await mockEnvironmentPayload({
       Artwork: () => ({
         availability: "for sale",
       }),

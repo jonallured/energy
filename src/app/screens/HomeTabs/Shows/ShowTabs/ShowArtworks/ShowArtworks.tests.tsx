@@ -1,5 +1,5 @@
 import { range } from "lodash"
-import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ShowArtworks } from "./ShowArtworks"
 
@@ -11,12 +11,12 @@ jest.mock("react-native-collapsible-tab-view", () => ({
 describe("ShowArtworks", () => {
   it("renders without throwing an error", async () => {
     renderWithWrappers(<ShowArtworks slug="some" />)
-    await mockEnvironmentPayloadMaybe(mockProps)
+    await mockEnvironmentPayload(mockProps)
   })
 
   it("renders the list of works", async () => {
     const { getByTestId } = renderWithWrappers(<ShowArtworks slug="some" />)
-    await mockEnvironmentPayloadMaybe(mockProps)
+    await mockEnvironmentPayload(mockProps)
     expect(getByTestId("show-artwork-list").props.data).toHaveLength(10)
   })
 })

@@ -1,7 +1,7 @@
 import { act } from "@testing-library/react-native"
 import { takeRight } from "lodash"
-import { MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { MockPayloadGenerator, MockEnvironment } from "relay-test-utils"
+import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"
 import { flushPromiseQueue } from "./flushPromiseQueue"
 
@@ -29,16 +29,9 @@ const generateID = (pathComponents: readonly string[] | undefined) => {
  */
 export const mockEdges = (length: number) => new Array(length).fill({ node: {} })
 
-interface MockResolverContext {
-  parentType?: string | undefined
-  name?: string | undefined
-  alias?: string | undefined
-  path?: ReadonlyArray<string> | undefined
-  args?: { [key: string]: any } | undefined
-}
-
 let paths: { [name: string]: string } = {}
-const goodMockResolver = (ctx: MockResolverContext) => {
+
+const mockResolver = (ctx: MockResolverContext) => {
   const makePrefix = (path: string) => takeRight(path.split("."), length).join(".")
 
   const fullpath = (ctx.path?.join(".") ?? "_GLOBAL_").replace(".edges.node", "")
@@ -51,19 +44,20 @@ const goodMockResolver = (ctx: MockResolverContext) => {
   }
   paths[prefix] = fullpath
 
-  return `${prefix}-${generateID(ctx.path)}`
+  return `${prefix}-${generateID(ctx.path!)}`
 }
 
-const DefaultMockResolvers: MockResolvers = {
-  ID: (ctx) => goodMockResolver(ctx),
-  String: (ctx) => goodMockResolver(ctx),
+const defaultMockResolvers: MockResolvers = {
+  ID: (ctx) => mockResolver(ctx),
+  String: (ctx) => mockResolver(ctx),
 }
 
-export async function mockEnvironmentPayloadMaybe(mockResolvers?: MockResolvers) {
+export async function mockEnvironmentPayload(mockResolvers?: MockResolvers) {
   act(() => {
     // here, the defaultEnv is actually the mockEnv. See setupJest.ts for more info.
-    ;(defaultEnvironment as RelayMockEnvironment).mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
+    const mockDefaultEnvironment = defaultEnvironment as unknown as MockEnvironment
+    mockDefaultEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, { ...defaultMockResolvers, ...mockResolvers })
     )
   })
   await flushPromiseQueue()

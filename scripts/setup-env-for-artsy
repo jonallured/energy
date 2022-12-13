@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-
 ./scripts/download-fonts
 ./scripts/prepare-env-vars

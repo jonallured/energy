@@ -1,6 +1,6 @@
 import { range } from "lodash"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayloadMaybe } from "shared/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "shared/tests/renderWithWrappers"
 import { ArtistArtworks } from "./ArtistArtworks"
 
@@ -12,7 +12,7 @@ jest.mock("react-native-collapsible-tab-view", () => ({
 describe("ArtistArtworks", () => {
   it("renders the list of works", async () => {
     const { getByTestId } = renderWithWrappers(<ArtistArtworks slug="some" />)
-    await mockEnvironmentPayloadMaybe(mockProps)
+    await mockEnvironmentPayload(mockProps)
     expect(getByTestId("artist-artwork-list").props.data).toHaveLength(10)
   })
 
@@ -25,7 +25,7 @@ describe("ArtistArtworks", () => {
           isHideWorksNotForSaleEnabled: false,
         },
       })
-      await mockEnvironmentPayloadMaybe(newMockProps)
+      await mockEnvironmentPayload(newMockProps)
       expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
     })
 
@@ -38,7 +38,7 @@ describe("ArtistArtworks", () => {
           isHideUnpublishedWorksEnabled: true,
         },
       })
-      await mockEnvironmentPayloadMaybe(newMockProps)
+      await mockEnvironmentPayload(newMockProps)
       expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
     })
 
@@ -52,7 +52,7 @@ describe("ArtistArtworks", () => {
             isHideUnpublishedWorksEnabled: false,
           },
         })
-        await mockEnvironmentPayloadMaybe(newMockProps)
+        await mockEnvironmentPayload(newMockProps)
         expect(queryByText("Date of not for sale and unpublished artwork")).toBeTruthy()
         expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
         expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
@@ -69,7 +69,7 @@ describe("ArtistArtworks", () => {
           isHideUnpublishedWorksEnabled: false,
         },
       })
-      await mockEnvironmentPayloadMaybe(newMockProps)
+      await mockEnvironmentPayload(newMockProps)
       expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
       expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
       expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
@@ -85,7 +85,7 @@ describe("ArtistArtworks", () => {
           isHideUnpublishedWorksEnabled: true,
         },
       })
-      await mockEnvironmentPayloadMaybe(newMockProps)
+      await mockEnvironmentPayload(newMockProps)
       expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
       expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
       expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
@@ -101,7 +101,7 @@ describe("ArtistArtworks", () => {
           isHideWorksNotForSaleEnabled: true,
         },
       })
-      await mockEnvironmentPayloadMaybe(newMockProps)
+      await mockEnvironmentPayload(newMockProps)
       expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
       expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
       expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
