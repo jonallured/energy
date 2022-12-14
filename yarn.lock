@@ -10185,6 +10185,18 @@ react-native-file-viewer@^2.1.5:
   resolved "https://registry.yarnpkg.com/react-native-file-viewer/-/react-native-file-viewer-2.1.5.tgz#cd4544f573108e79002b5c7e1ebfce4371885250"
   integrity sha512-MGC6sx9jsqHdefhVQ6o0akdsPGpkXgiIbpygb2Sg4g4bh7v6K1cardLV1NwGB9A6u1yICOSDT/MOC//9Ez6EUg==
 
+react-native-flipper-relay-devtools@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-flipper-relay-devtools/-/react-native-flipper-relay-devtools-1.0.3.tgz#d27170f99a33217bd23d3d1873152f8a144d611c"
+  integrity sha512-hqXIBQXBctr6LJstALHuWBRbVs1ApIcnC7bKarm1f2tWihMahVmnxJu82unCIhQOJrl7H6VTn+fMz8qx/mV6ZA==
+  dependencies:
+    relay-devtools-core janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg
+
+react-native-flipper@^0.176.1:
+  version "0.176.1"
+  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.176.1.tgz#fdf01e09160660d1c833d537909244965481275e"
+  integrity sha512-kioHzO9JzA2ReW9LfopIEUXeD6gDp3Mw6KjQbELvoLVIEMvCfGz59akezw4l/S8i6qkFVcnwh5c/7Z+L3nthQA==
+
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz#942bbf2963bbf49fa79593600ee9d7b5dab3cfc0"
@@ -10562,6 +10574,13 @@ relay-compiler@^14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-14.1.0.tgz#88e9c531eb14a6a31e6f14663982124d780bd1b6"
   integrity sha512-P8+CXm+Hq96z5NNwYl7hyGo5GgvMZDs9mXBRv7txUbJO4Ql9mXio3+D9EX3VfevRWTuE4ahM37i3Ssx1H604vA==
+
+"relay-devtools-core@github:janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg":
+  version "1.2.1"
+  resolved "https://codeload.github.com/janicduplessis/relay-devtools/tar.gz/3175e77be3027d0a4ca8ae1d9f5a1ab278afa8dc"
+  dependencies:
+    shell-quote "^1.6.1"
+    ws "^7"
 
 relay-runtime@14.1.0, relay-runtime@^14.1.0:
   version "14.1.0"
