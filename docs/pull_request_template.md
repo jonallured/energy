@@ -1,9 +1,5 @@
 <!--❗️ [WIP] prefix and/or open a draft PR if this is a work in progress -->
 
-The type of this PR is: **TYPE**
-
-<!-- Build / Chore / CI / Docs / Feat / Fix / Perf / Refactor / Revert / Style / Test -->
-
 This PR resolves [MOPLAT-]
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
