@@ -3,7 +3,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/navigation/Main"
 import { SuspenseWrapper } from "app/wrappers"
-import { ErrorBoundary } from "app/wrappers/ErrorBoundayWrapper"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
 import { Screen } from "palette"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"

@@ -1,16 +1,11 @@
 import { Component, FC } from "react"
 import { ErrorView } from "app/sharedUI/screens/ErrorView"
 
-export const ErrorBoundaryWrapper = (Component: FC) => (
-  <ErrorBoundary>
-    <Component />
-  </ErrorBoundary>
-)
-
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
 interface ErrorBoundaryProps {
   children: React.ReactNode
   withoutBackButton?: boolean
+  catch?: (error: Error) => void
 }
 interface ErrorBoundaryState {
   error: Error | null
@@ -28,6 +23,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     const { error } = this.state
 
     if (error) {
+      this.props.catch?.(error)
       return <ErrorView error={error} withoutBackButton={withoutBackButton} />
     }
 

@@ -1,7 +1,7 @@
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useStoreRehydrated } from "easy-peasy"
-import { useEffect } from "react"
+import { FC, useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
 import { LoginScreen } from "app/screens/Auth/Login"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
@@ -33,7 +33,7 @@ import { AddItemsToAlbum } from "app/sharedUI/screens/AddItemsToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView, useWebViewCookies } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ErrorBoundaryWrapper } from "app/wrappers/ErrorBoundayWrapper"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
 
 export type PreAuthScreens = {
   Login: undefined
@@ -201,3 +201,9 @@ export const Main = () => {
     </NavigationContainer>
   )
 }
+
+const ErrorBoundaryWrapper = (Component: FC) => (
+  <ErrorBoundary>
+    <Component />
+  </ErrorBoundary>
+)

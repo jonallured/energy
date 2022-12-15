@@ -5,6 +5,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
 import { Screen } from "palette"
 
 interface SelectPartnerHeaderProps {
@@ -28,9 +29,18 @@ export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartn
 export const SelectPartnerScreen = () => (
   <Screen>
     <Screen.Body>
-      <Suspense fallback={<ActivityIndicator />}>
-        <SelectPartner />
-      </Suspense>
+      <ErrorBoundary
+        catch={(e) => {
+          if (e.message.includes("Forbidden") && e.message.includes("Not authorized")) {
+            // this shows up if a user logs in with a user that is not a partner
+            GlobalStore.actions.auth.signOut()
+          }
+        }}
+      >
+        <Suspense fallback={<ActivityIndicator />}>
+          <SelectPartner />
+        </Suspense>
+      </ErrorBoundary>
     </Screen.Body>
   </Screen>
 )
