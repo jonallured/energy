@@ -6,6 +6,7 @@ const ERR = "error"
 
 module.exports = {
   root: true,
+  plugins: ["@typescript-eslint", "jest", "no-relative-import-paths", "testing-library"],
   extends: [
     "eslint:recommended",
     "plugin:import/recommended",
