@@ -1,8 +1,7 @@
 import { act } from "@testing-library/react-native"
 import { takeRight } from "lodash"
-import { MockPayloadGenerator, MockEnvironment } from "relay-test-utils"
+import { MockPayloadGenerator, MockEnvironment, createMockEnvironment } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"
 import { flushPromiseQueue } from "./flushPromiseQueue"
 
 let counters: { [path: string]: number } = {}
@@ -52,11 +51,20 @@ const defaultMockResolvers: MockResolvers = {
   String: (ctx) => mockResolver(ctx),
 }
 
+const createTestEnvironment = () => {
+  const mockEnvironment = createMockEnvironment()
+  return mockEnvironment
+}
+
+export let relayMockEnvironment = createMockEnvironment()
+
+export const resetRelayMockEnvironment = () => {
+  relayMockEnvironment = createTestEnvironment()
+}
+
 export async function mockEnvironmentPayload(mockResolvers?: MockResolvers) {
   act(() => {
-    // here, the defaultEnv is actually the mockEnv. See setupJest.ts for more info.
-    const mockDefaultEnvironment = defaultEnvironment as unknown as MockEnvironment
-    mockDefaultEnvironment.mock.resolveMostRecentOperation((operation) =>
+    relayMockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, { ...defaultMockResolvers, ...mockResolvers })
     )
   })

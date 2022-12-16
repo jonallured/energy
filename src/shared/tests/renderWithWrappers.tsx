@@ -3,8 +3,9 @@ import { render } from "@testing-library/react-native"
 import { Suspense, ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { defaultEnvironment } from "app/relay/environment/defaultEnvironent"
+import { createMockEnvironment } from "relay-test-utils"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { relayMockEnvironment } from "shared/tests/mockEnvironmentPayload"
 import { combineProviders } from "shared/utils"
 
 const Wrappers: React.FC = ({ children }) =>
@@ -19,10 +20,14 @@ const Wrappers: React.FC = ({ children }) =>
     children
   )
 
-const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => (
-  //@ts-ignore
-  <RelayEnvironmentProvider environment={defaultEnvironment}>{children}</RelayEnvironmentProvider>
-)
+const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => {
+  return (
+    <RelayEnvironmentProvider environment={relayMockEnvironment}>
+      {children}
+    </RelayEnvironmentProvider>
+  )
+}
+
 const SuspenseProvider = ({ children }: { children?: React.ReactNode }) => (
   <Suspense fallback="Loading...">{children}</Suspense>
 )

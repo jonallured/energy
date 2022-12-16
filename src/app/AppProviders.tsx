@@ -2,33 +2,33 @@ import { Theme, _test_THEMES } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { RelayEnvironmentProvider } from "react-relay/hooks"
+import { RelayProvider } from "app/relay/RelayProvider"
 import { ProvideScreenDimensions } from "shared/hooks"
-import { defaultEnvironment } from "./relay/environment/defaultEnvironent"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { SuspenseWrapper } from "./wrappers"
 
-export const AppProviders = ({ children }: { children: React.ReactNode }) => (
-  <GlobalStoreProvider>
-    <ThemeProvider>
-      <SuspenseWrapper>
-        {/* @ts-expect-error */}
-        <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <SafeAreaProvider>
-            <ProvideScreenDimensions>
-              {/*  */}
-              {children}
-              {/*  */}
-            </ProvideScreenDimensions>
-          </SafeAreaProvider>
-        </RelayEnvironmentProvider>
-      </SuspenseWrapper>
-    </ThemeProvider>
-  </GlobalStoreProvider>
-)
+export const AppProviders = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <GlobalStoreProvider>
+      <ThemeProvider>
+        <SuspenseWrapper>
+          <RelayProvider>
+            <SafeAreaProvider>
+              <ProvideScreenDimensions>
+                {/*  */}
+                {children}
+                {/*  */}
+              </ProvideScreenDimensions>
+            </SafeAreaProvider>
+          </RelayProvider>
+        </SuspenseWrapper>
+      </ThemeProvider>
+    </GlobalStoreProvider>
+  )
+}
 
-// theme with dark mode support
-function ThemeProvider({ children }: { children?: React.ReactNode }) {
+// Theme with dark mode support
+const ThemeProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
       GlobalStore.actions.devicePrefs.setSystemColorScheme(colorScheme ?? "light")
