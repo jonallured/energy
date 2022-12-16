@@ -226,16 +226,11 @@ export const CreateOrEditAlbum = () => {
           }}
           keyExtractor={(item) => item.internalID}
         />
-        <Screen.BottomView>
-          <Screen.FullWidthItem>
-            <ShadowSeparator />
-          </Screen.FullWidthItem>
-          <Flex px={2} pt={2}>
-            <Button block onPress={handleSubmit} disabled={!isActionButtonEnabled}>
-              {mode === "edit" ? "Save" : "Create"}
-            </Button>
-          </Flex>
-        </Screen.BottomView>
+        <Flex px={1} pt={2}>
+          <Button block onPress={handleSubmit} disabled={!isActionButtonEnabled}>
+            {mode === "edit" ? "Save" : "Create"}
+          </Button>
+        </Flex>
       </Screen.Body>
     </Screen>
   )
