@@ -58,6 +58,7 @@ const hooks = createTypedHooks<GlobalStoreModel>()
 
 export const GlobalStore = {
   useAppState: hooks.useStoreState,
+  getState: globalStoreInstance.getState,
   get actions() {
     return globalStoreInstance.getActions()
   },

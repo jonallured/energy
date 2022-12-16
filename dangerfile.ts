@@ -55,6 +55,17 @@ See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c
   }
 }
 
+function preventDefaultLazyQueryLoaderImport() {
+  const newQueryLoaderImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
+    const content = fs.readFileSync(filename).toString()
+    return content.includes("useLazyLoadQuery")
+  })
+  if (newQueryLoaderImports.length > 0) {
+    fail(`Please use \`useSystemQueryLoader\` instead of \`useLazyLoadQuery\`. This guards against queries being executed when offline. See:
+> ${newQueryLoaderImports.map((filename) => `\`${filename}\``).join("\n")}`)
+  }
+}
+
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 const verifyRemainingDevWork = () => {
@@ -112,6 +123,7 @@ export const useWebPs = (fileNames: string[]) => {
 
   preventUsingMoment()
   preventUsingTestRenderer()
+  preventDefaultLazyQueryLoaderImport()
   verifyRemainingDevWork()
   useWebPs(newCreatedFileNames)
 })()

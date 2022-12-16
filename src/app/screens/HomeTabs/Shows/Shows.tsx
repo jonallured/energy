@@ -3,8 +3,9 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ShowsTabQuery } from "__generated__/ShowsTabQuery.graphql"
+import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
@@ -16,7 +17,7 @@ export const Shows = () => {
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
-  const data = useLazyLoadQuery<ShowsTabQuery>(showsQuery, { partnerID: partnerID!, imageSize })
+  const data = useSystemQueryLoader<ShowsQuery>(showsQuery, { partnerID: partnerID!, imageSize })
   const shows = extractNodes(data.partner?.showsConnection)
   const screenWidth = useWindowDimensions().width
 
@@ -56,8 +57,8 @@ export const Shows = () => {
   )
 }
 
-const showsQuery = graphql`
-  query ShowsTabQuery($partnerID: String!, $imageSize: Int!) {
+export const showsQuery = graphql`
+  query ShowsQuery($partnerID: String!, $imageSize: Int!) {
     partner(id: $partnerID) {
       showsConnection(first: 100, status: ALL) {
         edges {

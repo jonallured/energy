@@ -33,6 +33,7 @@ import { AddItemsToAlbum } from "app/sharedUI/screens/AddItemsToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView, useWebViewCookies } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useNetworkStatusListener } from "app/system/useNetworkStatusListener"
 import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
 
 export type PreAuthScreens = {
@@ -93,8 +94,13 @@ export const Main = () => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
 
+  // Check the network status and toggle the offline mode if needed
+  useNetworkStatusListener()
+
   useEffect(() => {
-    if (isRehydrated) SplashScreen.hide()
+    if (isRehydrated) {
+      SplashScreen.hide()
+    }
   }, [isRehydrated])
 
   useWebViewCookies()

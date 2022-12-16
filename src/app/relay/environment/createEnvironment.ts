@@ -6,6 +6,7 @@ import {
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RecordMap } from "relay-runtime/lib/store/RelayStoreTypes"
 import { showLoggerMiddleware, showPerfMiddleware } from "app/utils/loggers"
 
 const createNetworkLayer = () => {
@@ -45,10 +46,10 @@ const createNetworkLayer = () => {
   return network
 }
 
-export const createEnvironment = () => {
+export const createEnvironment = (relayData?: RecordMap) => {
   const environment = new Environment({
     network: createNetworkLayer(),
-    store: new Store(new RecordSource()),
+    store: new Store(new RecordSource(relayData)),
   })
 
   return environment

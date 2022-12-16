@@ -1,16 +1,18 @@
 import { action, Action, State } from "easy-peasy"
 import { DeepPartial } from "global"
+import { assignDeep } from "shared/utils/persistence"
 import { AlbumsModel, getAlbumsModel } from "./AlbumsModel"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
 import { EmailModel, getEmailModel } from "./EmailModel"
+import { getNetworkStatusModel, NetworkStatusModel } from "./NetworkStatusModel"
 import { getPresentationModeModel, PresentationModeModel } from "./PresentationModeModel"
 import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
-import { assignDeep } from "../../../shared/utils/persistence"
 
 type ActiveMode = "viewer" | "manager"
+
 interface GlobalStoreStateModel {
   activeMode: ActiveMode
   activePartnerID: string | null
@@ -20,6 +22,7 @@ interface GlobalStoreStateModel {
   config: ConfigModel
   devicePrefs: DevicePrefsModel
   email: EmailModel
+  networkStatus: NetworkStatusModel
   presentationMode: PresentationModeModel
   selectMode: SelectModeModel
 }
@@ -43,6 +46,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   config: getConfigModel(),
   devicePrefs: getDevicePrefsModel(),
   email: getEmailModel(),
+  networkStatus: getNetworkStatusModel(),
   presentationMode: getPresentationModeModel(),
   reset: action((state) => {
     state.activePartnerID = null

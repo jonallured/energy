@@ -6,6 +6,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -15,8 +16,7 @@ import { extractNodes } from "shared/utils"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-
-  const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
+  const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,
   })

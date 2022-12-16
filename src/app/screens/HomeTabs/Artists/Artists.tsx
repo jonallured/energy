@@ -6,6 +6,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { ArtistListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { TabsFlatList } from "app/wrappers"
@@ -16,15 +17,15 @@ export const Artists = () => {
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const artistsData = useLazyLoadQuery<ArtistsQuery>(artistsQuery, { partnerID })
+  const artistsData = useSystemQueryLoader<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
+  const screenWidth = useWindowDimensions().width
   const counts = artistsData.partner?.allArtistsConnection?.edges?.map(
     (edge) => edge?.counts?.managedArtworks as string
   )
   if (!counts || !artists) {
     return null
   }
-  const screenWidth = useWindowDimensions().width
   const margin = 20
   const width = isTablet() ? (screenWidth - 2 * margin) / 2 : undefined
 

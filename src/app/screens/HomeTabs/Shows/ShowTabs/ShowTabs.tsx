@@ -8,6 +8,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { useNavigationSave } from "app/navigation/navAtoms"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -27,16 +28,7 @@ type ShowTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 export const ShowTabs = () => {
   const { slug } = useRoute<ShowTabsRoute>().params
 
-  const data = useLazyLoadQuery<ShowTabsQuery>(
-    graphql`
-      query ShowTabsQuery($slug: String!) {
-        show(id: $slug) {
-          name
-        }
-      }
-    `,
-    { slug }
-  )
+  const data = useSystemQueryLoader<ShowTabsQuery>(showTabsQuery, { slug })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
@@ -121,3 +113,11 @@ export const ShowTabs = () => {
     </BottomSheetModalProvider>
   )
 }
+
+export const showTabsQuery = graphql`
+  query ShowTabsQuery($slug: String!) {
+    show(id: $slug) {
+      name
+    }
+  }
+`

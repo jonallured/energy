@@ -9,6 +9,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { useNavigationSave } from "app/navigation/navAtoms"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -45,7 +46,7 @@ export const ArtistTabs = () => {
     (state) => state.email.multipleArtworksBySameArtistSubject
   )
 
-  const artworkData = useLazyLoadQuery<ArtistTabsQuery>(artistQuery, {
+  const artworkData = useSystemQueryLoader<ArtistTabsQuery>(artistTabsQuery, {
     partnerID,
     artworkIDs: selectedWorks,
     slug,
@@ -214,7 +215,7 @@ export const ArtistTabs = () => {
   )
 }
 
-const artistQuery = graphql`
+export const artistTabsQuery = graphql`
   query ArtistTabsQuery(
     $partnerID: String!
     $artworkIDs: [String]

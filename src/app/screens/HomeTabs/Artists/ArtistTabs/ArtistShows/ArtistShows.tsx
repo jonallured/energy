@@ -5,6 +5,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { ShowListItem, ListEmptyComponent } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
@@ -16,7 +17,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const showsData = useLazyLoadQuery<ArtistShowsQuery>(artistShowsQuery, {
+  const showsData = useSystemQueryLoader<ArtistShowsQuery>(artistShowsQuery, {
     partnerID,
     slug,
     imageSize,
@@ -55,7 +56,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
   )
 }
 
-const artistShowsQuery = graphql`
+export const artistShowsQuery = graphql`
   query ArtistShowsQuery($partnerID: String!, $slug: String!, $imageSize: Int!) {
     partner(id: $partnerID) {
       showsConnection(first: 100, status: ALL, artistID: $slug) {

@@ -6,6 +6,7 @@ import QRCode from "react-native-qrcode-generator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { ImagePlaceholder, ListEmptyComponent, ImageModal } from "app/sharedUI"
 import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -23,8 +24,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const safeAreaInsets = useSafeAreaInsets()
-
-  const artworkData = useLazyLoadQuery<ArtworkContentQuery>(artworkContentQuery, {
+  const artworkData = useSystemQueryLoader<ArtworkContentQuery>(artworkContentQuery, {
     slug,
     imageSize,
   })
@@ -355,7 +355,7 @@ const ArtworkDetail = ({ size = "small", label, value }: ArtworkDetailProps) => 
   )
 }
 
-const artworkContentQuery = graphql`
+export const artworkContentQuery = graphql`
   query ArtworkContentQuery($slug: String!, $imageSize: Int!) {
     artwork(id: $slug) {
       image {

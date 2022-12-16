@@ -3,6 +3,7 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isEqual } from "lodash"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql"
+import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/store/selectModeAtoms"
@@ -12,7 +13,7 @@ import { extractNodes } from "shared/utils"
 
 export const ArtistDocuments = ({ slug }: { slug: string }) => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const artistDocumentsData = useLazyLoadQuery<ArtistDocumentsQuery>(artistDocumentsQuery, {
+  const artistDocumentsData = useSystemQueryLoader<ArtistDocumentsQuery>(artistDocumentsQuery, {
     slug,
     partnerID: selectedPartner,
   })
@@ -71,7 +72,7 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
   )
 }
 
-const artistDocumentsQuery = graphql`
+export const artistDocumentsQuery = graphql`
   query ArtistDocumentsQuery($slug: String!, $partnerID: String!) {
     partner(id: $partnerID) {
       documentsConnection(first: 100, artistID: $slug) {

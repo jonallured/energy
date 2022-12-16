@@ -8,28 +8,72 @@ import {
   ArrowRightIcon,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import { Alert } from "react-native"
 import { getVersion } from "react-native-device-info"
 import { NavigationScreens } from "app/navigation/Main"
+import { useSystemRelayEnvironment } from "app/relay/useSystemRelayEnvironment"
 import { DevMenu } from "app/screens/Dev/DevMenu"
 import { SettingsItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { initSyncManager } from "app/system/sync/syncManager"
 import { Screen } from "palette"
 
 export const Settings = () => {
+  const { relayEnvironment } = useSystemRelayEnvironment()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isPresentationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)!
 
   const appVersion = getVersion()
+
   const [tapCount, updateTapCount] = useState(0)
+  const [syncProgress, setSyncProgress] = useState(0)
+  const [syncStatus, setSyncStatus] = useState("")
+
+  const isSyncing = !!syncProgress
+
+  const { startSync } = useMemo(() => {
+    return initSyncManager({
+      partnerID,
+      relayEnvironment,
+      onComplete: () => {
+        setSyncProgress(0)
+
+        Alert.alert("Sync complete.", "", [
+          {
+            text: "OK",
+            style: "cancel",
+          },
+        ])
+      },
+      onProgress: (progress) => {
+        setSyncProgress(Math.floor(progress * 100))
+      },
+      onStatusChange: (message) => {
+        setSyncStatus(message)
+      },
+    })
+  }, [])
+
+  const handleSyncButtonPress = async () => {
+    try {
+      await startSync()
+    } catch (error) {
+      setSyncProgress(0)
+
+      console.error("Error syncing", error)
+    }
+  }
 
   return (
     <Screen>
       <Screen.AnimatedTitleHeader title="Settings" />
-      <Screen.Body scroll>
+      <Screen.Body scroll nosafe>
         <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
           Dark Mode
         </Button>
@@ -103,6 +147,30 @@ export const Settings = () => {
             </Text>
           </Flex>
         </Touchable>
+
+        <Spacer y={1} />
+
+        <Button block onPress={handleSyncButtonPress} disabled={!isOnline}>
+          {isSyncing ? (
+            <>
+              {syncStatus}: {syncProgress}%
+            </>
+          ) : (
+            <>Start Sync {!isOnline && "(Offline)"}</>
+          )}
+        </Button>
+
+        <Spacer y={1} />
+
+        <Button
+          block
+          onPress={() => {
+            GlobalStore.actions.networkStatus.toggleConnected(!isOnline)
+          }}
+        >
+          Is Online: {isOnline ? "true" : "false"}
+        </Button>
+
         {isUserDev && <DevMenu />}
       </Screen.Body>
     </Screen>
