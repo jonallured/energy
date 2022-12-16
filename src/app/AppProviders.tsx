@@ -1,4 +1,4 @@
-import { Theme, _test_THEMES } from "@artsy/palette-mobile"
+import { Theme } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"

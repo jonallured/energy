@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid/non-secure"
-import { useEffect, useState } from "react"
 import {
   unlink,
   mkdir,

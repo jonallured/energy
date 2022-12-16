@@ -5,7 +5,7 @@ import * as MailComposer from "expo-mail-composer"
 import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { useNavigationSave } from "app/navigation/navAtoms"
@@ -38,7 +38,6 @@ export const ArtistTabs = () => {
 
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.artworks)
-  const selectedDocs = GlobalStore.useAppState((state) => state.selectMode.documents)
   const selectedItems = GlobalStore.useAppState((state) => state.selectMode.items)
 
   const oneArtworkSubject = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)

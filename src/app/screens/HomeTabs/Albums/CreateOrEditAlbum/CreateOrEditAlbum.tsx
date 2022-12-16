@@ -1,5 +1,4 @@
 import {
-  ShadowSeparator,
   Spacer,
   ArrowRightIcon,
   Button,
@@ -18,12 +17,12 @@ import { object, string } from "yup"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { useNavigationSavedForKey } from "app/navigation/navAtoms"
+import { albumArtworksQuery } from "app/screens/HomeTabs/Albums/AlbumTabs/AlbumArtworks"
+import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { ArtworkGridItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 import { extractNodes } from "shared/utils"
-import { usePresentationFilteredArtworks } from "../../usePresentationFilteredArtworks"
-import { albumArtworksQuery } from "../AlbumTabs/AlbumArtworks"
 
 interface CreateAlbumValuesSchema {
   albumName: string

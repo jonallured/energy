@@ -1,7 +1,7 @@
 import { Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isEqual } from "lodash"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql"
 import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
 import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"

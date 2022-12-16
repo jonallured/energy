@@ -157,7 +157,7 @@ class KeyboardAvoidingView extends Component<
   }
 
   render() {
-    const { children, mode, enabled, style, ...props } = this.props
+    const { children, enabled, style, ...props } = this.props
     const bottomHeight = enabled ? this.state.bottom : 0
     return (
       <View

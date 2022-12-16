@@ -1,14 +1,10 @@
 import { act } from "@testing-library/react-native"
 import { takeRight } from "lodash"
-import { MockPayloadGenerator, MockEnvironment, createMockEnvironment } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { flushPromiseQueue } from "./flushPromiseQueue"
 
-let counters: { [path: string]: number } = {}
-const reset = () => {
-  counters = {}
-  paths = {}
-}
+const counters: { [path: string]: number } = {}
 const generateID = (pathComponents: readonly string[] | undefined) => {
   const path: string = pathComponents?.join(".") ?? "_GLOBAL_"
   const currentCounter = counters[path]
@@ -28,7 +24,7 @@ const generateID = (pathComponents: readonly string[] | undefined) => {
  */
 export const mockEdges = (length: number) => new Array(length).fill({ node: {} })
 
-let paths: { [name: string]: string } = {}
+const paths: { [name: string]: string } = {}
 
 const mockResolver = (ctx: MockResolverContext) => {
   const makePrefix = (path: string) => takeRight(path.split("."), length).join(".")

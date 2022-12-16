@@ -1,4 +1,4 @@
-import { getChildrenByType, getChildrenByTypeDeep } from "react-nanny"
+import { getChildrenByTypeDeep } from "react-nanny"
 
 const Content = ({ children }: { children?: React.ReactNode }) => <>{children}</>
 

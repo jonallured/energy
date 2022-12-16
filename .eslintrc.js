@@ -34,7 +34,34 @@ module.exports = {
     },
   },
   rules: {
-    // TODO: we want to enable some of these
+    /**
+     * Errors
+     */
+
+    "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
+    "import/order": [
+      ERR,
+      {
+        alphabetize: { order: "asc" },
+        groups: ["builtin", "external", "internal", "index", "sibling", "parent", "object", "type"],
+      },
+    ],
+    "import/no-duplicates": ERR,
+    "react/jsx-curly-brace-presence": ERR,
+
+    /**
+     * Warnings
+     */
+
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      { allowSameFolder: true, rootDir: "src" },
+    ],
+
+    /**
+     * Disabled
+     */
+
     "@typescript-eslint/ban-ts-comment": OFF,
     "@typescript-eslint/ban-types": OFF,
     "@typescript-eslint/explicit-module-boundary-types": OFF,
@@ -52,26 +79,13 @@ module.exports = {
     "@typescript-eslint/no-var-requires": OFF,
     "@typescript-eslint/restrict-plus-operands": OFF,
     "@typescript-eslint/restrict-template-expressions": OFF,
-    "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
     "@typescript-eslint/strict-boolean-expressions": OFF,
     "@typescript-eslint/unbound-method": OFF,
     "import/default": OFF,
     "import/namespace": OFF,
-    "import/no-duplicates": ERR,
     "import/no-named-as-default-member": OFF,
     "import/no-named-as-default": OFF,
     "import/no-unresolved": OFF,
-    "import/order": [
-      ERR,
-      {
-        alphabetize: { order: "asc" },
-        groups: ["builtin", "external", "internal", "index", "sibling", "parent", "object", "type"],
-      },
-    ],
-    "no-relative-import-paths/no-relative-import-paths": [
-      "warn",
-      { allowSameFolder: true, rootDir: "src" },
-    ],
     "no-control-regex": OFF,
     "no-empty-pattern": OFF,
     "no-extra-boolean-cast": OFF,
@@ -80,7 +94,6 @@ module.exports = {
     "no-useless-catch": OFF,
     "no-useless-escape": OFF,
     "react-native/no-inline-styles": OFF,
-    "react/jsx-curly-brace-presence": ERR,
     "react/react-in-jsx-scope": OFF,
   },
 }

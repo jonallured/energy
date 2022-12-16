@@ -4,7 +4,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { useNavigationSave } from "app/navigation/navAtoms"

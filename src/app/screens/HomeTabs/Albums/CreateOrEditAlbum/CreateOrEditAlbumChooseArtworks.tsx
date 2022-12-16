@@ -8,12 +8,12 @@ import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { CreateOrEditAlbumChooseArtworksQuery } from "__generated__/CreateOrEditAlbumChooseArtworksQuery.graphql"
 import { NavigationScreens } from "app/navigation/Main"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
+import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { ArtworkGridItem } from "app/sharedUI/items/ArtworkGridItem"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Screen } from "palette"
 import { extractNodes } from "shared/utils/extractNodes"
 import { useArtworksByMode } from "./useArtworksByMode"
-import { usePresentationFilteredArtworks } from "../../usePresentationFilteredArtworks"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
   NavigationScreens,

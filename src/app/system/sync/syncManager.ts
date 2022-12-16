@@ -1,5 +1,3 @@
-import { Environment } from "react-relay"
-import { RecordSource } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import {
   ArtistArtworksQuery,

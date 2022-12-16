@@ -64,7 +64,7 @@ export const EditPresentationMode = () => {
     <Screen>
       <Screen.Header title="Edit Presentation Mode" />
       <Screen.Body scroll>
-        {presentationConfigs.map((presentationConfig, index, row) => (
+        {presentationConfigs.map((presentationConfig, index) => (
           <Flex key={index}>
             <SettingsItem title={presentationConfig.label}>
               <SettingsItem.Toggle

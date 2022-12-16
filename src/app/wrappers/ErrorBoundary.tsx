@@ -1,4 +1,4 @@
-import { Component, FC } from "react"
+import { Component } from "react"
 import { ErrorView } from "app/sharedUI/screens/ErrorView"
 
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery

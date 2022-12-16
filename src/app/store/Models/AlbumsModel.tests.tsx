@@ -1,4 +1,4 @@
-import { GlobalStore, __globalStoreTestUtils__ } from "../GlobalStore"
+import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 const albums = [
   {
