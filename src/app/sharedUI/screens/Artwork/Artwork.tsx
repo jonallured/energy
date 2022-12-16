@@ -17,6 +17,7 @@ import { imageSize } from "app/utils/imageSize"
 import { SuspenseWrapper } from "app/wrappers"
 import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
 import { Screen } from "palette"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
 
@@ -88,6 +89,7 @@ export const Artwork = () => {
             <Touchable
               onPress={addToButtonHandler}
               hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
             >
               <MoreIcon />
             </Touchable>
