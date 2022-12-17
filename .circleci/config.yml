@@ -211,9 +211,9 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
-      # - run:
-      #     name: Danger
-      #     command: yarn danger ci --verbose
+      - run:
+          name: Danger
+          command: yarn danger ci --verbose
 
   check-if-app-has-been-approved-for-release:
     environment:
