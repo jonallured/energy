@@ -1,17 +1,31 @@
 import { useRoute } from "@react-navigation/native"
-import { runOnJS, SharedValue, useAnimatedReaction } from "react-native-reanimated"
+import { useEffect } from "react"
+import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 import { useAnimatedTitleSmallTitleShownSetter } from "./atoms"
 
 export function useAnimatedHeaderScrolling(scrollY: SharedValue<number>, useHack = false) {
   const setTitleShown = useAnimatedTitleSmallTitleShownSetter()
+  const careAboutScrolling = useSharedValue(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      careAboutScrolling.value = false
+    }, 1 /* sec */ * 1000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
 
   useAnimatedReaction(
-    () => scrollY.value,
-    (data, prevData) => {
+    () => [scrollY.value, careAboutScrolling.value] as const,
+    ([data, care], prevDataTuple) => {
+      const [prevData] = prevDataTuple ?? [0, false]
+
       // hacky way to avoid some weird header behavior.
       // look at HACKS.md for more info.
-      const suddenlyScrolled = Math.abs(data - (prevData ?? 0)) > 40
-      if (useHack && suddenlyScrolled) return
+      const suddenlyScrolled = Math.abs(data - prevData) > 40
+      if (useHack && care && suddenlyScrolled) return
 
       // don't trigger the toggle function if the value we call it with hasn't changed
       const prevTitleShown = (prevData ?? 0) > 30
