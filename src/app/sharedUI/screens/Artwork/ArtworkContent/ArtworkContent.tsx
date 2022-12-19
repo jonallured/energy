@@ -34,7 +34,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
       heading: {
         react: (node, output, state) => {
           return (
-            <Text mb="1" key={state.key} variant="md">
+            <Text mb="1" key={state.key} variant="sm">
               {output(node.content, state)}
             </Text>
           )
@@ -48,7 +48,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               key={state.key}
               testID={`linktext-${state.key}`}
               onPress={() => Linking.openURL(node.target)}
-              variant="md"
+              variant="sm"
               style={{ textDecorationLine: "underline" }}
             >
               {output(node.content, state)}
@@ -62,7 +62,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - NAVBAR_HEIGHT
 
-  const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, "98%"], [screenHeight])
+  const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, "95%"], [screenHeight])
 
   // Enable scroll only when the bottom sheet is expanded.
   const handleSheetChanges = useCallback((index: number) => {
@@ -271,10 +271,10 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           </Flex>
           {!!shouldShowAboutTheArtworkTitle && (
             <>
-              <Spacer mt={3} />
+              <Spacer mt={1} />
               <Separator />
               <Spacer mt={2} />
-              <Text>About the artwork</Text>
+              <Text variant="md">About the artwork</Text>
               <Spacer mt={1} />
             </>
           )}
@@ -309,7 +309,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
                 {!!provenance && <ArtworkDetail label="Provenance" value={provenance} />}
                 <Spacer mt={1} />
               </Flex>
-              <Spacer mt={3} />
+              <Spacer mt={2} />
             </>
           )}
 
@@ -322,12 +322,12 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               borderColor="onBackgroundLow"
               borderBottomColor={exhibitionHistory && literature ? "background" : "onBackgroundLow"}
             >
-              <ArtworkDetail label="Exhibition history" value={exhibitionHistory} />
+              <ArtworkDetail label="Exhibition history" value={exhibitionHistory} size="big" />
             </Flex>
           )}
           {!!literature && (
             <Flex px={2} pt={2} pb={1} border={1} borderColor="onBackgroundLow">
-              <ArtworkDetail label="Bibliography" value={literature} />
+              <ArtworkDetail label="Bibliography" value={literature} size="big" />
             </Flex>
           )}
           <Spacer mt={2} />
