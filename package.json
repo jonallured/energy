@@ -136,6 +136,7 @@
     "husky": "^8.0.1",
     "jest": "^26.0.0",
     "jest-environment-jsdom": "^26.0.0",
+    "jest-fetch-mock": "3.0.3",
     "jest-junit": "^14.0.1",
     "jest-raw-loader": "^1.0.1",
     "lint-staged": "^11.2.6",

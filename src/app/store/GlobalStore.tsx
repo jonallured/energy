@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
 import { Platform } from "react-native"
+import { Action, Middleware } from "redux"
 import { DeepPartial } from "global"
 import { GlobalStoreModel, getGlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 
@@ -39,6 +40,16 @@ const asyncStorage = {
 }
 
 function createGlobalStore() {
+  const middleware: Middleware[] = []
+
+  if (__TEST__ && __globalStoreTestUtils__) {
+    __globalStoreTestUtils__.dispatchedActions = []
+    middleware.push((_api) => (next) => (_action) => {
+      __globalStoreTestUtils__.dispatchedActions.push(_action)
+      next(_action)
+    })
+  }
+
   const store = createStore<GlobalStoreModel>(
     persist(getGlobalStoreModel(), {
       storage: asyncStorage,
@@ -47,10 +58,26 @@ function createGlobalStore() {
       name: "GlobalStore",
       version: STORE_VERSION,
       devTools: __DEV__,
+      middleware,
     }
   )
+
   return store
 }
+
+// tslint:disable-next-line:variable-name
+export const __globalStoreTestUtils__ = __TEST__
+  ? {
+      // this can be used to mock the initial state before mounting a test renderer
+      // e.g. `__globalStoreTestUtils__?.injectState({ nativeState: { selectedTab: "sell" } })`
+      // takes effect until the next test starts
+      injectState: (state: DeepPartial<GlobalStoreState>) => {
+        GlobalStore.actions.__inject(state)
+      },
+      getCurrentState: () => globalStoreInstance.getState(),
+      dispatchedActions: [] as Action[],
+    }
+  : undefined
 
 const globalStoreInstance = createGlobalStore()
 
@@ -81,16 +108,3 @@ export function unsafe__getEnvironment() {
 export function unsafe__getAuth() {
   return { ...globalStoreInstance.getState().auth }
 }
-
-// tslint:disable-next-line:variable-name
-export const __globalStoreTestUtils__ = __TEST__
-  ? {
-      // this can be used to mock the initial state before mounting a test renderer
-      // e.g. `__globalStoreTestUtils__?.injectState({ nativeState: { selectedTab: "sell" } })`
-      // takes effect until the next test starts
-      injectState: (state: DeepPartial<GlobalStoreState>) => {
-        GlobalStore.actions.__inject(state)
-      },
-      getCurrentState: () => globalStoreInstance.getState(),
-    }
-  : undefined

@@ -55,6 +55,9 @@ jest.mock("shared/hooks", () => {
   }
 })
 
+// tslint:disable-next-line:no-var-requires
+require("jest-fetch-mock").enableMocks()
+
 jest.mock("rn-fetch-blob", () => ({
   config: () => ({
     fetch: jest.fn(),
