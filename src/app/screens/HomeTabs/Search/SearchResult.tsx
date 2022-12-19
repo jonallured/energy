@@ -68,7 +68,7 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
     } else {
       setDisabledPills((prev) => prev.filter((p) => p !== "Shows"))
     }
-  }, [artists.length, shows.length])
+  }, [artists.length, setDisabledPills, shows.length])
 
   const searchResults: SearchResult[] = []
   if (selectedPill === "Artists") {

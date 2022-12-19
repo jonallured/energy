@@ -20,9 +20,12 @@ interface Props {
  */
 export const MeasuredView: React.FC<Props> = ({ children, setMeasuredState, show }) => {
   const offscreenStyle = useOffscreenStyle(show)
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    setMeasuredState(event.nativeEvent.layout)
-  }, [])
+  const onLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setMeasuredState(event.nativeEvent.layout)
+    },
+    [setMeasuredState]
+  )
 
   return (
     <Box style={offscreenStyle} backgroundColor="pink" onLayout={onLayout}>

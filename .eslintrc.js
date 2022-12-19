@@ -1,18 +1,23 @@
-/* eslint-disable no-unused-vars */
 const OFF = "off"
 const WARN = "warn"
 const ERR = "error"
-/* eslint-enable no-unused-vars */
 
 module.exports = {
   root: true,
-  plugins: ["@typescript-eslint", "jest", "no-relative-import-paths", "testing-library"],
+  plugins: [
+    "@typescript-eslint",
+    "jest",
+    "no-relative-import-paths",
+    "react-hooks",
+    "testing-library",
+  ],
   extends: [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "prettier", // "prettier" needs to be last!
   ],
@@ -38,6 +43,14 @@ module.exports = {
      * Errors
      */
 
+    "@typescript-eslint/no-unused-vars": [
+      WARN,
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
     "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
     "import/order": [
       ERR,
@@ -48,6 +61,7 @@ module.exports = {
     ],
     "import/no-duplicates": ERR,
     "react/jsx-curly-brace-presence": ERR,
+    "react-hooks/rules-of-hooks": ERR,
 
     /**
      * Warnings

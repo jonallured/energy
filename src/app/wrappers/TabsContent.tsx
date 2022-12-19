@@ -20,7 +20,9 @@ import { useAnimatedHeaderScrolling } from "palette/organisms/Screen/hooks"
 export const TabsFlatList = <T,>(props: FlatListProps<T>) => {
   if (__TEST__) return <FlatList {...props} />
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const scrollY = useCurrentTabScrollY()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useAnimatedHeaderScrolling(scrollY, true)
 
   return <Tabs.FlatList {...props} />
@@ -29,7 +31,9 @@ export const TabsFlatList = <T,>(props: FlatListProps<T>) => {
 export const TabsScrollView = (props: ScrollViewProps) => {
   if (__TEST__) return <ScrollView {...props} />
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const scrollY = useCurrentTabScrollY()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useAnimatedHeaderScrolling(scrollY, true)
 
   // @ts-expect-error
@@ -39,7 +43,9 @@ export const TabsScrollView = (props: ScrollViewProps) => {
 export const TabsSectionList = <T,>(props: SectionListProps<T>) => {
   if (__TEST__) return <SectionList {...props} />
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const scrollY = useCurrentTabScrollY()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useAnimatedHeaderScrolling(scrollY, true)
 
   return <Tabs.SectionList {...props} />

@@ -33,7 +33,7 @@ export const Search = () => {
       setSelectedPill(null)
       setDisabledPills(["Albums"])
     }
-  }, [inputText])
+  }, [inputText, setDisabledPills, setSelectedPill])
 
   useEffect(() => {
     if (searchInputRef.current) {
@@ -42,7 +42,7 @@ export const Search = () => {
       })
       return unsubscribe
     }
-  }, [navigation, searchInputRef.current])
+  }, [navigation])
 
   const handleChangeText = (text: string) => {
     setInputText(text)

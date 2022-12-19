@@ -58,7 +58,7 @@ export const Settings = () => {
         setSyncStatus(message)
       },
     })
-  }, [])
+  }, [partnerID, relayEnvironment])
 
   const handleSyncButtonPress = async () => {
     try {

@@ -53,7 +53,7 @@ export const Artwork = () => {
   const numberOfAlbumsIncludingArtwork = useMemo(() => {
     return albums.filter((album) => album.artworkIds.includes(artworkData.artwork?.internalID!))
       .length
-  }, [albums])
+  }, [albums, artworkData.artwork?.internalID])
 
   const isEditArtworkHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.editArtwork

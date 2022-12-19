@@ -62,6 +62,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - NAVBAR_HEIGHT
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, "95%"], [screenHeight])
 
   // Enable scroll only when the bottom sheet is expanded.

@@ -2,7 +2,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { AlbumsModel } from "app/store/Models/AlbumsModel"
 
 const getSelectedArtworksFromAlbum = (type: keyof AlbumsModel["sessionState"], slug?: string) => {
-  const artworks = GlobalStore.useAppState((state) => state.albums.sessionState[type])
+  const artworks = GlobalStore.getState().albums.sessionState[type]
 
   if (slug) {
     return artworks[slug]

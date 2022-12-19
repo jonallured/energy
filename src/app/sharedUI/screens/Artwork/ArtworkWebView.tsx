@@ -54,7 +54,7 @@ function useUrlCookies(url: string, accessToken: string | null, isLoggedIn: bool
         attempt.invalidated = true
       }
     }
-  }, [accessToken, url])
+  }, [accessToken, isLoggedIn, url])
 }
 class CookieRequestAttempt {
   invalidated = false

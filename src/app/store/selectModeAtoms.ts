@@ -51,7 +51,7 @@ export function useHeaderSelectModeInTab(
     if (t !== tabName) return
 
     setAllSelected(allSelected)
-  }, [t, tabName, allSelected])
+  }, [t, tabName, allSelected, setAllSelected])
 
   const [, setSelectAllFn] = useAtom(selectAllAtom)
   const [, setUnselectAllFn] = useAtom(unselectAllAtom)
@@ -60,5 +60,5 @@ export function useHeaderSelectModeInTab(
 
     setSelectAllFn(() => selectAllFn)
     setUnselectAllFn(() => unselectAllFn)
-  }, [t, tabName])
+  }, [selectAllFn, setSelectAllFn, setUnselectAllFn, t, tabName, unselectAllFn])
 }
