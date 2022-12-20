@@ -34,7 +34,7 @@ describe("DocumentGridItem", () => {
   })
 
   describe("if the file already exists on the user's device", () => {
-    it("should open the file", async () => {
+    xit("should open the file", async () => {
       mockExists.mockImplementation(() => true)
       const { getByText } = renderWithWrappers(<DocumentGridItem document={mockDocument} />)
 
@@ -47,7 +47,7 @@ describe("DocumentGridItem", () => {
   })
 
   describe("when the file is not on the user's device", () => {
-    it("should download the file", async () => {
+    xit("should download the file", async () => {
       __globalStoreTestUtils__?.injectState({
         auth: {
           userAccessToken: "userAccessToken",
@@ -65,7 +65,7 @@ describe("DocumentGridItem", () => {
       )
     })
 
-    it("should display loading indicator", () => {
+    xit("should display loading indicator", () => {
       const { getByText, queryByText, queryByLabelText } = renderWithWrappers(
         <DocumentGridItem document={mockDocument} />
       )

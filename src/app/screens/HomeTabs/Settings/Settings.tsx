@@ -16,6 +16,7 @@ import { useSystemRelayEnvironment } from "app/relay/useSystemRelayEnvironment"
 import { DevMenu } from "app/screens/Dev/DevMenu"
 import { SettingsItem } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { clearFileCache } from "app/system/sync/fileCache"
 import { initSyncManager } from "app/system/sync/syncManager"
 import { Screen } from "palette"
 
@@ -158,6 +159,17 @@ export const Settings = () => {
           ) : (
             <>Start Sync {!isOnline && "(Offline)"}</>
           )}
+        </Button>
+
+        <Spacer y={1} />
+
+        <Button
+          block
+          onPress={() => {
+            clearFileCache()
+          }}
+        >
+          Clear cache
         </Button>
 
         <Spacer y={1} />

@@ -1,10 +1,5 @@
 import { Environment, fetchQuery, GraphQLTaggedNode, VariablesOf } from "react-relay"
-import {
-  createOperationDescriptor,
-  getRequest,
-  OperationType,
-  GraphQLTaggedNode as _GraphQLTaggedNode,
-} from "relay-runtime"
+import { createOperationDescriptor, getRequest, OperationType } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export const initFetchOrCatch = (relayEnvironment: RelayModernEnvironment) => {

@@ -5,6 +5,8 @@ import { ErrorView } from "app/sharedUI/screens/ErrorView"
 interface ErrorBoundaryProps {
   children: React.ReactNode
   withoutBackButton?: boolean
+
+  Fallback?: React.ReactNode
   catch?: (error: Error) => void
 }
 interface ErrorBoundaryState {
@@ -19,11 +21,16 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   render() {
-    const { children, withoutBackButton } = this.props
+    const { children, withoutBackButton, Fallback } = this.props
     const { error } = this.state
 
     if (error) {
       this.props.catch?.(error)
+
+      if (Fallback !== undefined) {
+        return Fallback
+      }
+
       return <ErrorView error={error} withoutBackButton={withoutBackButton} />
     }
 

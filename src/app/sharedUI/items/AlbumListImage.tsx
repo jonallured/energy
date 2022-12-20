@@ -1,8 +1,8 @@
-import { Image, ImageProps } from "react-native"
+import { ImageProps } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"
-import { ImagePlaceholder } from "app/sharedUI/molecules"
 import { imageSize } from "app/utils/imageSize"
+import { CachedImage } from "app/wrappers/CachedImage"
 import { useScreenDimensions } from "shared/hooks"
 
 interface AlbumListImageProps {
@@ -11,17 +11,14 @@ interface AlbumListImageProps {
 }
 
 export const AlbumListImage = ({ slug, style }: AlbumListImageProps) => {
+  const placeholderHeight = useScreenDimensions().height / 5
   const albumImages = useLazyLoadQuery<AlbumListImageQuery>(albumsQuery, { slug, imageSize })
-  const placeHolderHeight = useScreenDimensions().height / 5
   const albumListImage = albumImages.artwork?.image
 
-  if (!albumListImage?.resized?.url) {
-    return <ImagePlaceholder height={placeHolderHeight} />
-  }
-
   return (
-    <Image
-      source={{ uri: albumListImage.resized.url }}
+    <CachedImage
+      uri={albumListImage?.resized?.url}
+      placeholderHeight={placeholderHeight}
       style={[style, { aspectRatio: albumListImage?.aspectRatio ?? 1 }]}
     />
   )
@@ -32,6 +29,7 @@ const albumsQuery = graphql`
     artwork(id: $slug) {
       image {
         resized(width: $imageSize, version: "normalized") {
+          height
           url
         }
         aspectRatio

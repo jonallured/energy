@@ -1,10 +1,11 @@
 import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "@artsy/palette-mobile"
-import { Image, ViewProps } from "react-native"
+import { ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { AvailabilityDot } from "app/sharedUI"
 import { GlobalStore } from "app/store/GlobalStore"
+import { CachedImage } from "app/wrappers/CachedImage"
 
 export interface ArtworkGridItemProps {
   artwork: ArtworkGridItem_artwork$key
@@ -33,8 +34,9 @@ export const ArtworkGridItem = ({
   return (
     <Touchable disabled={disable} onPress={onPress}>
       <Flex mb={4} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1} style={style}>
-        <Image
-          source={{ uri: artwork.image?.resized?.url! }}
+        <CachedImage
+          uri={artwork.image?.resized?.url}
+          placeholderHeight={artwork.image?.resized?.height}
           style={{
             aspectRatio: artwork.image?.aspectRatio ?? 1,
           }}
@@ -82,6 +84,7 @@ const ArtworkGridItemFragment = graphql`
     date
     image {
       resized(width: $imageSize, version: "normalized") {
+        height
         url
       }
       aspectRatio

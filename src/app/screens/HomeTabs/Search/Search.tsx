@@ -33,7 +33,8 @@ export const Search = () => {
       setSelectedPill(null)
       setDisabledPills(["Albums"])
     }
-  }, [inputText, setDisabledPills, setSelectedPill])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputText])
 
   useEffect(() => {
     if (searchInputRef.current) {

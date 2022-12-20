@@ -33,6 +33,7 @@ import { AddItemsToAlbum } from "app/sharedUI/screens/AddItemsToAlbum"
 import { Artwork } from "app/sharedUI/screens/Artwork/Artwork"
 import { ArtworkWebView, useWebViewCookies } from "app/sharedUI/screens/Artwork/ArtworkWebView"
 import { GlobalStore } from "app/store/GlobalStore"
+import { loadUrlMap } from "app/system/sync/fileCache"
 import { useNetworkStatusListener } from "app/system/useNetworkStatusListener"
 import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
 
@@ -98,8 +99,13 @@ export const Main = () => {
   useNetworkStatusListener()
 
   useEffect(() => {
-    if (isRehydrated) {
+    const workAfterRehydrate = async () => {
+      await loadUrlMap()
       SplashScreen.hide()
+    }
+
+    if (isRehydrated) {
+      workAfterRehydrate()
     }
   }, [isRehydrated])
 

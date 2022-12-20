@@ -57,14 +57,19 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
 }
 
 export const artistShowsQuery = graphql`
-  query ArtistShowsQuery($partnerID: String!, $slug: String!, $imageSize: Int!) {
+  query ArtistShowsQuery($partnerID: String!, $slug: String!, $imageSize: Int!) @raw_response_type {
     partner(id: $partnerID) {
       showsConnection(first: 100, status: ALL, artistID: $slug) {
         edges {
           node {
+            ...ShowListItem_show @arguments(imageSize: $imageSize)
             internalID
             slug
-            ...ShowListItem_show @arguments(imageSize: $imageSize)
+            coverImage {
+              resized(width: $imageSize, version: "normalized") {
+                url
+              }
+            }
           }
         }
       }

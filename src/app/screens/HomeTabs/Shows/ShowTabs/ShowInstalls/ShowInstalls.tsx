@@ -71,6 +71,7 @@ const showInstallsQuery = graphql`
       images(default: true) {
         internalID
         resized(width: $imageSize, version: "normalized") {
+          height
           url
         }
       }

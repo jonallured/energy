@@ -7,10 +7,8 @@ setupFlipper()
 
 LogBox.ignoreLogs(["lineHeight", "borderRadius", "fontSize", "onBackground", "borderWidth"])
 
-export const App = () => {
-  return (
-    <AppProviders>
-      <Main />
-    </AppProviders>
-  )
-}
+export const App = () => (
+  <AppProviders>
+    <Main />
+  </AppProviders>
+)

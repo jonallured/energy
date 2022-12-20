@@ -1,11 +1,10 @@
-import { Button, CheckCircleFillIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { CheckCircleFillIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { last } from "lodash"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
-import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from "rn-fetch-blob"
 import { GlobalStore } from "app/store/GlobalStore"
-import { getUrlExtension } from "shared/utils"
+import { downloadFileToCache, useCachedOrFetchUrl } from "app/system/sync/fileCache"
 import { formatBytes } from "shared/utils/formatBytes"
 import { FileTypeIcon } from "./FileTypeIcon"
 
@@ -25,69 +24,25 @@ interface DocumentGridItemProps {
 export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentGridItemProps) => {
   const [isDownloading, setIsDownloading] = useState(false)
   const formattedSize = formatBytes(document.size)
-  const downloadTask = useRef<StatefulPromise<FetchBlobResponse> | null>(null)
   const fileExtension = last(document.url.split("."))
-  const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
 
-  const downloadFile = async (fileUrl: string, dest: string) => {
-    try {
-      setIsDownloading(true)
-      const fetchInstance = RNFetchBlob.config({ path: dest })
+  const url = useCachedOrFetchUrl(document.url)
 
-      downloadTask.current = fetchInstance.fetch("GET", fileUrl, {
-        "X-ACCESS-TOKEN": userAccessToken,
-      })
-      await downloadTask.current
-    } catch (error) {
-      // Trying to silently remove the file
-      RNFetchBlob.fs.unlink(dest).catch(() => {})
-
-      throw error
-    } finally {
-      downloadTask.current = null
-      setIsDownloading(false)
-    }
-  }
+  console.log({ url1: url })
 
   const openFile = async () => {
-    try {
-      const fileExt = getUrlExtension(document.url)
-      const filename = `${document.id}.${fileExt}`
-      const path = `${RNFetchBlob.fs.dirs.DocumentDir}/${filename}`
-      const isFileExists = await RNFetchBlob.fs.exists(path)
+    const isFileCached = url.startsWith("file://")
 
-      if (!isFileExists) {
-        await downloadFile(document.url, path)
-      }
-
-      await FileViewer.open(path)
-    } catch (error) {
-      // Ignore error if user canceled the file download
-      if ((error as Error)?.message === "canceled") {
-        return
-      }
-
-      console.error(error)
+    if (!isFileCached) {
+      setIsDownloading(true)
+      await downloadFileToCache({ url: document.url, type: "document" })
+      setIsDownloading(false)
     }
+    console.log({ url3: url })
+
+    await FileViewer.open(realUrl)
   }
-
-  const cancelDownload = () => {
-    if (downloadTask.current) {
-      downloadTask.current.cancel((error) => {
-        if (error) {
-          console.error(error)
-        }
-      })
-    }
-  }
-
-  // Cancel the file download if the component is unmounted
-  useEffect(() => {
-    return () => {
-      cancelDownload()
-    }
-  }, [])
 
   return (
     <Touchable disabled={isDownloading} onPress={isSelectModeActive ? onPress : openFile}>
@@ -113,9 +68,6 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
               bg="rgba(0, 0, 0, 0.5)"
             >
               <ActivityIndicator accessibilityLabel="Loading Indicator" />
-              <Button size="small" mt={2} onPress={cancelDownload}>
-                Cancel
-              </Button>
             </Flex>
           )}
         </Flex>

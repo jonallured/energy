@@ -66,6 +66,17 @@ function preventDefaultLazyQueryLoaderImport() {
   }
 }
 
+function preventDefaultImageImport() {
+  const newQueryLoaderImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
+    const content = fs.readFileSync(filename).toString()
+    return content.includes("<Image ")
+  })
+  if (newQueryLoaderImports.length > 0) {
+    fail(`Please use \`CachedImage\` instead of \`Image\`. This enables offline image viewing support. See:
+> ${newQueryLoaderImports.map((filename) => `\`${filename}\``).join("\n")}`)
+  }
+}
+
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 const verifyRemainingDevWork = () => {
@@ -124,6 +135,7 @@ export const useWebPs = (fileNames: string[]) => {
   preventUsingMoment()
   preventUsingTestRenderer()
   preventDefaultLazyQueryLoaderImport()
+  preventDefaultImageImport()
   verifyRemainingDevWork()
   useWebPs(newCreatedFileNames)
 })()

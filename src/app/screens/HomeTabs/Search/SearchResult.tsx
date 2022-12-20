@@ -68,7 +68,8 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
     } else {
       setDisabledPills((prev) => prev.filter((p) => p !== "Shows"))
     }
-  }, [artists.length, setDisabledPills, shows.length])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [artists.length, shows.length])
 
   const searchResults: SearchResult[] = []
   if (selectedPill === "Artists") {

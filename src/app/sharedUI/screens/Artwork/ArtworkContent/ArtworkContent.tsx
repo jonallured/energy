@@ -1,7 +1,7 @@
 import { Spacer, Flex, Separator, Text, Touchable, useColor, useSpace } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Image, Linking } from "react-native"
+import { Linking } from "react-native"
 import QRCode from "react-native-qrcode-generator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
@@ -11,6 +11,7 @@ import { ImagePlaceholder, ListEmptyComponent, ImageModal } from "app/sharedUI"
 import { Markdown } from "app/sharedUI/molecules/Markdown"
 import { GlobalStore } from "app/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
+import { CachedImage } from "app/wrappers/CachedImage"
 import { NAVBAR_HEIGHT } from "palette/organisms/Screen/notExposed/ActualHeader"
 import { useScreenDimensions } from "shared/hooks"
 import { defaultRules } from "shared/utils/renderMarkdown"
@@ -172,8 +173,9 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             style={{ width: "100%", height: "100%" }}
             onPress={() => setIsModalVisible(!isModalVisible)}
           >
-            <Image
-              source={{ uri: image.resized.url }}
+            <CachedImage
+              uri={image?.resized?.url}
+              placeholderHeight={image?.resized?.height}
               style={{ flex: 1, width: "100%", marginBottom: space(3) }}
               resizeMode="contain"
             />
@@ -361,6 +363,7 @@ export const artworkContentQuery = graphql`
     artwork(id: $slug) {
       image {
         resized(width: $imageSize, version: "normalized") {
+          height
           url
         }
         aspectRatio

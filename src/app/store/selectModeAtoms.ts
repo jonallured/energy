@@ -51,7 +51,8 @@ export function useHeaderSelectModeInTab(
     if (t !== tabName) return
 
     setAllSelected(allSelected)
-  }, [t, tabName, allSelected, setAllSelected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, tabName, allSelected])
 
   const [, setSelectAllFn] = useAtom(selectAllAtom)
   const [, setUnselectAllFn] = useAtom(unselectAllAtom)
@@ -60,5 +61,6 @@ export function useHeaderSelectModeInTab(
 
     setSelectAllFn(() => selectAllFn)
     setUnselectAllFn(() => unselectAllFn)
-  }, [selectAllFn, setSelectAllFn, setUnselectAllFn, t, tabName, unselectAllFn])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, tabName])
 }

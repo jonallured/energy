@@ -1,9 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { Image } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
-import { ImagePlaceholder } from "app/sharedUI"
+import { CachedImage } from "app/wrappers/CachedImage"
 
 interface ShowListItemProps {
   show: ShowListItem_show$key
@@ -16,15 +15,12 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
 
   return (
     <Flex mx="2" my="2" opacity={props.disabled ? 0.4 : 1}>
-      {show.coverImage?.resized?.url ? (
-        <Image
-          style={{ height: 200 }}
-          resizeMode="cover"
-          source={{ uri: show.coverImage.resized.url }}
-        />
-      ) : (
-        <ImagePlaceholder height={200} />
-      )}
+      <CachedImage
+        uri={show?.coverImage?.resized?.url}
+        placeholderHeight={200}
+        style={{ height: 200 }}
+        resizeMode="cover"
+      />
       <Flex width="100%">
         <Text variant={fontSize} mt="1">
           {show?.name}
@@ -44,6 +40,7 @@ const ShowListItemFragment = graphql`
     formattedEndAt: endAt(format: "MMMM D, YYYY")
     coverImage {
       resized(width: $imageSize, version: "normalized") {
+        height
         url
       }
     }

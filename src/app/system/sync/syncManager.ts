@@ -3,12 +3,14 @@ import {
   ArtistArtworksQuery,
   ArtistArtworksQuery$data,
 } from "__generated__/ArtistArtworksQuery.graphql"
-// import { downloadImageToCache, getFileFromCache, saveFileToCache } from "./fileCache"
 import {
   ArtistDocumentsQuery,
   ArtistDocumentsQuery$data,
 } from "__generated__/ArtistDocumentsQuery.graphql"
-import { ArtistShowsQuery, ArtistShowsQuery$data } from "__generated__/ArtistShowsQuery.graphql"
+import {
+  ArtistShowsQuery,
+  ArtistShowsQuery$rawResponse,
+} from "__generated__/ArtistShowsQuery.graphql"
 import { ArtistTabsQuery, ArtistTabsQuery$data } from "__generated__/ArtistTabsQuery.graphql"
 import { ArtistsQuery, ArtistsQuery$data } from "__generated__/ArtistsQuery.graphql"
 import {
@@ -17,8 +19,6 @@ import {
 } from "__generated__/ArtworkContentQuery.graphql"
 import { ShowTabsQuery, ShowTabsQuery$data } from "__generated__/ShowTabsQuery.graphql"
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
-
-// Top-level Tabs
 import { RelayContextProps } from "app/relay/RelayProvider"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { artistDocumentsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistDocuments/ArtistDocuments"
@@ -27,14 +27,12 @@ import { artistTabsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistT
 import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
 import { showTabsQuery } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { showsQuery } from "app/screens/HomeTabs/Shows/Shows"
-
-// Sub-queries
 import { artworkContentQuery } from "app/sharedUI/screens/Artwork/ArtworkContent/ArtworkContent"
 import { imageSize } from "app/utils/imageSize"
 import { extractNodes } from "shared/utils"
-import { getFileFromCache, saveFileToCache } from "./fileCache"
+import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
+import { forEachAsync, mapAsync } from "./utils/asyncIterators"
 import { initFetchOrCatch } from "./utils/fetchOrCatch"
-import { mapAsync } from "./utils/mapAsync"
 
 interface SyncResultsData {
   artistsQuery?: ArtistsQuery$data
@@ -42,7 +40,7 @@ interface SyncResultsData {
   artistTabsQuery?: ArtistTabsQuery$data[]
   artistArtworksQuery?: ArtistArtworksQuery$data[]
   artworkContentQuery?: ArtworkContentQuery$data[]
-  artistShowsQuery?: ArtistShowsQuery$data[]
+  artistShowsQuery?: ArtistShowsQuery$rawResponse[]
   showTabsQuery?: ShowTabsQuery$data[]
   artistDocumentsQuery?: ArtistDocumentsQuery$data[]
   partnerShowTabsQuery?: ShowTabsQuery$data[]
@@ -107,6 +105,12 @@ export function initSyncManager({
       syncArtistDocumentsQuery,
       syncShowTabsQuery,
       syncPartnerShowTabsQuery,
+
+      // Media sync. We collect all urls from the queries above and sync the
+      // images, install shots, and documents last.
+      syncImages,
+      syncInstallShots,
+      syncDocuments,
     ]
 
     // Since some items depend on the next, fetch the above sequentially.
@@ -260,6 +264,49 @@ export function initSyncManager({
     updateStatus("Complete. `partnerShowTabsQuery`", syncResults.partnerShowTabsQuery)
   }
 
+  /**
+   * Media sync, such as images, install shots, and documents
+   */
+
+  const syncImages = async () => {
+    updateStatus("Syncing images...")
+
+    const urls = parsers.getImageUrls()
+
+    await forEachAsync(urls, (url) =>
+      downloadFileToCache({
+        type: "image",
+        url,
+      })
+    )
+  }
+
+  const syncInstallShots = async () => {
+    updateStatus("Syncing install shots...")
+
+    const urls = parsers.getInstallShotUrls()
+
+    await forEachAsync(urls, (url) =>
+      downloadFileToCache({
+        type: "image",
+        url,
+      })
+    )
+  }
+
+  const syncDocuments = async () => {
+    updateStatus("Syncing documents...")
+
+    const urls = parsers.getDocumentsUrls()
+
+    await forEachAsync(urls, (url) =>
+      downloadFileToCache({
+        type: "document",
+        url,
+      })
+    )
+  }
+
   return {
     startSync,
   }
@@ -329,6 +376,33 @@ const parsers = {
 
     return showSlugs
   },
+
+  getImageUrls: (): string[] => {
+    const imageUrls = (syncResults.artworkContentQuery ?? [])
+      .map((artworkContent) => artworkContent.artwork?.image?.resized?.url ?? "")
+      .filter((url: string) => url !== "")
+
+    return imageUrls
+  },
+
+  getInstallShotUrls: (): string[] => {
+    const installShotUrls = (syncResults.artistShowsQuery ?? [])
+      .flatMap((artistShows) => extractNodes(artistShows.partner?.showsConnection))
+      .map((show) => show.coverImage?.resized?.url)
+      .filter((url): url is string => url !== undefined)
+      .filter((url) => url !== "")
+
+    return installShotUrls
+  },
+
+  getDocumentsUrls: (): string[] => {
+    const documentsUrls = (syncResults.artistDocumentsQuery ?? [])
+      .flatMap((artistDocs) => extractNodes(artistDocs.partner?.documentsConnection))
+      .map((doc) => doc.publicURL)
+      .filter((url) => url !== "")
+
+    return documentsUrls
+  },
 }
 
 const log = (...messages: any[]) => console.log("\n[sync]:", ...messages)
@@ -345,14 +419,14 @@ const persistDataToOfflineCache = async (relayEnvironment: RelayModernEnvironmen
   await saveFileToCache({
     data: JSON.stringify(relayData),
     filename: "relayData.json",
-    type: "json",
+    type: "relayData",
   })
 }
 
 export const loadRelayDataFromOfflineCache = (
   resetRelayEnvironment: RelayContextProps["resetRelayEnvironment"]
 ) => {
-  getFileFromCache({ filename: "relayData.json", type: "json" }).then((data) => {
+  getFileFromCache({ filename: "relayData.json", type: "relayData" }).then((data) => {
     log("Loading relay data from cache.")
 
     resetRelayEnvironment(JSON.parse(data!))
