@@ -226,7 +226,7 @@ export const CreateOrEditAlbum = () => {
           keyExtractor={(item) => item.internalID}
         />
         <Flex px={1} pt={2}>
-          <Button block onPress={handleSubmit} disabled={!isActionButtonEnabled}>
+          <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
             {mode === "edit" ? "Save" : "Create"}
           </Button>
         </Flex>

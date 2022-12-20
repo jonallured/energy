@@ -164,11 +164,10 @@ export function initSyncManager({
 
     const artistSlugs = parsers.getArtistSlugs()
 
-    syncResults.artistTabsQuery = await mapAsync(artistSlugs, (slug) => {
+    syncResults.artistTabsQuery = await mapAsync(artistSlugs, (_) => {
       return fetchOrCatch<ArtistTabsQuery>(artistTabsQuery, {
         partnerID,
         artworkIDs: [],
-        slug,
         imageSize,
       })
     })

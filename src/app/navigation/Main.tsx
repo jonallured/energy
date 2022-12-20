@@ -50,7 +50,7 @@ export type RegularScreens = {
   MultipleArtworksAndArtists: undefined
   DarkModeSettings: undefined
   EditPresentationMode: undefined
-  ArtistTabs: { slug: string; name?: string }
+  ArtistTabs: { slug: string; name: string }
   AlbumTabs: { albumId: string }
   InstallImage: { url: string }
   Artwork: { slug: string; contextArtworkSlugs?: string[] }

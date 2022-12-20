@@ -29,7 +29,7 @@ import { ArtistShows } from "./ArtistShows/ArtistShows"
 type ArtistTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
 export const ArtistTabs = () => {
-  const { slug } = useRoute<ArtistTabsRoute>().params
+  const { slug, name } = useRoute<ArtistTabsRoute>().params
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
@@ -48,7 +48,6 @@ export const ArtistTabs = () => {
   const artworkData = useSystemQueryLoader<ArtistTabsQuery>(artistTabsQuery, {
     partnerID,
     artworkIDs: selectedWorks,
-    slug,
     imageSize,
   })
 
@@ -67,10 +66,7 @@ export const ArtistTabs = () => {
   return (
     <BottomSheetModalProvider>
       <Screen>
-        <Screen.AnimatedTitleHeader
-          title={artworkData.artist?.name ?? ""}
-          selectModeConfig={selectModeConfig}
-        />
+        <Screen.AnimatedTitleHeader title={name} selectModeConfig={selectModeConfig} />
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="ArtistArtworks" label="Works">
             <ErrorBoundary withoutBackButton>
@@ -215,15 +211,7 @@ export const ArtistTabs = () => {
 }
 
 export const artistTabsQuery = graphql`
-  query ArtistTabsQuery(
-    $partnerID: String!
-    $artworkIDs: [String]
-    $slug: String!
-    $imageSize: Int!
-  ) {
-    artist(id: $slug) {
-      name
-    }
+  query ArtistTabsQuery($partnerID: String!, $artworkIDs: [String], $imageSize: Int!) {
     partner(id: $partnerID) {
       artworksConnection(first: 3, artworkIDs: $artworkIDs, includeUnpublished: true) {
         edges {

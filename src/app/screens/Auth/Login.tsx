@@ -151,7 +151,7 @@ export const LoginScreen = () => {
             }
             handleChange("password")(text)
           }}
-          onSubmitEditing={handleSubmit}
+          onSubmitEditing={() => handleSubmit()}
           onBlur={() => validateForm()}
           placeholder="Password"
           ref={passwordInputRef}
@@ -183,7 +183,7 @@ export const LoginScreen = () => {
                   handleSubmit()
                 }
               }}
-              onSubmitEditing={handleSubmit}
+              onSubmitEditing={() => handleSubmit()}
               onBlur={() => validateForm()}
               placeholder="Enter an authentication code"
               placeholderTextColor={color("onBackgroundLow")}
@@ -196,7 +196,7 @@ export const LoginScreen = () => {
         )}
         <Spacer y="4" />
         <Button
-          onPress={handleSubmit}
+          onPress={() => handleSubmit()}
           block
           haptic="impactMedium"
           disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
@@ -208,7 +208,7 @@ export const LoginScreen = () => {
         </Button>
         <Spacer y="2" />
         <Text variant="xs" pb={1} textAlign="center" color="onBackgroundMedium">
-          Once you log in. Artsy Folio will begin downloading your artworks. We recommend using a
+          Once you log in, Artsy Folio will begin downloading your artworks. We recommend using a
           stable Wifi connection.
         </Text>
 

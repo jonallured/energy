@@ -16,10 +16,7 @@ export const initFetchOrCatch = (relayEnvironment: RelayModernEnvironment) => {
       const data = await fetch(query, variables)
 
       // Ensure that data is not garbage collected by Relay
-      const operationDescriptor = createOperationDescriptor(
-        getRequest(query as _GraphQLTaggedNode), // TODO: Fix type
-        variables
-      )
+      const operationDescriptor = createOperationDescriptor(getRequest(query), variables)
       relayEnvironment.retain(operationDescriptor)
 
       return data
