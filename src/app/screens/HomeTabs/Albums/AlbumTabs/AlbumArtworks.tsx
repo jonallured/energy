@@ -3,11 +3,12 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
+import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
+import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
-import { ArtworkGridItem, ListEmptyComponent } from "app/sharedUI"
-import { GlobalStore } from "app/store/GlobalStore"
-import { TabsScrollView } from "app/wrappers"
-import { extractNodes } from "shared/utils"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { extractNodes } from "app/utils"
 
 export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!

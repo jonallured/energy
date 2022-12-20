@@ -1,7 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
 import { getChildByType, getChildrenByTypeDeep } from "react-nanny"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Children } from "shared/types"
+// import { Children } from "shared/types"
 import { AnimatedTitleHeader, PlaceholderAnimatedTitleHeader } from "./exposed/AnimatedTitleHeader"
 import {
   AnimatedTitleTabsBody,
@@ -13,6 +13,7 @@ import { FloatingHeader } from "./exposed/FloatingHeader"
 import { Header } from "./exposed/Header"
 import { RawHeader } from "./exposed/RawHeader"
 import { PlaceholderTabsBody, TabsBody } from "./exposed/TabsBody"
+import { Children } from "app/utils/types"
 
 export type ScreenProps = Children & {
   raw?: boolean

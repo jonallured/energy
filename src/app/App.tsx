@@ -1,7 +1,7 @@
 import { LogBox } from "react-native"
-import { AppProviders } from "./AppProviders"
-import { Main } from "./navigation/Main"
-import { setupFlipper } from "./system/flipper"
+import { Main } from "app/Navigation"
+import { AppProviders } from "app/Providers"
+import { setupFlipper } from "app/system/devTools/flipper"
 
 setupFlipper()
 

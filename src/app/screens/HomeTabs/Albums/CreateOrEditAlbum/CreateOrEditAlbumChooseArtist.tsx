@@ -4,12 +4,12 @@ import { zip } from "lodash"
 import { FlatList } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
-import { NavigationScreens } from "app/navigation/Main"
+import { NavigationScreens } from "app/Navigation"
+import { ArtistListItem } from "app/components/Items/ArtistListItem"
 import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
-import { ArtistListItem } from "app/sharedUI/items/ArtistListItem"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
 import { Screen } from "palette"
-import { extractNodes } from "shared/utils/extractNodes"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
   NavigationScreens,

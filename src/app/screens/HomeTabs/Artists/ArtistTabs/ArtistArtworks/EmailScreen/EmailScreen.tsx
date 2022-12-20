@@ -8,8 +8,8 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationScreens } from "app/navigation/Main"
-import { GlobalStore } from "app/store/GlobalStore"
+import { NavigationScreens } from "app/Navigation"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 
 export const EmailScreen = () => {

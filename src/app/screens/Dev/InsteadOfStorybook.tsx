@@ -1,7 +1,7 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
 import * as IconsObject from "@artsy/palette-mobile/dist/svgs"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationScreens } from "app/navigation/Main"
+import { NavigationScreens } from "app/Navigation"
 import { Screen } from "palette"
 
 export const InsteadOfStorybook = () => {

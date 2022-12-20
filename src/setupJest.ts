@@ -81,7 +81,7 @@ jest.mock("@gorhom/bottom-sheet", () => {
   }
 })
 
-jest.mock("shared/hooks", () => {
+jest.mock("app/utils/hooks/useScreenDimensions", () => {
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
     height: 550,
@@ -96,7 +96,7 @@ jest.mock("shared/hooks", () => {
     },
   }
   return {
-    ...jest.requireActual("shared/hooks"),
+    ...jest.requireActual("app/utils/hooks/useScreenDimensions"),
     useScreenDimensions: () => screenDimensions,
   }
 })
@@ -177,8 +177,8 @@ jest.mock("react-native-gesture-handler", () => {
   }
 })
 
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
-import { resetRelayMockEnvironment } from "shared/tests/mockEnvironmentPayload"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks/useScreenDimensions"
+import { resetRelayMockEnvironment } from "app/utils/test/mockEnvironmentPayload"
 
 beforeEach(() => {
   resetRelayMockEnvironment()

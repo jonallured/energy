@@ -1,6 +1,6 @@
+import { TabsContainer, TabsContainerProps } from "app/components/Tabs/TabsContainer"
 import { ActivityIndicator } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
-import { TabsContainer, TabsContainerProps } from "app/wrappers"
 import { Body } from "./Body"
 
 interface TabsBodyProps {

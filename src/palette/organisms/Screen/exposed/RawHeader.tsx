@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Wrap } from "shared/utils"
+import { Wrap } from "app/utils"
 import { useSetHandledTopSafeArea } from "../atoms"
 
 const Z = {

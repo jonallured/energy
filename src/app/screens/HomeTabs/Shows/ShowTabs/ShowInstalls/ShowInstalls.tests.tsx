@@ -1,5 +1,5 @@
-import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "shared/tests/renderWithWrappers"
+import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 import { ShowInstalls } from "./ShowInstalls"
 
 jest.mock("react-native-collapsible-tab-view", () => ({

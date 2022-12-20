@@ -1,7 +1,7 @@
+import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 import { range } from "lodash"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "shared/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "shared/tests/renderWithWrappers"
+import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
+import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
 import { ArtistArtworks } from "./ArtistArtworks"
 
 jest.mock("react-native-collapsible-tab-view", () => ({

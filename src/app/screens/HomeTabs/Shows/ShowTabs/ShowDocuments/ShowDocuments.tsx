@@ -3,12 +3,13 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isEqual } from "lodash"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ShowDocumentsQuery } from "__generated__/ShowDocumentsQuery.graphql"
-import { ListEmptyComponent, DocumentGridItem } from "app/sharedUI"
-import { GlobalStore } from "app/store/GlobalStore"
-import { useHeaderSelectModeInTab } from "app/store/selectModeAtoms"
-import { TabsScrollView } from "app/wrappers"
+import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
+import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { TabsScrollView } from "app/components/Tabs/TabsContent"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
+import { extractNodes } from "app/utils"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
-import { extractNodes } from "shared/utils"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
   const space = useSpace()

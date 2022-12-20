@@ -1,5 +1,5 @@
-import { SettingsItem } from "app/sharedUI"
-import { GlobalStore } from "app/store/GlobalStore"
+import { SettingsItem } from "app/components/SettingsItem"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 
 export const DarkModeSettings = () => {

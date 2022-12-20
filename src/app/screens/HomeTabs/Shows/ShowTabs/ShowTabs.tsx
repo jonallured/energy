@@ -6,18 +6,18 @@ import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
-import { NavigationScreens } from "app/navigation/Main"
-import { useNavigationSave } from "app/navigation/navAtoms"
-import { useSystemQueryLoader } from "app/relay/useSystemQueryLoader"
+import { NavigationScreens } from "app/Navigation"
 import {
-  BottomSheetModalRow,
-  BottomSheetModalView,
   BottomSheetRef,
-} from "app/sharedUI/molecules/BottomSheetModalView"
-import { GlobalStore } from "app/store/GlobalStore"
-import { useHeaderSelectModeConfig } from "app/store/selectModeAtoms"
-import { SuspenseWrapper } from "app/wrappers"
-import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
+  BottomSheetModalView,
+  BottomSheetModalRow,
+} from "app/components/BottomSheetModalView"
+import { useNavigationSave } from "app/system/hooks/useNavigationSave"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { useHeaderSelectModeConfig } from "app/system/store/selectModeAtoms"
+import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
+import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { Screen } from "palette"
 import { ShowArtworks } from "./ShowArtworks/ShowArtworks"
 import { ShowDocuments } from "./ShowDocuments/ShowDocuments"

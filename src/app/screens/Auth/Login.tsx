@@ -4,12 +4,12 @@ import { useRef, useState } from "react"
 import { Linking, Platform, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { object, string } from "yup"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { MeasuredView } from "app/utils"
+import { attemptAlbumMigration } from "app/utils/attemptAlbumMigration"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
-import { useScreenDimensions } from "shared/hooks"
-import { MeasuredView } from "shared/utils"
-import { attemptAlbumMigration } from "shared/utils/attemptAlbumMigration"
 
 export interface LoginSchema {
   email: string

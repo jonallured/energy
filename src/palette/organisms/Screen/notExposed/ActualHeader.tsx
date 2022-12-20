@@ -1,7 +1,7 @@
 import { Button, Spacer } from "@artsy/palette-mobile"
 import { ArrowLeftIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { SelectModeConfig } from "app/store/selectModeAtoms"
+import { SelectModeConfig } from "app/system/store/selectModeAtoms"
 import { noop } from "lodash"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
 import { useSetHandledTopSafeArea } from "../atoms"

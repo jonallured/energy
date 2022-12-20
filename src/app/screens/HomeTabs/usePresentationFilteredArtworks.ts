@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/system/store/GlobalStore"
 
 interface PresentedArtworkProps {
   readonly internalID: string

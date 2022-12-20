@@ -1,5 +1,5 @@
-import { GlobalStore } from "app/store/GlobalStore"
-import { AlbumsModel } from "app/store/Models/AlbumsModel"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { AlbumsModel } from "app/system/store/Models/AlbumsModel"
 
 const getSelectedArtworksFromAlbum = (type: keyof AlbumsModel["sessionState"], slug?: string) => {
   const artworks = GlobalStore.getState().albums.sessionState[type]

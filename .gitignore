@@ -39,6 +39,7 @@ yarn-error.log
 # Use a custom, cached location for Jest to save transpiling
 # on every PR
 .jest/cache
+.cache
 
 # BUCK
 buck-out/

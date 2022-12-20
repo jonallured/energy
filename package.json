@@ -6,8 +6,8 @@
     "bundle-install": "cd ios && bundle install && cd ..",
     "install:all": "yarn install && yarn bundle-install && yarn pod-install",
     "ios": "react-native run-ios",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix; yarn prettier-project",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "yarn lint; yarn prettier-project",
+    "lint": "eslint  --cache --cache-location '.cache/eslint/' --ext .ts,.tsx",
     "open-xcode": "open ios/Energy.xcworkspace",
     "pod-install": "cd ios && bundle exec pod install && cd ..",
     "postinstall": "patch-package",
@@ -152,7 +152,13 @@
     "typescript": "^4.8.4"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "*.@(md)": [
+      "yarn prettier-write"
+    ],
+    "*.@(js|jsx|ts|tsx)": [
+      "prettier --write --ignore-unknown",
+      "yarn lint:fix"
+    ]
   },
   "prettier": {
     "printWidth": 100,

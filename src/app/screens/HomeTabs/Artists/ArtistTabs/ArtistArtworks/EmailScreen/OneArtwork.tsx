@@ -1,5 +1,5 @@
 import { Input, Text } from "@artsy/palette-mobile"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 
 export const OneArtwork = () => {

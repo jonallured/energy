@@ -2,11 +2,12 @@ import { Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
-import { DocumentGridItem, ListEmptyComponent } from "app/sharedUI"
-import { GlobalStore } from "app/store/GlobalStore"
-import { TabsScrollView } from "app/wrappers"
+import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
+import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { TabsScrollView } from "app/components/Tabs/TabsContent"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { extractNodes } from "app/utils"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
-import { extractNodes } from "shared/utils"
 
 export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!

@@ -3,9 +3,9 @@ import { useState, useEffect, useRef, Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
-import { ListEmptyComponent } from "app/sharedUI"
-import { GlobalStore } from "app/store/GlobalStore"
-import { ErrorBoundary } from "app/wrappers/ErrorBoundary"
+import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { GlobalStore } from "app/system/store/GlobalStore"
+import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { Screen } from "palette"
 
 interface SelectPartnerHeaderProps {
