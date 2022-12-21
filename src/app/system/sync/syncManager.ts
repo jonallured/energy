@@ -188,6 +188,7 @@ export function initSyncManager({
       return fetchOrCatch<ArtistArtworksQuery>(artistArtworksQuery, {
         partnerID,
         slug,
+        imageSize,
       })
     })
 

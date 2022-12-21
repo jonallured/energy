@@ -14,12 +14,14 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils"
+import { imageSize } from "app/utils/imageSize"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,
+    imageSize,
   })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
@@ -95,7 +97,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
 }
 
 export const artistArtworksQuery = graphql`
-  query ArtistArtworksQuery($partnerID: String!, $slug: String!) {
+  query ArtistArtworksQuery($partnerID: String!, $slug: String!, $imageSize: Int!) {
     partner(id: $partnerID) {
       artworksConnection(first: 100, artistID: $slug, includeUnpublished: true) {
         edges {
@@ -104,7 +106,7 @@ export const artistArtworksQuery = graphql`
             slug
             published
             availability
-            ...ArtworkGridItem_artwork
+            ...ArtworkGridItem_artwork @arguments(imageSize: $imageSize)
           }
         }
       }

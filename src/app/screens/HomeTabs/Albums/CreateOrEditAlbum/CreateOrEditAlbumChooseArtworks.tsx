@@ -12,6 +12,7 @@ import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/Art
 import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { imageSize } from "app/utils/imageSize"
 import { Screen } from "palette"
 import { useArtworksByMode } from "./useArtworksByMode"
 
@@ -27,6 +28,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,
+    imageSize,
   })
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artistNameData = useLazyLoadQuery<CreateOrEditAlbumChooseArtworksQuery>(artistNameQuery, {
