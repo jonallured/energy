@@ -3,12 +3,13 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { isEqual } from "lodash"
 import { isTablet } from "react-native-device-info"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils"
@@ -16,7 +17,10 @@ import { imageSize } from "app/utils/imageSize"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const artworksData = useLazyLoadQuery<ShowArtworksQuery>(showArtworksQuery, { slug, imageSize })
+  const artworksData = useSystemQueryLoader<ShowArtworksQuery>(showArtworksQuery, {
+    slug,
+    imageSize,
+  })
   const artworks = extractNodes(artworksData.show?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
   const space = useSpace()
@@ -80,7 +84,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   )
 }
 
-const showArtworksQuery = graphql`
+export const showArtworksQuery = graphql`
   query ShowArtworksQuery($slug: String!, $imageSize: Int!) {
     show(id: $slug) {
       artworksConnection(first: 100) {

@@ -17,6 +17,12 @@ import {
   ArtworkContentQuery,
   ArtworkContentQuery$data,
 } from "__generated__/ArtworkContentQuery.graphql"
+import { ShowArtworksQuery, ShowArtworksQuery$data } from "__generated__/ShowArtworksQuery.graphql"
+import {
+  ShowDocumentsQuery,
+  ShowDocumentsQuery$data,
+} from "__generated__/ShowDocumentsQuery.graphql"
+import { ShowInstallsQuery, ShowInstallsQuery$data } from "__generated__/ShowInstallsQuery.graphql"
 import { ShowTabsQuery, ShowTabsQuery$data } from "__generated__/ShowTabsQuery.graphql"
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { artworkContentQuery } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
@@ -25,6 +31,9 @@ import { artistDocumentsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/Ar
 import { artistShowsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistShows/ArtistShows"
 import { artistTabsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
 import { artistsQuery } from "app/screens/HomeTabs/Artists/Artists"
+import { showArtworksQuery } from "app/screens/HomeTabs/Shows/ShowTabs/ShowArtworks/ShowArtworks"
+import { showDocumentsQuery } from "app/screens/HomeTabs/Shows/ShowTabs/ShowDocuments/ShowDocuments"
+import { showInstallsQuery } from "app/screens/HomeTabs/Shows/ShowTabs/ShowInstalls/ShowInstalls"
 import { showTabsQuery } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { showsQuery } from "app/screens/HomeTabs/Shows/Shows"
 import { RelayContextProps } from "app/system/relay/RelayProvider"
@@ -44,6 +53,9 @@ interface SyncResultsData {
   showTabsQuery?: ShowTabsQuery$data[]
   artistDocumentsQuery?: ArtistDocumentsQuery$data[]
   partnerShowTabsQuery?: ShowTabsQuery$data[]
+  showArtworksQuery?: ShowArtworksQuery$data[]
+  showInstallsQuery?: ShowInstallsQuery$data[]
+  showDocumentsQuery?: ShowDocumentsQuery$data[]
 }
 
 /**
@@ -59,6 +71,9 @@ const syncResults: SyncResultsData = {
   showTabsQuery: [],
   artistDocumentsQuery: [],
   partnerShowTabsQuery: [],
+  showArtworksQuery: [],
+  showInstallsQuery: [],
+  showDocumentsQuery: [],
 }
 
 interface SyncManagerOptions {
@@ -105,6 +120,9 @@ export function initSyncManager({
       syncArtistDocumentsQuery,
       syncShowTabsQuery,
       syncPartnerShowTabsQuery,
+      syncShowArtworksQuery,
+      syncShowInstallsQuery,
+      syncShowDocumentsQuery,
 
       // Media sync. We collect all urls from the queries above and sync the
       // images, install shots, and documents last.
@@ -263,6 +281,42 @@ export function initSyncManager({
     })
 
     updateStatus("Complete. `partnerShowTabsQuery`", syncResults.partnerShowTabsQuery)
+  }
+
+  const syncShowArtworksQuery = async () => {
+    updateStatus("Syncing show artworks...")
+
+    const showSlugs = parsers.getShowSlugs()
+
+    syncResults.showArtworksQuery = await mapAsync(showSlugs, (slug) => {
+      return fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug, imageSize })
+    })
+
+    updateStatus("Complete. `showArtworksQuery`", syncResults.showArtworksQuery)
+  }
+
+  const syncShowInstallsQuery = async () => {
+    updateStatus("Syncing show installs...")
+
+    const showSlugs = parsers.getShowSlugs()
+
+    syncResults.showInstallsQuery = await mapAsync(showSlugs, (slug) => {
+      return fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug, imageSize })
+    })
+
+    updateStatus("Complete. `showInstallsQuery`", syncResults.showInstallsQuery)
+  }
+
+  const syncShowDocumentsQuery = async () => {
+    updateStatus("Syncing show documents...")
+
+    const showSlugs = parsers.getShowSlugs()
+
+    syncResults.showDocumentsQuery = await mapAsync(showSlugs, (slug) => {
+      return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
+    })
+
+    updateStatus("Complete. `showDocumentsQuery`", syncResults.showDocumentsQuery)
   }
 
   /**

@@ -6,13 +6,14 @@ import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { imageSize } from "app/utils/imageSize"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
-  const installsData = useLazyLoadQuery<ShowInstallsQuery>(showInstallsQuery, {
+  const installsData = useSystemQueryLoader<ShowInstallsQuery>(showInstallsQuery, {
     slug,
     imageSize,
   })
@@ -49,10 +50,10 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
             onPress={() =>
               void GlobalStore.actions.selectMode.toggleSelectedItem({
                 type: "install",
-                item: showInstall!.resized!.url,
+                item: showInstall.resized!.url,
               })
             }
-            selectedToAdd={selectedInstalls.includes(showInstall!.resized!.url)}
+            selectedToAdd={selectedInstalls.includes(showInstall.resized!.url)}
           />
         )}
         ListEmptyComponent={
@@ -65,7 +66,7 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
   )
 }
 
-const showInstallsQuery = graphql`
+export const showInstallsQuery = graphql`
   query ShowInstallsQuery($slug: String!, $imageSize: Int!) {
     show(id: $slug) {
       images(default: true) {
