@@ -1,4 +1,4 @@
-import { ArtworkContent } from "app/components/Artwork/ArtworkContent/ArtworkContent"
+import { ArtworkContent } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/utils/test/renderWithWrappers"

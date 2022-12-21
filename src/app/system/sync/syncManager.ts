@@ -19,7 +19,7 @@ import {
 } from "__generated__/ArtworkContentQuery.graphql"
 import { ShowTabsQuery, ShowTabsQuery$data } from "__generated__/ShowTabsQuery.graphql"
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
-import { artworkContentQuery } from "app/components/Artwork/ArtworkContent/ArtworkContent"
+import { artworkContentQuery } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
 import { artistArtworksQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { artistDocumentsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistDocuments/ArtistDocuments"
 import { artistShowsQuery } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistShows/ArtistShows"
