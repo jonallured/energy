@@ -1,5 +1,4 @@
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo"
-import { throttle } from "lodash"
 import { useEffect } from "react"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
@@ -8,25 +7,21 @@ import { loadRelayDataFromOfflineCache } from "app/system/sync/syncManager"
 export const useNetworkStatusListener = () => {
   const { resetRelayEnvironment } = useSystemRelayEnvironment()
 
-  const handleStatusChange = throttle(
-    (state: NetInfoState) => {
-      GlobalStore.actions.networkStatus.toggleConnected(state.isConnected!)
+  const handleStatusChange = (state: NetInfoState) => {
+    GlobalStore.actions.networkStatus.toggleConnected(state.isConnected!)
 
-      if (state.isConnected) {
-        console.log("[network-status]: Online.")
+    if (state.isConnected) {
+      console.log("[network-status]: Online.")
 
-        // Reset store to clear out any stale data
-        resetRelayEnvironment()
-      } else {
-        console.log("[network-status]: Offline.")
+      // Reset store to clear out any stale data
+      resetRelayEnvironment()
+    } else {
+      console.log("[network-status]: Offline.")
 
-        // If a user has synced data before, load it from disk
-        loadRelayDataFromOfflineCache(resetRelayEnvironment)
-      }
-    },
-    1000,
-    { leading: true }
-  )
+      // If a user has synced data before, load it from disk
+      loadRelayDataFromOfflineCache(resetRelayEnvironment)
+    }
+  }
 
   useEffect(() => {
     const unsubscribeToNetworkInfo = NetInfo.addEventListener(handleStatusChange)
