@@ -24,7 +24,11 @@ export const Albums = () => {
         }
         data={albums}
         numColumns={isTablet() ? 2 : 1}
-        contentContainerStyle={{ paddingTop: space("2"), paddingBottom: space("2") + 60 }}
+        contentContainerStyle={{
+          paddingTop: space("2"),
+          paddingBottom: space("2") + 60,
+          paddingHorizontal: space("2"),
+        }}
         renderItem={({ item: album }) => (
           <Touchable
             onPress={() => navigation.navigate("AlbumTabs", { albumId: album.id })}
@@ -35,7 +39,7 @@ export const Albums = () => {
           </Touchable>
         )}
         keyExtractor={(item) => item?.id}
-        ListEmptyComponent={<ListEmptyComponent />}
+        ListEmptyComponent={<ListEmptyComponent mx={0} />}
       />
       <Flex
         position="absolute"

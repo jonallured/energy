@@ -17,11 +17,11 @@ import { object, string } from "yup"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
-import { albumArtworksQuery } from "app/screens/HomeTabs/Albums/AlbumTabs/AlbumArtworks"
-import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
+import { albumArtworksQuery } from "app/screens/Albums/AlbumTabs/AlbumArtworks"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils"
+import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { Screen } from "palette"
 
 interface CreateAlbumValuesSchema {

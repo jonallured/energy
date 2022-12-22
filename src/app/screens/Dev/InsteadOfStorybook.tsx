@@ -1,11 +1,11 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
 import * as IconsObject from "@artsy/palette-mobile/dist/svgs"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { StorybookScreens } from "app/screens/Dev/StorybookNavigation"
+import { NavigationScreens } from "app/Navigation"
 import { Screen } from "palette"
 
 export const InsteadOfStorybook = () => {
-  const navigation = useNavigation<NavigationProp<StorybookScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const allIcons = Object.entries(IconsObject)
 
   return (

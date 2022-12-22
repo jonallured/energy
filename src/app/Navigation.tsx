@@ -3,71 +3,41 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { useStoreRehydrated } from "easy-peasy"
 import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
-import { AddItemsToAlbum } from "app/components/AddItemsToAlbum"
-import { Artwork } from "app/screens/Artwork/Artwork"
-import { useWebViewCookies, ArtworkWebView } from "app/screens/Artwork/ArtworkWebView"
-import { LoginScreen } from "app/screens/Auth/Login"
-import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
-import { StorybookNavigation } from "app/screens/Dev/StorybookNavigation"
-import { AlbumTabs } from "app/screens/HomeTabs/Albums/AlbumTabs/AlbumTabs"
-import { CreateOrEditAlbum } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
-import { CreateOrEditAlbumChooseArtist } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
-import { CreateOrEditAlbumChooseArtworks } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtworks"
-import { EmailScreen } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/EmailScreen"
-import { MultipleArtworksAndArtists } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/MultipleArtworksAndArtists"
-import { MultipleArtworksBySameArtist } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/MultipleArtworksBySameArtist"
-import { OneArtwork } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistArtworks/EmailScreen/OneArtwork"
-import { ArtistTabs } from "app/screens/HomeTabs/Artists/ArtistTabs/ArtistTabs"
-import { HomeTabs } from "app/screens/HomeTabs/HomeTabs"
-import { Search } from "app/screens/HomeTabs/Search/Search"
-import { DarkModeSettings } from "app/screens/HomeTabs/Settings/DarkModeSettings"
-import { EditPresentationMode } from "app/screens/HomeTabs/Settings/EditPresentationMode"
-import { Settings } from "app/screens/HomeTabs/Settings/Settings"
-import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
+import { AlbumsNavigation, AlbumNavigationScreens } from "app/screens/Albums/navigation"
+import {
+  EmailNavigation,
+  EmailNavigationScreens,
+} from "app/screens/Artists/ArtistTabs/ArtistArtworks/EmailScreen/navigation"
+import { ArtistNavigation, ArtistNavigationScreens } from "app/screens/Artists/navigation"
+import { useWebViewCookies } from "app/screens/Artwork/ArtworkWebView"
+import { ArtworkNavigation, ArtworkNavigationScreens } from "app/screens/Artwork/navigation"
+import { AuthNavigationScreens, AuthNavigation } from "app/screens/Auth/navigation"
+import { DevNavigation, DevNavigationScreens } from "app/screens/Dev/navigation"
+import { HomeTabs } from "app/screens/HomeTabs"
+import { SearchNavigation, SearchNavigationScreens } from "app/screens/Search/navigation"
+import { SettingsNavigation, SettingsNavigationScreens } from "app/screens/Settings/navigation"
+import { ShowsNavigation, ShowsNavigationScreens } from "app/screens/Shows/navigation"
 import { useNetworkStatusListener } from "app/system/hooks/useNetworkStatusListener"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
 import { StatusBar } from "palette/organisms/StatusBar"
 
-export type AuthScreens = {
-  Login: undefined
-}
+export type NavigationScreens = AuthNavigationScreens &
+  AlbumNavigationScreens &
+  ArtworkNavigationScreens &
+  ArtistNavigationScreens &
+  SettingsNavigationScreens &
+  EmailNavigationScreens &
+  SearchNavigationScreens &
+  ShowsNavigationScreens &
+  DevNavigationScreens &
+  Screens
 
-export type Screens = {
-  AddItemsToAlbum: {
-    artworkIdToAdd?: string
-    closeBottomSheetModal?: () => void
-  }
-  AlbumArtworks: { albumId: string }
-  AlbumTabs: { albumId: string }
-  ArtistTabs: { slug: string; name: string }
-  Artwork: { slug: string; contextArtworkSlugs?: string[] }
-  ArtworkWebView: { uri: string }
-  CreateOrEditAlbum: {
-    mode: "create" | "edit"
-    albumId?: string
-    artworkIdToAdd?: string
-    closeBottomSheetModal?: () => void
-  }
-  CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
-  CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
-  DarkModeSettings: undefined
-  EditPresentationMode: undefined
-  EmailScreen: undefined
+type Screens = {
   HomeTabs: { tabName: string } | undefined
-  InstallImage: { url: string }
-  MultipleArtworksAndArtists: undefined
-  MultipleArtworksBySameArtist: undefined
-  OneArtwork: undefined
-  Search: undefined
-  SelectPartner: undefined
-  Settings: undefined
-  ShowTabs: { slug: string }
 }
 
-export type NavigationScreens = AuthScreens & Screens
-
-const { Navigator, Screen } = createStackNavigator<NavigationScreens>()
+export const StackNav = createStackNavigator<NavigationScreens>()
 
 export const Main = () => {
   const isRehydrated = useStoreRehydrated()
@@ -78,6 +48,7 @@ export const Main = () => {
 
   // Check the network status and toggle the offline mode if needed
   useNetworkStatusListener()
+  useWebViewCookies()
 
   useEffect(() => {
     const workAfterRehydrate = async () => {
@@ -90,58 +61,31 @@ export const Main = () => {
     }
   }, [isRehydrated])
 
-  useWebViewCookies()
-
-  if (!isRehydrated) return null
+  if (!isRehydrated) {
+    return null
+  }
 
   return (
     <>
       <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
-        <Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
-          {!isLoggedIn ? (
-            <>
-              <Screen name="Login" component={LoginScreen} />
-            </>
-          ) : selectedPartner === null ? (
-            <>
-              <Screen name="SelectPartner" component={SelectPartnerScreen} />
-            </>
-          ) : (
-            // logged in and partner selected
-            <>
-              <Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
-              <Screen name="ArtworkWebView" component={ArtworkWebView} />
-              <Screen name="AlbumTabs" component={AlbumTabs} />
-              <Screen name="ArtistTabs" component={ArtistTabs} />
-              <Screen name="Artwork" component={Artwork} />
-              <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
-              <Screen
-                name="CreateOrEditAlbumChooseArtist"
-                component={CreateOrEditAlbumChooseArtist}
-              />
-              <Screen
-                name="CreateOrEditAlbumChooseArtworks"
-                component={CreateOrEditAlbumChooseArtworks}
-              />
-              <Screen name="DarkModeSettings" component={DarkModeSettings} />
-              <Screen name="EditPresentationMode" component={EditPresentationMode} />
-              <Screen name="EmailScreen" component={EmailScreen} />
-              <Screen name="HomeTabs" component={HomeTabs} />
-              <Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
-              <Screen
-                name="MultipleArtworksBySameArtist"
-                component={MultipleArtworksBySameArtist}
-              />
-              <Screen name="OneArtwork" component={OneArtwork} />
-              <Screen name="Search" component={Search} />
-              <Screen name="Settings" component={Settings} />
-              <Screen name="ShowTabs" component={ShowTabs} />
+        <StackNav.Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
+          {AuthNavigation({ isLoggedIn, selectedPartner })}
 
-              {/* Dev */}
-              {StorybookNavigation()}
+          {isLoggedIn && selectedPartner && (
+            <>
+              {AlbumsNavigation()}
+              {ArtistNavigation()}
+              {ArtworkNavigation()}
+              {EmailNavigation()}
+              {SearchNavigation()}
+              {SettingsNavigation()}
+              {ShowsNavigation()}
+              {DevNavigation()}
+
+              <StackNav.Screen name="HomeTabs" component={HomeTabs} />
             </>
           )}
-        </Navigator>
+        </StackNav.Navigator>
       </NavigationContainer>
 
       <StatusBar backgroundColor={isOnline ? "transparent" : "pink"} />

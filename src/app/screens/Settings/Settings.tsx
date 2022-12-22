@@ -14,7 +14,6 @@ import { getVersion } from "react-native-device-info"
 import { NavigationScreens } from "app/Navigation"
 import { SettingsItem } from "app/components/SettingsItem"
 import { DevMenu } from "app/screens/Dev/DevMenu"
-import { StorybookScreens } from "app/screens/Dev/StorybookNavigation"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { clearFileCache } from "app/system/sync/fileCache"
@@ -23,7 +22,7 @@ import { Screen } from "palette"
 
 export const Settings = () => {
   const { relayEnvironment } = useSystemRelayEnvironment()
-  const navigation = useNavigation<NavigationProp<NavigationScreens & StorybookScreens>>()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isPresentationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )

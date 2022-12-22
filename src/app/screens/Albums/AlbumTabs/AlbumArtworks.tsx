@@ -6,9 +6,9 @@ import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
-import { usePresentationFilteredArtworks } from "app/screens/HomeTabs/usePresentationFilteredArtworks"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils"
+import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 
 export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!

@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack"
+import { StackNav } from "app/Navigation"
 import { BrowseOfflineCache } from "app/screens/Dev/BrowseOfflineCache"
 import { FolioDesignLanguage } from "app/screens/Dev/FolioDesignLanguage"
 import { InsteadOfStorybook } from "app/screens/Dev/InsteadOfStorybook"
@@ -10,7 +10,8 @@ import { StorybookScreenHeader } from "app/screens/Dev/StorybookScreenHeader"
 import { StorybookScreenHeaderElements } from "app/screens/Dev/StorybookScreenHeaderElements"
 import { StorybookScreenRawHeader } from "app/screens/Dev/StorybookScreenRawHeader"
 
-export type StorybookScreens = {
+export type DevNavigationScreens = {
+  BrowseOfflineCache: undefined
   FolioDesignLanguage: undefined
   InsteadOfStorybook: undefined
   StorybookScreenAnimatedTitleHeader: undefined
@@ -20,30 +21,33 @@ export type StorybookScreens = {
   StorybookScreenHeader: undefined
   StorybookScreenHeaderElements: undefined
   StorybookScreenRawHeader: undefined
-  BrowseOfflineCache: undefined
 }
 
-const { Screen } = createStackNavigator<StorybookScreens>()
-
-export const StorybookNavigation = () => {
+export const DevNavigation = () => {
   return (
     <>
-      <Screen name="FolioDesignLanguage" component={FolioDesignLanguage} />
-      <Screen name="InsteadOfStorybook" component={InsteadOfStorybook} />
-      <Screen
+      <StackNav.Screen name="FolioDesignLanguage" component={FolioDesignLanguage} />
+      <StackNav.Screen name="InsteadOfStorybook" component={InsteadOfStorybook} />
+      <StackNav.Screen
         name="StorybookScreenAnimatedTitleHeader"
         component={StorybookScreenAnimatedTitleHeader}
       />
-      <Screen
+      <StackNav.Screen
         name="StorybookScreenAnimatedTitleHeaderTabs"
         component={StorybookScreenAnimatedTitleHeaderTabs}
       />
-      <Screen name="StorybookScreenBottomView" component={StorybookScreenBottomView} />
-      <Screen name="StorybookScreenFullWidthItem" component={StorybookScreenFullWidthItem} />
-      <Screen name="StorybookScreenHeader" component={StorybookScreenHeader} />
-      <Screen name="StorybookScreenHeaderElements" component={StorybookScreenHeaderElements} />
-      <Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
-      <Screen name="BrowseOfflineCache" component={BrowseOfflineCache} />
+      <StackNav.Screen name="StorybookScreenBottomView" component={StorybookScreenBottomView} />
+      <StackNav.Screen
+        name="StorybookScreenFullWidthItem"
+        component={StorybookScreenFullWidthItem}
+      />
+      <StackNav.Screen name="StorybookScreenHeader" component={StorybookScreenHeader} />
+      <StackNav.Screen
+        name="StorybookScreenHeaderElements"
+        component={StorybookScreenHeaderElements}
+      />
+      <StackNav.Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
+      <StackNav.Screen name="BrowseOfflineCache" component={BrowseOfflineCache} />
     </>
   )
 }
