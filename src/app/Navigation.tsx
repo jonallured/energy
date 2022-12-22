@@ -71,6 +71,7 @@ const { Navigator, Screen } = createStackNavigator<NavigationScreens>()
 
 export const Main = () => {
   const isRehydrated = useStoreRehydrated()
+  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
@@ -142,7 +143,8 @@ export const Main = () => {
           )}
         </Navigator>
       </NavigationContainer>
-      <StatusBar backgroundColor="pink" />
+
+      <StatusBar backgroundColor={isOnline ? "transparent" : "pink"} />
     </>
   )
 }

@@ -36,6 +36,7 @@ export const ArtistTabs = () => {
 
   const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
 
+  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.artworks)
   const selectedItems = GlobalStore.useAppState((state) => state.selectMode.items)
@@ -66,7 +67,11 @@ export const ArtistTabs = () => {
   return (
     <BottomSheetModalProvider>
       <Screen>
-        <Screen.AnimatedTitleHeader title={name} selectModeConfig={selectModeConfig} />
+        <Screen.AnimatedTitleHeader
+          title={name}
+          selectModeConfig={selectModeConfig}
+          hideRightElements={!isOnline}
+        />
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="ArtistArtworks" label="Works">
             <ErrorBoundary withoutBackButton>

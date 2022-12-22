@@ -11,11 +11,13 @@ export const NAVBAR_HEIGHT = 44
 export interface ActualHeaderProps {
   title?: string
 
-  noBackButton?: boolean
   onBack?: () => void
 
   leftElements?: React.ReactNode
   rightElements?: React.ReactNode
+
+  hideLeftElements?: boolean
+  hideRightElements?: boolean
 
   animatedTitle?: boolean
   titleShown?: boolean
@@ -24,11 +26,12 @@ export interface ActualHeaderProps {
 }
 
 export const ActualHeader = ({
-  noBackButton,
-  onBack,
   leftElements,
-  title,
+  hideLeftElements,
   rightElements,
+  hideRightElements,
+  title,
+  onBack,
   animatedTitle = false,
   titleShown = false,
   selectModeConfig: {
@@ -57,51 +60,67 @@ export const ActualHeader = ({
     return null
   }
 
-  let actualLeftElements: React.ReactNode = (
-    <Touchable
-      onPress={onBack ? onBack : () => navigation.goBack()}
-      underlayColor="transparent"
-      hitSlop={{
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10,
-      }}
-    >
-      <ArrowLeftIcon fill="onBackgroundHigh" />
-    </Touchable>
-  )
-  if (noBackButton) {
-    actualLeftElements = null
-  }
-  if (leftElements !== undefined) {
-    actualLeftElements = leftElements
-  }
-  if (usingSelectMode && selectModeActive) {
-    actualLeftElements = (
-      <Button
-        size="small"
-        variant="fillGray"
-        onPress={selectModeAllSelected ? selectModeUnselectAll : selectModeSelectAll}
-        longestText="Unselect All"
-      >
-        {selectModeAllSelected ? "Unselect All" : "Select All"}
-      </Button>
-    )
-  }
+  const actualLeftElements = (() => {
+    switch (true) {
+      case hideLeftElements: {
+        return null
+      }
+      case leftElements !== undefined: {
+        return leftElements
+      }
+      case usingSelectMode && selectModeActive: {
+        return (
+          <Button
+            size="small"
+            variant="fillGray"
+            onPress={selectModeAllSelected ? selectModeUnselectAll : selectModeSelectAll}
+            longestText="Unselect All"
+          >
+            {selectModeAllSelected ? "Unselect All" : "Select All"}
+          </Button>
+        )
+      }
+      default: {
+        return (
+          <Touchable
+            onPress={onBack ? onBack : () => navigation.goBack()}
+            underlayColor="transparent"
+            hitSlop={{
+              top: 10,
+              right: 10,
+              bottom: 10,
+              left: 10,
+            }}
+          >
+            <ArrowLeftIcon fill="onBackgroundHigh" />
+          </Touchable>
+        )
+      }
+    }
+  })()
+
+  const actualRightElements = (() => {
+    switch (true) {
+      case hideRightElements: {
+        return null
+      }
+      case usingSelectMode: {
+        return (
+          <Button size="small" variant="fillGray" onPress={selectModeToggle} longestText="Cancel">
+            {selectModeActive ? "Cancel" : "Select"}
+          </Button>
+        )
+      }
+      default: {
+        return rightElements
+      }
+    }
+  })()
 
   const actualTitle = (
     <Text variant="md" numberOfLines={1}>
       {title}
     </Text>
-  )
-
-  let actualRightElements: React.ReactNode = usingSelectMode ? (
-    <Button size="small" variant="fillGray" onPress={selectModeToggle} longestText="Cancel">
-      {selectModeActive ? "Cancel" : "Select"}
-    </Button>
-  ) : (
-    rightElements
   )
 
   return (

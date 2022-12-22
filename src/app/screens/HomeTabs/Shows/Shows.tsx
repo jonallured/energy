@@ -1,4 +1,4 @@
-import { Flex, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -12,7 +12,6 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils"
 import { imageSize } from "app/utils/imageSize"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const Shows = () => {
   const space = useSpace()
@@ -29,7 +28,7 @@ export const Shows = () => {
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
-      contentContainerStyle={{ paddingTop: space("2"), paddingBottom: space("2") }}
+      contentContainerStyle={{ paddingBottom: space("2") }}
       renderItem={({ item: show }) => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (
@@ -49,11 +48,7 @@ export const Shows = () => {
         }
       }}
       keyExtractor={(item) => item?.internalID}
-      ListEmptyComponent={
-        <Flex mx={SCREEN_HORIZONTAL_PADDING}>
-          <ListEmptyComponent text="No shows" />
-        </Flex>
-      }
+      ListEmptyComponent={<ListEmptyComponent text="No shows" />}
     />
   )
 }

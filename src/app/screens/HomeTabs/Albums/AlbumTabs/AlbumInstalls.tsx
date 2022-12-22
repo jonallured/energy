@@ -1,9 +1,8 @@
-import { Flex, useSpace } from "@artsy/palette-mobile"
+import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const AlbumInstalls = ({ installShotUrls }: { installShotUrls: string[] }) => {
   const space = useSpace()
@@ -17,13 +16,9 @@ export const AlbumInstalls = ({ installShotUrls }: { installShotUrls: string[] }
         }}
         numColumns={2}
         data={installShotUrls}
-        keyExtractor={(item, index) => item ?? `${index}`}
+        keyExtractor={(item: any, index: any) => item ?? `${index}`}
         renderItem={({ item: url }) => <ArtworkImageGridItem url={url} />}
-        ListEmptyComponent={
-          <Flex mx={SCREEN_HORIZONTAL_PADDING}>
-            <ListEmptyComponent text="No installs shots to display" />
-          </Flex>
-        }
+        ListEmptyComponent={<ListEmptyComponent text="No installs shots to display" />}
       />
     </TabsScrollView>
   )

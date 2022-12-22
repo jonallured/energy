@@ -8,7 +8,6 @@ import { AlbumListItem } from "app/components/Items/AlbumListItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsFlatList } from "app/components/Tabs/TabsContent"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const Albums = () => {
   const space = useSpace()
@@ -37,7 +36,6 @@ export const Albums = () => {
         )}
         keyExtractor={(item) => item?.id}
         ListEmptyComponent={<ListEmptyComponent />}
-        style={{ paddingHorizontal: space(SCREEN_HORIZONTAL_PADDING) }}
       />
       <Flex
         position="absolute"

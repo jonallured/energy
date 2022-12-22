@@ -1,4 +1,4 @@
-import { Flex, useSpace } from "@artsy/palette-mobile"
+import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isEqual } from "lodash"
 import { graphql } from "react-relay"
@@ -10,7 +10,6 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
   const space = useSpace()
@@ -59,12 +58,8 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
             selectedToAdd={selectedDocumentIds.includes(document.internalID)}
           />
         )}
-        keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={
-          <Flex mx={SCREEN_HORIZONTAL_PADDING}>
-            <ListEmptyComponent text="No documents" />
-          </Flex>
-        }
+        keyExtractor={(item: any) => item.internalID}
+        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
       />
     </TabsScrollView>
   )

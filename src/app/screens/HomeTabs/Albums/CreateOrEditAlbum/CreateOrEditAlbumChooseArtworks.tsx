@@ -101,7 +101,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           }}
           numColumns={2}
           data={presentedArtworks}
-          keyExtractor={(item) => item?.internalID}
+          keyExtractor={(item: any) => item?.internalID}
           renderItem={({ item: artwork, i }) => {
             if (album?.artworkIds?.includes(artwork.internalID)) {
               return (

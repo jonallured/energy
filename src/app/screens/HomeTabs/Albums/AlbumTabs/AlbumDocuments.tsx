@@ -1,4 +1,4 @@
-import { Flex, useSpace } from "@artsy/palette-mobile"
+import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
@@ -7,7 +7,6 @@ import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
@@ -40,12 +39,8 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
             }}
           />
         )}
-        keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={
-          <Flex ml={SCREEN_HORIZONTAL_PADDING}>
-            <ListEmptyComponent text="No documents" />
-          </Flex>
-        }
+        keyExtractor={(item: any) => item.internalID}
+        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
       />
     </TabsScrollView>
   )

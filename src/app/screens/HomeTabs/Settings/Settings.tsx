@@ -72,6 +72,17 @@ export const Settings = () => {
     }
   }
 
+  const handleClearFileCache = async () => {
+    await clearFileCache()
+
+    Alert.alert("Cache cleared.", "", [
+      {
+        text: "OK",
+        style: "cancel",
+      },
+    ])
+  }
+
   return (
     <Screen>
       <Screen.AnimatedTitleHeader title="Settings" />
@@ -152,7 +163,7 @@ export const Settings = () => {
 
         <Spacer y={1} />
 
-        <Button block onPress={handleSyncButtonPress} disabled={!isOnline}>
+        <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
           {isSyncing ? (
             <>
               {syncStatus}: {syncProgress}%
@@ -164,25 +175,11 @@ export const Settings = () => {
 
         <Spacer y={1} />
 
-        <Button
-          block
-          onPress={() => {
-            clearFileCache()
-          }}
-        >
+        <Button block onPress={handleClearFileCache}>
           Clear cache
         </Button>
 
         <Spacer y={1} />
-
-        <Button
-          block
-          onPress={() => {
-            GlobalStore.actions.networkStatus.toggleConnected(!isOnline)
-          }}
-        >
-          Is Online: {isOnline ? "true" : "false"}
-        </Button>
 
         {isUserDev && <DevMenu />}
       </Screen.Body>

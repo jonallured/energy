@@ -89,9 +89,9 @@ const SelectPartner = () => {
       )}
       ItemSeparatorComponent={() => <Spacer mt={2} />}
       stickyHeaderIndices={[0]}
+      showsVerticalScrollIndicator={false}
       ListHeaderComponent={<SelectPartnerHeader onSearchChange={setSearch} searchValue={search} />}
       ListEmptyComponent={<ListEmptyComponent text="No partners found" />}
-      showsVerticalScrollIndicator={false}
     />
   )
 }

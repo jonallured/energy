@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette-mobile"
 import { useEffect } from "react"
-import { Appearance, StatusBar } from "react-native"
+import { Appearance } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayProvider } from "app/system/relay/RelayProvider"
 import { GlobalStoreProvider, GlobalStore } from "app/system/store/GlobalStore"
@@ -42,10 +42,5 @@ const ThemeProvider: React.FC = ({ children }) => {
   const isDarkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme) === "dark"
   const theme = isDarkMode ? "v5dark" : "v5"
 
-  return (
-    <Theme theme={theme}>
-      {children}
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
-    </Theme>
-  )
+  return <Theme theme={theme}>{children}</Theme>
 }

@@ -7,13 +7,15 @@ type ArtsySuspenseProps = {
   withTabs?: boolean
 }
 
-export const SuspenseWrapper: React.FC<ArtsySuspenseProps> = (props) => {
+export const SuspenseWrapper: React.FC<ArtsySuspenseProps> = ({ withTabs, children }) => {
   return (
     <Suspense
       fallback={
-        props.withTabs ? (
+        withTabs ? (
           <TabsScrollView>
-            <ActivityIndicator />
+            <Flex my={2}>
+              <ActivityIndicator />
+            </Flex>
           </TabsScrollView>
         ) : (
           <Flex backgroundColor="background" flex={1} justifyContent="center" alignItems="center">
@@ -22,7 +24,7 @@ export const SuspenseWrapper: React.FC<ArtsySuspenseProps> = (props) => {
         )
       }
     >
-      {props.children}
+      {children}
     </Suspense>
   )
 }

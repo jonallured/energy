@@ -1,4 +1,4 @@
-import { Flex, Touchable } from "@artsy/palette-mobile"
+import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -12,7 +12,6 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils"
 import { imageSize } from "app/utils/imageSize"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
@@ -48,11 +47,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
         </Touchable>
       )}
       keyExtractor={(item) => item?.internalID}
-      ListEmptyComponent={
-        <Flex mx={SCREEN_HORIZONTAL_PADDING}>
-          <ListEmptyComponent text="No shows" />
-        </Flex>
-      }
+      ListEmptyComponent={<ListEmptyComponent text="No shows" />}
     />
   )
 }
