@@ -27,6 +27,7 @@ import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { useNetworkStatusListener } from "app/system/hooks/useNetworkStatusListener"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
+import { StatusBar } from "palette/organisms/StatusBar"
 
 export type AuthScreens = {
   Login: undefined
@@ -93,49 +94,55 @@ export const Main = () => {
   if (!isRehydrated) return null
 
   return (
-    <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
-      <Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
-        {!isLoggedIn ? (
-          <>
-            <Screen name="Login" component={LoginScreen} />
-          </>
-        ) : selectedPartner === null ? (
-          <>
-            <Screen name="SelectPartner" component={SelectPartnerScreen} />
-          </>
-        ) : (
-          // logged in and partner selected
-          <>
-            <Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
-            <Screen name="ArtworkWebView" component={ArtworkWebView} />
-            <Screen name="AlbumTabs" component={AlbumTabs} />
-            <Screen name="ArtistTabs" component={ArtistTabs} />
-            <Screen name="Artwork" component={Artwork} />
-            <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
-            <Screen
-              name="CreateOrEditAlbumChooseArtist"
-              component={CreateOrEditAlbumChooseArtist}
-            />
-            <Screen
-              name="CreateOrEditAlbumChooseArtworks"
-              component={CreateOrEditAlbumChooseArtworks}
-            />
-            <Screen name="DarkModeSettings" component={DarkModeSettings} />
-            <Screen name="EditPresentationMode" component={EditPresentationMode} />
-            <Screen name="EmailScreen" component={EmailScreen} />
-            <Screen name="HomeTabs" component={HomeTabs} />
-            <Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
-            <Screen name="MultipleArtworksBySameArtist" component={MultipleArtworksBySameArtist} />
-            <Screen name="OneArtwork" component={OneArtwork} />
-            <Screen name="Search" component={Search} />
-            <Screen name="Settings" component={Settings} />
-            <Screen name="ShowTabs" component={ShowTabs} />
+    <>
+      <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
+        <Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
+          {!isLoggedIn ? (
+            <>
+              <Screen name="Login" component={LoginScreen} />
+            </>
+          ) : selectedPartner === null ? (
+            <>
+              <Screen name="SelectPartner" component={SelectPartnerScreen} />
+            </>
+          ) : (
+            // logged in and partner selected
+            <>
+              <Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
+              <Screen name="ArtworkWebView" component={ArtworkWebView} />
+              <Screen name="AlbumTabs" component={AlbumTabs} />
+              <Screen name="ArtistTabs" component={ArtistTabs} />
+              <Screen name="Artwork" component={Artwork} />
+              <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
+              <Screen
+                name="CreateOrEditAlbumChooseArtist"
+                component={CreateOrEditAlbumChooseArtist}
+              />
+              <Screen
+                name="CreateOrEditAlbumChooseArtworks"
+                component={CreateOrEditAlbumChooseArtworks}
+              />
+              <Screen name="DarkModeSettings" component={DarkModeSettings} />
+              <Screen name="EditPresentationMode" component={EditPresentationMode} />
+              <Screen name="EmailScreen" component={EmailScreen} />
+              <Screen name="HomeTabs" component={HomeTabs} />
+              <Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
+              <Screen
+                name="MultipleArtworksBySameArtist"
+                component={MultipleArtworksBySameArtist}
+              />
+              <Screen name="OneArtwork" component={OneArtwork} />
+              <Screen name="Search" component={Search} />
+              <Screen name="Settings" component={Settings} />
+              <Screen name="ShowTabs" component={ShowTabs} />
 
-            {/* Dev */}
-            {StorybookNavigation()}
-          </>
-        )}
-      </Navigator>
-    </NavigationContainer>
+              {/* Dev */}
+              {StorybookNavigation()}
+            </>
+          )}
+        </Navigator>
+      </NavigationContainer>
+      <StatusBar backgroundColor="pink" />
+    </>
   )
 }
