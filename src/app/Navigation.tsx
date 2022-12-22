@@ -1,22 +1,14 @@
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useStoreRehydrated } from "easy-peasy"
-import { FC, useEffect } from "react"
+import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
 import { AddItemsToAlbum } from "app/components/AddItemsToAlbum"
 import { Artwork } from "app/screens/Artwork/Artwork"
 import { useWebViewCookies, ArtworkWebView } from "app/screens/Artwork/ArtworkWebView"
 import { LoginScreen } from "app/screens/Auth/Login"
 import { SelectPartnerScreen } from "app/screens/Auth/SelectPartner"
-import { FolioDesignLanguage } from "app/screens/Dev/FolioDesignLanguage"
-import { InsteadOfStorybook } from "app/screens/Dev/InsteadOfStorybook"
-import { StorybookScreenAnimatedTitleHeader } from "app/screens/Dev/StorybookScreenAnimatedTitleHeader"
-import { StorybookScreenAnimatedTitleHeaderTabs } from "app/screens/Dev/StorybookScreenAnimatedTitleHeaderTabs"
-import { StorybookScreenBottomView } from "app/screens/Dev/StorybookScreenBottomView"
-import { StorybookScreenFullWidthItem } from "app/screens/Dev/StorybookScreenFullWidthItem"
-import { StorybookScreenHeader } from "app/screens/Dev/StorybookScreenHeader"
-import { StorybookScreenHeaderElements } from "app/screens/Dev/StorybookScreenHeaderElements"
-import { StorybookScreenRawHeader } from "app/screens/Dev/StorybookScreenRawHeader"
+import { StorybookNavigation } from "app/screens/Dev/StorybookNavigation"
 import { AlbumTabs } from "app/screens/HomeTabs/Albums/AlbumTabs/AlbumTabs"
 import { CreateOrEditAlbum } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
 import { CreateOrEditAlbumChooseArtist } from "app/screens/HomeTabs/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
@@ -35,33 +27,20 @@ import { ShowTabs } from "app/screens/HomeTabs/Shows/ShowTabs/ShowTabs"
 import { useNetworkStatusListener } from "app/system/hooks/useNetworkStatusListener"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
-import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 
-export type PreAuthScreens = {
+export type AuthScreens = {
   Login: undefined
 }
 
-export type RegularScreens = {
-  SelectPartner: undefined
-  HomeTabs: { tabName: string } | undefined
-  Settings: undefined
-  EmailScreen: undefined
-  OneArtwork: undefined
-  MultipleArtworksBySameArtist: undefined
-  MultipleArtworksAndArtists: undefined
-  DarkModeSettings: undefined
-  EditPresentationMode: undefined
-  ArtistTabs: { slug: string; name: string }
-  AlbumTabs: { albumId: string }
-  InstallImage: { url: string }
-  Artwork: { slug: string; contextArtworkSlugs?: string[] }
-  Search: undefined
-  AlbumArtworks: { albumId: string }
-  ShowTabs: { slug: string }
+export type Screens = {
   AddItemsToAlbum: {
     artworkIdToAdd?: string
     closeBottomSheetModal?: () => void
   }
+  AlbumArtworks: { albumId: string }
+  AlbumTabs: { albumId: string }
+  ArtistTabs: { slug: string; name: string }
+  Artwork: { slug: string; contextArtworkSlugs?: string[] }
   ArtworkWebView: { uri: string }
   CreateOrEditAlbum: {
     mode: "create" | "edit"
@@ -71,21 +50,21 @@ export type RegularScreens = {
   }
   CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
   CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
+  DarkModeSettings: undefined
+  EditPresentationMode: undefined
+  EmailScreen: undefined
+  HomeTabs: { tabName: string } | undefined
+  InstallImage: { url: string }
+  MultipleArtworksAndArtists: undefined
+  MultipleArtworksBySameArtist: undefined
+  OneArtwork: undefined
+  Search: undefined
+  SelectPartner: undefined
+  Settings: undefined
+  ShowTabs: { slug: string }
 }
 
-export type StorybookScreens = {
-  InsteadOfStorybook: undefined
-  FolioDesignLanguage: undefined
-  StorybookScreenAnimatedTitleHeader: undefined
-  StorybookScreenAnimatedTitleHeaderTabs: undefined
-  StorybookScreenHeader: undefined
-  StorybookScreenHeaderElements: undefined
-  StorybookScreenBottomView: undefined
-  StorybookScreenFullWidthItem: undefined
-  StorybookScreenRawHeader: undefined
-}
-
-export type NavigationScreens = PreAuthScreens & RegularScreens & StorybookScreens
+export type NavigationScreens = AuthScreens & Screens
 
 const { Navigator, Screen } = createStackNavigator<NavigationScreens>()
 
@@ -118,104 +97,45 @@ export const Main = () => {
       <Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
         {!isLoggedIn ? (
           <>
-            <Screen name="Login" children={() => ErrorBoundaryWrapper(LoginScreen)} />
+            <Screen name="Login" component={LoginScreen} />
           </>
         ) : selectedPartner === null ? (
           <>
-            <Screen
-              name="SelectPartner"
-              children={() => ErrorBoundaryWrapper(SelectPartnerScreen)}
-            />
+            <Screen name="SelectPartner" component={SelectPartnerScreen} />
           </>
         ) : (
           // logged in and partner selected
           <>
-            <Screen name="HomeTabs" children={() => ErrorBoundaryWrapper(HomeTabs)} />
-            <Screen name="Settings" children={() => ErrorBoundaryWrapper(Settings)} />
-            <Screen name="EmailScreen" children={() => ErrorBoundaryWrapper(EmailScreen)} />
-            <Screen name="OneArtwork" children={() => ErrorBoundaryWrapper(OneArtwork)} />
-            <Screen
-              name="MultipleArtworksBySameArtist"
-              children={() => ErrorBoundaryWrapper(MultipleArtworksBySameArtist)}
-            />
-            <Screen
-              name="MultipleArtworksAndArtists"
-              children={() => ErrorBoundaryWrapper(MultipleArtworksAndArtists)}
-            />
-            <Screen
-              name="DarkModeSettings"
-              children={() => ErrorBoundaryWrapper(DarkModeSettings)}
-            />
-            <Screen
-              name="EditPresentationMode"
-              children={() => ErrorBoundaryWrapper(EditPresentationMode)}
-            />
-            <Screen name="Artwork" children={() => ErrorBoundaryWrapper(Artwork)} />
-            <Screen name="Search" children={() => ErrorBoundaryWrapper(Search)} />
-            <Screen name="ShowTabs" children={() => ErrorBoundaryWrapper(ShowTabs)} />
-            <Screen name="ArtistTabs" children={() => ErrorBoundaryWrapper(ArtistTabs)} />
-            <Screen name="AlbumTabs" children={() => ErrorBoundaryWrapper(AlbumTabs)} />
-            <Screen
-              name="CreateOrEditAlbum"
-              children={() => ErrorBoundaryWrapper(CreateOrEditAlbum)}
-            />
+            <Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
+            <Screen name="ArtworkWebView" component={ArtworkWebView} />
+            <Screen name="AlbumTabs" component={AlbumTabs} />
+            <Screen name="ArtistTabs" component={ArtistTabs} />
+            <Screen name="Artwork" component={Artwork} />
+            <Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
             <Screen
               name="CreateOrEditAlbumChooseArtist"
-              children={() => ErrorBoundaryWrapper(CreateOrEditAlbumChooseArtist)}
+              component={CreateOrEditAlbumChooseArtist}
             />
             <Screen
               name="CreateOrEditAlbumChooseArtworks"
-              children={() => ErrorBoundaryWrapper(CreateOrEditAlbumChooseArtworks)}
+              component={CreateOrEditAlbumChooseArtworks}
             />
-            <Screen name="ArtworkWebView" children={() => ErrorBoundaryWrapper(ArtworkWebView)} />
-            <Screen name="AddItemsToAlbum" children={() => ErrorBoundaryWrapper(AddItemsToAlbum)} />
+            <Screen name="DarkModeSettings" component={DarkModeSettings} />
+            <Screen name="EditPresentationMode" component={EditPresentationMode} />
+            <Screen name="EmailScreen" component={EmailScreen} />
+            <Screen name="HomeTabs" component={HomeTabs} />
+            <Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
+            <Screen name="MultipleArtworksBySameArtist" component={MultipleArtworksBySameArtist} />
+            <Screen name="OneArtwork" component={OneArtwork} />
+            <Screen name="Search" component={Search} />
+            <Screen name="Settings" component={Settings} />
+            <Screen name="ShowTabs" component={ShowTabs} />
 
-            {/* storybook screens */}
-            <Screen
-              name="InsteadOfStorybook"
-              children={() => ErrorBoundaryWrapper(InsteadOfStorybook)}
-            />
-            <Screen
-              name="FolioDesignLanguage"
-              children={() => ErrorBoundaryWrapper(FolioDesignLanguage)}
-            />
-            <Screen
-              name="StorybookScreenAnimatedTitleHeader"
-              children={() => ErrorBoundaryWrapper(StorybookScreenAnimatedTitleHeader)}
-            />
-            <Screen
-              name="StorybookScreenAnimatedTitleHeaderTabs"
-              children={() => ErrorBoundaryWrapper(StorybookScreenAnimatedTitleHeaderTabs)}
-            />
-            <Screen
-              name="StorybookScreenHeader"
-              children={() => ErrorBoundaryWrapper(StorybookScreenHeader)}
-            />
-            <Screen
-              name="StorybookScreenHeaderElements"
-              children={() => ErrorBoundaryWrapper(StorybookScreenHeaderElements)}
-            />
-            <Screen
-              name="StorybookScreenBottomView"
-              children={() => ErrorBoundaryWrapper(StorybookScreenBottomView)}
-            />
-            <Screen
-              name="StorybookScreenFullWidthItem"
-              children={() => ErrorBoundaryWrapper(StorybookScreenFullWidthItem)}
-            />
-            <Screen
-              name="StorybookScreenRawHeader"
-              children={() => ErrorBoundaryWrapper(StorybookScreenRawHeader)}
-            />
+            {/* Dev */}
+            {StorybookNavigation()}
           </>
         )}
       </Navigator>
     </NavigationContainer>
   )
 }
-
-const ErrorBoundaryWrapper = (Component: FC) => (
-  <ErrorBoundary>
-    <Component />
-  </ErrorBoundary>
-)

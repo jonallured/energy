@@ -4,26 +4,29 @@ import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayProvider } from "app/system/relay/RelayProvider"
 import { GlobalStoreProvider, GlobalStore } from "app/system/store/GlobalStore"
+import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <GlobalStoreProvider>
-      <ThemeProvider>
-        <SuspenseWrapper>
-          <RelayProvider>
-            <SafeAreaProvider>
-              <ProvideScreenDimensions>
-                {/*  */}
-                {children}
-                {/*  */}
-              </ProvideScreenDimensions>
-            </SafeAreaProvider>
-          </RelayProvider>
-        </SuspenseWrapper>
-      </ThemeProvider>
-    </GlobalStoreProvider>
+    <ErrorBoundary>
+      <GlobalStoreProvider>
+        <ThemeProvider>
+          <SuspenseWrapper>
+            <RelayProvider>
+              <SafeAreaProvider>
+                <ProvideScreenDimensions>
+                  {/*  */}
+                  {children}
+                  {/*  */}
+                </ProvideScreenDimensions>
+              </SafeAreaProvider>
+            </RelayProvider>
+          </SuspenseWrapper>
+        </ThemeProvider>
+      </GlobalStoreProvider>
+    </ErrorBoundary>
   )
 }
 
