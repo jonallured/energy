@@ -1,7 +1,7 @@
 import { Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isEqual } from "lodash"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
@@ -50,10 +50,10 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
             onPress={() =>
               void GlobalStore.actions.selectMode.toggleSelectedItem({
                 type: "install",
-                item: showInstall.resized!.url,
+                item: showInstall!.resized!.url,
               })
             }
-            selectedToAdd={selectedInstalls.includes(showInstall.resized!.url)}
+            selectedToAdd={selectedInstalls.includes(showInstall!.resized!.url)}
           />
         )}
         ListEmptyComponent={
