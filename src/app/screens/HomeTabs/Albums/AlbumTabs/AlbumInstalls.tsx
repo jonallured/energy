@@ -16,7 +16,7 @@ export const AlbumInstalls = ({ installShotUrls }: { installShotUrls: string[] }
         }}
         numColumns={2}
         data={installShotUrls}
-        keyExtractor={(item: any, index: any) => item ?? `${index}`}
+        keyExtractor={(item, index) => item ?? `${index}`}
         renderItem={({ item: url }) => <ArtworkImageGridItem url={url} />}
         ListEmptyComponent={<ListEmptyComponent text="No installs shots to display" />}
       />

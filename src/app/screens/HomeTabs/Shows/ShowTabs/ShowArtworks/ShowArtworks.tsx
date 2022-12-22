@@ -78,7 +78,7 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
             }}
           />
         )}
-        keyExtractor={(item: any) => item.internalID}
+        keyExtractor={(item) => item.internalID}
       />
     </TabsScrollView>
   )

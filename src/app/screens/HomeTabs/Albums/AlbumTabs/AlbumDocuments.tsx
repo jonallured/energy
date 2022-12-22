@@ -39,7 +39,7 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
             }}
           />
         )}
-        keyExtractor={(item: any) => item.internalID}
+        keyExtractor={(item) => item.internalID}
         ListEmptyComponent={<ListEmptyComponent text="No documents" />}
       />
     </TabsScrollView>

@@ -61,7 +61,7 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
             selectedToAdd={selectedDocumentIds.includes(document.internalID)}
           />
         )}
-        keyExtractor={(item: any) => item.internalID}
+        keyExtractor={(item) => item.internalID}
         ListEmptyComponent={<ListEmptyComponent text="No documents" />}
       />
     </TabsScrollView>

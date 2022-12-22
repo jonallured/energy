@@ -223,7 +223,7 @@ export const CreateOrEditAlbum = () => {
               />
             )
           }}
-          keyExtractor={(item: any) => item.internalID}
+          keyExtractor={(item) => item.internalID}
         />
         <Flex px={1} pt={2}>
           <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
