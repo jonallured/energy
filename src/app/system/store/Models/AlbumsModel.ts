@@ -7,6 +7,7 @@ type ArtistSlug = string
 type ArtworkId = string
 type InstallShotUrl = string
 type DocumentId = string
+
 export interface Album {
   id: Readonly<string>
   name: string

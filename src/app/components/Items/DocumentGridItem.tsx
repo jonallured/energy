@@ -1,11 +1,11 @@
 import { CheckCircleFillIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { last } from "lodash"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
 import { FileTypeIcon } from "app/components/FileTypeIcon"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { downloadFileToCache, useCachedOrFetchUrl } from "app/system/sync/fileCache"
+import { downloadFileToCache, useLocalUri } from "app/system/sync/fileCache"
 import { formatBytes } from "app/utils/formatBytes"
 
 export interface DocumentEntity {
@@ -22,28 +22,36 @@ interface DocumentGridItemProps {
 }
 
 export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentGridItemProps) => {
+  const [isOpening, setIsOpening] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
   const formattedSize = formatBytes(document.size)
   const fileExtension = last(document.url.split("."))
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
 
-  const url = useCachedOrFetchUrl(document.url)
-
-  console.log({ url1: url })
+  const localUri = useLocalUri(document.url)
 
   const openFile = async () => {
-    const isFileCached = url.startsWith("file://")
+    setIsOpening(true)
+    const isFileCached = localUri !== undefined
 
     if (!isFileCached) {
       setIsDownloading(true)
-      await downloadFileToCache({ url: document.url, type: "document" })
+      await downloadFileToCache({
+        url: document.url,
+        type: "document",
+        accessToken: userAccessToken,
+      })
       setIsDownloading(false)
     }
-    console.log({ url3: url })
-
-    // FIXME: is this right?
-    await FileViewer.open(url)
   }
+
+  useEffect(() => {
+    if (isOpening && !isDownloading && localUri !== undefined) {
+      FileViewer.open(localUri)
+      setIsOpening(false)
+    }
+  }, [isDownloading, isOpening, localUri])
 
   return (
     <Touchable disabled={isDownloading} onPress={isSelectModeActive ? onPress : openFile}>

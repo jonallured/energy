@@ -1,6 +1,5 @@
 import { action, Action, State } from "easy-peasy"
 import { assignDeep } from "app/utils/persistence"
-import { DeepPartial } from "global"
 import { AlbumsModel, getAlbumsModel } from "./AlbumsModel"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -53,6 +52,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     state.activeMode = "viewer"
   }),
   selectMode: getSelectModeModel(),
+
   setActivePartnerID: action((state, partnerID) => {
     state.activePartnerID = partnerID
   }),

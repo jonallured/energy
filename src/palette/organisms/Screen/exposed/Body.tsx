@@ -1,4 +1,4 @@
-import { Flex, FlexProps, SpacingUnit } from "@artsy/palette-mobile"
+import { Flex, FlexProps, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { getChildrenByType, removeChildrenByType } from "react-nanny"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { useSharedValue } from "react-native-reanimated"
@@ -30,6 +30,7 @@ export const Body = ({
   children,
   ...restFlexProps
 }: BodyProps) => {
+  const space = useSpace()
   const childrenExceptBottomView = removeChildrenByType(children, BottomView)
   const bottomView = getChildrenByType(children, BottomView)
   const handledTopSafeArea = useHandledTopSafeArea()
@@ -56,7 +57,7 @@ export const Body = ({
           <ArtsyKeyboardAvoidingView>
             <ScrollView
               keyboardShouldPersistTaps="handled"
-              contentInset={{ bottom: bottomViewHeight - insets.bottom }}
+              contentInset={{ bottom: bottomViewHeight + space("2") }}
               scrollEventThrottle={0.0000000001}
               onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
                 scrollOffsetY.value = event.nativeEvent.contentOffset.y

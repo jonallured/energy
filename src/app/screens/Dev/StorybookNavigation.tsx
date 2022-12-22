@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack"
+import { BrowseOfflineCache } from "app/screens/Dev/BrowseOfflineCache"
 import { FolioDesignLanguage } from "app/screens/Dev/FolioDesignLanguage"
 import { InsteadOfStorybook } from "app/screens/Dev/InsteadOfStorybook"
 import { StorybookScreenAnimatedTitleHeader } from "app/screens/Dev/StorybookScreenAnimatedTitleHeader"
@@ -19,6 +20,7 @@ export type StorybookScreens = {
   StorybookScreenHeader: undefined
   StorybookScreenHeaderElements: undefined
   StorybookScreenRawHeader: undefined
+  BrowseOfflineCache: undefined
 }
 
 const { Screen } = createStackNavigator<StorybookScreens>()
@@ -41,6 +43,7 @@ export const StorybookNavigation = () => {
       <Screen name="StorybookScreenHeader" component={StorybookScreenHeader} />
       <Screen name="StorybookScreenHeaderElements" component={StorybookScreenHeaderElements} />
       <Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
+      <Screen name="BrowseOfflineCache" component={BrowseOfflineCache} />
     </>
   )
 }

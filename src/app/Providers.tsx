@@ -1,4 +1,5 @@
 import { Theme } from "@artsy/palette-mobile"
+import JotaiNexus from "jotai-nexus"
 import { useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -19,6 +20,7 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
                 <ProvideScreenDimensions>
                   {/*  */}
                   {children}
+                  <JotaiNexus />
                   {/*  */}
                 </ProvideScreenDimensions>
               </SafeAreaProvider>

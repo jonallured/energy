@@ -181,6 +181,10 @@ export const Settings = () => {
 
         <Spacer y={1} />
 
+        <Button block onPress={() => navigation.navigate("BrowseOfflineCache")}>
+          Browse offline cache
+        </Button>
+
         {isUserDev && <DevMenu />}
       </Screen.Body>
     </Screen>

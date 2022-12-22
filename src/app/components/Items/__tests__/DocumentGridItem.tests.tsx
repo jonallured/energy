@@ -1,31 +1,12 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import FileViewer from "react-native-file-viewer"
-import RNFetchBlob from "rn-fetch-blob"
 import { DocumentEntity, DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 
 const mockConfigFetch = jest.fn()
 
-jest.mock("rn-fetch-blob", () => ({
-  config: () => ({
-    fetch: mockConfigFetch,
-  }),
-  fs: {
-    exists: jest.fn(),
-    dirs: {
-      DocumentDir: "path/to/documents",
-    },
-  },
-}))
-
 describe("DocumentGridItem", () => {
-  const mockExists = RNFetchBlob.fs.exists as jest.Mock
-
-  beforeEach(() => {
-    mockExists.mockImplementation(() => false)
-  })
-
   it("should render info about document", () => {
     const { getByText } = renderWithWrappers(<DocumentGridItem document={mockDocument} />)
 
@@ -35,7 +16,6 @@ describe("DocumentGridItem", () => {
 
   describe("if the file already exists on the user's device", () => {
     xit("should open the file", async () => {
-      mockExists.mockImplementation(() => true)
       const { getByText } = renderWithWrappers(<DocumentGridItem document={mockDocument} />)
 
       fireEvent.press(getByText("File Name"))
@@ -65,7 +45,7 @@ describe("DocumentGridItem", () => {
       )
     })
 
-    xit("should display loading indicator", () => {
+    it("should display loading indicator", () => {
       const { getByText, queryByText, queryByLabelText } = renderWithWrappers(
         <DocumentGridItem document={mockDocument} />
       )

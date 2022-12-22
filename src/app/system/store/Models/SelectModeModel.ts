@@ -1,5 +1,4 @@
 import { action, Action, computed, Thunk, Computed, thunk } from "easy-peasy"
-import { assertNever } from "app/utils/assertNever"
 
 type ItemType = "artwork" | "install" | "document"
 

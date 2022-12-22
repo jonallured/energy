@@ -1,3 +1,6 @@
+import { atom, useAtom } from "jotai"
+import { readAtom, writeAtom } from "jotai-nexus"
+import prettyBytes from "pretty-bytes"
 import { useEffect, useState } from "react"
 import {
   unlink,
@@ -7,15 +10,18 @@ import {
   DocumentDirectoryPath,
   readFile,
   downloadFile,
+  stat,
+  readdir,
 } from "react-native-fs"
 import { v4 as uuidv4 } from "uuid"
+import { forEachAsyncLinear } from "app/system/sync/utils/asyncIterators"
 
 const PATH_CACHE = DocumentDirectoryPath + "/cache"
 const PATH_CACHE_IMAGES = PATH_CACHE + "/images"
 const PATH_CACHE_DOCUMENTS = PATH_CACHE + "/documents"
 const PATH_CACHE_RELAY_DATA = PATH_CACHE + "/relayData"
 
-let urlMap: Record<string, string> = {}
+const urlMapAtom = atom<Record<string, string>>({})
 
 /**
  * This is just for debugging!
@@ -62,29 +68,40 @@ export const saveFileToCache = async ({ data, filename, type, path }: SaveFilePr
 export const downloadFileToCache = async ({
   url,
   type,
+  accessToken,
 }: {
   url: string
   type: DownloadableType
+  accessToken?: string
 }) => {
   try {
     await makeSureCacheIsReady()
 
     const id = uuidv4()
 
-    const extension = (() => {
+    const filename = (() => {
       switch (type) {
         case "image":
-          return IMAGE_EXTENSION
+          return id + IMAGE_EXTENSION
         case "document":
-          return "." + url.split(".").pop()
+          return url.split("/").pop()!
+        default:
+          assertNever(type)
       }
     })()
 
-    const filename = id + extension
     const filePath = getFilePath({ type, filename })
 
-    await downloadFile({ fromUrl: url, toFile: filePath }).promise
+    const { statusCode } = await downloadFile({
+      fromUrl: url,
+      toFile: filePath,
+      headers: accessToken !== undefined ? { "X-ACCESS-TOKEN": accessToken } : undefined,
+    }).promise
+    if (statusCode !== 200) {
+      throw new Error("download failed with status code " + statusCode)
+    }
 
+    const urlMap = readAtom(urlMapAtom)
     if (urlMap[url] !== undefined) {
       try {
         await unlink(getFilePath({ filename: urlMap[url], type }))
@@ -93,6 +110,7 @@ export const downloadFileToCache = async ({
     }
 
     urlMap[url] = filename
+    writeAtom(urlMapAtom, urlMap)
     await saveUrlMap()
   } catch (error) {
     console.log("[fileCache] Error downloading file:", error)
@@ -163,37 +181,38 @@ const getFilePath = ({ filename, type }: FileProps) => {
   return path + `/${filename}`
 }
 
-export const useCachedOrFetchUrl = (url: string): string => {
-  const [pathOrUrl, setPathOrUrl] = useState(url)
+export const useLocalUri = (url: string): string | undefined => {
+  const [localOrUndef, setLocalOrUndef] = useState<string | undefined>(undefined)
+  const [urlMap] = useAtom(urlMapAtom)
 
+  const mappedURL = urlMap[url]
   useEffect(() => {
     const findLocalPath = async () => {
       const pathIfCachedImage = getFilePath({
         type: "image",
-        filename: urlMap[url] + IMAGE_EXTENSION,
+        filename: mappedURL + IMAGE_EXTENSION,
       })
 
       if (await exists(pathIfCachedImage)) {
-        setPathOrUrl("file://" + pathIfCachedImage)
+        setLocalOrUndef("file://" + pathIfCachedImage)
         return
       }
 
       const pathIfCachedDocument = getFilePath({
         type: "document",
-        filename: urlMap[url],
+        filename: mappedURL,
       })
 
       if (await exists(pathIfCachedDocument)) {
-        setPathOrUrl("file://" + pathIfCachedDocument)
+        setLocalOrUndef("file://" + pathIfCachedDocument)
         return
       }
     }
 
     findLocalPath()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [mappedURL])
 
-  return pathOrUrl
+  return localOrUndef
 }
 
 export const loadUrlMap = async () => {
@@ -203,7 +222,7 @@ export const loadUrlMap = async () => {
       return
     }
 
-    urlMap = JSON.parse(await readFile(path))
+    writeAtom(urlMapAtom, JSON.parse(await readFile(path)))
   } catch (error) {
     console.log("[fileCache] Error loading urlMap:", error)
   }
@@ -212,7 +231,7 @@ export const loadUrlMap = async () => {
 const saveUrlMap = async () => {
   try {
     await saveFileToCache({
-      data: JSON.stringify(urlMap),
+      data: JSON.stringify(readAtom(urlMapAtom)),
       filename: "urlMap",
       path: PATH_CACHE + "/urlMap.json",
     })

@@ -27,7 +27,6 @@ module.exports = {
       "|react-native-safe-area-context" +
       "|react-native-linear-gradient" +
       "|@react-native-seoul/masonry-list" +
-      "|rn-fetch-blob" +
       "|react-native-file-viewer" +
       "|react-native-qrcode-generator" +
       "|react-native-webview" +

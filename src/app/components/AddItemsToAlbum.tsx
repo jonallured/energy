@@ -7,11 +7,13 @@ import { AlbumListItem } from "app/components/Items/AlbumListItem"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
+import { useScreenBottomViewHeight } from "palette/organisms/Screen/atoms"
 
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
   const { closeBottomSheetModal, artworkIdToAdd } = useRoute<HomeTabsRoute>().params
+  const bottomViewHeight = useScreenBottomViewHeight()
 
   const [hasSavedNav, navigateToSaved] = useNavigationSavedForKey("before-adding-to-album")
   const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
@@ -114,10 +116,7 @@ export const AddItemsToAlbum = () => {
               </Flex>
             )
           }}
-          style={{
-            top: space(2),
-            marginBottom: space(12),
-          }}
+          style={{ top: space(2), marginBottom: bottomViewHeight }}
         />
 
         <Screen.BottomView>{renderButton()}</Screen.BottomView>
