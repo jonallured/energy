@@ -102,7 +102,7 @@ export const downloadFileToCache = async ({
     }
 
     const urlMap = readAtom(urlMapAtom)
-    if (urlMap[url] !== undefined) {
+    if (urlMap[url] !== undefined && urlMap[url] !== filename) {
       try {
         await unlink(getFilePath({ filename: urlMap[url], type }))
         // eslint-disable-next-line no-empty

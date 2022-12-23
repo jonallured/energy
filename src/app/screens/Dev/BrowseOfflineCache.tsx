@@ -1,5 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { useEffect, useState } from "react"
+import { DocumentDirectoryPath } from "react-native-fs"
 import { isTreeDirectory, tree, TreeNode } from "app/system/sync/utils/tree"
 import { Screen } from "palette"
 
@@ -17,6 +19,9 @@ export const BrowseOfflineCache = () => {
     <Screen>
       <Screen.Header title="Offline cache" />
       <Screen.Body scroll nosafe>
+        <Text onPress={() => Clipboard.setString(DocumentDirectoryPath)}>
+          {DocumentDirectoryPath}
+        </Text>
         <Tree files={files} depth={0} />
       </Screen.Body>
     </Screen>
