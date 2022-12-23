@@ -13,7 +13,6 @@ import { Alert } from "react-native"
 import { getVersion } from "react-native-device-info"
 import { NavigationScreens } from "app/Navigation"
 import { SettingsItem } from "app/components/SettingsItem"
-import { DevMenu } from "app/screens/Dev/DevMenu"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { clearFileCache } from "app/system/sync/fileCache"
@@ -183,8 +182,6 @@ export const Settings = () => {
         <Button block onPress={() => navigation.navigate("BrowseOfflineCache")}>
           Browse offline cache
         </Button>
-
-        {isUserDev && <DevMenu />}
       </Screen.Body>
     </Screen>
   )

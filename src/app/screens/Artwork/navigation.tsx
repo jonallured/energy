@@ -9,9 +9,9 @@ export type ArtworkNavigationScreens = {
 
 export const ArtworkNavigation = () => {
   return (
-    <>
+    <StackNav.Group>
       <StackNav.Screen name="ArtworkWebView" component={ArtworkWebView} />
       <StackNav.Screen name="Artwork" component={Artwork} />
-    </>
+    </StackNav.Group>
   )
 }

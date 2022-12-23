@@ -7,8 +7,8 @@ export type ArtistNavigationScreens = {
 
 export const ArtistNavigation = () => {
   return (
-    <>
+    <StackNav.Group>
       <StackNav.Screen name="ArtistTabs" component={ArtistTabs} />
-    </>
+    </StackNav.Group>
   )
 }

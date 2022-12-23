@@ -7,8 +7,8 @@ export type SearchNavigationScreens = {
 
 export const SearchNavigation = () => {
   return (
-    <>
+    <StackNav.Group>
       <StackNav.Screen name="Search" component={Search} />
-    </>
+    </StackNav.Group>
   )
 }

@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { Linking, Platform, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { object, string } from "yup"
+import { useSetupRageShake } from "app/system/devTools/useSetupRageShake"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { MeasuredView } from "app/utils"
 import { attemptAlbumMigration } from "app/utils/attemptAlbumMigration"
@@ -31,6 +32,8 @@ const APP_SCHEME_URL = "artsy:///"
 export const LoginScreen = () => {
   const color = useColor()
   const insets = useSafeAreaInsets()
+
+  useSetupRageShake()
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)

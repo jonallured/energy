@@ -1,39 +1,18 @@
 import { Button, Spacer, Flex } from "@artsy/palette-mobile"
-import { useState, useEffect } from "react"
-import { Modal, NativeModules } from "react-native"
-import RNShake from "react-native-shake"
+import { NativeModules } from "react-native"
 import { ARTNativeModules } from "app/native_modules/ARTNativeModules"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { Screen } from "palette"
 
 export const DevMenu = () => {
-  const [modalVisible, setModalVisible] = useState(false)
   const currentEnvironment = GlobalStore.useAppState((s) => s.config.environment.activeEnvironment)
 
-  useEffect(() => {
-    if (__DEV__) {
-      // eslint-disable-next-line
-      NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    const subscription = RNShake.addListener(() => {
-      setModalVisible((x) => !x)
-    })
-
-    return () => subscription.remove()
-  }, [])
-
   return (
-    <Modal
-      animationType="slide"
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(false)
-      }}
-      presentationStyle="pageSheet"
-    >
-      <Flex backgroundColor="purple" flex={1} pt={6} px={2}>
+    <Screen>
+      <Screen.Background>
+        <Flex backgroundColor="devpurple" flex={1} />
+      </Screen.Background>
+      <Screen.Body>
         <Button
           block
           onPress={() => {
@@ -41,7 +20,6 @@ export const DevMenu = () => {
               currentEnvironment === "staging" ? "production" : "staging"
             )
             GlobalStore.actions.auth.signOut()
-            setModalVisible((x) => !x)
           }}
         >
           Switch to {currentEnvironment == "staging" ? "production" : "staging"}
@@ -85,7 +63,7 @@ export const DevMenu = () => {
         >
           Read albums
         </Button>
-      </Flex>
-    </Modal>
+      </Screen.Body>
+    </Screen>
   )
 }

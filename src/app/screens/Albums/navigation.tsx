@@ -23,7 +23,7 @@ export type AlbumNavigationScreens = {
 
 export const AlbumsNavigation = () => {
   return (
-    <>
+    <StackNav.Group>
       <StackNav.Screen name="AddItemsToAlbum" component={AddItemsToAlbum} />
       <StackNav.Screen name="AlbumTabs" component={AlbumTabs} />
       <StackNav.Screen name="CreateOrEditAlbum" component={CreateOrEditAlbum} />
@@ -35,6 +35,6 @@ export const AlbumsNavigation = () => {
         name="CreateOrEditAlbumChooseArtworks"
         component={CreateOrEditAlbumChooseArtworks}
       />
-    </>
+    </StackNav.Group>
   )
 }

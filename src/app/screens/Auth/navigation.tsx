@@ -12,11 +12,19 @@ export const AuthNavigation: React.FC<{ isLoggedIn: boolean; selectedPartner: st
   selectedPartner,
 }) => {
   if (!isLoggedIn) {
-    return <StackNav.Screen name="Login" component={LoginScreen} />
+    return (
+      <StackNav.Group>
+        <StackNav.Screen name="Login" component={LoginScreen} />
+      </StackNav.Group>
+    )
   }
 
   if (selectedPartner === null) {
-    return <StackNav.Screen name="SelectPartner" component={SelectPartnerScreen} />
+    return (
+      <StackNav.Group>
+        <StackNav.Screen name="SelectPartner" component={SelectPartnerScreen} />
+      </StackNav.Group>
+    )
   }
 
   return null

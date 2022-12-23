@@ -73,6 +73,7 @@ export const Main = () => {
 
           {isLoggedIn && selectedPartner && (
             <>
+              <StackNav.Screen name="HomeTabs" component={HomeTabs} />
               {AlbumsNavigation()}
               {ArtistNavigation()}
               {ArtworkNavigation()}
@@ -80,11 +81,10 @@ export const Main = () => {
               {SearchNavigation()}
               {SettingsNavigation()}
               {ShowsNavigation()}
-              {DevNavigation()}
-
-              <StackNav.Screen name="HomeTabs" component={HomeTabs} />
             </>
           )}
+
+          {DevNavigation()}
         </StackNav.Navigator>
       </NavigationContainer>
 

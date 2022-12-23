@@ -7,8 +7,8 @@ export type ShowsNavigationScreens = {
 
 export const ShowsNavigation = () => {
   return (
-    <>
+    <StackNav.Group>
       <StackNav.Screen name="ShowTabs" component={ShowTabs} />
-    </>
+    </StackNav.Group>
   )
 }

@@ -13,7 +13,7 @@ export type EmailNavigationScreens = {
 
 export const EmailNavigation = () => {
   return (
-    <>
+    <StackNav.Group>
       <StackNav.Screen name="EmailScreen" component={EmailScreen} />
       <StackNav.Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
       <StackNav.Screen
@@ -21,6 +21,6 @@ export const EmailNavigation = () => {
         component={MultipleArtworksBySameArtist}
       />
       <StackNav.Screen name="OneArtwork" component={OneArtwork} />
-    </>
+    </StackNav.Group>
   )
 }

@@ -2,6 +2,7 @@ import { MenuIcon, Touchable, MagnifyingGlassIcon } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/Navigation"
+import { useSetupRageShake } from "app/system/devTools/useSetupRageShake"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
@@ -16,6 +17,8 @@ export const HomeTabs = () => {
   const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
+
+  useSetupRageShake()
 
   return (
     <Screen>
