@@ -74,7 +74,12 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
             justifyContent="center"
             height="50"
             backgroundColor="background"
-            borderRadius={10}
+            borderTopLeftRadius={10}
+            borderTopRightRadius={10}
+            borderLeftWidth={0.5}
+            borderRightWidth={0.5}
+            borderTopWidth={0.5}
+            borderColor="white"
           >
             <Flex m={2} position="absolute" left="0">
               <Touchable
@@ -88,7 +93,14 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
           </Flex>
         )}
       >
-        <BottomSheetScrollView style={{ backgroundColor: color("background") }}>
+        <BottomSheetScrollView
+          style={{
+            backgroundColor: color("background"),
+            borderLeftWidth: 0.5,
+            borderRightWidth: 0.5,
+            borderColor: "white",
+          }}
+        >
           <Separator />
           <Flex alignItems="center" mx="2">
             {props.modalRows}
