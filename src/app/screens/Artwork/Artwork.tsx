@@ -96,7 +96,7 @@ export const Artwork = () => {
             </Touchable>
           }
         />
-        <Screen.Body fullwidth>
+        <Screen.Body fullwidth nosafe>
           <ScrollableScreensView screens={screens} initialScreenName={slug} />
         </Screen.Body>
       </Screen>
