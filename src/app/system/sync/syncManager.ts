@@ -79,6 +79,7 @@ const syncResults: SyncResultsData = {
 interface SyncManagerOptions {
   onComplete: () => void
   onProgress: (currentProgress: number) => void
+  onStart: () => void
   onStatusChange: (message: string) => void
   partnerID: string
   relayEnvironment: RelayModernEnvironment
@@ -86,6 +87,7 @@ interface SyncManagerOptions {
 
 export function initSyncManager({
   onComplete,
+  onStart,
   onProgress,
   onStatusChange,
   partnerID,
@@ -103,7 +105,8 @@ export function initSyncManager({
   }
 
   const startSync = async () => {
-    updateStatus("Starting sync...")
+    updateStatus("Starting sync")
+    onStart()
 
     /**
      * Add all queries to be synced here
@@ -157,7 +160,7 @@ export function initSyncManager({
    */
 
   const syncArtistsQuery = async () => {
-    updateStatus("Syncing artists...")
+    updateStatus("Syncing artists")
 
     syncResults.artistsQuery = await fetchOrCatch<ArtistsQuery>(artistsQuery, {
       partnerID,
@@ -167,7 +170,7 @@ export function initSyncManager({
   }
 
   const syncShowsQuery = async () => {
-    updateStatus("Syncing shows...")
+    updateStatus("Syncing shows")
 
     syncResults.showsQuery = await fetchOrCatch<ShowsQuery>(showsQuery, {
       partnerID,
@@ -182,7 +185,7 @@ export function initSyncManager({
    */
 
   const syncArtistTabsQuery = async () => {
-    updateStatus("Syncing artistTabs...")
+    updateStatus("Syncing artist tabs")
 
     const artistSlugs = parsers.getArtistSlugs()
 
@@ -198,7 +201,7 @@ export function initSyncManager({
   }
 
   const syncArtistArtworksQuery = async () => {
-    updateStatus("Syncing artist artworks...")
+    updateStatus("Syncing artist artworks")
 
     const artistSlugs = parsers.getArtistSlugs()
 
@@ -214,7 +217,7 @@ export function initSyncManager({
   }
 
   const syncArtworkContentQuery = async () => {
-    updateStatus("Syncing artist artwork content...")
+    updateStatus("Syncing artist artwork content")
 
     const artworkSlugs = parsers.getArtistArtworkSlugs()
 
@@ -229,7 +232,7 @@ export function initSyncManager({
   }
 
   const syncArtistShowsQuery = async () => {
-    updateStatus("Syncing artist shows...")
+    updateStatus("Syncing artist shows")
 
     const artistSlugs = parsers.getArtistSlugs()
 
@@ -245,7 +248,7 @@ export function initSyncManager({
   }
 
   const syncShowTabsQuery = async () => {
-    updateStatus("Syncing show tabs...")
+    updateStatus("Syncing show tabs")
 
     const artistShowSlugs = parsers.getArtistShowSlugs()
 
@@ -257,7 +260,7 @@ export function initSyncManager({
   }
 
   const syncArtistDocumentsQuery = async () => {
-    updateStatus("Syncing artist documents...")
+    updateStatus("Syncing artist documents")
 
     const artistSlugs = parsers.getArtistSlugs()
 
@@ -272,7 +275,7 @@ export function initSyncManager({
   }
 
   const syncPartnerShowTabsQuery = async () => {
-    updateStatus("Syncing partner shows...")
+    updateStatus("Syncing partner shows")
 
     const showSlugs = parsers.getShowSlugs()
 
@@ -284,7 +287,7 @@ export function initSyncManager({
   }
 
   const syncShowArtworksQuery = async () => {
-    updateStatus("Syncing show artworks...")
+    updateStatus("Syncing show artworks")
 
     const showSlugs = parsers.getShowSlugs()
 
@@ -296,7 +299,7 @@ export function initSyncManager({
   }
 
   const syncShowInstallsQuery = async () => {
-    updateStatus("Syncing show installs...")
+    updateStatus("Syncing show installs")
 
     const showSlugs = parsers.getShowSlugs()
 
@@ -308,7 +311,7 @@ export function initSyncManager({
   }
 
   const syncShowDocumentsQuery = async () => {
-    updateStatus("Syncing show documents...")
+    updateStatus("Syncing show documents")
 
     const showSlugs = parsers.getShowSlugs()
 
@@ -324,7 +327,7 @@ export function initSyncManager({
    */
 
   const syncImages = async () => {
-    updateStatus("Syncing images...")
+    updateStatus("Syncing images")
 
     const urls = parsers.getImageUrls()
 
@@ -337,7 +340,7 @@ export function initSyncManager({
   }
 
   const syncInstallShots = async () => {
-    updateStatus("Syncing install shots...")
+    updateStatus("Syncing install shots")
 
     const urls = parsers.getInstallShotUrls()
 
@@ -350,7 +353,7 @@ export function initSyncManager({
   }
 
   const syncDocuments = async () => {
-    updateStatus("Syncing documents...")
+    updateStatus("Syncing documents")
 
     const urls = parsers.getDocumentsUrls()
 

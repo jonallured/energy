@@ -12,6 +12,8 @@ LogBox.ignoreLogs([
   "onBackground",
   "borderWidth",
   "react-native-flipper",
+  // From react-native-animated-ellipsis
+  "useNativeDriver",
 ])
 
 export const App = () => (

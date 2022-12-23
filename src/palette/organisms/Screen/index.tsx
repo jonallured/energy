@@ -14,6 +14,7 @@ import { Header } from "./exposed/Header"
 import { LargeTitle } from "./exposed/LargeTitle"
 import { RawHeader } from "./exposed/RawHeader"
 import { TabsBody, PlaceholderTabsBody } from "./exposed/TabsBody"
+import { FullWidthDivider } from "./exposed/FullWidthDivider"
 
 export const Screen = Object.assign(ScreenWrapper, {
   Body,
@@ -29,6 +30,7 @@ export const Screen = Object.assign(ScreenWrapper, {
   SafeBottomPadding,
   LargeTitle,
   FullWidthItem,
+  FullWidthDivider,
 
   PlaceholderTabsBody,
   PlaceholderAnimatedTitleHeader,

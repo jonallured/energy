@@ -6,182 +6,116 @@ import {
   Touchable,
   Flex,
   ArrowRightIcon,
+  Join,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useMemo, useState } from "react"
-import { Alert } from "react-native"
+import { useState } from "react"
 import { getVersion } from "react-native-device-info"
 import { NavigationScreens } from "app/Navigation"
+<<<<<<< HEAD
+import { FullScreenDivider } from "app/components/FullScreenDivider"
 import { SettingsItem } from "app/components/SettingsItem"
+import { DevMenu } from "app/screens/Dev/DevMenu"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
+=======
+>>>>>>> 251531ff (chore(feedback): address)
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { clearFileCache } from "app/system/sync/fileCache"
-import { initSyncManager } from "app/system/sync/syncManager"
 import { Screen } from "palette"
 
 export const Settings = () => {
-  const { relayEnvironment } = useSystemRelayEnvironment()
-  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const isPresentationModeEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isPresentationModeEnabled
-  )
-  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)!
-
   const appVersion = getVersion()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
 
+  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
   const [tapCount, updateTapCount] = useState(0)
-  const [syncProgress, setSyncProgress] = useState(0)
-  const [syncStatus, setSyncStatus] = useState("")
-
-  const isSyncing = !!syncProgress
-
-  const { startSync } = useMemo(() => {
-    return initSyncManager({
-      partnerID,
-      relayEnvironment,
-      onComplete: () => {
-        setSyncProgress(0)
-
-        Alert.alert("Sync complete.", "", [
-          {
-            text: "OK",
-            style: "cancel",
-          },
-        ])
-      },
-      onProgress: (progress) => {
-        setSyncProgress(Math.floor(progress * 100))
-      },
-      onStatusChange: (message) => {
-        setSyncStatus(message)
-      },
-    })
-  }, [partnerID, relayEnvironment])
-
-  const handleSyncButtonPress = async () => {
-    try {
-      await startSync()
-    } catch (error) {
-      setSyncProgress(0)
-
-      console.error("Error syncing", error)
-    }
-  }
-
-  const handleClearFileCache = async () => {
-    await clearFileCache()
-
-    Alert.alert("Cache cleared.", "", [
-      {
-        text: "OK",
-        style: "cancel",
-      },
-    ])
-  }
 
   return (
     <Screen>
       <Screen.AnimatedTitleHeader title="Settings" />
       <Screen.Body scroll nosafe>
-        <Button block onPress={() => navigation.navigate("DarkModeSettings")}>
-          Dark Mode
-        </Button>
-        <Spacer y={2} />
-        <SettingsItem title="Presentation Mode">
-          <SettingsItem.Toggle
-            value={isPresentationModeEnabled}
-            onValueChange={() =>
-              GlobalStore.actions.presentationMode.toggleIsPresentationModeEnabled()
-            }
-          />
-        </SettingsItem>
+        <Screen.FullWidthDivider />
 
-        <Spacer y="2" />
-        <Touchable onPress={() => navigation.navigate("EditPresentationMode")}>
-          <Flex>
+        <Join separator={<Screen.FullWidthDivider />}>
+          <Touchable onPress={() => navigation.navigate("DarkModeSettings")}>
+            <Flex>
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text>Dark Mode</Text>
+                <ArrowRightIcon fill="onBackground" />
+              </Flex>
+            </Flex>
+          </Touchable>
+
+          <Touchable onPress={() => navigation.navigate("PresentationModeSettings")}>
+            <Flex>
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text>Presentation Mode</Text>
+                <ArrowRightIcon fill="onBackground" />
+              </Flex>
+              <Text variant="xs" color="onBackgroundMedium">
+                Presentation Mode hides sensitive information when showing artworks to clients.
+              </Text>
+            </Flex>
+          </Touchable>
+
+          <Touchable onPress={() => navigation.navigate("OfflineModeSettings")}>
+            <Flex>
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text>Offline Mode</Text>
+                <ArrowRightIcon fill="onBackground" />
+              </Flex>
+              <Text variant="xs" color="onBackgroundMedium">
+                Folio can be used when you're not connected to the internet, but you will need to
+                cache all the data before you go offline
+              </Text>
+            </Flex>
+          </Touchable>
+
+          <Touchable onPress={() => navigation.navigate("EmailScreen")}>
             <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-              <Text>Presentation Mode Settings</Text>
+              <Text>Email</Text>
               <ArrowRightIcon fill="onBackground" />
             </Flex>
-            <Text variant="xs" color="onBackgroundMedium">
-              Presentation Mode hides sensitive information when showing artworks to clients.
-            </Text>
-          </Flex>
-        </Touchable>
+          </Touchable>
 
-        <Screen.FullWidthItem>
-          <Separator my={2} />
-        </Screen.FullWidthItem>
+          <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
+            Log out
+          </Button>
+        </Join>
 
-        <Touchable onPress={() => navigation.navigate("EmailScreen")}>
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Text>Email</Text>
-            <ArrowRightIcon fill="onBackground" />
-          </Flex>
-        </Touchable>
+        <Separator my={4} />
 
-        <Screen.FullWidthItem>
-          <Separator my={2} />
-        </Screen.FullWidthItem>
+        {__DEV__ && (
+          <Join separator={<Spacer y={1} />}>
+            <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
+              Folio Design Language
+            </Button>
+            <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
+              Instead Of Storybook
+            </Button>
 
-        <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
-          Log out
-        </Button>
+            {isUserDev && <DevMenu />}
 
-        <Spacer y={1} />
-        <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
-          Folio Design Language
-        </Button>
-        <Spacer y={1} />
-        <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
-          Instead Of Storybook
-        </Button>
-        <Spacer y="1" />
-        <Touchable
-          onPress={() => {
-            if (tapCount < 5) {
-              updateTapCount(tapCount + 1)
-            } else {
-              GlobalStore.actions.artsyPrefs.switchIsUserDev()
-              updateTapCount(0)
-            }
-          }}
-        >
-          <Flex alignItems="center">
-            <Text variant="xs" color="onBackgroundMedium">
-              App version: {appVersion}
-            </Text>
-            <Text variant="xs" color="onBackgroundMedium">
-              {isUserDev && "on Developer mode"}
-            </Text>
-          </Flex>
-        </Touchable>
-
-        <Spacer y={1} />
-
-        <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
-          {isSyncing ? (
-            <>
-              {syncStatus}: {syncProgress}%
-            </>
-          ) : (
-            <>Start Sync {!isOnline && "(Offline)"}</>
-          )}
-        </Button>
-
-        <Spacer y={1} />
-
-        <Button block onPress={handleClearFileCache}>
-          Clear cache
-        </Button>
-
-        <Spacer y={1} />
-
-        <Button block onPress={() => navigation.navigate("BrowseOfflineCache")}>
-          Browse offline cache
-        </Button>
+            <Touchable
+              onPress={() => {
+                if (tapCount < 5) {
+                  updateTapCount(tapCount + 1)
+                } else {
+                  GlobalStore.actions.artsyPrefs.switchIsUserDev()
+                  updateTapCount(0)
+                }
+              }}
+            >
+              <Flex alignItems="center">
+                <Text variant="xs" color="onBackgroundMedium">
+                  App version: {appVersion}
+                </Text>
+                <Text variant="xs" color="onBackgroundMedium">
+                  {isUserDev && "on Developer mode"}
+                </Text>
+              </Flex>
+            </Touchable>
+          </Join>
+        )}
       </Screen.Body>
     </Screen>
   )

@@ -3,7 +3,11 @@ import { SettingsItem } from "app/components/SettingsItem"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 
-export const EditPresentationMode = () => {
+export const PresentationModeSettings = () => {
+  const isPresentationModeEnabled = GlobalStore.useAppState(
+    (state) => state.presentationMode.isPresentationModeEnabled
+  )
+
   const presentationConfigs = [
     {
       label: "Hide Prices",
@@ -62,8 +66,17 @@ export const EditPresentationMode = () => {
 
   return (
     <Screen>
-      <Screen.Header title="Edit Presentation Mode" />
+      <Screen.AnimatedTitleHeader title="Presentation Mode" />
       <Screen.Body scroll>
+        <SettingsItem title="Enabled">
+          <SettingsItem.Toggle
+            value={isPresentationModeEnabled}
+            onValueChange={() =>
+              GlobalStore.actions.presentationMode.toggleIsPresentationModeEnabled()
+            }
+          />
+        </SettingsItem>
+
         {presentationConfigs.map((presentationConfig, index) => (
           <Flex key={index}>
             <SettingsItem title={presentationConfig.label}>
