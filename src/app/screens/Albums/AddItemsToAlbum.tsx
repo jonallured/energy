@@ -1,7 +1,7 @@
 import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useState } from "react"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList } from "react-native"
 import { NavigationScreens } from "app/Navigation"
 import { AlbumListItem } from "app/components/Items/AlbumListItem"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"

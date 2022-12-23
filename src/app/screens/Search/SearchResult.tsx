@@ -3,9 +3,8 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useAtom } from "jotai"
 import { uniq } from "lodash"
 import { Suspense, useEffect } from "react"
-import { ActivityIndicator } from "react-native"
+import { ActivityIndicator, FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { FlatList } from "react-native-gesture-handler"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { SearchResultQuery } from "__generated__/SearchResultQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
@@ -148,7 +147,7 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
           </Flex>
         </Touchable>
       )}
-      keyExtractor={(item, index) => item?.internalID ?? `${index}`}
+      keyExtractor={(item, index) => item?.slug ?? `${index}`}
     />
   )
 }

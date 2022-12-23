@@ -5,7 +5,14 @@ import { setupFlipper } from "app/system/devTools/flipper"
 
 setupFlipper()
 
-LogBox.ignoreLogs(["lineHeight", "borderRadius", "fontSize", "onBackground", "borderWidth"])
+LogBox.ignoreLogs([
+  "lineHeight",
+  "borderRadius",
+  "fontSize",
+  "onBackground",
+  "borderWidth",
+  "react-native-flipper",
+])
 
 export const App = () => (
   <AppProviders>

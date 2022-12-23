@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { StyleSheet, View } from "react-native"
-import PagerView, { PagerViewOnPageSelectedEvent } from "react-native-pager-view"
+import PagerView from "react-native-pager-view"
+import { NativeProps as PagerViewNativeProps } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent"
 import { ScrollableLazyScreen } from "app/components/ScrollableScreensView/ScrollableLazyScreen"
 import {
   ScrollableScreenEntity,
@@ -25,7 +26,7 @@ export const ScrollableScreensView: React.FC<ScrollableScreensViewProps> = (prop
     activeScreen: screens[activeScreenIndex],
   }
 
-  const handlePageSelected = (event: PagerViewOnPageSelectedEvent) => {
+  const handlePageSelected: PagerViewNativeProps["onPageSelected"] = (event) => {
     setActiveScreenIndex(event.nativeEvent.position)
   }
 
@@ -34,7 +35,6 @@ export const ScrollableScreensView: React.FC<ScrollableScreensViewProps> = (prop
       <PagerView
         style={styles.container}
         overScrollMode="never"
-        transitionStyle="scroll"
         onPageSelected={handlePageSelected}
         initialPage={activeScreenIndex}
       >
