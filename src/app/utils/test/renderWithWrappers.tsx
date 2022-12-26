@@ -4,8 +4,8 @@ import { Suspense, ReactElement } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { GlobalStoreProvider } from "app/system/store/GlobalStore"
-import { relayMockEnvironment } from "app/utils/test/mockEnvironmentPayload"
 import { combineProviders } from "app/utils"
+import { relayMockEnvironment } from "app/utils/test/mockEnvironmentPayload"
 
 const Wrappers: React.FC = ({ children }) =>
   combineProviders(

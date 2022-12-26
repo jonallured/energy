@@ -9,13 +9,10 @@ import {
   Join,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { FullScreenDivider } from "app/components/FullScreenDivider"
 import { useState } from "react"
 import { getVersion } from "react-native-device-info"
 import { NavigationScreens } from "app/Navigation"
-import { SettingsItem } from "app/components/SettingsItem"
 import { DevMenu } from "app/screens/Dev/DevMenu"
-import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 

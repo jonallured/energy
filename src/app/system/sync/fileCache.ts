@@ -1,6 +1,5 @@
 import { atom, useAtom } from "jotai"
 import { readAtom, writeAtom } from "jotai-nexus"
-import prettyBytes from "pretty-bytes"
 import { useEffect, useState } from "react"
 import {
   unlink,
@@ -10,11 +9,8 @@ import {
   DocumentDirectoryPath,
   readFile,
   downloadFile,
-  stat,
-  readdir,
 } from "react-native-fs"
 import { v4 as uuidv4 } from "uuid"
-import { forEachAsyncLinear } from "app/system/sync/utils/asyncIterators"
 
 const PATH_CACHE = DocumentDirectoryPath + "/cache"
 const PATH_CACHE_IMAGES = PATH_CACHE + "/images"

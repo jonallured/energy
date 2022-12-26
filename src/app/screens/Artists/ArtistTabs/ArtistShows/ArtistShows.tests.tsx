@@ -1,6 +1,6 @@
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 import { range } from "lodash"
 import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 import { ArtistShows } from "./ArtistShows"
 
 describe("ArtistShows", () => {
