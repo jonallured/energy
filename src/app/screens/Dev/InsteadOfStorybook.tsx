@@ -33,6 +33,9 @@ export const InsteadOfStorybook = () => {
         <Button onPress={() => navigation.navigate("StorybookScreenRawHeader")}>
           RawHeader (put anything you like in the header)
         </Button>
+        <Button onPress={() => navigation.navigate("StorybookSkeletons")}>
+          Skeleton loading states
+        </Button>
 
         {allIcons.map((icon) => {
           const Icon = icon[1]

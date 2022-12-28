@@ -29,9 +29,11 @@ export const SkeletonText: React.FC<TextProps> = ({ children, ...rest }) => {
   const color = useColor()
 
   return (
-    <Text {...rest} bg={color("black10")} color={color("black10")}>
-      {children}
-    </Text>
+    <Flex alignSelf="flex-start">
+      <Text {...rest} bg={color("black10")} color={color("black10")}>
+        {children}
+      </Text>
+    </Flex>
   )
 }
 

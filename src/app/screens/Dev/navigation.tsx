@@ -10,6 +10,7 @@ import { StorybookScreenFullWidthItem } from "app/screens/Dev/StorybookScreenFul
 import { StorybookScreenHeader } from "app/screens/Dev/StorybookScreenHeader"
 import { StorybookScreenHeaderElements } from "app/screens/Dev/StorybookScreenHeaderElements"
 import { StorybookScreenRawHeader } from "app/screens/Dev/StorybookScreenRawHeader"
+import { StorybookSkeletons } from "app/screens/Dev/StorybookSkeletons"
 
 export type DevNavigationScreens = {
   DevMenu: undefined
@@ -23,6 +24,7 @@ export type DevNavigationScreens = {
   StorybookScreenHeader: undefined
   StorybookScreenHeaderElements: undefined
   StorybookScreenRawHeader: undefined
+  StorybookSkeletons: undefined
 }
 
 export const DevNavigation = () => {
@@ -51,6 +53,7 @@ export const DevNavigation = () => {
         />
         <StackNav.Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
         <StackNav.Screen name="BrowseOfflineCache" component={BrowseOfflineCache} />
+        <StackNav.Screen name="StorybookSkeletons" component={StorybookSkeletons} />
       </StackNav.Group>
 
       <StackNav.Group screenOptions={{ presentation: "modal", headerShown: false }}>
