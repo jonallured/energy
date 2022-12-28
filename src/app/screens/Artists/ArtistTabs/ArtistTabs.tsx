@@ -3,6 +3,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import * as MailComposer from "expo-mail-composer"
 import { useRef } from "react"
+import { ActivityIndicator } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
@@ -13,6 +14,7 @@ import {
   BottomSheetModalView,
   BottomSheetRef,
 } from "app/components/BottomSheetModalView"
+import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
@@ -29,6 +31,7 @@ import { ArtistShows } from "./ArtistShows/ArtistShows"
 type ArtistTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
 export const ArtistTabs = () => {
+  // return <SkeletonArtistTabs />
   const { slug, name } = useRoute<ArtistTabsRoute>().params
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
@@ -247,3 +250,33 @@ export const artistTabsQuery = graphql`
     }
   }
 `
+
+export const SkeletonArtistTabs = () => {
+  const selectModeConfig = useHeaderSelectModeConfig()
+  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+
+  return (
+    <Screen>
+      <Screen.AnimatedTitleHeader
+        title=""
+        selectModeConfig={selectModeConfig}
+        hideRightElements={!isOnline}
+      />
+      <Screen.AnimatedTitleTabsBody>
+        <Tabs.Tab name="ArtistArtworks" label="Works">
+          <TabsScrollView>
+            <Flex my={2}>
+              <ActivityIndicator />
+            </Flex>
+          </TabsScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name="ArtistShows" label="Shows">
+          <></>
+        </Tabs.Tab>
+        <Tabs.Tab name="ArtistDocuments" label="Documents">
+          <></>
+        </Tabs.Tab>
+      </Screen.AnimatedTitleTabsBody>
+    </Screen>
+  )
+}

@@ -15,7 +15,7 @@ export interface NetworkStatusModel {
 
 export const getNetworkStatusModel = (): NetworkStatusModel => ({
   isOnline: true,
-  relayFetchPolicy: "network-only",
+  relayFetchPolicy: "store-or-network",
 
   toggleConnected: action((state, isOnline) => {
     state.isOnline = isOnline
@@ -29,8 +29,7 @@ export const getNetworkStatusModel = (): NetworkStatusModel => ({
     (actions) => actions.toggleConnected,
     (state) => {
       if (state.isOnline) {
-        // TODO: Should we set this to store-or-network by default?
-        state.relayFetchPolicy = "network-only"
+        state.relayFetchPolicy = "store-or-network"
       } else {
         state.relayFetchPolicy = "store-only"
       }

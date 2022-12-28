@@ -1,0 +1,36 @@
+import { Flex, FlexProps, Text, TextProps, useColor } from "@artsy/palette-mobile"
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated"
+
+export const Skeleton: React.FC = ({ children }) => {
+  const opacity = useSharedValue(0.5)
+  opacity.value = withRepeat(withTiming(1, { duration: 1000, easing: Easing.ease }), -1, true)
+  const style = useAnimatedStyle(() => ({ opacity: opacity.value }), [])
+
+  return <Animated.View style={style}>{children}</Animated.View>
+}
+
+export const SkeletonText: React.FC<TextProps> = ({ children, ...rest }) => {
+  const color = useColor()
+
+  return (
+    <Text {...rest} bg={color("black10")} color={color("black10")}>
+      {children}
+    </Text>
+  )
+}
+
+export const SkeletonBox: React.FC<FlexProps> = ({ children, ...rest }) => {
+  const color = useColor()
+
+  return (
+    <Flex {...rest} bg={color("black10")}>
+      {children}
+    </Flex>
+  )
+}
