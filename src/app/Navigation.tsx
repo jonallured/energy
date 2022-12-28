@@ -74,6 +74,7 @@ export const Main = () => {
           {isLoggedIn && selectedPartner && (
             <>
               <StackNav.Screen name="HomeTabs" component={HomeTabs} />
+
               {AlbumsNavigation()}
               {ArtistNavigation()}
               {ArtworkNavigation()}

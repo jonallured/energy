@@ -27,10 +27,10 @@ export const HomeTabs = () => {
         leftElements={
           <Touchable
             hitSlop={{
-              top: 10,
-              left: 10,
-              bottom: 10,
-              right: 10,
+              top: 20,
+              left: 20,
+              bottom: 20,
+              right: 20,
             }}
             onPress={() => navigation.navigate("Settings")}
           >
@@ -40,7 +40,15 @@ export const HomeTabs = () => {
         rightElements={
           <>
             {isOnline && (
-              <Touchable onPress={() => navigation.navigate("Search")}>
+              <Touchable
+                onPress={() => navigation.navigate("Search")}
+                hitSlop={{
+                  top: 20,
+                  left: 20,
+                  bottom: 20,
+                  right: 20,
+                }}
+              >
                 <MagnifyingGlassIcon fill="onBackgroundHigh" />
               </Touchable>
             )}

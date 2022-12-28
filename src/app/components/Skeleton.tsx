@@ -7,6 +7,16 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
+/**
+ * Creates a skeleton animation for a component.
+ *
+ * @example
+ *
+ * <Skeleton>
+ *   <SkeletonText>Foo</SkeletonText>
+ *   <SkeletonBox width={100} height={100} />
+ * </Skeleton>
+ */
 export const Skeleton: React.FC = ({ children }) => {
   const opacity = useSharedValue(0.5)
   opacity.value = withRepeat(withTiming(1, { duration: 1000, easing: Easing.ease }), -1, true)
