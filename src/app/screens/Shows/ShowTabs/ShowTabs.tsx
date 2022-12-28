@@ -121,3 +121,46 @@ export const showTabsQuery = graphql`
     }
   }
 `
+
+export const SkeletonShowTabs = () => {
+  const selectModeConfig = useHeaderSelectModeConfig()
+  const safeAreaInsets = useSafeAreaInsets()
+
+  return (
+    <BottomSheetModalProvider>
+      <Screen>
+        <Screen.AnimatedTitleHeader title="" selectModeConfig={selectModeConfig} />
+        <Screen.AnimatedTitleTabsBody>
+          <Tabs.Tab name="ShowArtworks" label="Works">
+            <></>
+          </Tabs.Tab>
+          <Tabs.Tab name="ShowInstalls" label="Installs">
+            <></>
+          </Tabs.Tab>
+          <Tabs.Tab name="ShowDocuments" label="Documents">
+            <></>
+          </Tabs.Tab>
+        </Screen.AnimatedTitleTabsBody>
+      </Screen>
+
+      <BottomSheetModalView
+        modalHeight={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom + 230 : 250}
+        modalRows={
+          <>
+            <BottomSheetModalRow
+              Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
+              label="Add to Album"
+              onPress={() => {}}
+            />
+            <BottomSheetModalRow
+              Icon={<EnvelopeIcon fill="onBackgroundHigh" />}
+              label="Share by Email"
+              onPress={() => console.log("Do nothing")}
+              isLastRow
+            />
+          </>
+        }
+      />
+    </BottomSheetModalProvider>
+  )
+}

@@ -1,5 +1,6 @@
+import { Suspense } from "react"
 import { StackNav } from "app/Navigation"
-import { ShowTabs } from "app/screens/Shows/ShowTabs/ShowTabs"
+import { ShowTabs, SkeletonShowTabs } from "app/screens/Shows/ShowTabs/ShowTabs"
 
 export type ShowsNavigationScreens = {
   ShowTabs: { slug: string }
@@ -8,7 +9,14 @@ export type ShowsNavigationScreens = {
 export const ShowsNavigation = () => {
   return (
     <StackNav.Group>
-      <StackNav.Screen name="ShowTabs" component={ShowTabs} />
+      <StackNav.Screen
+        name="ShowTabs"
+        children={() => (
+          <Suspense fallback={<SkeletonShowTabs />}>
+            <ShowTabs />
+          </Suspense>
+        )}
+      />
     </StackNav.Group>
   )
 }

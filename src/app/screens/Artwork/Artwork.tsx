@@ -180,3 +180,51 @@ const artworkQuery = graphql`
     }
   }
 `
+
+export const SkeletonArtwork = () => {
+  return (
+    <BottomSheetModalProvider>
+      <Screen>
+        <Screen.FloatingHeader
+          rightElements={
+            <Touchable
+              // onPress={addToButtonHandler}
+              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
+            >
+              <MoreIcon />
+            </Touchable>
+          }
+        />
+        <Screen.Body fullwidth nosafe>
+          {/* <ScrollableScreensView screens={screens} initialScreenName={slug} /> */}
+        </Screen.Body>
+      </Screen>
+
+      <BottomSheetModalView
+        // ref={bottomSheetRef}
+        modalHeight={370}
+        modalRows={
+          <>
+            <BottomSheetModalRow
+              Icon={<ArtworkIcon fill="onBackgroundHigh" />}
+              label="View in Room"
+              onPress={() => {}}
+            />
+            <BottomSheetModalRow
+              Icon={<EditIcon fill="onBackgroundHigh" />}
+              label="Send by Email"
+              onPress={() => {}}
+            />
+            <BottomSheetModalRow
+              Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
+              label="Add to Album"
+              onPress={() => {}}
+            />
+          </>
+        }
+        extraButtons={<EditArtworkInCms slug="foo" />}
+      />
+    </BottomSheetModalProvider>
+  )
+}
