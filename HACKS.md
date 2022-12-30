@@ -26,22 +26,13 @@ When navigating in a screen with an AnimatedTitleHeader and TabsBody, the small 
 
 For now we have added an if to check if the `scrollYCurrent` value jumped more than 40 from the last value (since that's the weird behaviour we noticed, it jumps 48 which is the header height, then back to 0, then back to 48, then back to 0). If that happens, we ignore the value. Otherwise we continue with the animation calculation.
 
-## react-native patch-package
+## Specify RN version in android/build.gradle
 
 #### When can we remove this:
 
-We can remove once we move to anything above 0.67
+When this issue is resolved, possibly when we upgrade one or more of: react native, expo, jdk version: https://github.com/expo/expo/issues/18129
 
 #### Explanation/Context:
 
-There was a file called `find-node.sh` in 0.66 that was trying to find `node` on every machine. They added `asdf` in there but in 0.67, and they removed the file in 0.68 for a better way to find `node` on a machine.
-
-## react-native patch-package (EXCLUDED_ARCHS part only).
-
-#### When can we remove this:
-
-When we upgrade to react-native 0.67 or later.
-
-#### Explanation/Context:
-
-This is an old restriction for an old hermes version. It's messing with our xcodeproj file for non-M1 macs, so we patch it out for now. That restriction is fixed and removed on RN 0.67.
+https://github.com/expo/expo/issues/18129
+Android builds are failing on expo dependencies, adding the react native version fixes it.

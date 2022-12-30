@@ -119,7 +119,7 @@ export const LoginScreen = () => {
         <Input
           ref={emailInputRef}
           autoCapitalize="none"
-          autoCompleteType="email"
+          autoComplete="email"
           keyboardType="email-address"
           onChangeText={(text) => {
             handleChange("email")(text.trim())
@@ -144,7 +144,7 @@ export const LoginScreen = () => {
         <Spacer y={2} />
         <Input
           autoCapitalize="none"
-          autoCompleteType="password"
+          autoComplete="password"
           autoCorrect={false}
           onChangeText={(text) => {
             // Hide error when the user starts to type again

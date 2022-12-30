@@ -6,5 +6,5 @@ team_id "23KMWZ572J"
 itc_team_id "479887"
 
 # android
-package_name "net.artsy.folio"
+package_name "net.artsy.energy"
 json_key_file "./android-secret.json"

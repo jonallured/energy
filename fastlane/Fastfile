@@ -16,7 +16,7 @@ Dotenv.load('../.env')
 
 lane :ship_beta do
   ship_beta_ios
-  # ship_beta_android
+  ship_beta_android
 end
 
 app_json_path = "../app.json"
@@ -375,6 +375,128 @@ lane :check_if_app_is_pending_developer_release do |options|
     https://github.com/artsy/eigen/blob/main/docs/deploy_to_app_store.md#release-to-app-store
   MSG
   slack(message: message, default_payloads: [])
+  end
+end
+
+# Android
+
+lane :ship_beta_android_firebase do
+  sh("yarn jetifier")
+  sh("yarn relay")
+
+  flag_android_beta(is_android_beta: true)
+
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    flags: "--no-daemon -x bundleReleaseJsAndAssets",
+  )
+
+  firebase_app_distribution(
+    app: ENV["FIREBASE_APP_ID"],
+    groups: 'artsy-people',
+    android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
+  )
+end
+
+build_gradle = "../android/app/build.gradle"
+lane :set_build_version_android do |options|
+  version_code = options[:version_code]
+  next_version_name = app_json['version']
+
+  if version_code.nil?
+    current_version_code = google_play_track_version_codes(
+      track: "alpha",
+    ).first
+    version_code = current_version_code + 1
+  end
+
+  next_version_code = version_code
+
+  contents = File.read(build_gradle)
+  contents = contents.gsub(/(versionName) .*/, "\\1 \"#{next_version_name}\"")
+  contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{next_version_code}")
+  File.open(build_gradle, 'w') do |file|
+    file.puts contents
+  end
+
+  [next_version_name, next_version_code]
+end
+
+lane :ship_beta_android_play_store do
+  sh("yarn jetifier")
+  sh("yarn relay")
+
+  # TODO: retain version codes if we get it working in eigen
+
+  vname, vcode = set_build_version_android
+  tag_and_push(tag: "android-#{vname}-#{vcode}")
+
+  # TODO: uncomment when sentry is working
+  # sentry_release_name = "android-#{vname}-#{vcode}"
+
+  # build again with flag set to false for release candidates
+  flag_android_beta(is_android_beta: false)
+
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    flags: "--no-daemon -x bundleReleaseJsAndAssets",
+  )
+
+  # TODO: uncomment when sentry is working
+  # upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
+  supply(
+    track: "alpha",
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+end
+
+lane :promote_beta_android do
+   # android versions are listed most recent first, limit to 20
+   version_codes = google_play_track_version_codes(
+    track: "alpha",
+  ).first(20)
+
+  UI.header "Last 20 Android builds"
+
+  selected_version_code = UI.select("Which build would you like to release?: ", version_codes)
+
+  if UI.confirm("Are you sure you would like to release '#{selected_version_code}'?")
+    UI.success "Continuing the release!"
+  else
+    UI.user_error!("Stopping the train!")
+  end
+
+  supply(
+    track: 'alpha',
+    version_code: selected_version_code,
+    track_promote_to: 'production',
+    rollout: '0.1',
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
+  )
+
+  vname, vcode = set_build_version_android(version_code: selected_version_code)
+  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+end
+
+lane :flag_android_beta do |options|
+  is_android_beta = options[:is_android_beta]
+  app_json['isAndroidBeta'] = is_android_beta
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
   end
 end
 
