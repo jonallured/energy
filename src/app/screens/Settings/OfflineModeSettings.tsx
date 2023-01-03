@@ -1,9 +1,9 @@
-import { Button, Join, Text } from "@artsy/palette-mobile"
+import { Button, Join, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useMemo, useState } from "react"
 import { Alert } from "react-native"
-import AnimatedEllipsis from "react-native-animated-ellipsis"
 import { NavigationScreens } from "app/Navigation"
+import { AnimatedEllipsis } from "app/components/AnimatedEllipsis"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { clearFileCache } from "app/system/sync/fileCache"
@@ -11,6 +11,7 @@ import { initSyncManager } from "app/system/sync/syncManager"
 import { Screen } from "palette"
 
 export const OfflineModeSettings = () => {
+  const color = useColor()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { relayEnvironment } = useSystemRelayEnvironment()
 
@@ -84,15 +85,11 @@ export const OfflineModeSettings = () => {
           <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
             {isSyncing ? (
               <>
-                <Text color="black100" py={0}>
+                <Text color="onPrimaryHigh" py={0}>
                   {syncStatus}
                   <AnimatedEllipsis
-                    numberOfDots={3}
-                    minOpacity={0.3}
-                    animationDelay={200}
                     style={{
-                      color: "#000",
-                      letterSpacing: -1,
+                      color: color("onPrimaryHigh"),
                     }}
                   />{" "}
                   {syncProgress}%
