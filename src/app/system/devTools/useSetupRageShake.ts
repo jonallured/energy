@@ -10,13 +10,13 @@ export const useSetupRageShake = () => {
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
 
   useEffect(() => {
-    if (__DEV__ || isUserDev) {
-      NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
+    if (__DEV__) {
+      NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(!isUserDev)
     }
   }, [isUserDev])
 
   useEffect(() => {
-    if (__DEV__ || isUserDev) {
+    if (isUserDev) {
       const subscription = RNShake.addListener(() => {
         nav.navigate("DevMenu")
       })
