@@ -1,4 +1,4 @@
-import { Spacer, Flex, Separator, Text, Touchable, useTheme } from "@artsy/palette-mobile"
+import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Linking } from "react-native"
@@ -10,6 +10,10 @@ import { ImageModal } from "app/components/ImageModal"
 import { ImagePlaceholder } from "app/components/ImagePlaceholder"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { Markdown } from "app/components/Markdown"
+import {
+  ArtworkDetail,
+  ArtworkDetailLineItem,
+} from "app/screens/Artwork/ArtworkContent/ArtworkDetail"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
@@ -140,26 +144,14 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const shouldShowAboutTheArtworkTitle =
     additionalInformation || shouldDisplayTheDetailBox || exhibitionHistory || literature
 
+  const hasEditionSets = !!editionSets?.length
+
   const renderPrice = (price?: string | null) => {
     if (!price) return null
     if (isPriceHidden) return null
     if (availability === "sold" && isPriceForSoldWorksHidden) return null
 
-    return (
-      <>
-        <Text weight="regular">{price}</Text>
-        <Spacer mt={0.5} />
-      </>
-    )
-  }
-
-  const renderSalesMessage = (saleMessage?: string | null) => {
-    if (isAvailabilityHidden) return null
-    return (
-      <Text variant="xs" color="onBackgroundMedium">
-        {saleMessage}
-      </Text>
-    )
+    return <Text weight="regular">{price}</Text>
   }
 
   return (
@@ -212,153 +204,131 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
       >
         <BottomSheetScrollView
           style={{
-            paddingHorizontal: space(2),
             backgroundColor: color("surface"),
+            paddingHorizontal: space(2),
+            marginBottom: space(4),
           }}
           scrollEnabled={isScrollEnabled}
         >
-          <Flex flexDirection="row">
-            {showQRCode && (
-              <Flex style={{ marginRight: 20 }}>
-                <QRCode
-                  value={`https://artsy.net/artwork/${slug}`}
-                  size={100}
-                  bgColor="black"
-                  fgColor="white"
-                />
-              </Flex>
-            )}
-            <Flex>
-              <Text>{artistNames}</Text>
-              <Text italic color="onBackgroundMedium">
-                {title}
-                {!!date && (
+          <Join separator={<Spacer y={1} />}>
+            <Flex flexDirection="row">
+              {showQRCode && (
+                <Flex mr={2}>
+                  <QRCode
+                    value={`https://artsy.net/artwork/${slug}`}
+                    size={100}
+                    bgColor="black"
+                    fgColor="white"
+                  />
+                </Flex>
+              )}
+
+              <Flex>
+                <Text>{artistNames}</Text>
+
+                <Text italic color="onBackgroundMedium">
+                  {title}
+                  {!!date && (
+                    <>
+                      , <ArtworkDetailLineItem value={date} />
+                    </>
+                  )}
+                </Text>
+
+                {!hasEditionSets &&
+                  (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
+
+                <ArtworkDetailLineItem value={medium} />
+
+                {!hasEditionSets && (dimensions?.in || dimensions?.cm) && (
+                  <ArtworkDetailLineItem value={`${dimensions?.in} - ${dimensions?.cm}`} />
+                )}
+
+                {hasEditionSets && (
                   <>
-                    , <Text color="onBackgroundMedium">{date}</Text>
+                    <Text mt={2} weight="medium">
+                      Editions
+                    </Text>
+
+                    {editionSets?.map((set, idx) => (
+                      <Flex key={`${idx}`}>
+                        <ArtworkDetailLineItem value={set?.dimensions?.in} />
+                        <ArtworkDetailLineItem value={set?.dimensions?.cm} />
+                        <ArtworkDetailLineItem value={set?.editionOf} />
+
+                        {set?.saleMessage !== set?.price && !isAvailabilityHidden && (
+                          <ArtworkDetailLineItem value={set?.saleMessage} />
+                        )}
+
+                        {set?.internalDisplayPrice
+                          ? renderPrice(set?.internalDisplayPrice)
+                          : renderPrice(set?.price)}
+                      </Flex>
+                    ))}
                   </>
                 )}
-              </Text>
-              <Spacer y="0.5" />
-              {(editionSets ?? []).length === 0 &&
-                (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
-              <Text variant="xs" color="onBackgroundMedium">
-                {medium}
-              </Text>
-              {(editionSets ?? []).length === 0 && (dimensions?.in || dimensions?.cm) && (
-                <Text variant="xs" color="onBackgroundMedium">
-                  {dimensions?.in} - {dimensions?.cm}
-                </Text>
-              )}
-              <Spacer y="0.5" />
-              {(editionSets ?? []).length > 0 && (
-                <>
-                  <Text weight="medium">Editions</Text>
-                  {editionSets?.map((set, idx) => (
-                    <Flex key={`${idx}`}>
-                      <Text variant="xs" color="onBackgroundMedium">
-                        {set?.dimensions?.in}
-                      </Text>
-                      <Text variant="xs" color="onBackgroundMedium">
-                        {set?.dimensions?.cm}
-                      </Text>
-                      {set?.editionOf !== "" && (
-                        <Text variant="xs" color="onBackgroundMedium">
-                          {set?.editionOf}
-                        </Text>
-                      )}
-                      {set?.saleMessage !== set?.price && renderSalesMessage(set?.saleMessage)}
-                      {set?.internalDisplayPrice
-                        ? renderPrice(set?.internalDisplayPrice)
-                        : renderPrice(set?.price)}
-                      <Spacer mt={0.5} />
-                    </Flex>
-                  ))}
-                </>
-              )}
+              </Flex>
             </Flex>
-          </Flex>
-          {!!shouldShowAboutTheArtworkTitle && (
-            <>
-              <Spacer y="1" />
-              <Separator />
-              <Spacer y="2" />
-              <Text variant="md">About the artwork</Text>
-              <Spacer y="1" />
-            </>
-          )}
-          {!!additionalInformation && (
-            <>
+
+            {!!shouldShowAboutTheArtworkTitle && (
+              <>
+                <Separator my={2} />
+
+                <Text variant="md" mb={1}>
+                  About the artwork
+                </Text>
+              </>
+            )}
+
+            {!!additionalInformation && (
               <Markdown rules={markdownRules}>{additionalInformation}</Markdown>
-              <Spacer y="2" />
-            </>
-          )}
-          {!!shouldDisplayTheDetailBox && (
-            <>
-              <Flex px={2} border={1} borderColor="onSurfaceLow">
-                <Spacer mt={2} />
-                {!!mediumType?.name && <ArtworkDetail label="Medium" value={mediumType?.name} />}
-                {!!conditionDescription?.details && (
+            )}
+
+            {!!shouldDisplayTheDetailBox && (
+              <>
+                <BorderBox>
+                  <ArtworkDetail label="Medium" value={mediumType?.name} />
                   <ArtworkDetail label="Condition" value={conditionDescription?.details} />
-                )}
-                {!!signature && <ArtworkDetail label="Signature" value={signature} />}
-                {!!certificateOfAuthenticity?.details && (
+                  <ArtworkDetail label="Signature" value={signature} />
                   <ArtworkDetail
                     label="Certificate of Authenticity"
                     value={certificateOfAuthenticity?.details}
                   />
-                )}
-                {!!framed?.details && <ArtworkDetail label="Frame" value={framed?.details} />}
-                {!!series && <ArtworkDetail label="Series" value={series} />}
-                {!!imageRights && <ArtworkDetail label="Image Rights" value={imageRights} />}
-                {!!inventoryId && <ArtworkDetail label="Inventory ID" value={inventoryId} />}
-                {!!confidentialNotes && !isConfidentialNotesHidden && (
-                  <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
-                )}
-                {!!provenance && <ArtworkDetail label="Provenance" value={provenance} />}
-                <Spacer mt={1} />
-              </Flex>
-              <Spacer mt={2} />
-            </>
-          )}
+                  <ArtworkDetail label="Frame" value={framed?.details} />
+                  <ArtworkDetail label="Series" value={series} />
+                  <ArtworkDetail label="Image Rights" value={imageRights} />
+                  <ArtworkDetail label="Inventory ID" value={inventoryId} />
+                  {!isConfidentialNotesHidden && (
+                    <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
+                  )}
+                  <ArtworkDetail label="Provenance" value={provenance} />
+                </BorderBox>
+              </>
+            )}
 
-          {!!exhibitionHistory && (
-            <Flex
-              p="2"
-              pb="1"
-              border={1}
-              borderColor="onSurfaceLow"
-              borderBottomWidth={!!literature ? 0 : 1}
-            >
-              <ArtworkDetail label="Exhibition history" value={exhibitionHistory} size="big" />
-            </Flex>
-          )}
-          {!!literature && (
-            <Flex px={2} pt={2} pb={1} border={1} borderColor="onSurfaceLow">
-              <ArtworkDetail label="Bibliography" value={literature} size="big" />
-            </Flex>
-          )}
-          <Spacer mt={2} />
+            {!!exhibitionHistory && (
+              <BorderBox>
+                <ArtworkDetail label="Exhibition history" value={exhibitionHistory} size="big" />
+              </BorderBox>
+            )}
+
+            {!!literature && (
+              <BorderBox>
+                <ArtworkDetail label="Bibliography" value={literature} size="big" />
+              </BorderBox>
+            )}
+          </Join>
         </BottomSheetScrollView>
       </BottomSheet>
     </Flex>
   )
 }
 
-interface ArtworkDetailProps {
-  size?: "big" | "small"
-  label: string
-  value: string
-}
-
-const ArtworkDetail = ({ size = "small", label, value }: ArtworkDetailProps) => {
+const BorderBox: React.FC = ({ children }) => {
   return (
-    <>
-      <Text variant={size === "big" ? "sm" : "xs"}>{label}</Text>
-      <Text variant={size === "big" ? "sm" : "xs"} color="onBackgroundMedium">
-        {value}
-      </Text>
-      <Spacer mt={1} />
-    </>
+    <Flex py={0.5} border={1} borderColor="onSurfaceLow">
+      {children}
+    </Flex>
   )
 }
 

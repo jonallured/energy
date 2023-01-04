@@ -165,6 +165,10 @@ jest.mock("react-native-gesture-handler", () => {
   }
 })
 
+jest.mock("app/system/wrappers/CachedImage", () => ({
+  CachedImage: jest.requireActual("react-native").Image,
+}))
+
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks/useScreenDimensions"
 import { resetRelayMockEnvironment } from "app/utils/test/mockEnvironmentPayload"
 

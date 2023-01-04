@@ -22,9 +22,11 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
         resizeMode="cover"
       />
       <Flex width="100%">
-        <Text variant={fontSize} mt="1">
-          {show?.name}
-        </Text>
+        {show?.name && (
+          <Text variant={fontSize} mt="1">
+            {show.name}
+          </Text>
+        )}
         <Text variant={fontSize} color="onBackgroundMedium">
           {show.formattedStartAt} - {show.formattedEndAt}
         </Text>

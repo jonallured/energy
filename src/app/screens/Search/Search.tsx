@@ -1,4 +1,5 @@
 import {
+  DEFAULT_HIT_SLOP,
   Flex,
   Input,
   MagnifyingGlassIcon,
@@ -76,7 +77,7 @@ export const Search = () => {
               placeholder="Search"
               enableClearButton
             />
-            <Touchable onPress={() => navigation.goBack()}>
+            <Touchable onPress={() => navigation.goBack()} hitSlop={DEFAULT_HIT_SLOP}>
               <Text variant="xs">Cancel</Text>
             </Touchable>
           </Flex>

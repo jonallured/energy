@@ -1,4 +1,4 @@
-import { MenuIcon, Touchable, MagnifyingGlassIcon } from "@artsy/palette-mobile"
+import { MenuIcon, Touchable, MagnifyingGlassIcon, DEFAULT_HIT_SLOP } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/Navigation"
@@ -25,30 +25,14 @@ export const HomeTabs = () => {
       <Screen.Header
         title="Folio"
         leftElements={
-          <Touchable
-            hitSlop={{
-              top: 20,
-              left: 20,
-              bottom: 20,
-              right: 20,
-            }}
-            onPress={() => navigation.navigate("Settings")}
-          >
+          <Touchable hitSlop={DEFAULT_HIT_SLOP} onPress={() => navigation.navigate("Settings")}>
             <MenuIcon fill="onBackgroundHigh" />
           </Touchable>
         }
         rightElements={
           <>
             {isOnline && (
-              <Touchable
-                onPress={() => navigation.navigate("Search")}
-                hitSlop={{
-                  top: 20,
-                  left: 20,
-                  bottom: 20,
-                  right: 20,
-                }}
-              >
+              <Touchable onPress={() => navigation.navigate("Search")} hitSlop={DEFAULT_HIT_SLOP}>
                 <MagnifyingGlassIcon fill="onBackgroundHigh" />
               </Touchable>
             )}

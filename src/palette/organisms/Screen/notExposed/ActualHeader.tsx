@@ -1,4 +1,4 @@
-import { Button, Spacer } from "@artsy/palette-mobile"
+import { Button, DEFAULT_HIT_SLOP, Spacer } from "@artsy/palette-mobile"
 import { ArrowLeftIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SelectModeConfig } from "app/system/store/selectModeAtoms"
@@ -85,12 +85,7 @@ export const ActualHeader = ({
           <Touchable
             onPress={onBack ? onBack : () => navigation.goBack()}
             underlayColor="transparent"
-            hitSlop={{
-              top: 10,
-              right: 10,
-              bottom: 10,
-              left: 10,
-            }}
+            hitSlop={DEFAULT_HIT_SLOP}
           >
             <ArrowLeftIcon fill="onBackgroundHigh" />
           </Touchable>

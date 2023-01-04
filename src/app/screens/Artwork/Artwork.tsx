@@ -1,8 +1,17 @@
-import { ArtworkIcon, EditIcon, BriefcaseIcon, Touchable, MoreIcon } from "@artsy/palette-mobile"
+import {
+  ArtworkIcon,
+  EditIcon,
+  BriefcaseIcon,
+  Touchable,
+  MoreIcon,
+  Flex,
+  DEFAULT_HIT_SLOP,
+} from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import * as MailComposer from "expo-mail-composer"
 import { useMemo, useRef } from "react"
+import { ActivityIndicator } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
@@ -89,7 +98,7 @@ export const Artwork = () => {
           rightElements={
             <Touchable
               onPress={addToButtonHandler}
-              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              hitSlop={DEFAULT_HIT_SLOP}
               style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
             >
               <MoreIcon />
@@ -188,8 +197,7 @@ export const SkeletonArtwork = () => {
         <Screen.FloatingHeader
           rightElements={
             <Touchable
-              // onPress={addToButtonHandler}
-              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              hitSlop={DEFAULT_HIT_SLOP}
               style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
             >
               <MoreIcon />
@@ -197,7 +205,9 @@ export const SkeletonArtwork = () => {
           }
         />
         <Screen.Body fullwidth nosafe>
-          {/* <ScrollableScreensView screens={screens} initialScreenName={slug} /> */}
+          <Flex backgroundColor="background" flex={1} justifyContent="center" alignItems="center">
+            <ActivityIndicator />
+          </Flex>
         </Screen.Body>
       </Screen>
 

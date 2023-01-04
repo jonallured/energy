@@ -4,10 +4,6 @@ import { useStoreRehydrated } from "easy-peasy"
 import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
 import { AlbumsNavigation, AlbumNavigationScreens } from "app/screens/Albums/navigation"
-import {
-  EmailNavigation,
-  EmailNavigationScreens,
-} from "app/screens/Artists/ArtistTabs/ArtistArtworks/EmailScreen/navigation"
 import { ArtistNavigation, ArtistNavigationScreens } from "app/screens/Artists/navigation"
 import { useWebViewCookies } from "app/screens/Artwork/ArtworkWebView"
 import { ArtworkNavigation, ArtworkNavigationScreens } from "app/screens/Artwork/navigation"
@@ -27,7 +23,6 @@ export type NavigationScreens = AuthNavigationScreens &
   ArtworkNavigationScreens &
   ArtistNavigationScreens &
   SettingsNavigationScreens &
-  EmailNavigationScreens &
   SearchNavigationScreens &
   ShowsNavigationScreens &
   DevNavigationScreens &
@@ -78,7 +73,6 @@ export const Main = () => {
               {AlbumsNavigation()}
               {ArtistNavigation()}
               {ArtworkNavigation()}
-              {EmailNavigation()}
               {SearchNavigation()}
               {SettingsNavigation()}
               {ShowsNavigation()}

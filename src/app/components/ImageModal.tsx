@@ -29,9 +29,10 @@ export const ImageModal = ({ isModalVisible, setIsModalVisible, uri }: ImageModa
             style={{ flex: 1, width: "100%" }}
             resizeMode="contain"
             placeholderHeight={undefined}
+            fadeInOnLoad={false}
           />
         </ReactNativeZoomableView>
-        <Flex position="absolute" pt={insets.top} px={2}>
+        <Flex position="absolute" pt={insets.top + 8} left={-8} px={2}>
           <BackButton showX onPress={() => setIsModalVisible(false)} />
         </Flex>
       </Flex>

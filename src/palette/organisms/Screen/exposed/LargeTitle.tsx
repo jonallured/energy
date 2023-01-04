@@ -1,6 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { Skeleton, SkeletonText } from "app/components/Skeleton"
-import { useAtom } from "jotai"
+import { Flex, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useAnimatedHeaderTitle } from "../atoms"
 
 export const LARGE_TITLE_HEIGHT = 64
