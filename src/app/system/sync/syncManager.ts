@@ -1,3 +1,4 @@
+import { RelayNetworkLayerRequest } from "react-relay-network-modern"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import {
   ArtistArtworksQuery,
@@ -41,7 +42,7 @@ import { extractNodes } from "app/utils"
 import { imageSize } from "app/utils/imageSize"
 import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
 import { forEachAsync, mapAsync } from "./utils/asyncIterators"
-import { initFetchOrCatch } from "./utils/fetchOrCatch"
+import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 
 interface SyncResultsData {
   artistsQuery?: ArtistsQuery$data
@@ -56,6 +57,7 @@ interface SyncResultsData {
   showArtworksQuery?: ShowArtworksQuery$data[]
   showInstallsQuery?: ShowInstallsQuery$data[]
   showDocumentsQuery?: ShowDocumentsQuery$data[]
+  errors: FetchError[]
 }
 
 /**
@@ -74,6 +76,7 @@ const syncResults: SyncResultsData = {
   showArtworksQuery: [],
   showInstallsQuery: [],
   showDocumentsQuery: [],
+  errors: [],
 }
 
 interface SyncManagerOptions {
@@ -97,7 +100,12 @@ export function initSyncManager({
     throw new Error("[sync] Error initializing sync: `partnerID` is required")
   }
 
-  const { fetchOrCatch } = initFetchOrCatch(relayEnvironment)
+  const { fetchOrCatch } = initFetchOrCatch({
+    relayEnvironment,
+    onError: (error) => {
+      syncResults.errors.push(error)
+    },
+  })
 
   const updateStatus = (...messages: any[]) => {
     log(...messages)
@@ -127,6 +135,9 @@ export function initSyncManager({
       syncShowInstallsQuery,
       syncShowDocumentsQuery,
 
+      // Retry errors caught above 3 times
+      retrySyncForErrors,
+
       // Media sync. We collect all urls from the queries above and sync the
       // images, install shots, and documents last.
       syncImages,
@@ -148,7 +159,7 @@ export function initSyncManager({
 
     // Store the data in the cache. Later, if the user is offline they'll be
     // able to read from this store.
-    persistDataToOfflineCache(relayEnvironment)
+    persistRelayDataToOfflineCache(relayEnvironment)
 
     onComplete()
 
@@ -365,6 +376,52 @@ export function initSyncManager({
     )
   }
 
+  const retrySyncForErrors = async () => {
+    if (syncResults.errors.length === 0) {
+      return
+    }
+
+    updateStatus("Retrying sync for errors")
+
+    const MAX_RETRY_ATTEMPTS = 3
+
+    let retryAttempt = 0
+
+    const retry = async () => {
+      const errors = [...syncResults.errors]
+
+      // Reset errors for new fetch requests
+      syncResults.errors = []
+
+      await forEachAsync(errors, async ({ error }) => {
+        const QueryName = (error.req as RelayNetworkLayerRequest).id
+
+        try {
+          // Dynamically invoke sync functions based on the `syncSomeQuery`
+          // function naming idiom defined above (eg, `syncArtistShowsQuery()`)
+          await eval(`sync${QueryName}()`)
+        } catch (error) {
+          log("Error retrying sync", error)
+        }
+      })
+
+      // After the requests above execute, check if there are any new errors
+      // that have been populated and if so, retry again
+      const shouldRetry = syncResults.errors.length > 0
+
+      if (shouldRetry) {
+        if (retryAttempt < MAX_RETRY_ATTEMPTS) {
+          retryAttempt++
+
+          await retry()
+        }
+      }
+    }
+
+    // Start retry loop
+    await retry()
+  }
+
   return {
     startSync,
   }
@@ -469,7 +526,7 @@ const log = (...messages: any[]) => console.log("\n[sync]:", ...messages)
  * Create and save the Relay store to disk
  */
 
-const persistDataToOfflineCache = async (relayEnvironment: RelayModernEnvironment) => {
+const persistRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironment) => {
   log("Persisting data to offline cache")
 
   const relayData = relayEnvironment.getStore().getSource().toJSON()
