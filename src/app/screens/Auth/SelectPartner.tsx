@@ -75,23 +75,30 @@ const SelectPartner = () => {
   }, [search, partners])
 
   return (
-    <FlatList
-      data={filteredData}
-      keyExtractor={(item) => item?.internalID!}
-      renderItem={({ item: partner }) => (
-        <Button
-          variant="outline"
-          block
-          onPress={() => GlobalStore.actions.setActivePartnerID(partner!.internalID)}
-        >
-          {partner!.name}
-        </Button>
-      )}
-      ItemSeparatorComponent={() => <Spacer mt={2} />}
-      stickyHeaderIndices={[0]}
-      showsVerticalScrollIndicator={false}
-      ListHeaderComponent={<SelectPartnerHeader onSearchChange={setSearch} searchValue={search} />}
-      ListEmptyComponent={<ListEmptyComponent text="No partners found" />}
-    />
+    <>
+      <FlatList
+        data={filteredData}
+        keyExtractor={(item) => item?.internalID!}
+        renderItem={({ item: partner }) => (
+          <Button
+            variant="outline"
+            block
+            onPress={() => GlobalStore.actions.setActivePartnerID(partner!.internalID)}
+          >
+            {partner!.name}
+          </Button>
+        )}
+        ItemSeparatorComponent={() => <Spacer mt={2} />}
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <SelectPartnerHeader onSearchChange={setSearch} searchValue={search} />
+        }
+        ListEmptyComponent={<ListEmptyComponent text="No partners found" />}
+      />
+      <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
+        Log out
+      </Button>
+    </>
   )
 }
