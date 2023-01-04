@@ -1,4 +1,4 @@
-import { Spacer, Flex, Separator, Text, Touchable, useColor, useSpace } from "@artsy/palette-mobile"
+import { Spacer, Flex, Separator, Text, Touchable, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Linking } from "react-native"
@@ -22,8 +22,7 @@ const BOTTOM_SHEET_HEIGHT = 180
 
 export const ArtworkContent = ({ slug }: { slug: string }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(false)
-  const color = useColor()
-  const space = useSpace()
+  const { color, space } = useTheme()
   const bottomSheetRef = useRef<BottomSheet>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const safeAreaInsets = useSafeAreaInsets()
@@ -65,8 +64,10 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - NAVBAR_HEIGHT
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const snapPoints = useMemo(() => [BOTTOM_SHEET_HEIGHT, "95%"], [screenHeight])
+  const snapPoints = useMemo(
+    () => [BOTTOM_SHEET_HEIGHT, screenHeight - NAVBAR_HEIGHT - safeAreaInsets.top],
+    [safeAreaInsets.top, screenHeight]
+  )
 
   // Enable scroll only when the bottom sheet is expanded.
   const handleSheetChanges = useCallback((index: number) => {
@@ -198,9 +199,11 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               height={30}
               alignItems="center"
               justifyContent="center"
-              backgroundColor="background"
+              backgroundColor="surface"
+              borderTopLeftRadius={10}
+              borderTopRightRadius={10}
             >
-              <Flex width={30} height={4} backgroundColor="onBackgroundMedium" borderRadius={10} />
+              <Flex width={30} height={4} backgroundColor="onSurfaceMedium" borderRadius={10} />
             </Flex>
           </Touchable>
         )}
@@ -210,7 +213,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
         <BottomSheetScrollView
           style={{
             paddingHorizontal: space(2),
-            backgroundColor: color("background"),
+            backgroundColor: color("surface"),
           }}
           scrollEnabled={isScrollEnabled}
         >
@@ -276,22 +279,22 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           </Flex>
           {!!shouldShowAboutTheArtworkTitle && (
             <>
-              <Spacer mt={1} />
+              <Spacer y="1" />
               <Separator />
-              <Spacer mt={2} />
+              <Spacer y="2" />
               <Text variant="md">About the artwork</Text>
-              <Spacer mt={1} />
+              <Spacer y="1" />
             </>
           )}
           {!!additionalInformation && (
             <>
               <Markdown rules={markdownRules}>{additionalInformation}</Markdown>
-              <Spacer mt={2} />
+              <Spacer y="2" />
             </>
           )}
           {!!shouldDisplayTheDetailBox && (
             <>
-              <Flex px={2} border={1} borderColor="onBackgroundLow">
+              <Flex px={2} border={1} borderColor="onSurfaceLow">
                 <Spacer mt={2} />
                 {!!mediumType?.name && <ArtworkDetail label="Medium" value={mediumType?.name} />}
                 {!!conditionDescription?.details && (
@@ -320,18 +323,17 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
           {!!exhibitionHistory && (
             <Flex
-              px={2}
-              pt={2}
-              pb={1}
+              p="2"
+              pb="1"
               border={1}
-              borderColor="onBackgroundLow"
-              borderBottomColor={exhibitionHistory && literature ? "background" : "onBackgroundLow"}
+              borderColor="onSurfaceLow"
+              borderBottomWidth={!!literature ? 0 : 1}
             >
               <ArtworkDetail label="Exhibition history" value={exhibitionHistory} size="big" />
             </Flex>
           )}
           {!!literature && (
-            <Flex px={2} pt={2} pb={1} border={1} borderColor="onBackgroundLow">
+            <Flex px={2} pt={2} pb={1} border={1} borderColor="onSurfaceLow">
               <ArtworkDetail label="Bibliography" value={literature} size="big" />
             </Flex>
           )}

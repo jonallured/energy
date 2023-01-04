@@ -1,14 +1,17 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Flex, Spacer, useColor } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import { EmitterSubscription, Keyboard } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { SCREEN_HORIZONTAL_PADDING } from "./Body"
 import { useScreenBottomViewHeightSetter } from "../atoms"
+import { GlobalStore } from "app/system/store/GlobalStore"
 
 export const BottomView = ({ children }: { children: React.ReactNode }) => {
   const setBottomViewHeight = useScreenBottomViewHeightSetter()
   const insets = useSafeAreaInsets()
+  const color = useColor()
+  const isDarkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme) === "dark"
 
   const [keyboardShowing, keyboardHeight] = useKeyboard()
 
@@ -21,19 +24,20 @@ export const BottomView = ({ children }: { children: React.ReactNode }) => {
       onLayout={(evt) => void setBottomViewHeight(evt.nativeEvent.layout.height)}
     >
       <LinearGradient
-        colors={["rgba(255,255,255,0)", "rgba(255,255,255,1)"]}
+        colors={[isDarkMode ? "rgba(0,0,0,0)" : "rgba(255,255,255,0)", color("background")]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={{
           width: "100%",
-          height: 30,
+          height: 20,
         }}
         pointerEvents="none"
       />
       <Flex
         px={SCREEN_HORIZONTAL_PADDING}
-        py={keyboardShowing ? "1" : undefined}
-        backgroundColor="white100"
+        pt="1"
+        pb={keyboardShowing ? "1" : undefined}
+        backgroundColor="background"
       >
         {children}
       </Flex>

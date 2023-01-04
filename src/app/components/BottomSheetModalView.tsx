@@ -6,7 +6,7 @@ import {
   Separator,
   Text,
   Touchable,
-  useTheme,
+  useColor,
 } from "@artsy/palette-mobile"
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
@@ -24,9 +24,8 @@ export interface BottomSheetRef {
 
 export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalViewProps>(
   (props, ref) => {
-    const { color } = useTheme()
-
     const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+    const color = useColor()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const snapPoints = useMemo(() => [props.modalHeight], [])
@@ -73,20 +72,16 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
             alignItems="center"
             justifyContent="center"
             height="50"
-            backgroundColor="background"
+            backgroundColor="surface"
             borderTopLeftRadius={10}
             borderTopRightRadius={10}
-            borderLeftWidth={0.5}
-            borderRightWidth={0.5}
-            borderTopWidth={0.5}
-            borderColor="white"
           >
             <Flex m={2} position="absolute" left="0">
               <Touchable
                 onPress={() => bottomSheetModalRef.current?.close()}
                 underlayColor="transparent"
               >
-                <CloseIcon fill="onBackgroundHigh" />
+                <CloseIcon fill="onSurfaceHigh" />
               </Touchable>
             </Flex>
             <Text weight="medium">More</Text>
@@ -95,10 +90,7 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
       >
         <BottomSheetScrollView
           style={{
-            backgroundColor: color("background"),
-            borderLeftWidth: 0.5,
-            borderRightWidth: 0.5,
-            borderColor: "white",
+            backgroundColor: color("surface"),
           }}
         >
           <Separator />
@@ -138,14 +130,14 @@ export const BottomSheetModalRow = ({
           <Text>{label}</Text>
           {subtitle && (
             <Flex flexDirection="row" alignItems="center">
-              <Text variant="xs" color="onBackgroundMedium">
+              <Text variant="xs" color="onSurfaceMedium">
                 {subtitle}
               </Text>
             </Flex>
           )}
         </Flex>
         <Flex alignItems="center" justifyContent="center" width="25px">
-          <ArrowRightIcon fill="onBackgroundHigh" />
+          <ArrowRightIcon fill="onSurfaceHigh" />
         </Flex>
       </Flex>
       {!isLastRow && <Separator />}
