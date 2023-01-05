@@ -1,13 +1,16 @@
-// MARK: - General preparation
-
 import "@testing-library/jest-native/extend-expect"
-
-// MARK: - External deps mocks
-
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
-jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
+import React from "react"
+import { ignoreLogsInTests } from "app/system/devTools/ignoreLogs"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks/useScreenDimensions"
 
-// require("react-native-reanimated/lib/reanimated2/jestUtils").setUpTests()
+// @ts-expect-error
+// eslint-disable-next-line import/order
+import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
+
+ignoreLogsInTests()
+
+jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("react-native-config", () => {
   const mockConfig = {
@@ -97,6 +100,7 @@ jest.mock("app/utils/hooks/useScreenDimensions", () => {
   }
   return {
     ...jest.requireActual("app/utils/hooks/useScreenDimensions"),
+    ProvideScreenDimensions: ({ children }: { children: React.ReactNode }) => children,
     useScreenDimensions: () => screenDimensions,
   }
 })
@@ -114,8 +118,6 @@ beforeEach(() => {
   require("@react-native-cookies/cookies").clearAll.mockReset()
 })
 
-// @ts-expect-error
-import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
 jest.mock("react-native-device-info", () => ({
@@ -168,10 +170,3 @@ jest.mock("react-native-gesture-handler", () => {
 jest.mock("app/system/wrappers/CachedImage", () => ({
   CachedImage: jest.requireActual("react-native").Image,
 }))
-
-import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks/useScreenDimensions"
-import { resetRelayMockEnvironment } from "app/utils/test/mockEnvironmentPayload"
-
-beforeEach(() => {
-  resetRelayMockEnvironment()
-})

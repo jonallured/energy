@@ -20,7 +20,7 @@ import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { albumArtworksQuery } from "app/screens/Albums/AlbumTabs/AlbumArtworks"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils"
+import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { Screen } from "palette"
 

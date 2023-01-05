@@ -1,29 +1,26 @@
-import { screen } from "@testing-library/react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtworkGridItem_artwork_TestQuery } from "__generated__/ArtworkGridItem_artwork_TestQuery.graphql"
+import { graphql } from "react-relay"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 
 describe("ArtworkGridItem", () => {
-  const TestRenderer = () => {
-    const data = useLazyLoadQuery<ArtworkGridItem_artwork_TestQuery>(
-      graphql`
-        query ArtworkGridItem_artwork_TestQuery @relay_test_operation {
-          artwork(id: "some-id") {
-            ...ArtworkGridItem_artwork
-          }
+  const { renderWithRelay } = setupTestWrapper({
+    Component: ArtworkGridItem,
+    query: graphql`
+      query ArtworkGridItem_artwork_TestQuery @relay_test_operation {
+        artwork(id: "some-id") {
+          ...ArtworkGridItem_artwork
         }
-      `,
-      {}
-    )
-
-    return <ArtworkGridItem artwork={data.artwork!} />
-  }
+      }
+    `,
+  })
 
   it("should NOT HIDE the availabilty status dot if the 'Presantation Mode = OFF' ", async () => {
-    renderWithWrappers(<TestRenderer />)
+    const { queryByTestId } = await renderWithRelay({
+      Artwork: () => ({
+        availability: "for sale",
+      }),
+    })
 
     __globalStoreTestUtils__?.injectState({
       presentationMode: {
@@ -32,17 +29,15 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    await mockEnvironmentPayload({
+    expect(queryByTestId("availability-dot")).toBeTruthy()
+  })
+
+  it("should NOT HIDE the availabilty status dot if the 'Presantation Mode = ON' and 'Hide Works Availability' switch = OFF", async () => {
+    const { queryByTestId } = await renderWithRelay({
       Artwork: () => ({
         availability: "for sale",
       }),
     })
-
-    expect(screen.queryByTestId("availability-dot")).toBeTruthy()
-  })
-
-  it("should NOT HIDE the availabilty status dot if the 'Presantation Mode = ON' and 'Hide Works Availability' switch = OFF", async () => {
-    renderWithWrappers(<TestRenderer />)
 
     __globalStoreTestUtils__?.injectState({
       presentationMode: {
@@ -51,17 +46,15 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    await mockEnvironmentPayload({
+    expect(queryByTestId("availability-dot")).toBeTruthy()
+  })
+
+  it("should HIDE the availabilty status dot if the 'Presantation Mode = ON' and 'Hide Works Availability' switch = ON", async () => {
+    const { queryByTestId } = await renderWithRelay({
       Artwork: () => ({
         availability: "for sale",
       }),
     })
-
-    expect(screen.queryByTestId("availability-dot")).toBeTruthy()
-  })
-
-  it("should HIDE the availabilty status dot if the 'Presantation Mode = ON' and 'Hide Works Availability' switch = ON", async () => {
-    renderWithWrappers(<TestRenderer />)
 
     __globalStoreTestUtils__?.injectState({
       presentationMode: {
@@ -70,12 +63,6 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    await mockEnvironmentPayload({
-      Artwork: () => ({
-        availability: "for sale",
-      }),
-    })
-
-    expect(screen.queryByTestId("availability-dot")).toBeFalsy()
+    expect(queryByTestId("availability-dot")).toBeFalsy()
   })
 })

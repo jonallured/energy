@@ -1,5 +1,5 @@
-import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
+import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
+import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 import { ShowInstalls } from "./ShowInstalls"
 
 jest.mock("react-native-collapsible-tab-view", () => ({
@@ -8,15 +8,17 @@ jest.mock("react-native-collapsible-tab-view", () => ({
 }))
 
 describe("ShowInstalls", () => {
+  const { renderWithRelay } = setupTestWrapper<ShowInstallsQuery>({
+    Component: () => <ShowInstalls slug="some" />,
+  })
+
   it("renders ListEmptyComponent", async () => {
-    const { getByText } = renderWithWrappers(<ShowInstalls slug="someSlug" />)
-    await mockEnvironmentPayload(mockPropsEmptyList)
+    const { getByText } = await renderWithRelay(mockPropsEmptyList)
     expect(getByText("No show installs shots to display")).toBeTruthy()
   })
 
   it("renders the list of installs", async () => {
-    const { getByTestId } = renderWithWrappers(<ShowInstalls slug="someSlug" />)
-    await mockEnvironmentPayload(mockProps)
+    const { getByTestId } = await renderWithRelay(mockProps)
     images.forEach((image) => {
       expect(getByTestId(image.resized.url)).toBeTruthy()
     })

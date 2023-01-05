@@ -1,18 +1,19 @@
 import { range } from "lodash"
-import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
+import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
+import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 import { Shows } from "./Shows"
 
 describe("Shows", () => {
-  it("renders without throwing an error", async () => {
-    renderWithWrappers(<Shows />)
-    await mockEnvironmentPayload(mockProps)
+  const { renderWithRelay } = setupTestWrapper<ShowsQuery>({
+    Component: Shows,
+    variables: {
+      partnerID: "foo",
+      imageSize: 200,
+    },
   })
 
   it("only renders the list of shows with artworkCount value more than 0", async () => {
-    const { queryAllByText } = renderWithWrappers(<Shows />)
-    await mockEnvironmentPayload(mockProps)
-
+    const { queryAllByText } = await renderWithRelay(mockProps)
     expect(queryAllByText("Gustav Klimts shows")).toHaveLength(9)
   })
 })

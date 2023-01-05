@@ -11,7 +11,7 @@ import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsFlatList } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils"
+import { extractNodes } from "app/utils/extractNodes"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const Artists = () => {

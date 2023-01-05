@@ -2,7 +2,7 @@ import CookieManager from "@react-native-cookies/cookies"
 import { action, Action, thunk, Thunk } from "easy-peasy"
 import { stringify } from "qs"
 import Config from "react-native-config"
-import { getUserAgent } from "app/utils"
+import { getUserAgent } from "app/utils/getUserAgent"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
 interface EmailOAuthParams {

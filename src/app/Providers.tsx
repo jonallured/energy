@@ -3,19 +3,24 @@ import JotaiNexus from "jotai-nexus"
 import { useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayProvider } from "app/system/relay/RelayProvider"
 import { GlobalStoreProvider, GlobalStore } from "app/system/store/GlobalStore"
 import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 
-export const AppProviders = ({ children }: { children: React.ReactNode }) => {
+interface ProviderProps {
+  relayEnvironment?: RelayModernEnvironment
+}
+
+export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment }) => {
   return (
     <ErrorBoundary>
       <GlobalStoreProvider>
         <ThemeProvider>
           <SuspenseWrapper>
-            <RelayProvider>
+            <RelayProvider relayEnvironment={relayEnvironment}>
               <SafeAreaProvider>
                 <ProvideScreenDimensions>
                   {/*  */}

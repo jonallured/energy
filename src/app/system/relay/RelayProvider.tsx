@@ -15,25 +15,29 @@ export const RelayContext = createContext<RelayContextProps>({
   resetRelayEnvironment: () => null,
 })
 
-export const RelayProvider: React.FC = ({ children }) => {
+export const RelayProvider: React.FC<Partial<Pick<RelayContextProps, "relayEnvironment">>> = ({
+  children,
+  relayEnvironment,
+}) => {
   const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
-  const environment = useMemo(() => createEnvironment(), [])
-  const [relayEnvironment, setRelayEnvironment] = useState<RelayModernEnvironment>(environment)
+  const environment = useMemo(() => relayEnvironment ?? createEnvironment(), [])
+  const [currentRelayEnvironment, setRelayEnvironment] =
+    useState<RelayModernEnvironment>(environment)
 
   const providerValues = {
-    relayEnvironment: relayEnvironment,
+    relayEnvironment: currentRelayEnvironment,
     resetRelayEnvironment: (records?: RecordMap) => {
       setRelayEnvironment(createEnvironment(records))
     },
   }
 
   if (!isOnline) {
-    relayEnvironment.getStore().holdGC()
+    currentRelayEnvironment.getStore().holdGC()
   }
 
   return (
     <RelayContext.Provider value={providerValues}>
-      <RelayEnvironmentProvider environment={relayEnvironment as Environment}>
+      <RelayEnvironmentProvider environment={currentRelayEnvironment as Environment}>
         {children}
       </RelayEnvironmentProvider>
     </RelayContext.Provider>

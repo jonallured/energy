@@ -1,10 +1,47 @@
 import { act } from "@testing-library/react-native"
 import { takeRight } from "lodash"
-import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
+import { MockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { SetupTestWrapperProps } from "app/utils/test/setupTestWrapper"
 import { flushPromiseQueue } from "./flushPromiseQueue"
 
+interface MockEnvironmentPayloadProps extends Omit<SetupTestWrapperProps<any>, "Component"> {
+  mockEnvironment: MockEnvironment
+  mockResolvers: MockResolvers
+}
+
+export async function mockEnvironmentPayload({
+  preloaded,
+  mockEnvironment,
+  query,
+  variables,
+  mockResolvers,
+}: MockEnvironmentPayloadProps) {
+  act(() => {
+    const resolve = preloaded
+      ? mockEnvironment.mock.queueOperationResolver
+      : mockEnvironment.mock.resolveMostRecentOperation
+
+    if (preloaded) {
+      if (!query) {
+        throw new Error("A `query` is required when using `preloaded` prop.")
+      }
+      mockEnvironment.mock.queuePendingOperation(query, variables)
+    }
+
+    resolve((operation: any) => {
+      return MockPayloadGenerator.generate(operation, {
+        ...defaultMockResolvers,
+        ...mockResolvers,
+      })
+    })
+  })
+
+  await flushPromiseQueue()
+}
+
 const counters: { [path: string]: number } = {}
+
 const generateID = (pathComponents: readonly string[] | undefined) => {
   const path: string = pathComponents?.join(".") ?? "_GLOBAL_"
   const currentCounter = counters[path]
@@ -45,24 +82,4 @@ const mockResolver = (ctx: MockResolverContext) => {
 const defaultMockResolvers: MockResolvers = {
   ID: (ctx) => mockResolver(ctx),
   String: (ctx) => mockResolver(ctx),
-}
-
-const createTestEnvironment = () => {
-  const mockEnvironment = createMockEnvironment()
-  return mockEnvironment
-}
-
-export let relayMockEnvironment = createMockEnvironment()
-
-export const resetRelayMockEnvironment = () => {
-  relayMockEnvironment = createTestEnvironment()
-}
-
-export async function mockEnvironmentPayload(mockResolvers?: MockResolvers) {
-  act(() => {
-    relayMockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, { ...defaultMockResolvers, ...mockResolvers })
-    )
-  })
-  await flushPromiseQueue()
 }

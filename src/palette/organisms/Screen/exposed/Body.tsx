@@ -3,7 +3,6 @@ import { getChildrenByType, removeChildrenByType } from "react-nanny"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Wrap, ArtsyKeyboardAvoidingView } from "app/utils"
 import { BottomView } from "./BottomView"
 import { LargeTitle } from "./LargeTitle"
 import {
@@ -13,6 +12,8 @@ import {
   useSetScreenIsFullWidthBody,
 } from "../atoms"
 import { useAnimatedHeaderScrolling } from "../hooks"
+import { ArtsyKeyboardAvoidingView } from "app/components/ArtsyKeyboardAvoidingView"
+import { Wrap } from "app/components/Wrap"
 
 export const SCREEN_HORIZONTAL_PADDING: SpacingUnit = "2"
 

@@ -1,44 +1,20 @@
-import { Theme } from "@artsy/palette-mobile"
 import { render } from "@testing-library/react-native"
-import { Suspense, ReactElement } from "react"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import { RelayEnvironmentProvider } from "react-relay"
-import { GlobalStoreProvider } from "app/system/store/GlobalStore"
-import { combineProviders } from "app/utils"
-import { relayMockEnvironment } from "app/utils/test/mockEnvironmentPayload"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { createMockEnvironment, MockEnvironment } from "relay-test-utils"
+import { Providers } from "app/Providers"
 
-const Wrappers: React.FC = ({ children }) =>
-  combineProviders(
-    [
-      RelayMockEnvProvider,
-      SuspenseProvider,
-      GlobalStoreProvider,
-      SafeAreaProvider,
-      Theme, // uses: GlobalStoreProvider
-    ],
-    children
-  )
+export const renderWithWrappers = (
+  component: React.ReactNode,
+  mockEnvironment?: MockEnvironment
+) => {
+  const environment = mockEnvironment ?? createMockEnvironment()
 
-const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => {
-  return (
-    <RelayEnvironmentProvider environment={relayMockEnvironment}>
-      {children}
-    </RelayEnvironmentProvider>
-  )
-}
-
-const SuspenseProvider = ({ children }: { children?: React.ReactNode }) => (
-  <Suspense fallback="Loading...">{children}</Suspense>
-)
-
-/**
- * Renders a React Component with our page wrappers
- * by using @testing-library/react-native
- * @param component
- */
-export const renderWithWrappers = (component: ReactElement) => {
   try {
-    return render(component, { wrapper: Wrappers })
+    return render(
+      <Providers relayEnvironment={environment as unknown as RelayModernEnvironment}>
+        {component}
+      </Providers>
+    )
   } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {
       throw new Error(

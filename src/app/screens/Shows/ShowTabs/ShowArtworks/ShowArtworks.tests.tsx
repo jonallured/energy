@@ -1,6 +1,6 @@
 import { range } from "lodash"
-import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
+import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
+import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 import { ShowArtworks } from "./ShowArtworks"
 
 jest.mock("react-native-collapsible-tab-view", () => ({
@@ -9,14 +9,12 @@ jest.mock("react-native-collapsible-tab-view", () => ({
 }))
 
 describe("ShowArtworks", () => {
-  it("renders without throwing an error", async () => {
-    renderWithWrappers(<ShowArtworks slug="some" />)
-    await mockEnvironmentPayload(mockProps)
+  const { renderWithRelay } = setupTestWrapper<ShowArtworksQuery>({
+    Component: () => <ShowArtworks slug="some" />,
   })
 
   it("renders the list of works", async () => {
-    const { getByTestId } = renderWithWrappers(<ShowArtworks slug="some" />)
-    await mockEnvironmentPayload(mockProps)
+    const { getByTestId } = await renderWithRelay(mockProps)
     expect(getByTestId("show-artwork-list").props.data).toHaveLength(10)
   })
 })

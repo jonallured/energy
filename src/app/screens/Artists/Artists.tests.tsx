@@ -1,18 +1,18 @@
 import { range } from "lodash"
-import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
-import { Artists } from "./Artists"
+import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
+import { Artists } from "app/screens/Artists/Artists"
+import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 
 describe("Artists", () => {
-  it("renders without throwing an error", async () => {
-    renderWithWrappers(<Artists />)
-    await mockEnvironmentPayload(mockProps)
+  const { renderWithRelay } = setupTestWrapper<ArtistsQuery>({
+    Component: Artists,
+    variables: {
+      partnerID: "foo",
+    },
   })
 
   it("renders the list of artists", async () => {
-    const { queryAllByText } = renderWithWrappers(<Artists />)
-    await mockEnvironmentPayload(mockProps)
-
+    const { queryAllByText } = await renderWithRelay(mockProps)
     expect(queryAllByText("Gustav Klimt")).toHaveLength(10)
   })
 })

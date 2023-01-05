@@ -77,7 +77,7 @@ export const ArtworkGridItem = ({
   )
 }
 
-const ArtworkGridItemFragment = graphql`
+export const ArtworkGridItemFragment = graphql`
   fragment ArtworkGridItem_artwork on Artwork @argumentDefinitions(imageSize: { type: "Int" }) {
     internalID
     title

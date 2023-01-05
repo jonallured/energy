@@ -6,7 +6,7 @@ import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils"
+import { extractNodes } from "app/utils/extractNodes"
 
 export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!

@@ -1,21 +1,13 @@
-import { LogBox } from "react-native"
 import { Main } from "app/Navigation"
-import { AppProviders } from "app/Providers"
+import { Providers } from "app/Providers"
 import { setupFlipper } from "app/system/devTools/flipper"
+import { ignoreLogs } from "app/system/devTools/ignoreLogs"
 
 setupFlipper()
-
-LogBox.ignoreLogs([
-  "lineHeight",
-  "borderRadius",
-  "fontSize",
-  "onBackground",
-  "borderWidth",
-  "react-native-flipper",
-])
+ignoreLogs()
 
 export const App = () => (
-  <AppProviders>
+  <Providers>
     <Main />
-  </AppProviders>
+  </Providers>
 )

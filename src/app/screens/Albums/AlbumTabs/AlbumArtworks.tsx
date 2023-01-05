@@ -7,7 +7,7 @@ import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils"
+import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 
 export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {

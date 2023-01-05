@@ -9,7 +9,7 @@ import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
-import { extractNodes } from "app/utils"
+import { extractNodes } from "app/utils/extractNodes"
 
 export const ArtistDocuments = ({ slug }: { slug: string }) => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)!

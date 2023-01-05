@@ -38,7 +38,7 @@ import { showInstallsQuery } from "app/screens/Shows/ShowTabs/ShowInstalls/ShowI
 import { showTabsQuery } from "app/screens/Shows/ShowTabs/ShowTabs"
 import { showsQuery } from "app/screens/Shows/Shows"
 import { RelayContextProps } from "app/system/relay/RelayProvider"
-import { extractNodes } from "app/utils"
+import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
 import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
 import { forEachAsync, mapAsync } from "./utils/asyncIterators"
@@ -159,7 +159,7 @@ export function initSyncManager({
 
     // Store the data in the cache. Later, if the user is offline they'll be
     // able to read from this store.
-    persistRelayDataToOfflineCache(relayEnvironment)
+    saveRelayDataToOfflineCache(relayEnvironment)
 
     onComplete()
 
@@ -526,7 +526,7 @@ const log = (...messages: any[]) => console.log("\n[sync]:", ...messages)
  * Create and save the Relay store to disk
  */
 
-const persistRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironment) => {
+const saveRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironment) => {
   log("Persisting data to offline cache")
 
   const relayData = relayEnvironment.getStore().getSource().toJSON()
