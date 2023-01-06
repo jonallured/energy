@@ -5,9 +5,10 @@ import { uniq } from "lodash"
 import { Suspense, useEffect } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { SearchResultQuery } from "__generated__/SearchResultQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
@@ -42,7 +43,7 @@ interface SearchResult {
 const SearchResultView = ({ searchInput }: SearchResultProps) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const data = useLazyLoadQuery<SearchResultQuery>(searchResultQuery, {
+  const data = useSystemQueryLoader<SearchResultQuery>(searchResultQuery, {
     partnerID,
     searchInput,
     imageSize,

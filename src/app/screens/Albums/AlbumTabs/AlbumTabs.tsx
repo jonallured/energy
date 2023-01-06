@@ -4,9 +4,8 @@ import { Alert } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/Navigation"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { TabScreen } from "app/components/Tabs/TabScreen"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
-import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { Screen } from "palette"
 import { AlbumArtworks } from "./AlbumArtworks"
 import { AlbumDocuments } from "./AlbumDocuments"
@@ -68,25 +67,17 @@ export const AlbumTabs = () => {
       />
       <Screen.AnimatedTitleTabsBody>
         <Tabs.Tab name="AlbumArtworks" label="Works">
-          <ErrorBoundary withoutBackButton>
-            <SuspenseWrapper withTabs>
-              <AlbumArtworks artworkIds={album.artworkIds} />
-            </SuspenseWrapper>
-          </ErrorBoundary>
+          <TabScreen>
+            <AlbumArtworks artworkIds={album.artworkIds} />
+          </TabScreen>
         </Tabs.Tab>
         <Tabs.Tab name="AlbumInstalls" label="Installs">
-          <ErrorBoundary withoutBackButton>
-            <SuspenseWrapper withTabs>
-              <AlbumInstalls installShotUrls={album.installShotUrls} />
-            </SuspenseWrapper>
-          </ErrorBoundary>
+          <AlbumInstalls installShotUrls={album.installShotUrls} />
         </Tabs.Tab>
         <Tabs.Tab name="AlbumDocuments" label="Documents">
-          <ErrorBoundary withoutBackButton>
-            <SuspenseWrapper withTabs>
-              <AlbumDocuments documentIDs={album.documentIds} />
-            </SuspenseWrapper>
-          </ErrorBoundary>
+          <TabScreen>
+            <AlbumDocuments documentIDs={album.documentIds} />
+          </TabScreen>
         </Tabs.Tab>
       </Screen.AnimatedTitleTabsBody>
     </Screen>

@@ -3,12 +3,13 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { intersection } from "lodash"
 import { useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { CreateOrEditAlbumChooseArtworksQuery } from "__generated__/CreateOrEditAlbumChooseArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { artistArtworksQuery } from "app/screens/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
@@ -25,15 +26,18 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const artworksData = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
+  const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,
     imageSize,
   })
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
-  const artistNameData = useLazyLoadQuery<CreateOrEditAlbumChooseArtworksQuery>(artistNameQuery, {
-    slug,
-  })
+  const artistNameData = useSystemQueryLoader<CreateOrEditAlbumChooseArtworksQuery>(
+    artistNameQuery,
+    {
+      slug,
+    }
+  )
 
   const space = useSpace()
 
