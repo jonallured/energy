@@ -467,17 +467,9 @@ const parsers = {
       return []
     }
 
-    if (shows.length > 0) {
-      log("Has shows", shows)
-    }
-
     const showSlugs = shows.map((show) => {
       return show.slug
     })
-
-    if (showSlugs.length > 0) {
-      log("Has show slugs", showSlugs)
-    }
 
     return showSlugs
   },
@@ -546,4 +538,10 @@ export const loadRelayDataFromOfflineCache = (
 
     resetRelayEnvironment(JSON.parse(data!))
   })
+}
+
+export const _tests = {
+  syncResults,
+  parsers,
+  saveRelayDataToOfflineCache,
 }
