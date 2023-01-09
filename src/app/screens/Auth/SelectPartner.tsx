@@ -97,7 +97,7 @@ const SelectPartner = () => {
         }
         ListEmptyComponent={<ListEmptyComponent text="No partners found" />}
       />
-      <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
+      <Button variant="outlineGray" block onPress={() => void GlobalStore.actions.auth.signOut()}>
         Log out
       </Button>
     </>

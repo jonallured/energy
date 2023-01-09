@@ -1,10 +1,12 @@
 import { Button, Spacer, Flex } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { NativeModules } from "react-native"
 import { ARTNativeModules } from "app/native_modules/ARTNativeModules"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 
 export const DevMenu = () => {
+  const navigation = useNavigation()
   const currentEnvironment = GlobalStore.useAppState((s) => s.config.environment.activeEnvironment)
 
   return (
@@ -20,6 +22,7 @@ export const DevMenu = () => {
               currentEnvironment === "staging" ? "production" : "staging"
             )
             GlobalStore.actions.auth.signOut()
+            navigation.goBack()
           }}
         >
           Switch to {currentEnvironment == "staging" ? "production" : "staging"}

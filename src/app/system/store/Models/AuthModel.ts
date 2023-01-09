@@ -50,7 +50,9 @@ export interface AuthModel extends AuthModelState {
 export const getAuthModel = (): AuthModel => ({
   ...authModelInitialState,
 
-  setState: action((state, payload) => Object.assign(state, payload)),
+  setState: action((state, payload) => {
+    state = Object.assign(state, payload)
+  }),
   getUserID: thunk(async (actions, _payload, context) => {
     try {
       const user = await (
