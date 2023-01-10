@@ -15,7 +15,9 @@ import { imageSize } from "app/utils/imageSize"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const showsData = useSystemQueryLoader<ArtistShowsQuery>(artistShowsQuery, {
     partnerID,

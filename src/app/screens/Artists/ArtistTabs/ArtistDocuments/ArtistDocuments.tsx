@@ -20,7 +20,9 @@ export const ArtistDocuments = ({ slug }: { slug: string }) => {
 
   const documents = extractNodes(artistDocumentsData.partner?.documentsConnection)
   const space = useSpace()
-  const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.documents)
+  const selectedDocumentIds = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.documents
+  )
 
   useHeaderSelectModeInTab("ArtistDocuments", {
     allSelected: isEqual(new Set(selectedDocumentIds), new Set(documents.map((d) => d.internalID))),

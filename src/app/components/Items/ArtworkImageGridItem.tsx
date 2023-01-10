@@ -16,7 +16,9 @@ export const ArtworkImageGridItem = ({
   selectedToAdd,
 }: ArtworkImageGridItemProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
 
   return (
     <Flex mb={4} pl={2} testID={url}>

@@ -17,7 +17,9 @@ export interface SelectModeConfig {
 }
 
 export function useHeaderSelectModeConfig(): SelectModeConfig {
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
   const toggle = () => GlobalStore.actions.selectMode.toggleSelectMode()
   const [allSelected] = useAtom(allSelectedAtom)
   const [selectAllFn] = useAtom(selectAllAtom)

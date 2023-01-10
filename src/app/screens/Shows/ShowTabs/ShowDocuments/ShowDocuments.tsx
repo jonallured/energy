@@ -20,7 +20,9 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
   })
   const documents = extractNodes(showDocumentsData.partner?.documentsConnection)
 
-  const selectedDocumentIds = GlobalStore.useAppState((state) => state.selectMode.documents)
+  const selectedDocumentIds = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.documents
+  )
   useHeaderSelectModeInTab("ShowDocuments", {
     allSelected: isEqual(new Set(selectedDocumentIds), new Set(documents.map((d) => d.internalID))),
     selectAllFn: () =>

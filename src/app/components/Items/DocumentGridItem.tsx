@@ -26,7 +26,9 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
   const [isDownloading, setIsDownloading] = useState(false)
   const formattedSize = formatBytes(document.size)
   const fileExtension = last(document.url.split("."))
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
   const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
 
   const localUri = useLocalUri(document.url)

@@ -28,8 +28,12 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const artworks = extractNodes(artworksData.partner?.artworksConnection)
   const artworkSlugs = artworks.map((artwork) => artwork.slug)
 
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
-  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.artworks)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
+  const selectedArtworkIds = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.artworks
+  )
 
   const space = useSpace()
 

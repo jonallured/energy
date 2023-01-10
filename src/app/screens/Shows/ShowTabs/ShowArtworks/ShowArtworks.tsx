@@ -28,8 +28,12 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
-  const selectedArtworkIds = GlobalStore.useAppState((state) => state.selectMode.artworks)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
+  const selectedArtworkIds = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.artworks
+  )
   useHeaderSelectModeInTab("ShowArtworks", {
     allSelected: isEqual(
       new Set(selectedArtworkIds),

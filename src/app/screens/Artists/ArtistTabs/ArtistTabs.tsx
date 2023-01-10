@@ -39,8 +39,8 @@ export const ArtistTabs = () => {
 
   const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.artworks)
-  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.items)
+  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.sessionState.artworks)
+  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
 
   const oneArtworkSubject = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)
   const multipleArtworksBySameArtistSubject = GlobalStore.useAppState(

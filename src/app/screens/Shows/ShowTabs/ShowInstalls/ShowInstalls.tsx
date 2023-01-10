@@ -20,7 +20,9 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
   const installs = installsData.show?.images ?? []
   const space = useSpace()
 
-  const selectedInstalls = GlobalStore.useAppState((state) => state.selectMode.installs)
+  const selectedInstalls = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.installs
+  )
   useHeaderSelectModeInTab("ShowInstalls", {
     allSelected: isEqual(new Set(selectedInstalls), new Set(installs.map((i) => i!.resized?.url))),
     selectAllFn: () =>

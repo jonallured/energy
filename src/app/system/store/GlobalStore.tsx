@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
+import { sanitize } from "app/utils/persistence"
 import { GlobalStoreModel, getGlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 
 const STORE_VERSION = 0
@@ -52,6 +53,7 @@ function createGlobalStore() {
   const store = createStore<GlobalStoreModel>(
     persist(getGlobalStoreModel(), {
       storage: asyncStorage,
+      transformers: [{ in: (data) => sanitize(data), out: (data) => sanitize(data) }],
     }),
     {
       name: "GlobalStore",

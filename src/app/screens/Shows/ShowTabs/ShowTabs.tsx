@@ -34,7 +34,7 @@ export const ShowTabs = () => {
   const bottomSheetRef = useRef<BottomSheetRef>(null)
 
   const selectModeConfig = useHeaderSelectModeConfig()
-  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.items)
+  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
 
   return (
     <BottomSheetModalProvider>

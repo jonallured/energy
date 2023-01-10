@@ -50,10 +50,18 @@ export const CreateOrEditAlbum = () => {
     (state) => state.albums.sessionState.selectedArtworksForExistingAlbum
   )
 
-  const isSelectModeActive = GlobalStore.useAppState((state) => state.selectMode.isActive)
-  const artworksFromSelectMode = GlobalStore.useAppState((state) => state.selectMode.artworks)
-  const selectedInstalls = GlobalStore.useAppState((state) => state.selectMode.installs)
-  const selectedDocuments = GlobalStore.useAppState((state) => state.selectMode.documents)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
+  const artworksFromSelectMode = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.artworks
+  )
+  const selectedInstalls = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.installs
+  )
+  const selectedDocuments = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.documents
+  )
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
   const space = useSpace()
