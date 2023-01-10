@@ -1,7 +1,6 @@
 import { Suspense } from "react"
 import { StackNav } from "app/Navigation"
 import { ArtistTabs, SkeletonArtistTabs } from "app/screens/Artists/ArtistTabs/ArtistTabs"
-import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
 
 export type ArtistNavigationScreens = {
   ArtistTabs: { slug: string; name: string }
@@ -13,11 +12,9 @@ export const ArtistNavigation = () => {
       <StackNav.Screen
         name="ArtistTabs"
         children={() => (
-          <RetryErrorBoundary>
-            <Suspense fallback={<SkeletonArtistTabs />}>
-              <ArtistTabs />
-            </Suspense>
-          </RetryErrorBoundary>
+          <Suspense fallback={<SkeletonArtistTabs />}>
+            <ArtistTabs />
+          </Suspense>
         )}
       />
     </StackNav.Group>

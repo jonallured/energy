@@ -2,7 +2,6 @@ import { Suspense } from "react"
 import { StackNav } from "app/Navigation"
 import { Artwork, SkeletonArtwork } from "app/screens/Artwork/Artwork"
 import { ArtworkWebView } from "app/screens/Artwork/ArtworkWebView"
-import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
 
 export type ArtworkNavigationScreens = {
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
@@ -16,11 +15,9 @@ export const ArtworkNavigation = () => {
       <StackNav.Screen
         name="Artwork"
         children={() => (
-          <RetryErrorBoundary>
-            <Suspense fallback={<SkeletonArtwork />}>
-              <Artwork />
-            </Suspense>
-          </RetryErrorBoundary>
+          <Suspense fallback={<SkeletonArtwork />}>
+            <Artwork />
+          </Suspense>
         )}
       />
     </StackNav.Group>

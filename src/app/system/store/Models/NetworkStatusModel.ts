@@ -4,7 +4,6 @@ import { FetchPolicy } from "react-relay"
 
 export interface NetworkStatusModel {
   isOnline: boolean
-  relayFetchKey: number
   relayFetchPolicy: FetchPolicy
 
   // Actions
@@ -12,13 +11,10 @@ export interface NetworkStatusModel {
 
   // Listeners
   updateRelayFetchPolicyOnConnectivityChange: ActionOn<this>
-
-  setRelayFetchKey: Action<this>
 }
 
 export const getNetworkStatusModel = (): NetworkStatusModel => ({
   isOnline: true,
-  relayFetchKey: 0,
   relayFetchPolicy: "store-or-network",
 
   toggleConnected: action((state, isOnline) => {
@@ -39,8 +35,4 @@ export const getNetworkStatusModel = (): NetworkStatusModel => ({
       }
     }
   ),
-
-  setRelayFetchKey: action((state) => {
-    state.relayFetchKey += 1
-  }),
 })

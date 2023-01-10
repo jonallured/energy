@@ -12,7 +12,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import * as MailComposer from "expo-mail-composer"
 import { useMemo, useRef } from "react"
 import { ActivityIndicator } from "react-native"
-import { graphql } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import {
@@ -22,9 +22,8 @@ import {
 } from "app/components/BottomSheetModalView"
 import { ScrollableScreenEntity } from "app/components/ScrollableScreensView/ScrollableScreensContext"
 import { ScrollableScreensView } from "app/components/ScrollableScreensView/ScrollableScreensView"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
+import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { imageSize } from "app/utils/imageSize"
 import { Screen } from "palette"
@@ -39,7 +38,7 @@ export const Artwork = () => {
   const artworkSlugs = contextArtworkSlugs ?? [slug]
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
-  const artworkData = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
+  const artworkData = useLazyLoadQuery<ArtworkQuery>(artworkQuery, {
     slug,
     imageSize,
   })
@@ -49,14 +48,14 @@ export const Artwork = () => {
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
     name: slug,
     content: (
-      <RetryErrorBoundary withoutBackButton>
-        <SuspenseWrapper withTabs>
+      <ErrorBoundary withoutBackButton>
+        <SuspenseWrapper key={slug}>
           <ArtworkContent slug={slug} />
         </SuspenseWrapper>
-      </RetryErrorBoundary>
+      </ErrorBoundary>
     ),
   }))
-  const { artwork } = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
+  const { artwork } = useLazyLoadQuery<ArtworkQuery>(artworkQuery, {
     slug,
     imageSize,
   })

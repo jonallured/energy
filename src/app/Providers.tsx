@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayProvider } from "app/system/relay/RelayProvider"
 import { GlobalStoreProvider, GlobalStore } from "app/system/store/GlobalStore"
-import { GlobalRetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
+import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 
@@ -16,7 +16,7 @@ interface ProviderProps {
 
 export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment }) => {
   return (
-    <GlobalRetryErrorBoundary>
+    <ErrorBoundary>
       <GlobalStoreProvider>
         <ThemeProvider>
           <SuspenseWrapper>
@@ -33,7 +33,7 @@ export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment 
           </SuspenseWrapper>
         </ThemeProvider>
       </GlobalStoreProvider>
-    </GlobalRetryErrorBoundary>
+    </ErrorBoundary>
   )
 }
 

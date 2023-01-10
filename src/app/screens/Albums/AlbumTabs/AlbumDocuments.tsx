@@ -1,11 +1,10 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
-import { graphql } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 
@@ -13,7 +12,7 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const space = useSpace()
 
-  const documentsData = useSystemQueryLoader<AlbumDocumentsQuery>(albumDocumentsQuery, {
+  const documentsData = useLazyLoadQuery<AlbumDocumentsQuery>(albumDocumentsQuery, {
     partnerID,
     documentIDs,
   })

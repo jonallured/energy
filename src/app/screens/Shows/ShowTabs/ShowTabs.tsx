@@ -12,11 +12,12 @@ import {
   BottomSheetModalView,
   BottomSheetModalRow,
 } from "app/components/BottomSheetModalView"
-import { TabScreen } from "app/components/Tabs/TabScreen"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeConfig } from "app/system/store/selectModeAtoms"
+import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
+import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { Screen } from "palette"
 import { ShowArtworks } from "./ShowArtworks/ShowArtworks"
 import { ShowDocuments } from "./ShowDocuments/ShowDocuments"
@@ -26,6 +27,7 @@ type ShowTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
 export const ShowTabs = () => {
   const { slug } = useRoute<ShowTabsRoute>().params
+
   const data = useSystemQueryLoader<ShowTabsQuery>(showTabsQuery, { slug })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
@@ -42,19 +44,25 @@ export const ShowTabs = () => {
         <Screen.AnimatedTitleHeader title={data.show?.name!} selectModeConfig={selectModeConfig} />
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="ShowArtworks" label="Works">
-            <TabScreen>
-              <ShowArtworks slug={slug} />
-            </TabScreen>
+            <ErrorBoundary withoutBackButton>
+              <SuspenseWrapper withTabs>
+                <ShowArtworks slug={slug} />
+              </SuspenseWrapper>
+            </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab name="ShowInstalls" label="Installs">
-            <TabScreen>
-              <ShowInstalls slug={slug} />
-            </TabScreen>
+            <ErrorBoundary withoutBackButton>
+              <SuspenseWrapper withTabs>
+                <ShowInstalls slug={slug} />
+              </SuspenseWrapper>
+            </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab name="ShowDocuments" label="Documents">
-            <TabScreen>
-              <ShowDocuments slug={slug} />
-            </TabScreen>
+            <ErrorBoundary withoutBackButton>
+              <SuspenseWrapper withTabs>
+                <ShowDocuments slug={slug} />
+              </SuspenseWrapper>
+            </ErrorBoundary>
           </Tabs.Tab>
         </Screen.AnimatedTitleTabsBody>
       </Screen>
