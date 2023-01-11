@@ -1,5 +1,6 @@
 import { atom, useAtom } from "jotai"
 import { readAtom, writeAtom } from "jotai-nexus"
+import { parse } from "qs"
 import { useEffect, useState } from "react"
 import {
   unlink,
@@ -11,6 +12,7 @@ import {
   downloadFile,
 } from "react-native-fs"
 import { v4 as uuidv4 } from "uuid"
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 
 const PATH_CACHE = DocumentDirectoryPath + "/cache"
 const PATH_CACHE_IMAGES = PATH_CACHE + "/images"
@@ -18,17 +20,6 @@ const PATH_CACHE_DOCUMENTS = PATH_CACHE + "/documents"
 const PATH_CACHE_RELAY_DATA = PATH_CACHE + "/relayData"
 
 const urlMapAtom = atom<Record<string, string>>({})
-
-/**
- * This is just for debugging!
- * The app doesnt need an extension here.
- * But if we want to debug and see the images in the simulator's file system in Finder,
- * then adding an extension will make quicklook show them as images.
- * eg. If you go to `~/Library/Developer/CoreSimulator/Devices/uuid-of-simulator/data/Containers/Data/Application/uuid-of-application/Documents/cache/images`
- * you can see the cached images in there.
- */
-const DEBUG_IMAGE_CACHE = false // turn this on to debug easier with quicklook
-const IMAGE_EXTENSION = __DEV__ && DEBUG_IMAGE_CACHE ? ".png" : ""
 
 type DownloadableType = "image" | "document"
 type Type = DownloadableType | "relayData"
@@ -70,47 +61,72 @@ export const downloadFileToCache = async ({
   type: DownloadableType
   accessToken?: string
 }) => {
-  try {
-    await makeSureCacheIsReady()
-
-    const id = uuidv4()
-
-    const filename = (() => {
-      switch (type) {
-        case "image":
-          return id + IMAGE_EXTENSION
-        case "document":
-          return url.split("/").pop()!
-        default:
-          assertNever(type)
-      }
-    })()
-
-    const filePath = getFilePath({ type, filename })
-
-    const { statusCode } = await downloadFile({
-      fromUrl: url,
-      toFile: filePath,
-      headers: accessToken !== undefined ? { "X-ACCESS-TOKEN": accessToken } : undefined,
-    }).promise
-    if (statusCode !== 200) {
-      throw new Error("download failed with status code " + statusCode)
-    }
-
-    const urlMap = readAtom(urlMapAtom)
-    if (urlMap[url] !== undefined && urlMap[url] !== filename) {
-      try {
-        await unlink(getFilePath({ filename: urlMap[url], type }))
-        // eslint-disable-next-line no-empty
-      } catch (_) {}
-    }
-
-    urlMap[url] = filename
-    writeAtom(urlMapAtom, urlMap)
-    await saveUrlMap()
-  } catch (error) {
-    console.log("[fileCache] Error downloading file:", error)
+  if (!url) {
+    return null
   }
+
+  const MAX_ERROR_RETRY_ATTEMPTS = 3
+
+  let errorRetryAttempt = 0
+
+  const startDownload = async () => {
+    try {
+      await makeSureCacheIsReady()
+
+      const id = uuidv4()
+
+      const filename = (() => {
+        switch (type) {
+          case "image": {
+            const src = parse(url).src as string
+            const imageExtension = src?.substring(src.lastIndexOf("."))
+            return id + imageExtension
+          }
+          case "document":
+            return url.split("/").pop()!
+          default:
+            assertNever(type)
+        }
+      })()
+
+      const filePath = getFilePath({ type, filename })
+
+      const { statusCode } = await downloadFile({
+        fromUrl: url,
+        toFile: filePath,
+        headers: accessToken !== undefined ? { "X-ACCESS-TOKEN": accessToken } : undefined,
+      }).promise
+      if (statusCode !== 200) {
+        throw new Error("download failed with status code " + statusCode + " - " + url)
+      }
+
+      const urlMap = readAtom(urlMapAtom)
+      if (urlMap[url] !== undefined && urlMap[url] !== filename) {
+        try {
+          await unlink(getFilePath({ filename: urlMap[url], type }))
+          // eslint-disable-next-line no-empty
+        } catch (_) {}
+      }
+
+      urlMap[url] = filename
+      writeAtom(urlMapAtom, urlMap)
+
+      await saveUrlMap()
+    } catch (error) {
+      if (errorRetryAttempt <= MAX_ERROR_RETRY_ATTEMPTS) {
+        errorRetryAttempt++
+
+        console.log(
+          `[fileCache] Error downloading file: ${error}. Retrying [${errorRetryAttempt}]: ${url}`
+        )
+
+        // Retry download
+        await startDownload()
+      }
+    }
+  }
+
+  await startDownload()
 }
 
 export const getFileFromCache = async ({ filename, type }: FileProps) => {
@@ -178,37 +194,47 @@ const getFilePath = ({ filename, type }: FileProps) => {
 }
 
 export const useLocalUri = (url: string): string | undefined => {
-  const [localOrUndef, setLocalOrUndef] = useState<string | undefined>(undefined)
+  const [uriOrUndef, setUriOrUndef] = useState<string | undefined>(undefined)
   const [urlMap] = useAtom(urlMapAtom)
+  const isOnline = useIsOnline()
 
+  // Grab URL if if exists in the cache map
   const mappedURL = urlMap[url]
+
   useEffect(() => {
-    const findLocalPath = async () => {
-      const pathIfCachedImage = getFilePath({
-        type: "image",
-        filename: mappedURL + IMAGE_EXTENSION,
-      })
+    // If we're online, lets return the original URL
+    if (isOnline) {
+      setUriOrUndef(url)
 
-      if (await exists(pathIfCachedImage)) {
-        setLocalOrUndef("file://" + pathIfCachedImage)
-        return
+      // Offline, look up the image in the cache
+    } else {
+      const findLocalPath = async () => {
+        const pathIfCachedImage = getFilePath({
+          type: "image",
+          filename: mappedURL,
+        })
+
+        if (await exists(pathIfCachedImage)) {
+          setUriOrUndef("file://" + pathIfCachedImage)
+          return
+        }
+
+        const pathIfCachedDocument = getFilePath({
+          type: "document",
+          filename: mappedURL,
+        })
+
+        if (await exists(pathIfCachedDocument)) {
+          setUriOrUndef("file://" + pathIfCachedDocument)
+          return
+        }
       }
 
-      const pathIfCachedDocument = getFilePath({
-        type: "document",
-        filename: mappedURL,
-      })
-
-      if (await exists(pathIfCachedDocument)) {
-        setLocalOrUndef("file://" + pathIfCachedDocument)
-        return
-      }
+      findLocalPath()
     }
+  }, [mappedURL, isOnline, url])
 
-    findLocalPath()
-  }, [mappedURL])
-
-  return localOrUndef
+  return uriOrUndef
 }
 
 export const loadUrlMap = async () => {

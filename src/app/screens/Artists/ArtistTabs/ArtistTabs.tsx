@@ -22,6 +22,7 @@ import { useHeaderSelectModeConfig } from "app/system/store/selectModeAtoms"
 import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { extractNodes } from "app/utils/extractNodes"
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { imageSize } from "app/utils/imageSize"
 import { Screen } from "palette"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
@@ -39,7 +40,7 @@ export const ArtistTabs = () => {
 
   const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
 
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+  const isOnline = useIsOnline()
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.sessionState.artworks)
   const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
@@ -253,7 +254,7 @@ export const artistTabsQuery = graphql`
 
 export const SkeletonArtistTabs = () => {
   const selectModeConfig = useHeaderSelectModeConfig()
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+  const isOnline = useIsOnline()
 
   return (
     <Screen>

@@ -1,3 +1,5 @@
+import { compact, once } from "lodash"
+import { Alert } from "react-native"
 import { RelayNetworkLayerRequest } from "react-relay-network-modern"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import {
@@ -342,12 +344,12 @@ export function initSyncManager({
 
     const urls = parsers.getImageUrls()
 
-    await forEachAsync(urls, (url) =>
-      downloadFileToCache({
+    await forEachAsync(urls, (url) => {
+      return downloadFileToCache({
         type: "image",
         url,
       })
-    )
+    })
   }
 
   const syncInstallShots = async () => {
@@ -355,12 +357,12 @@ export function initSyncManager({
 
     const urls = parsers.getInstallShotUrls()
 
-    await forEachAsync(urls, (url) =>
-      downloadFileToCache({
+    await forEachAsync(urls, (url) => {
+      return downloadFileToCache({
         type: "image",
         url,
       })
-    )
+    })
   }
 
   const syncDocuments = async () => {
@@ -368,12 +370,12 @@ export function initSyncManager({
 
     const urls = parsers.getDocumentsUrls()
 
-    await forEachAsync(urls, (url) =>
-      downloadFileToCache({
+    await forEachAsync(urls, (url) => {
+      return downloadFileToCache({
         type: "document",
         url,
       })
-    )
+    })
   }
 
   const retrySyncForErrors = async () => {
@@ -435,9 +437,11 @@ const parsers = {
   getArtistSlugs: (): string[] => {
     const artists = extractNodes(syncResults.artistsQuery?.partner?.allArtistsConnection)
 
-    const artistSlugs = artists.map((artist) => {
-      return artist.slug
-    })
+    const artistSlugs = compact(
+      artists.map((artist) => {
+        return artist.slug
+      })
+    )
 
     return artistSlugs
   },
@@ -451,9 +455,11 @@ const parsers = {
       return []
     }
 
-    const artworkSlugs = artworks.map((artwork) => {
-      return artwork.slug
-    })
+    const artworkSlugs = compact(
+      artworks.map((artwork) => {
+        return artwork.slug
+      })
+    )
 
     return artworkSlugs
   },
@@ -467,9 +473,11 @@ const parsers = {
       return []
     }
 
-    const showSlugs = shows.map((show) => {
-      return show.slug
-    })
+    const showSlugs = compact(
+      shows.map((show) => {
+        return show.slug
+      })
+    )
 
     return showSlugs
   },
@@ -477,36 +485,42 @@ const parsers = {
   getShowSlugs: (): string[] => {
     const shows = extractNodes(syncResults.showsQuery?.partner?.showsConnection)
 
-    const showSlugs = shows.map((show) => {
-      return show.slug
-    })
+    const showSlugs = compact(
+      shows.map((show) => {
+        return show.slug
+      })
+    )
 
     return showSlugs
   },
 
   getImageUrls: (): string[] => {
-    const imageUrls = (syncResults.artworkContentQuery ?? [])
-      .map((artworkContent) => artworkContent.artwork?.image?.resized?.url ?? "")
-      .filter((url: string) => url !== "")
+    const imageUrls = compact(
+      (syncResults.artworkContentQuery ?? []).flatMap((artworkContent) => [
+        artworkContent.artwork?.image?.resized?.url!,
+        artworkContent.artwork?.artist?.imageUrl!,
+      ])
+    )
 
     return imageUrls
   },
 
   getInstallShotUrls: (): string[] => {
-    const installShotUrls = (syncResults.artistShowsQuery ?? [])
-      .flatMap((artistShows) => extractNodes(artistShows.partner?.showsConnection))
-      .map((show) => show.coverImage?.resized?.url)
-      .filter((url): url is string => url !== undefined)
-      .filter((url) => url !== "")
+    const installShotUrls = compact(
+      (syncResults.artistShowsQuery ?? [])
+        .flatMap((artistShows) => extractNodes(artistShows.partner?.showsConnection))
+        .map((show) => show.coverImage?.resized?.url!)
+    )
 
     return installShotUrls
   },
 
   getDocumentsUrls: (): string[] => {
-    const documentsUrls = (syncResults.artistDocumentsQuery ?? [])
-      .flatMap((artistDocs) => extractNodes(artistDocs.partner?.documentsConnection))
-      .map((doc) => doc.publicURL)
-      .filter((url) => url !== "")
+    const documentsUrls = compact(
+      (syncResults.artistDocumentsQuery ?? [])
+        .flatMap((artistDocs) => extractNodes(artistDocs.partner?.documentsConnection))
+        .map((doc) => doc.publicURL)
+    )
 
     return documentsUrls
   },
@@ -533,12 +547,33 @@ const saveRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironm
 export const loadRelayDataFromOfflineCache = (
   resetRelayEnvironment: RelayContextProps["resetRelayEnvironment"]
 ) => {
-  getFileFromCache({ filename: "relayData.json", type: "relayData" }).then((data) => {
-    log("Loading relay data from cache.")
+  getFileFromCache({ filename: "relayData.json", type: "relayData" })
+    .then((data) => {
+      log("Loading relay data from cache.")
 
-    resetRelayEnvironment(JSON.parse(data!))
-  })
+      if (data) {
+        resetRelayEnvironment(JSON.parse(data))
+      } else {
+        showOfflineAlert()
+      }
+    })
+    .catch((error) => {
+      log("Error loading offline relay data from sync", error)
+    })
 }
+
+const showOfflineAlert = once(() => {
+  Alert.alert(
+    "Your network has gone offline, but an offline backup has not been detected. When back online, be sure to sync via Settings > Offline Mode.",
+    "",
+    [
+      {
+        text: "OK",
+        style: "cancel",
+      },
+    ]
+  )
+})
 
 export const _tests = {
   syncResults,

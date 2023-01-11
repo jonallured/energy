@@ -8,6 +8,7 @@ import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnviro
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { clearFileCache } from "app/system/sync/fileCache"
 import { initSyncManager } from "app/system/sync/syncManager"
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { Screen } from "palette"
 
 export const OfflineModeSettings = () => {
@@ -16,7 +17,7 @@ export const OfflineModeSettings = () => {
   const { relayEnvironment } = useSystemRelayEnvironment()
 
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)!
+  const isOnline = useIsOnline()
 
   const [syncProgress, setSyncProgress] = useState(0)
   const [syncStatus, setSyncStatus] = useState("")

@@ -36,6 +36,7 @@ export const AnimatedEllipsis = ({
           style={style}
           index={i}
           numberOfDots={numberOfDots}
+          key={i}
         />
       ))}
     </Flex>

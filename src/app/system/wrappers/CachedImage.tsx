@@ -31,7 +31,7 @@ export const CachedImage: React.FC<CachedImageProps> = ({
     opacity.value = withTiming(1, { duration: 200, easing: Easing.ease })
   }
 
-  if (!uri && !localUri) {
+  if (uri === undefined || localUri === undefined) {
     return <ImagePlaceholder height={placeholderHeight ?? 0} />
   }
 

@@ -2,6 +2,7 @@ import { Avatar, Flex, Text } from "@artsy/palette-mobile"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtistListItem_artist$key } from "__generated__/ArtistListItem_artist.graphql"
+import { useLocalUri } from "app/system/sync/fileCache"
 
 interface ArtistListItemProps {
   artist: ArtistListItem_artist$key
@@ -11,13 +12,10 @@ interface ArtistListItemProps {
 export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
   const artist = useFragment<ArtistListItem_artist$key>(ArtistListItemFragment, props.artist)
   const variant = isTablet() ? "sm" : "xs"
+  const src = useLocalUri(artist.imageUrl!)
   return (
     <Flex py={1} flexDirection="row">
-      <Avatar
-        src={artist.imageUrl!}
-        size={variant}
-        initials={artist.imageUrl ? "" : artist.initials!}
-      />
+      <Avatar src={src} size={variant} initials={src ? "" : artist.initials!} />
       <Flex mx={1}>
         <Text variant={variant}>{artist.name}</Text>
         <Text variant={variant} color="onBackgroundMedium">

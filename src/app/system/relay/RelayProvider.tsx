@@ -3,7 +3,7 @@ import { Environment, RelayEnvironmentProvider } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RecordMap } from "relay-runtime/lib/store/RelayStoreTypes"
 import { createEnvironment } from "app/system/relay/environment/createEnvironment"
-import { GlobalStore } from "app/system/store/GlobalStore"
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 
 export interface RelayContextProps {
   relayEnvironment: RelayModernEnvironment
@@ -19,7 +19,7 @@ export const RelayProvider: React.FC<Partial<Pick<RelayContextProps, "relayEnvir
   children,
   relayEnvironment,
 }) => {
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+  const isOnline = useIsOnline()
   const environment = useMemo(() => relayEnvironment ?? createEnvironment(), [])
   const [currentRelayEnvironment, setRelayEnvironment] =
     useState<RelayModernEnvironment>(environment)

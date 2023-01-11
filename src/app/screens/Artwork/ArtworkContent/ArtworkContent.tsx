@@ -342,6 +342,9 @@ export const artworkContentQuery = graphql`
         }
         aspectRatio
       }
+      artist {
+        imageUrl
+      }
       title
       price
       date

@@ -3,9 +3,9 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/Navigation"
 import { useSetupRageShake } from "app/system/devTools/useSetupRageShake"
-import { GlobalStore } from "app/system/store/GlobalStore"
 import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { Screen } from "palette"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
@@ -14,7 +14,7 @@ import { Shows } from "./Shows/Shows"
 type HomeTabsRoute = RouteProp<NavigationScreens, "HomeTabs">
 
 export const HomeTabs = () => {
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+  const isOnline = useIsOnline()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { tabName } = useRoute<HomeTabsRoute>().params || { tabName: "Artists" }
 

@@ -16,6 +16,7 @@ import { ShowsNavigation, ShowsNavigationScreens } from "app/screens/Shows/navig
 import { useNetworkStatusListener } from "app/system/hooks/useNetworkStatusListener"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { StatusBar } from "palette/organisms/StatusBar"
 
 export type NavigationScreens = AuthNavigationScreens &
@@ -36,7 +37,7 @@ export const StackNav = createStackNavigator<NavigationScreens>()
 
 export const Main = () => {
   const isRehydrated = useStoreRehydrated()
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+  const isOnline = useIsOnline()
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
