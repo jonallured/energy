@@ -1,4 +1,5 @@
-import { Flex, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
+import { Skeleton, SkeletonText } from "palette/Skeleton"
 import { useAnimatedHeaderTitle } from "../atoms"
 
 export const LARGE_TITLE_HEIGHT = 64

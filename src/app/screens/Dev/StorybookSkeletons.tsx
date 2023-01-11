@@ -1,6 +1,7 @@
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { range } from "lodash"
 import { Screen } from "palette"
+import { Skeleton, SkeletonBox, SkeletonText } from "palette/Skeleton"
 
 export const StorybookSkeletons = () => {
   return (
