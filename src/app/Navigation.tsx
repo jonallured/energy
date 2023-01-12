@@ -13,6 +13,7 @@ import { HomeTabs } from "app/screens/HomeTabs"
 import { SearchNavigation, SearchNavigationScreens } from "app/screens/Search/navigation"
 import { SettingsNavigation, SettingsNavigationScreens } from "app/screens/Settings/navigation"
 import { ShowsNavigation, ShowsNavigationScreens } from "app/screens/Shows/navigation"
+import { useErrorReporting } from "app/system/hooks/useErrorReporting"
 import { useNetworkStatusListener } from "app/system/hooks/useNetworkStatusListener"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
@@ -42,6 +43,7 @@ export const Main = () => {
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
 
+  useErrorReporting()
   // Check the network status and toggle the offline mode if needed
   useNetworkStatusListener()
   useWebViewCookies()
