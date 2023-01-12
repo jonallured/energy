@@ -1,0 +1,18 @@
+#!/bin/bash
+set -euxo pipefail
+
+echo "Downloading sentry properties for ios..."
+if ! aws s3 cp s3://artsy-citadel/dev/energy-sentry-properties/sentry.properties ios/sentry.properties; then
+  echo "Unable to download sentry properties from s3"
+  echo "If you work at Artsy, please check your s3 access."
+fi
+
+echo "Downloading sentry properties for android..."
+if ! aws s3 cp s3://artsy-citadel/dev/energy-sentry-properties/sentry.properties android/sentry.properties; then
+  echo "Unable to download sentry properties from s3"
+  echo "If you work at Artsy, please check your s3 access."
+fi
+
+echo "Sentry property setup is completed!"
+
+
