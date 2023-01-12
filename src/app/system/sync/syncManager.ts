@@ -240,6 +240,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artworkSlugs)
       .onTaskStarted(reportProgress("Syncing artist artwork content"))
+      .withConcurrency(20)
       .process(async (slug) => {
         return await fetchOrCatch<ArtworkContentQuery>(artworkContentQuery, {
           slug,
@@ -366,6 +367,7 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing images"))
+      .withConcurrency(50)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -379,6 +381,7 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing install shots"))
+      .withConcurrency(50)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -392,6 +395,7 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
+      .withConcurrency(20)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "document",
