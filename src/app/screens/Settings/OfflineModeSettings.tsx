@@ -13,6 +13,7 @@ import { Screen } from "palette"
 
 export const OfflineModeSettings = () => {
   const color = useColor()
+  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { relayEnvironment } = useSystemRelayEnvironment()
 
@@ -105,7 +106,7 @@ export const OfflineModeSettings = () => {
             Clear cache
           </Button>
 
-          {__DEV__ && (
+          {(isUserDev || __DEV__) && (
             <Button block onPress={() => navigation.navigate("BrowseOfflineCache")}>
               Browse offline cache
             </Button>
