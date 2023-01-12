@@ -78,6 +78,7 @@ const Dot = ({
   const defaultStyle: TextProps["style"] = {
     color: "black",
     fontSize: 26,
+    top: -1,
   }
 
   return (

@@ -193,7 +193,7 @@ const getFilePath = ({ filename, type }: FileProps) => {
   return path + `/${filename}`
 }
 
-export const useLocalUri = (url: string): string | undefined => {
+export const useLocalUri = (url: string, type: DownloadableType = "image"): string | undefined => {
   const [uriOrUndef, setUriOrUndef] = useState<string | undefined>(undefined)
   const [urlMap] = useAtom(urlMapAtom)
   const isOnline = useIsOnline()
@@ -203,7 +203,8 @@ export const useLocalUri = (url: string): string | undefined => {
 
   useEffect(() => {
     // If we're online, lets return the original URL
-    if (isOnline) {
+    // TODO: In the future we might always want to look in the local cache first
+    if (type === "image" && isOnline) {
       setUriOrUndef(url)
 
       // Offline, look up the image in the cache
@@ -232,7 +233,7 @@ export const useLocalUri = (url: string): string | undefined => {
 
       findLocalPath()
     }
-  }, [mappedURL, isOnline, url])
+  }, [mappedURL, type, isOnline, url])
 
   return uriOrUndef
 }

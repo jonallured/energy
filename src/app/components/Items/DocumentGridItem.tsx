@@ -31,7 +31,7 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
   )
   const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
 
-  const localUri = useLocalUri(document.url)
+  const localUri = useLocalUri(document.url, "document")
 
   const openFile = async () => {
     setIsOpening(true)

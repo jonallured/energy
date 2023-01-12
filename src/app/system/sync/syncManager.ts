@@ -1,4 +1,5 @@
-import { compact, once } from "lodash"
+import { PromisePool, OnProgressCallback } from "@supercharge/promise-pool"
+import { compact, once, uniqBy } from "lodash"
 import { Alert } from "react-native"
 import { RelayNetworkLayerRequest } from "react-relay-network-modern"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -43,7 +44,6 @@ import { RelayContextProps } from "app/system/relay/RelayProvider"
 import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
 import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
-import { forEachAsync, mapAsync } from "./utils/asyncIterators"
 import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 
 interface SyncResultsData {
@@ -198,139 +198,161 @@ export function initSyncManager({
    */
 
   const syncArtistTabsQuery = async () => {
-    updateStatus("Syncing artist tabs")
-
     const artistSlugs = parsers.getArtistSlugs()
 
-    syncResults.artistTabsQuery = await mapAsync(artistSlugs, (_) => {
-      return fetchOrCatch<ArtistTabsQuery>(artistTabsQuery, {
-        partnerID,
-        artworkIDs: [],
-        imageSize,
+    // PromisePool is used to limit concurrency so we don't accidentally spam
+    // our servers. By default it's 10 but can be adjusted.
+    const { results } = await PromisePool.for(artistSlugs)
+      .onTaskStarted(reportProgress("Syncing artist tabs"))
+      .process(async (_) => {
+        return await fetchOrCatch<ArtistTabsQuery>(artistTabsQuery, {
+          partnerID,
+          artworkIDs: [],
+          imageSize,
+        })
       })
-    })
+
+    syncResults.artistTabsQuery = results
 
     updateStatus("Complete. `artistTabsQuery`", syncResults.artistTabsQuery)
   }
 
   const syncArtistArtworksQuery = async () => {
-    updateStatus("Syncing artist artworks")
-
     const artistSlugs = parsers.getArtistSlugs()
 
-    syncResults.artistArtworksQuery = await mapAsync(artistSlugs, (slug) => {
-      return fetchOrCatch<ArtistArtworksQuery>(artistArtworksQuery, {
-        partnerID,
-        slug,
-        imageSize,
+    const { results } = await PromisePool.for(artistSlugs)
+      .onTaskStarted(reportProgress("Syncing artist artworks"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ArtistArtworksQuery>(artistArtworksQuery, {
+          partnerID,
+          slug,
+          imageSize,
+        })
       })
-    })
+
+    syncResults.artistArtworksQuery = results
 
     updateStatus("Complete. `artistArtworksQuery`", syncResults.artistArtworksQuery)
   }
 
   const syncArtworkContentQuery = async () => {
-    updateStatus("Syncing artist artwork content")
-
     const artworkSlugs = parsers.getArtistArtworkSlugs()
 
-    syncResults.artworkContentQuery = await mapAsync(artworkSlugs, (slug) => {
-      return fetchOrCatch<ArtworkContentQuery>(artworkContentQuery, {
-        slug,
-        imageSize,
+    const { results } = await PromisePool.for(artworkSlugs)
+      .onTaskStarted(reportProgress("Syncing artist artwork content"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ArtworkContentQuery>(artworkContentQuery, {
+          slug,
+          imageSize,
+        })
       })
-    })
+
+    syncResults.artworkContentQuery = results
 
     updateStatus("Complete. `artistArtworksContentData`", syncResults.artworkContentQuery)
   }
 
   const syncArtistShowsQuery = async () => {
-    updateStatus("Syncing artist shows")
-
     const artistSlugs = parsers.getArtistSlugs()
 
-    syncResults.artistShowsQuery = await mapAsync(artistSlugs, (slug) => {
-      return fetchOrCatch<ArtistShowsQuery>(artistShowsQuery, {
-        partnerID,
-        slug,
-        imageSize,
+    const { results } = await PromisePool.for(artistSlugs)
+      .onTaskStarted(reportProgress("Syncing artist shows"))
+      .process(async (slug) => {
+        return (await fetchOrCatch<ArtistShowsQuery>(artistShowsQuery, {
+          partnerID,
+          slug,
+          imageSize,
+        })) as ArtistShowsQuery$rawResponse
       })
-    })
+
+    syncResults.artistShowsQuery = results
 
     updateStatus("Complete. `artistShowsQuery`", syncResults.artistShowsQuery)
   }
 
   const syncShowTabsQuery = async () => {
-    updateStatus("Syncing show tabs")
-
     const artistShowSlugs = parsers.getArtistShowSlugs()
 
-    syncResults.showTabsQuery = await mapAsync(artistShowSlugs, (slug) => {
-      return fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
-    })
+    const { results } = await PromisePool.for(artistShowSlugs)
+      .onTaskStarted(reportProgress("Syncing show tabs"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
+      })
+
+    syncResults.showTabsQuery = results
 
     updateStatus("Complete. `showTabsQuery`", syncResults.showTabsQuery)
   }
 
   const syncArtistDocumentsQuery = async () => {
-    updateStatus("Syncing artist documents")
-
     const artistSlugs = parsers.getArtistSlugs()
 
-    syncResults.artistDocumentsQuery = await mapAsync(artistSlugs, (slug) => {
-      return fetchOrCatch<ArtistDocumentsQuery>(artistDocumentsQuery, {
-        partnerID,
-        slug,
+    const { results } = await PromisePool.for(artistSlugs)
+      .onTaskStarted(reportProgress("Syncing artist documents"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ArtistDocumentsQuery>(artistDocumentsQuery, {
+          partnerID,
+          slug,
+        })
       })
-    })
+
+    syncResults.artistDocumentsQuery = results
 
     updateStatus("Complete. `artistDocumentsQuery`", syncResults.artistDocumentsQuery)
   }
 
   const syncPartnerShowTabsQuery = async () => {
-    updateStatus("Syncing partner shows")
-
     const showSlugs = parsers.getShowSlugs()
 
-    syncResults.partnerShowTabsQuery = await mapAsync(showSlugs, (slug) => {
-      return fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
-    })
+    const { results } = await PromisePool.for(showSlugs)
+      .onTaskStarted(reportProgress("Syncing partner shows"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
+      })
+
+    syncResults.partnerShowTabsQuery = results
 
     updateStatus("Complete. `partnerShowTabsQuery`", syncResults.partnerShowTabsQuery)
   }
 
   const syncShowArtworksQuery = async () => {
-    updateStatus("Syncing show artworks")
-
     const showSlugs = parsers.getShowSlugs()
 
-    syncResults.showArtworksQuery = await mapAsync(showSlugs, (slug) => {
-      return fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug, imageSize })
-    })
+    const { results } = await PromisePool.for(showSlugs)
+      .onTaskStarted(reportProgress("Syncing show artworks"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug, imageSize })
+      })
+
+    syncResults.showArtworksQuery = results
 
     updateStatus("Complete. `showArtworksQuery`", syncResults.showArtworksQuery)
   }
 
   const syncShowInstallsQuery = async () => {
-    updateStatus("Syncing show installs")
-
     const showSlugs = parsers.getShowSlugs()
 
-    syncResults.showInstallsQuery = await mapAsync(showSlugs, (slug) => {
-      return fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug, imageSize })
-    })
+    const { results } = await PromisePool.for(showSlugs)
+      .onTaskStarted(reportProgress("Syncing show installs"))
+      .process(async (slug) => {
+        return await fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug, imageSize })
+      })
+
+    syncResults.showInstallsQuery = results
 
     updateStatus("Complete. `showInstallsQuery`", syncResults.showInstallsQuery)
   }
 
   const syncShowDocumentsQuery = async () => {
-    updateStatus("Syncing show documents")
-
     const showSlugs = parsers.getShowSlugs()
 
-    syncResults.showDocumentsQuery = await mapAsync(showSlugs, (slug) => {
-      return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
-    })
+    const { results } = await PromisePool.for(showSlugs)
+      .onTaskStarted(reportProgress("Syncing show documents"))
+      .process(async (slug) => {
+        return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
+      })
+
+    syncResults.showDocumentsQuery = results
 
     updateStatus("Complete. `showDocumentsQuery`", syncResults.showDocumentsQuery)
   }
@@ -340,42 +362,42 @@ export function initSyncManager({
    */
 
   const syncImages = async () => {
-    updateStatus("Syncing images")
-
     const urls = parsers.getImageUrls()
 
-    await forEachAsync(urls, (url) => {
-      return downloadFileToCache({
-        type: "image",
-        url,
+    await PromisePool.for(urls)
+      .onTaskStarted(reportProgress("Syncing images"))
+      .process(async (url) => {
+        return await downloadFileToCache({
+          type: "image",
+          url,
+        })
       })
-    })
   }
 
   const syncInstallShots = async () => {
-    updateStatus("Syncing install shots")
-
     const urls = parsers.getInstallShotUrls()
 
-    await forEachAsync(urls, (url) => {
-      return downloadFileToCache({
-        type: "image",
-        url,
+    await PromisePool.for(urls)
+      .onTaskStarted(reportProgress("Syncing install shots"))
+      .process(async (url) => {
+        return await downloadFileToCache({
+          type: "image",
+          url,
+        })
       })
-    })
   }
 
   const syncDocuments = async () => {
-    updateStatus("Syncing documents")
-
     const urls = parsers.getDocumentsUrls()
 
-    await forEachAsync(urls, (url) => {
-      return downloadFileToCache({
-        type: "document",
-        url,
+    await PromisePool.for(urls)
+      .onTaskStarted(reportProgress("Syncing documents"))
+      .process(async (url) => {
+        return await downloadFileToCache({
+          type: "document",
+          url,
+        })
       })
-    })
   }
 
   const retrySyncForErrors = async () => {
@@ -385,19 +407,28 @@ export function initSyncManager({
 
     updateStatus("Retrying sync for errors")
 
-    const MAX_RETRY_ATTEMPTS = 3
+    const MAX_RETRY_ATTEMPTS = 2
 
     let retryAttempt = 0
 
     const retry = async () => {
-      const errors = [...syncResults.errors]
+      const errors = uniqBy(
+        syncResults.errors.map(({ error, ...rest }) => {
+          const QueryName = (error.req as RelayNetworkLayerRequest).id
+
+          return {
+            QueryName,
+            error,
+            ...rest,
+          }
+        }),
+        "QueryName"
+      )
 
       // Reset errors for new fetch requests
       syncResults.errors = []
 
-      await forEachAsync(errors, async ({ error }) => {
-        const QueryName = (error.req as RelayNetworkLayerRequest).id
-
+      await PromisePool.for(errors).process(async ({ QueryName }) => {
         try {
           // Dynamically invoke sync functions based on the `syncSomeQuery`
           // function naming idiom defined above (eg, `syncArtistShowsQuery()`)
@@ -422,6 +453,13 @@ export function initSyncManager({
 
     // Start retry loop
     await retry()
+  }
+
+  const reportProgress = (message: string) => {
+    const onProgressCallback: OnProgressCallback<string> = (_, pool) => {
+      onStatusChange(`${message}: ${Math.floor(pool.processedPercentage())}%`)
+    }
+    return onProgressCallback
   }
 
   return {
