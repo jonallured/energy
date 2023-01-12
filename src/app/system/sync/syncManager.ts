@@ -83,7 +83,7 @@ const syncResults: SyncResultsData = {
 
 interface SyncManagerOptions {
   onComplete: () => void
-  onProgress: (currentProgress: number) => void
+  onProgress: (currentProgress: string | number) => void
   onStart: () => void
   onStatusChange: (message: string) => void
   partnerID: string
@@ -151,7 +151,7 @@ export function initSyncManager({
     // Internally, for things like artist images, we fetch in parallel.
     for (const [index, fetchSyncTargetData] of syncTargets.entries()) {
       try {
-        onProgress(index / (syncTargets.length - 1))
+        onProgress(`${index}/${syncTargets.length}`)
 
         await fetchSyncTargetData()
       } catch (error) {
@@ -602,8 +602,8 @@ export const loadRelayDataFromOfflineCache = (
 
 const showOfflineAlert = once(() => {
   Alert.alert(
-    "Your network has gone offline, but an offline backup has not been detected. When back online, be sure to sync via Settings > Offline Mode.",
-    "",
+    "Set Up Offline Mode",
+    "You are currently offline, but do not have offline mode activated. When you're online again, set it up in Settings > Offline Mode.",
     [
       {
         text: "OK",

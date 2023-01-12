@@ -72,7 +72,9 @@ describe("syncManager", () => {
     it("calls onProgress", async () => {
       const { startSync, onProgressSpy } = setup()
       await startSync()
-      expect(onProgressSpy).toBeCalledWith(expect.toBeNumber())
+      expect(onProgressSpy).toBeCalledWith(
+        expect.toBeOneOf([expect.toBeString(), expect.toBeNumber()])
+      )
     })
 
     it("calls onStatusChange", async () => {

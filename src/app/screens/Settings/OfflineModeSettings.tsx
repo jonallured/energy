@@ -20,7 +20,7 @@ export const OfflineModeSettings = () => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const isOnline = useIsOnline()
 
-  const [syncProgress, setSyncProgress] = useState(0)
+  const [syncProgress, setSyncProgress] = useState<string | number>(0)
   const [syncStatus, setSyncStatus] = useState("")
   const isSyncing = !!syncProgress
 
@@ -29,7 +29,7 @@ export const OfflineModeSettings = () => {
       partnerID,
       relayEnvironment,
       onStart: () => {
-        setSyncProgress(0.01)
+        setSyncProgress(1)
       },
       onComplete: () => {
         setSyncProgress(0)
@@ -42,7 +42,7 @@ export const OfflineModeSettings = () => {
         ])
       },
       onProgress: (progress) => {
-        setSyncProgress(Math.floor(progress * 100))
+        setSyncProgress(progress)
       },
       onStatusChange: (message) => {
         setSyncStatus(message)
@@ -87,14 +87,14 @@ export const OfflineModeSettings = () => {
           <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
             {isSyncing ? (
               <>
-                <Text color="onPrimaryHigh" py={0}>
+                <Text color="onPrimaryHigh">
                   {syncStatus}
                   <AnimatedEllipsis
                     style={{
                       color: color("onPrimaryHigh"),
                     }}
                   />{" "}
-                  {syncProgress}%
+                  {syncProgress}
                 </Text>
               </>
             ) : (
