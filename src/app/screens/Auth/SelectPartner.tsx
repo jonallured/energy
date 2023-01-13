@@ -1,11 +1,12 @@
 import { Flex, Button, SearchInput, Separator, Text, Spacer } from "@artsy/palette-mobile"
 import { useState, useEffect, useRef, Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
+import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
 import { Screen } from "palette"
 
 interface SelectPartnerHeaderProps {
@@ -29,7 +30,7 @@ export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartn
 export const SelectPartnerScreen = () => (
   <Screen>
     <Screen.Body>
-      <ErrorBoundary
+      <RetryErrorBoundary
         catch={(e) => {
           if (e.message.includes("Forbidden") && e.message.includes("Not authorized")) {
             // this shows up if a user logs in with a user that is not a partner
@@ -40,13 +41,13 @@ export const SelectPartnerScreen = () => (
         <Suspense fallback={<ActivityIndicator />}>
           <SelectPartner />
         </Suspense>
-      </ErrorBoundary>
+      </RetryErrorBoundary>
     </Screen.Body>
   </Screen>
 )
 
 const SelectPartner = () => {
-  const data = useLazyLoadQuery<SelectPartnerQuery>(
+  const data = useSystemQueryLoader<SelectPartnerQuery>(
     graphql`
       query SelectPartnerQuery {
         me {

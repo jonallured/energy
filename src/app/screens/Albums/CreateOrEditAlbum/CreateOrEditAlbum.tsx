@@ -12,13 +12,13 @@ import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { useFormik } from "formik"
 import { useState } from "react"
-import { useLazyLoadQuery } from "react-relay"
 import { object, string } from "yup"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { albumArtworksQuery } from "app/screens/Albums/AlbumTabs/AlbumArtworks"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
@@ -88,7 +88,7 @@ export const CreateOrEditAlbum = () => {
     }
   }
 
-  const artworksData = useLazyLoadQuery<AlbumArtworksQuery>(albumArtworksQuery, {
+  const artworksData = useSystemQueryLoader<AlbumArtworksQuery>(albumArtworksQuery, {
     partnerID,
     artworkIDs: selectedArtworks,
   })

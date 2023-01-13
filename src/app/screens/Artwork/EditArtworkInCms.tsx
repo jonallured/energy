@@ -1,14 +1,15 @@
 import { Button, EditIcon } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { EditArtworkInCmsQuery } from "__generated__/EditArtworkInCmsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 
 export const EditArtworkInCms = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const artworkData = useLazyLoadQuery<EditArtworkInCmsQuery>(editArtworkInCmsQuery, { slug })
+  const artworkData = useSystemQueryLoader<EditArtworkInCmsQuery>(editArtworkInCmsQuery, { slug })
   const internalID = artworkData.artwork?.internalID
 
   return (

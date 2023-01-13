@@ -17,7 +17,8 @@ export function useSystemQueryLoader<TQuery extends OperationType>(
     UNSTABLE_renderPolicy?: RenderPolicy | undefined
   }
 ) {
+  const fetchKey = GlobalStore.useAppState((state) => state.networkStatus.relayFetchKey)
   const fetchPolicy = GlobalStore.useAppState((state) => state.networkStatus.relayFetchPolicy)!
-  const response = useLazyLoadQuery<TQuery>(query, variables, { fetchPolicy, ...options })
+  const response = useLazyLoadQuery<TQuery>(query, variables, { fetchKey, fetchPolicy, ...options })
   return response
 }

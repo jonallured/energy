@@ -1,11 +1,12 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isTablet } from "react-native-device-info"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
+import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
@@ -14,7 +15,7 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const space = useSpace()
 
-  const artworksData = useLazyLoadQuery<AlbumArtworksQuery>(albumArtworksQuery, {
+  const artworksData = useSystemQueryLoader<AlbumArtworksQuery>(albumArtworksQuery, {
     partnerID,
     artworkIDs: artworkIds,
   })

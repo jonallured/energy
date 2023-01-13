@@ -2,9 +2,8 @@ import { MenuIcon, Touchable, MagnifyingGlassIcon, DEFAULT_HIT_SLOP } from "@art
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { NavigationScreens } from "app/Navigation"
+import { TabScreen } from "app/components/Tabs/TabScreen"
 import { useSetupRageShake } from "app/system/devTools/useSetupRageShake"
-import { ErrorBoundary } from "app/system/wrappers/ErrorBoundary"
-import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { Screen } from "palette"
 import { Albums } from "./Albums/Albums"
@@ -41,25 +40,19 @@ export const HomeTabs = () => {
       />
       <Screen.TabsBody initialTabName={tabName}>
         <Tabs.Tab name="Artists" label="Artists">
-          <ErrorBoundary withoutBackButton>
-            <SuspenseWrapper withTabs>
-              <Artists />
-            </SuspenseWrapper>
-          </ErrorBoundary>
+          <TabScreen>
+            <Artists />
+          </TabScreen>
         </Tabs.Tab>
         <Tabs.Tab name="Shows" label="Shows">
-          <ErrorBoundary withoutBackButton>
-            <SuspenseWrapper withTabs>
-              <Shows />
-            </SuspenseWrapper>
-          </ErrorBoundary>
+          <TabScreen>
+            <Shows />
+          </TabScreen>
         </Tabs.Tab>
         <Tabs.Tab name="Albums" label="Albums">
-          <ErrorBoundary withoutBackButton>
-            <SuspenseWrapper withTabs>
-              <Albums />
-            </SuspenseWrapper>
-          </ErrorBoundary>
+          <TabScreen>
+            <Albums />
+          </TabScreen>
         </Tabs.Tab>
       </Screen.TabsBody>
     </Screen>
