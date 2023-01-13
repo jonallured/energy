@@ -44,7 +44,6 @@ export const Main = () => {
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
 
   useErrorReporting()
-  // Check the network status and toggle the offline mode if needed
   useNetworkStatusListener()
   useWebViewCookies()
 
