@@ -5,6 +5,8 @@
     "android": "react-native run-android",
     "bundle-install": "cd ios && bundle install && cd ..",
     "bundle:android": "NODE_OPTIONS=--max_old_space_size=8192 react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.bundle.map --assets-dest android/app/src/main/res",
+    "detect-secrets:hook": "scripts/detect-secrets.sh hook",
+    "detect-secrets:rebuild": "scripts/detect-secrets.sh rebuild",
     "install:all": "yarn install && yarn bundle-install && yarn pod-install",
     "ios": "react-native run-ios",
     "lint": "eslint --fix --cache --cache-location '.cache/eslint/' --ext .ts,.tsx",
@@ -156,6 +158,7 @@
     "typescript": "^4.9.4"
   },
   "lint-staged": {
+    "*": "yarn detect-secrets:hook",
     "*.@(md)": [
       "yarn prettier-write"
     ],
