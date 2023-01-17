@@ -246,7 +246,7 @@ lane :upload_sentry_artifacts do |options|
   if platform == "ios"
     # make individual dSYM archives available to the sentry-cli tool.
     root = File.expand_path('..', __dir__)
-    dsym_archive = File.join(root, 'Folio.app.dSYM.zip')
+    dsym_archive = File.join(root, 'Energy.app.dSYM.zip')
     dsyms_path = File.join(root, 'dSYMs')
     sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
@@ -406,6 +406,8 @@ lane :ship_beta_android_firebase do
   sh("yarn relay")
 
   flag_android_beta(is_android_beta: true)
+
+  vname, vcode = set_build_version_android
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 

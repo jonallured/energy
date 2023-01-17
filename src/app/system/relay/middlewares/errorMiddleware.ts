@@ -26,7 +26,7 @@ const formatName = (req: GraphQLRequest, errors?: GraphQLResponseErrors) => {
 
 const shortError = (errors: GraphQLResponseErrors) => {
   const firstError = errors[0]
-  const errorRegex = /{"error":"(?<Message>.+)"}/
+  const errorRegex = /\{"error":"(?<Message>.+)"\}/
   const found = firstError.message.match(errorRegex)
   if (found && found.groups) {
     return found.groups.Message
