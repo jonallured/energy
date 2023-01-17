@@ -10,11 +10,7 @@ import { getNetworkStatusModel, NetworkStatusModel } from "./NetworkStatusModel"
 import { getPresentationModeModel, PresentationModeModel } from "./PresentationModeModel"
 import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
 
-type ActiveMode = "viewer" | "manager"
-
 interface GlobalStoreStateModel {
-  activeMode: ActiveMode
-  activePartnerID: string | null
   albums: AlbumsModel
   artsyPrefs: ArtsyPrefsModel
   auth: AuthModel
@@ -27,8 +23,11 @@ interface GlobalStoreStateModel {
 }
 
 export interface GlobalStoreModel extends GlobalStoreStateModel {
+  activePartnerID: string | null
   setActivePartnerID: Action<this, string | null>
-  setActiveMode: Action<this, ActiveMode>
+
+  offlineSyncedChecksum: string
+  setOfflineSyncedChecksum: Action<this, string>
 
   reset: Action<this>
 
@@ -37,8 +36,6 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
-  activeMode: "viewer",
-  activePartnerID: null,
   albums: getAlbumsModel(),
   artsyPrefs: getArtsyPrefsModel(),
   auth: getAuthModel(),
@@ -47,17 +44,20 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   email: getEmailModel(),
   networkStatus: getNetworkStatusModel(),
   presentationMode: getPresentationModeModel(),
-  reset: action((state) => {
-    state.activePartnerID = null
-    state.activeMode = "viewer"
-  }),
   selectMode: getSelectModeModel(),
 
+  activePartnerID: null,
   setActivePartnerID: action((state, partnerID) => {
     state.activePartnerID = partnerID
   }),
-  setActiveMode: action((state, mode) => {
-    state.activeMode = mode
+
+  offlineSyncedChecksum: "never-happened",
+  setOfflineSyncedChecksum: action((state, checksum) => {
+    state.offlineSyncedChecksum = checksum
+  }),
+
+  reset: action((state) => {
+    state.activePartnerID = null
   }),
 
   // for testing only. noop otherwise.

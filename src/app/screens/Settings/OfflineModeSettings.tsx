@@ -1,4 +1,4 @@
-import { Button, Join, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useMemo, useState } from "react"
 import { Alert } from "react-native"
@@ -6,6 +6,7 @@ import { NavigationScreens } from "app/Navigation"
 import { AnimatedEllipsis } from "app/components/AnimatedEllipsis"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { relayChecksum } from "app/system/sync/_generatedRelayChecksum"
 import { clearFileCache } from "app/system/sync/fileCache"
 import { initSyncManager } from "app/system/sync/syncManager"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
@@ -18,6 +19,8 @@ export const OfflineModeSettings = () => {
   const { relayEnvironment } = useSystemRelayEnvironment()
 
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const offlineSyncedChecksum = GlobalStore.useAppState((state) => state.offlineSyncedChecksum)!
+  const setOfflineSyncedChecksum = GlobalStore.actions.setOfflineSyncedChecksum
   const isOnline = useIsOnline()
 
   const [syncProgress, setSyncProgress] = useState<string | number>(0)
@@ -33,6 +36,7 @@ export const OfflineModeSettings = () => {
       },
       onComplete: () => {
         setSyncProgress(0)
+        setOfflineSyncedChecksum(relayChecksum)
 
         Alert.alert("Sync complete.", "", [
           {
@@ -84,23 +88,40 @@ export const OfflineModeSettings = () => {
         <Screen.FullWidthDivider />
 
         <Join separator={<Screen.FullWidthDivider />}>
-          <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
-            {isSyncing ? (
+          <>
+            <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
+              {isSyncing ? (
+                <>
+                  <Text color="onPrimaryHigh">
+                    {syncStatus}
+                    <AnimatedEllipsis
+                      style={{
+                        color: color("onPrimaryHigh"),
+                      }}
+                    />{" "}
+                    {syncProgress}
+                  </Text>
+                </>
+              ) : (
+                `Start sync${isOnline ? "" : " (Offline)"}`
+              )}
+            </Button>
+            {offlineSyncedChecksum !== relayChecksum && (
               <>
-                <Text color="onPrimaryHigh">
-                  {syncStatus}
-                  <AnimatedEllipsis
-                    style={{
-                      color: color("onPrimaryHigh"),
-                    }}
-                  />{" "}
-                  {syncProgress}
+                <Spacer y="1" />
+                <Text color="red100">
+                  Your synced data needs to be refreshed. Please tap the "Start sync" button above.
                 </Text>
               </>
-            ) : (
-              <>Start Sync {!isOnline && "(Offline)"}</>
             )}
-          </Button>
+            {(isUserDev || __DEV__) && (
+              <>
+                <Spacer y="1" />
+                <Text color="onBackgroundLow">Latest synced: {offlineSyncedChecksum}</Text>
+                <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
+              </>
+            )}
+          </>
 
           <Button block onPress={handleClearFileCache}>
             Clear cache
