@@ -78,7 +78,7 @@ export const downloadFileToCache = async ({
       const filename = (() => {
         switch (type) {
           case "image": {
-            const src = parse(url).src as string
+            const src = (parse(url).src as string | undefined) ?? url
             const imageExtension = src?.substring(src.lastIndexOf("."))
             return id + imageExtension
           }

@@ -41,6 +41,7 @@ import { showInstallsQuery } from "app/screens/Shows/ShowTabs/ShowInstalls/ShowI
 import { showTabsQuery } from "app/screens/Shows/ShowTabs/ShowTabs"
 import { showsQuery } from "app/screens/Shows/Shows"
 import { RelayContextProps } from "app/system/relay/RelayProvider"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
 import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
@@ -393,6 +394,7 @@ export function initSyncManager({
   const syncDocuments = async () => {
     const urls = parsers.getDocumentsUrls()
 
+    const accessToken = GlobalStore.getState().auth.userAccessToken!
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
       .withConcurrency(20)
@@ -400,6 +402,7 @@ export function initSyncManager({
         return await downloadFileToCache({
           type: "document",
           url,
+          accessToken,
         })
       })
   }

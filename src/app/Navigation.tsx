@@ -1,7 +1,15 @@
-import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
+import { useColor } from "@artsy/palette-mobile"
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+  NavigationProp,
+  useNavigation,
+} from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useStoreRehydrated } from "easy-peasy"
 import { useEffect } from "react"
+import { TouchableOpacity } from "react-native"
 import SplashScreen from "react-native-splash-screen"
 import { AlbumsNavigation, AlbumNavigationScreens } from "app/screens/Albums/navigation"
 import { ArtistNavigation, ArtistNavigationScreens } from "app/screens/Artists/navigation"
@@ -42,6 +50,7 @@ export const Main = () => {
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
+  const showDevMenuButton = GlobalStore.useAppState((state) => state.devicePrefs.showDevMenuButton)
 
   useErrorReporting()
   useNetworkStatusListener()
@@ -83,9 +92,30 @@ export const Main = () => {
 
           {DevNavigation()}
         </StackNav.Navigator>
+
+        {showDevMenuButton && <DevMenuButton />}
       </NavigationContainer>
 
       <StatusBar backgroundColor={isOnline ? "transparent" : "pink"} />
     </>
+  )
+}
+
+const DevMenuButton = () => {
+  const { navigate } = useNavigation<NavigationProp<NavigationScreens>>()
+  const color = useColor()
+  return (
+    <TouchableOpacity
+      onPress={() => navigate("DevMenu")}
+      style={{
+        position: "absolute",
+        bottom: 20,
+        right: 20,
+        height: 40,
+        width: 40,
+        backgroundColor: color("devpurple"),
+        borderRadius: 25,
+      }}
+    />
   )
 }

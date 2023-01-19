@@ -1,5 +1,6 @@
 import { Button, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
 import { Alert } from "react-native"
 import { NavigationScreens } from "app/Navigation"
@@ -20,7 +21,9 @@ export const OfflineModeSettings = () => {
 
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
   const offlineSyncedChecksum = GlobalStore.useAppState((state) => state.offlineSyncedChecksum)!
-  const setOfflineSyncedChecksum = GlobalStore.actions.setOfflineSyncedChecksum
+  const { setOfflineSyncedChecksum } = GlobalStore.actions
+  const lastSync = GlobalStore.useAppState((state) => state.devicePrefs.lastSync)
+  const { setLastSync } = GlobalStore.actions.devicePrefs
   const isOnline = useIsOnline()
 
   const [syncProgress, setSyncProgress] = useState<string | number>(0)
@@ -37,6 +40,7 @@ export const OfflineModeSettings = () => {
       onComplete: () => {
         setSyncProgress(0)
         setOfflineSyncedChecksum(relayChecksum)
+        setLastSync(DateTime.now())
 
         Alert.alert("Sync complete.", "", [
           {
@@ -67,6 +71,8 @@ export const OfflineModeSettings = () => {
 
   const handleClearFileCache = async () => {
     await clearFileCache()
+    setOfflineSyncedChecksum("cleared")
+    setLastSync(null)
 
     Alert.alert("Cache cleared.", "", [
       {
@@ -106,6 +112,13 @@ export const OfflineModeSettings = () => {
                 `Start sync${isOnline ? "" : " (Offline)"}`
               )}
             </Button>
+            <Spacer y="1" />
+            <Text color="onBackgroundMedium">
+              Last sync:{" "}
+              {lastSync === null
+                ? "N/A"
+                : DateTime.fromISO(lastSync).toLocaleString(DateTime.DATETIME_MED)}
+            </Text>
             {offlineSyncedChecksum !== relayChecksum && (
               <>
                 <Spacer y="1" />

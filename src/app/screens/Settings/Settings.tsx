@@ -11,6 +11,10 @@ export const Settings = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
 
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+  const showDevMenuButtonInternalToggle = GlobalStore.useAppState(
+    (state) => state.devicePrefs.showDevMenuButtonInternalToggle
+  )
+  const { setShowDevMenuButton } = GlobalStore.actions.devicePrefs
   const [tapCount, updateTapCount] = useState(0)
 
   return (
@@ -73,7 +77,10 @@ export const Settings = () => {
               Folio Design Language
             </Button>
             <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
-              Instead Of Storybook
+              Instead of Storybook
+            </Button>
+            <Button block onPress={() => setShowDevMenuButton(!showDevMenuButtonInternalToggle)}>
+              Toggle DevMenu button (just shake on ios)
             </Button>
           </Join>
         )}

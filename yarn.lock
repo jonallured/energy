@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/palette-mobile@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-4.0.0.tgz#e949b63fcbf07cddca0fc08b1b754eaf67cf99fc"
-  integrity sha512-XTTcpqZk1CM7MaCS+u0arDkOKVuS17aI8odFUniZ/XZo6XY9PxgwDB5g3JVR/hEQm0dyN/ex7QCPxadjAuhRTA==
+"@artsy/palette-mobile@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-5.0.0.tgz#9ee4b0889dc9c6378333cb3b66e065a882378de9"
+  integrity sha512-s4tYCImjDIfNz9jjHW8+Do9dNLI61hlZSFO5+BnQqyw5/P3Lg09pF+ADWcEsYlH9TyP9OcNOhIP22QklUBC+IQ==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"

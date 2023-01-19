@@ -4,7 +4,7 @@ plugins {
 }
 
 project.ext.envConfigFiles = [
-    debug: ".env.dev",
+    debug: ".env",
     release: ".env",
 ]
 
