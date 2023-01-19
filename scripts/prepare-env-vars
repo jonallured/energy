@@ -7,7 +7,7 @@
 set -e
 
 echo "Downloading .env file..."
-if ! aws s3 cp s3://artsy-citadel/dev/.env.energy .env; then
+if ! aws s3 cp s3://artsy-citadel/energy/.env.energy .env; then
   echo "Unable to download shared config from s3"
   echo "This is expected for open source contributors. We will work on adding support for OSS soon"
   echo "If you work at Artsy, please check your s3 access."

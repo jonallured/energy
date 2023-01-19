@@ -19,7 +19,7 @@ bundle exec fastlane update_plugins
 
 ./scripts/setup-awscli
 
-aws s3 cp s3://artsy-citadel/dev/energy-release.keystore android/app/release.keystore
-aws s3 cp s3://artsy-citadel/dev/energy-android-secret.json android-secret.json
-aws s3 cp s3://artsy-citadel/dev/energy-firebase-app-distribution.json energy-firebase-app-distribution.json
-aws s3 cp s3://artsy-citadel/dev/energy-google-services.json android/app/google-services.json
+aws s3 cp s3://artsy-citadel/energy/energy-release.keystore android/app/release.keystore
+aws s3 cp s3://artsy-citadel/energy/energy-android-secret.json android-secret.json
+aws s3 cp s3://artsy-citadel/energy/energy-firebase-app-distribution.json energy-firebase-app-distribution.json
+aws s3 cp s3://artsy-citadel/energy/energy-google-services.json android/app/google-services.json

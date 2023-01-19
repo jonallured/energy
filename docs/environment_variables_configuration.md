@@ -7,6 +7,6 @@ Energy uses [shared configuration](https://github.com/artsy/README/blob/main/pla
 ## Add/Update remote environment variable
 
 ```
-aws s3 cp s3://artsy-citadel/dev/.env.energy .env.shared
-aws s3 cp .env.shared s3://artsy-citadel/dev/.env.energy
+aws s3 cp s3://artsy-citadel/energy/.env.energy .env.shared
+aws s3 cp .env.shared s3://artsy-citadel/energy/.env.energy
 ```

@@ -3,4 +3,4 @@ set -euxo pipefail
 
 touch .env
 
-aws s3 cp s3://artsy-citadel/dev/.env.energy .env
+aws s3 cp s3://artsy-citadel/energy/.env.energy .env
