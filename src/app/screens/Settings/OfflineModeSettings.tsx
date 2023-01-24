@@ -99,7 +99,7 @@ export const OfflineModeSettings = () => {
               {isSyncing ? (
                 <>
                   <Text color="onPrimaryHigh">
-                    {syncStatus}
+                    {syncStatus}{" "}
                     <AnimatedEllipsis
                       style={{
                         color: color("onPrimaryHigh"),
