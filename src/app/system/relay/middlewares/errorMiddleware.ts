@@ -16,7 +16,7 @@ const isErrorStatus = (status: number | undefined) => {
 
 const formatName = (req: GraphQLRequest, errors?: GraphQLResponseErrors) => {
   let errorName = "Generic Error - see metadata"
-  if (errors) {
+  if (errors && errors.length > 0) {
     errorName = shortError(errors)
   }
   const queryName = req.operation.name
@@ -26,10 +26,10 @@ const formatName = (req: GraphQLRequest, errors?: GraphQLResponseErrors) => {
 
 const shortError = (errors: GraphQLResponseErrors) => {
   const firstError = errors[0]
-  const errorRegex = /\{"error":"(?<Message>.+)"\}/
+  const errorRegex = /\{"error":"(.+)"\}/
   const found = firstError.message.match(errorRegex)
-  if (found && found.groups) {
-    return found.groups.Message
+  if (found && found.length > 1) {
+    return found[1]
   } else {
     return "Generic Error - see metadata"
   }
