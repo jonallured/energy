@@ -11,6 +11,7 @@ import { StorybookScreenHeader } from "app/screens/Dev/StorybookScreenHeader"
 import { StorybookScreenHeaderElements } from "app/screens/Dev/StorybookScreenHeaderElements"
 import { StorybookScreenRawHeader } from "app/screens/Dev/StorybookScreenRawHeader"
 import { StorybookSkeletons } from "app/screens/Dev/StorybookSkeletons"
+import { slideFromLeft } from "app/utils/navigationAnimation"
 
 export type DevNavigationScreens = {
   DevMenu: undefined
@@ -52,7 +53,11 @@ export const DevNavigation = () => {
           component={StorybookScreenHeaderElements}
         />
         <StackNav.Screen name="StorybookScreenRawHeader" component={StorybookScreenRawHeader} />
-        <StackNav.Screen name="BrowseOfflineCache" component={BrowseOfflineCache} />
+        <StackNav.Screen
+          name="BrowseOfflineCache"
+          component={BrowseOfflineCache}
+          options={{ ...slideFromLeft }}
+        />
         <StackNav.Screen name="StorybookSkeletons" component={StorybookSkeletons} />
       </StackNav.Group>
 

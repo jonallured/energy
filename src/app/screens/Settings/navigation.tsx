@@ -1,4 +1,3 @@
-import { StackCardStyleInterpolator } from "@react-navigation/stack"
 import { StackNav } from "app/Navigation"
 import { DarkModeSettings } from "app/screens/Settings/DarkModeSettings"
 import { EmailScreen } from "app/screens/Settings/EmailScreen"
@@ -8,6 +7,7 @@ import { OfflineModeSettings } from "app/screens/Settings/OfflineModeSettings"
 import { OneArtwork } from "app/screens/Settings/OneArtwork"
 import { PresentationModeSettings } from "app/screens/Settings/PresentationModeSettings"
 import { Settings } from "app/screens/Settings/Settings"
+import { slideFromLeft } from "app/utils/navigationAnimation"
 
 export type SettingsNavigationScreens = {
   DarkModeSettings: undefined
@@ -37,19 +37,4 @@ export const SettingsNavigation = () => {
       <StackNav.Screen name="OneArtwork" component={OneArtwork} />
     </StackNav.Group>
   )
-}
-
-const slideFromLeft: { cardStyleInterpolator: StackCardStyleInterpolator } = {
-  cardStyleInterpolator: ({ current, layouts }) => ({
-    cardStyle: {
-      transform: [
-        {
-          translateX: current.progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-layouts.screen.width, 0],
-          }),
-        },
-      ],
-    },
-  }),
 }
