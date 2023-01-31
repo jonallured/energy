@@ -125,6 +125,7 @@ export const getAuthModel = (): AuthModel => ({
       fail(error)
     }
   }),
+
   signInUsingEmail: thunk(async (actions, { email, password, otp }) => {
     const result = await actions.gravityUnauthenticatedRequest({
       path: `/oauth2/access_token`,
@@ -184,6 +185,8 @@ export const getAuthModel = (): AuthModel => ({
         }
     }
   }),
+
+  // See `clearCacheOnSignOut` listener in DevicePrefsModel
   signOut: thunk(async (actions, _, context) => {
     context.getStoreActions().reset()
     actions.setState(authModelInitialState)

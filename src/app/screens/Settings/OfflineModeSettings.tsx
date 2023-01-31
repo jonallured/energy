@@ -20,8 +20,10 @@ export const OfflineModeSettings = () => {
   const { relayEnvironment } = useSystemRelayEnvironment()
 
   const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
-  const offlineSyncedChecksum = GlobalStore.useAppState((state) => state.offlineSyncedChecksum)!
-  const { setOfflineSyncedChecksum } = GlobalStore.actions
+  const offlineSyncedChecksum = GlobalStore.useAppState(
+    (state) => state.devicePrefs.offlineSyncedChecksum
+  )!
+  const { setOfflineSyncedChecksum } = GlobalStore.actions.devicePrefs
   const lastSync = GlobalStore.useAppState((state) => state.devicePrefs.lastSync)
   const { setLastSync } = GlobalStore.actions.devicePrefs
   const isOnline = useIsOnline()
@@ -71,7 +73,7 @@ export const OfflineModeSettings = () => {
 
   const handleClearFileCache = async () => {
     await clearFileCache()
-    setOfflineSyncedChecksum("cleared")
+    setOfflineSyncedChecksum(null)
     setLastSync(null)
 
     Alert.alert("Cache cleared.", "", [
@@ -112,25 +114,26 @@ export const OfflineModeSettings = () => {
                 `Start sync${isOnline ? "" : " (Offline)"}`
               )}
             </Button>
+
             <Spacer y="1" />
-            <Text color="onBackgroundMedium">
-              Last sync:{" "}
-              {lastSync === null
-                ? "N/A"
-                : DateTime.fromISO(lastSync).toLocaleString(DateTime.DATETIME_MED)}
-            </Text>
-            {offlineSyncedChecksum !== relayChecksum && (
+
+            {lastSync && (
+              <Text color="onBackgroundMedium">
+                Last sync: {DateTime.fromISO(lastSync).toLocaleString(DateTime.DATETIME_MED)}
+              </Text>
+            )}
+
+            {lastSync && offlineSyncedChecksum !== relayChecksum && (
               <>
-                <Spacer y="1" />
                 <Text color="red100">
                   Your synced data needs to be refreshed. Please tap the "Start sync" button above.
                 </Text>
               </>
             )}
+
             {(isUserDev || __DEV__) && (
               <>
-                <Spacer y="1" />
-                <Text color="onBackgroundLow">Latest synced: {offlineSyncedChecksum}</Text>
+                <Text color="onBackgroundLow">Last sync: {offlineSyncedChecksum}</Text>
                 <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
               </>
             )}

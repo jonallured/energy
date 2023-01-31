@@ -27,7 +27,11 @@ const useSetterHook = <T>(atom: PrimitiveAtom<PerScreen<T>>, value: T): void => 
   const screenName = useScreenName()
   const [values, setValues] = useAtom(atom)
 
-  useEffect(() => setValues({ ...values, [screenName]: value }), [value])
+  useEffect(() => {
+    if (value) {
+      setValues({ ...values, [screenName]: value })
+    }
+  }, [value])
 }
 
 // hook that returns a setter function for these atoms

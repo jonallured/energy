@@ -50,7 +50,9 @@ export const ArtistTabs = () => {
 
   const artworkData = useSystemQueryLoader<ArtistTabsQuery>(artistTabsQuery, {
     partnerID,
-    artworkIDs: selectedWorks,
+    // TODO: Do we really need this for fetching artworks? The flatlist displays
+    // all of our artworks regardless. Revisit if we start doing lazy load.
+    artworkIDs: [], // selectedWorks,
     imageSize,
   })
 

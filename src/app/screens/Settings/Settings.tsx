@@ -65,7 +65,7 @@ export const Settings = () => {
             </Flex>
           </Touchable>
 
-          <Button block onPress={() => void GlobalStore.actions.auth.signOut()}>
+          <Button block onPress={() => GlobalStore.actions.auth.signOut()}>
             Log out
           </Button>
         </Join>

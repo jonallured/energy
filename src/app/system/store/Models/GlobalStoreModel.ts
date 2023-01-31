@@ -25,10 +25,6 @@ interface GlobalStoreStateModel {
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   activePartnerID: string | null
   setActivePartnerID: Action<this, string | null>
-
-  offlineSyncedChecksum: string
-  setOfflineSyncedChecksum: Action<this, string>
-
   reset: Action<this>
 
   // for testing only. noop otherwise.
@@ -49,11 +45,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   activePartnerID: null,
   setActivePartnerID: action((state, partnerID) => {
     state.activePartnerID = partnerID
-  }),
-
-  offlineSyncedChecksum: "never-happened",
-  setOfflineSyncedChecksum: action((state, checksum) => {
-    state.offlineSyncedChecksum = checksum
   }),
 
   reset: action((state) => {

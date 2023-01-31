@@ -1,6 +1,7 @@
-import { action, Action, computed, Computed } from "easy-peasy"
+import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { DateTime } from "luxon"
 import { Appearance } from "react-native"
+import { clearFileCache } from "app/system/sync/fileCache"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
 export interface DevicePrefsModel {
@@ -22,9 +23,22 @@ export interface DevicePrefsModel {
 
   lastSync: string | null
   setLastSync: Action<this, DateTime | null>
+
+  clearCacheOnSignOut: ThunkOn<this, null, GlobalStoreModel>
+  offlineSyncedChecksum: string | null
+  setOfflineSyncedChecksum: Action<this, string | null>
 }
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
+  clearCacheOnSignOut: thunkOn(
+    (_actions, storeActions) => storeActions.auth.signOut,
+    async (actions) => {
+      await clearFileCache()
+      actions.setOfflineSyncedChecksum(null)
+      actions.setLastSync(null)
+    }
+  ),
+
   colorScheme: computed([(_, store) => store], (store) =>
     store.devicePrefs.usingSystemColorScheme
       ? store.devicePrefs.systemColorScheme
@@ -32,6 +46,12 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   ),
   usingSystemColorScheme: false,
   forcedColorScheme: "light",
+
+  offlineSyncedChecksum: null,
+  setOfflineSyncedChecksum: action((state, checksum) => {
+    state.offlineSyncedChecksum = checksum
+  }),
+
   systemColorScheme: Appearance.getColorScheme() ?? "light",
 
   setSystemColorScheme: action((state, scheme) => {
