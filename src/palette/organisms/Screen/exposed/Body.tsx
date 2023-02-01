@@ -1,6 +1,12 @@
 import { Flex, FlexProps, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { getChildrenByType, removeChildrenByType } from "react-nanny"
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
+import {
+  KeyboardAvoidingView,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  ScrollView,
+} from "react-native"
 import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { BottomView } from "./BottomView"
@@ -12,7 +18,6 @@ import {
   useSetScreenIsFullWidthBody,
 } from "../atoms"
 import { useAnimatedHeaderScrolling } from "../hooks"
-import { ArtsyKeyboardAvoidingView } from "app/components/ArtsyKeyboardAvoidingView"
 import { Wrap } from "app/components/Wrap"
 
 export const SCREEN_HORIZONTAL_PADDING: SpacingUnit = "2"
@@ -55,7 +60,7 @@ export const Body = ({
         {...restFlexProps}
       >
         <Wrap if={scroll}>
-          <ArtsyKeyboardAvoidingView>
+          <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <ScrollView
               keyboardShouldPersistTaps="handled"
               contentInset={{ bottom: bottomViewHeight + space("2") }}
@@ -73,7 +78,7 @@ export const Body = ({
               </Wrap.Content>
             </ScrollView>
             {scroll && bottomView}
-          </ArtsyKeyboardAvoidingView>
+          </KeyboardAvoidingView>
         </Wrap>
       </Flex>
     </>
