@@ -26,7 +26,7 @@
     "setup:artsy": "./scripts/setup-env-for-artsy",
     "setup:releases": "./scripts/setup-env-for-artsy && ./scripts/setup-distribute-macos",
     "start:reset-cache": "concurrently 'yarn relay:watch' 'react-native start --reset-cache'",
-    "start": "concurrently 'yarn relay:watch' 'react-native start'",
+    "start": "DEBUG=true concurrently 'yarn relay:watch' 'react-native start'",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "test": "jest",
     "trouble": "killall node ; yarn setup:artsy ; yarn install:all ; yarn relay ; yarn start",
