@@ -9887,10 +9887,9 @@ react-native-collapsible-tab-view@^5.0.0-rc.13:
   dependencies:
     use-deep-compare "^1.1.0"
 
-react-native-config@^1.4.11:
+"react-native-config@https://github.com/artsy/react-native-config.git#v1.4.11-artsy":
   version "1.4.11"
-  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.4.11.tgz#f9ea08a8dffbe3fd4f2187d80d2594756526dee8"
-  integrity sha512-PdBFnfR3pljUNrJu4B2wiJ9TbAiz1J1WcG5KP8AFBqZi8ve5MV/CTCDnANaGrqhOxkBDJV73D/SrMENHe7TKBg==
+  resolved "https://github.com/artsy/react-native-config.git#609129ba486db9cb648e3bdd2043ab4a9f8692ea"
 
 react-native-device-info@^10.3.0:
   version "10.3.0"
