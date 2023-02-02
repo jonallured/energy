@@ -42,7 +42,7 @@ interface SearchResult {
 
 const SearchResultView = ({ searchInput }: SearchResultProps) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const data = useSystemQueryLoader<SearchResultQuery>(searchResultQuery, {
     partnerID,
     searchInput,

@@ -13,7 +13,7 @@ import { extractNodes } from "app/utils/extractNodes"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
   const space = useSpace()
-  const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const showDocumentsData = useSystemQueryLoader<ShowDocumentsQuery>(showDocumentsQuery, {
     slug,
     partnerID: selectedPartner,

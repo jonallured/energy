@@ -19,7 +19,7 @@ export const OfflineModeSettings = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { relayEnvironment } = useSystemRelayEnvironment()
 
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const offlineSyncedChecksum = GlobalStore.useAppState(
     (state) => state.devicePrefs.offlineSyncedChecksum
   )!

@@ -39,7 +39,7 @@ export const ArtistTabs = () => {
   const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
 
   const isOnline = useIsOnline()
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.sessionState.artworks)
   const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
 

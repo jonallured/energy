@@ -42,7 +42,7 @@ export const CreateOrEditAlbum = () => {
   const [hasSavedNav, navigateToSaved] = useNavigationSavedForKey("before-adding-to-album")
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const [selectedArtworksToRemove, setSelectedArtworksToRemove] = useState<string[]>([])
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const selectedArtworksForNewAlbum = GlobalStore.useAppState(
     (state) => state.albums.sessionState.selectedArtworksForNewAlbum
   )

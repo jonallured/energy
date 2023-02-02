@@ -14,7 +14,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )

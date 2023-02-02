@@ -17,7 +17,7 @@ import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentation
 import { imageSize } from "app/utils/imageSize"
 
 export const ArtistArtworks = ({ slug }: { slug: string }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,

@@ -7,7 +7,7 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 
 export const EditArtworkInCms = ({ slug }: { slug: string }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const artworkData = useSystemQueryLoader<EditArtworkInCmsQuery>(editArtworkInCmsQuery, { slug })
   const internalID = artworkData.artwork?.internalID

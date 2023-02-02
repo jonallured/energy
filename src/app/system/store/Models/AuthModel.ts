@@ -29,6 +29,8 @@ const authModelInitialState: AuthModelState = {
 
 export interface AuthModel extends AuthModelState {
   setState: Action<this, Partial<AuthModelState>>
+  activePartnerID: string | null
+  setActivePartnerID: Action<this, string | null>
   getUserID: Thunk<this, void, {}, GlobalStoreModel>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   gravityUnauthenticatedRequest: Thunk<
@@ -53,6 +55,12 @@ export const getAuthModel = (): AuthModel => ({
   setState: action((state, payload) => {
     state = Object.assign(state, payload)
   }),
+
+  activePartnerID: null,
+  setActivePartnerID: action((state, partnerID) => {
+    state.activePartnerID = partnerID
+  }),
+
   getUserID: thunk(async (actions, _payload, context) => {
     try {
       const user = await (

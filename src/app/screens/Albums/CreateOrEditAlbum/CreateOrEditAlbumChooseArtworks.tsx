@@ -25,7 +25,7 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 export const CreateOrEditAlbumChooseArtworks = () => {
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,

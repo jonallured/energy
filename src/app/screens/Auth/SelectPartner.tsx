@@ -84,7 +84,7 @@ const SelectPartner = () => {
           <Button
             variant="outline"
             block
-            onPress={() => GlobalStore.actions.setActivePartnerID(partner!.internalID)}
+            onPress={() => GlobalStore.actions.auth.setActivePartnerID(partner!.internalID)}
           >
             {partner!.name}
           </Button>

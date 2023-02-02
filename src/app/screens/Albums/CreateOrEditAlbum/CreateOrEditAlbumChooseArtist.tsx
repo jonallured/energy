@@ -19,7 +19,7 @@ type CreateOrEditAlbumChooseArtistRoute = RouteProp<
 export const CreateOrEditAlbumChooseArtist = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { mode, albumId } = useRoute<CreateOrEditAlbumChooseArtistRoute>().params
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artistsData = useSystemQueryLoader<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
   const counts = artistsData.partner?.allArtistsConnection?.edges?.map(

@@ -12,7 +12,7 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 
 export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const space = useSpace()
 
   const documentsData = useSystemQueryLoader<AlbumDocumentsQuery>(albumDocumentsQuery, {

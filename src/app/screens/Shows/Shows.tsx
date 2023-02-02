@@ -16,7 +16,7 @@ import { imageSize } from "app/utils/imageSize"
 export const Shows = () => {
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const data = useSystemQueryLoader<ShowsQuery>(showsQuery, { partnerID: partnerID!, imageSize })
   const shows = extractNodes(data.partner?.showsConnection)
   const screenWidth = useWindowDimensions().width

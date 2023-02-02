@@ -12,7 +12,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 
 export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const space = useSpace()
 
   const artworksData = useSystemQueryLoader<AlbumArtworksQuery>(albumArtworksQuery, {

@@ -48,7 +48,7 @@ export const Main = () => {
   const isRehydrated = useStoreRehydrated()
   const isOnline = useIsOnline()
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
-  const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)
+  const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
   const showDevMenuButton = GlobalStore.useAppState((state) => state.devicePrefs.showDevMenuButton)
 

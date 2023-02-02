@@ -23,8 +23,6 @@ interface GlobalStoreStateModel {
 }
 
 export interface GlobalStoreModel extends GlobalStoreStateModel {
-  activePartnerID: string | null
-  setActivePartnerID: Action<this, string | null>
   reset: Action<this>
 
   // for testing only. noop otherwise.
@@ -42,16 +40,11 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   presentationMode: getPresentationModeModel(),
   selectMode: getSelectModeModel(),
 
-  activePartnerID: null,
-  setActivePartnerID: action((state, partnerID) => {
-    state.activePartnerID = partnerID
-  }),
-
   reset: action((state) => {
-    state.activePartnerID = null
+    state.auth.activePartnerID = null
   }),
 
-  // for testing only. noop otherwise.
+  // For testing only. noop otherwise.
   __inject: __TEST__
     ? action((state, injectedState) => {
         assignDeep(state, injectedState)

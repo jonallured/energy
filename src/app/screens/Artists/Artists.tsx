@@ -17,7 +17,7 @@ import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body
 export const Artists = () => {
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artistsData = useSystemQueryLoader<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
   const screenWidth = useWindowDimensions().width

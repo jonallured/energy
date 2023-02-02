@@ -12,7 +12,7 @@ import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils/extractNodes"
 
 export const ArtistDocuments = ({ slug }: { slug: string }) => {
-  const selectedPartner = GlobalStore.useAppState((state) => state.activePartnerID)!
+  const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artistDocumentsData = useSystemQueryLoader<ArtistDocumentsQuery>(artistDocumentsQuery, {
     slug,
     partnerID: selectedPartner,
