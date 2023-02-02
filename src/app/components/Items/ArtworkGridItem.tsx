@@ -1,4 +1,11 @@
-import { CheckCircleFillIcon, Flex, Text, Touchable, TrashIcon } from "@artsy/palette-mobile"
+import {
+  CheckCircleFillIcon,
+  Flex,
+  FlexProps,
+  Text,
+  Touchable,
+  TrashIcon,
+} from "@artsy/palette-mobile"
 import { ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -7,7 +14,7 @@ import { AvailabilityDot } from "app/components/StatusDot"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
 
-export interface ArtworkGridItemProps {
+export interface ArtworkGridItemProps extends FlexProps {
   artwork: ArtworkGridItem_artwork$key
   onPress?: () => void
   selectedToAdd?: boolean
@@ -23,6 +30,7 @@ export const ArtworkGridItem = ({
   selectedToRemove,
   onPress,
   style,
+  ...flexProps
 }: ArtworkGridItemProps) => {
   const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, propArtwork)
   const fontSize = isTablet() ? "sm" : "xs"
@@ -33,7 +41,12 @@ export const ArtworkGridItem = ({
 
   return (
     <Touchable disabled={disable} onPress={onPress}>
-      <Flex mb={4} opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1} style={style}>
+      <Flex
+        {...flexProps}
+        mb={4}
+        opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}
+        style={style}
+      >
         <CachedImage
           uri={artwork.image?.resized?.url}
           placeholderHeight={artwork.image?.resized?.height}

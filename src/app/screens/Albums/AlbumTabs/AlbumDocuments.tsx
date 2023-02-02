@@ -1,5 +1,7 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
+import { difference } from "lodash"
+import { useEffect } from "react"
 import { graphql } from "react-relay"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
@@ -20,6 +22,17 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
 
   const documents =
     documentIDs.length > 0 ? extractNodes(documentsData.partner?.documentsConnection) : []
+
+  // Clear out potentially deleted documents
+  useEffect(() => {
+    const fetchedDocumentIds = documents.map((d) => d.internalID)
+    const documentIdsToRemove = difference(documentIDs, fetchedDocumentIds)
+
+    documentIdsToRemove.forEach((documentId) => {
+      GlobalStore.actions.albums.removeDocumentFromAlbums({ documentId })
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [documentIDs])
 
   return (
     <TabsScrollView>

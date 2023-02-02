@@ -43,6 +43,8 @@ export interface AlbumsModel {
       documentIdsToAdd: DocumentId[]
     }
   >
+  removeArtworkFromAlbums: Action<this, { artworkId: string }>
+  removeDocumentFromAlbums: Action<this, { documentId: string }>
   selectArtworksForNewAlbum: Action<this, { artistSlug: ArtistSlug; artworkIds: ArtworkId[] }>
   selectArtworksForExistingAlbum: Action<this, { artistSlug: ArtistSlug; artworkIds: ArtworkId[] }>
   clearSelectedArtworksForEditAlbum: Action<this>
@@ -98,6 +100,16 @@ export const getAlbumsModel = (): AlbumsModel => ({
       })
     }
   ),
+  removeArtworkFromAlbums: action((state, { artworkId }) => {
+    state.albums.forEach((album) => {
+      album.artworkIds = album.artworkIds.filter((id) => id !== artworkId)
+    })
+  }),
+  removeDocumentFromAlbums: action((state, { documentId }) => {
+    state.albums.forEach((album) => {
+      album.documentIds = album.documentIds.filter((id) => id !== documentId)
+    })
+  }),
   selectArtworksForNewAlbum: action((state, { artistSlug, artworkIds }) => {
     state.sessionState.selectedArtworksForNewAlbum[artistSlug] = artworkIds
   }),

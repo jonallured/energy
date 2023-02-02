@@ -3,6 +3,7 @@ import { QueryRenderer } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 
@@ -77,7 +78,9 @@ export const setupTestWrapper = <T extends OperationType>({
   query,
   variables = {},
 }: SetupTestWrapperProps<T>) => {
-  const renderWithRelay = async (mockResolvers: MockResolvers = {}): Promise<RenderResult> => {
+  const renderWithRelay = async (
+    mockResolvers: MockResolvers = {}
+  ): Promise<RenderResult & { mockEnvironment: RelayMockEnvironment }> => {
     const mockEnvironment = createMockEnvironment()
 
     const TestRenderer = () => {
@@ -113,7 +116,10 @@ export const setupTestWrapper = <T extends OperationType>({
       variables,
     })
 
-    return view
+    return {
+      ...view,
+      mockEnvironment,
+    }
   }
 
   return { renderWithRelay }

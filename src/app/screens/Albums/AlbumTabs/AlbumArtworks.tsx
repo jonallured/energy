@@ -24,6 +24,7 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
 
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
+  const numColumns = isTablet() ? 3 : 2
 
   return (
     <TabsScrollView>
@@ -32,14 +33,14 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
           marginTop: space(2),
           paddingHorizontal: space(2),
         }}
-        numColumns={isTablet() ? 3 : 2}
+        numColumns={numColumns}
         data={presentedArtworks}
         renderItem={({ item: artwork, i }) => (
           <ArtworkGridItem
             artwork={artwork}
             style={{
-              marginLeft: i % 2 === 0 ? 0 : space("1"),
-              marginRight: i % 2 === 0 ? space("1") : 0,
+              marginLeft: i % numColumns === 0 ? 0 : space("1"),
+              marginRight: i % numColumns === numColumns - 1 ? space("1") : 0,
             }}
           />
         )}

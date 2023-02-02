@@ -1,7 +1,8 @@
 import { ImageProps } from "react-native"
 import { graphql } from "react-relay"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
+import { useSystemFetchQuery } from "app/system/relay/useSystemFetchQuery"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { imageSize } from "app/utils/imageSize"
@@ -13,14 +14,31 @@ interface AlbumListImageProps {
 
 export const AlbumListImage = ({ slug, style }: AlbumListImageProps) => {
   const placeholderHeight = useScreenDimensions().height / 5
-  const albumImages = useSystemQueryLoader<AlbumListImageQuery>(albumsQuery, { slug, imageSize })
-  const albumListImage = albumImages.artwork?.image
+  const albumListImage = useSystemFetchQuery<AlbumListImageQuery>({
+    query: albumsQuery,
+    variables: {
+      slug,
+      imageSize,
+    },
+    onError: (error) => {
+      // If not found, assume a 404 and remove the artwork from the users album
+      if ((error.message as string).includes("Artwork Not Found")) {
+        GlobalStore.actions.albums.removeArtworkFromAlbums({ artworkId: slug })
+      }
+    },
+  })
+
+  const image = albumListImage?.artwork?.image
+
+  if (!image) {
+    return null
+  }
 
   return (
     <CachedImage
-      uri={albumListImage?.resized?.url}
+      uri={image?.resized?.url}
       placeholderHeight={placeholderHeight}
-      style={[style, { aspectRatio: albumListImage?.aspectRatio ?? 1 }]}
+      style={[style, { aspectRatio: image?.aspectRatio ?? 1 }]}
     />
   )
 }

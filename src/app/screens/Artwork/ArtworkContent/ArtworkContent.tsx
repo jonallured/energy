@@ -1,7 +1,7 @@
 import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { useCallback, useMemo, useRef, useState } from "react"
-import { Linking } from "react-native"
+import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-generator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
@@ -67,10 +67,14 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
 
   const screenHeight = useScreenDimensions().height
   const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - NAVBAR_HEIGHT
+  const extraAndroidMargin = Platform.OS === "android" ? 40 : 0
 
   const snapPoints = useMemo(
-    () => [BOTTOM_SHEET_HEIGHT, screenHeight - NAVBAR_HEIGHT - safeAreaInsets.top],
-    [safeAreaInsets.top, screenHeight]
+    () => [
+      BOTTOM_SHEET_HEIGHT - extraAndroidMargin,
+      screenHeight - NAVBAR_HEIGHT - safeAreaInsets.top - extraAndroidMargin,
+    ],
+    [safeAreaInsets.top, screenHeight, extraAndroidMargin]
   )
 
   // Enable scroll only when the bottom sheet is expanded.
@@ -206,7 +210,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           style={{
             backgroundColor: color("surface"),
             paddingHorizontal: space(2),
-            marginBottom: space(4),
+            paddingBottom: space(4),
           }}
           scrollEnabled={isScrollEnabled}
         >

@@ -90,6 +90,52 @@ describe("AlbumsModel", () => {
     expect(selectedArtworksForCreateAlbum).toEqual({})
   })
 
+  it("removes artworks from albums", () => {
+    const albumIds = ["album-id-0", "album-id-1"]
+    const artworkIdToRemove = "new-artwork-id-2"
+    const artworkIdsToAdd = ["new-artwork-id-1", artworkIdToRemove]
+
+    GlobalStore.actions.albums.addItemsInAlbums({
+      albumIds,
+      artworkIdsToAdd,
+      installShotUrlsToAdd: [],
+      documentIdsToAdd: [],
+    })
+
+    GlobalStore.actions.albums.removeArtworkFromAlbums({ artworkId: artworkIdToRemove })
+
+    const albums = __globalStoreTestUtils__?.getCurrentState().albums.albums
+
+    albums?.forEach((album) => {
+      album.artworkIds.forEach((artworkId) => {
+        expect(artworkId).not.toBe(artworkIdToRemove)
+      })
+    })
+  })
+
+  it("removes documents from albums", () => {
+    const albumIds = ["album-id-0", "album-id-1"]
+    const documentIdToRemove = "new-document-id-2"
+    const documentIdsToAdd = ["new-artwork-id-1", documentIdToRemove]
+
+    GlobalStore.actions.albums.addItemsInAlbums({
+      albumIds,
+      artworkIdsToAdd: [],
+      installShotUrlsToAdd: [],
+      documentIdsToAdd,
+    })
+
+    GlobalStore.actions.albums.removeDocumentFromAlbums({ documentId: documentIdToRemove })
+
+    const albums = __globalStoreTestUtils__?.getCurrentState().albums.albums
+
+    albums?.forEach((album) => {
+      album.documentIds.forEach((documentId) => {
+        expect(documentId).not.toBe(documentIdToRemove)
+      })
+    })
+  })
+
   describe("Edit Album ", () => {
     it("updates name and new artwork ids", () => {
       const album = {

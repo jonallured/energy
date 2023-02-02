@@ -36,7 +36,7 @@ export const Artists = () => {
     <TabsFlatList
       data={items}
       numColumns={isTablet() ? 2 : 1}
-      contentContainerStyle={{ paddingTop: space("1"), paddingBottom: space("1") }}
+      contentContainerStyle={{ marginTop: space("1"), paddingBottom: space("1") }}
       renderItem={({ item }) => {
         const artist = item[0]!
         const count = item[1]!

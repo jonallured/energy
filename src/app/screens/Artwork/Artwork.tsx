@@ -24,8 +24,6 @@ import { ScrollableScreenEntity } from "app/components/ScrollableScreensView/Scr
 import { ScrollableScreensView } from "app/components/ScrollableScreensView/ScrollableScreensView"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
-import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { imageSize } from "app/utils/imageSize"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"

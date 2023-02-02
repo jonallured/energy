@@ -61,6 +61,8 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
       }),
   })
 
+  const numColumns = isTablet() ? 3 : 2
+
   return (
     <>
       <TabsScrollView>
@@ -70,7 +72,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
             marginTop: artworks.length ? space(2) : 0,
             paddingHorizontal: space(2),
           }}
-          numColumns={isTablet() ? 3 : 2}
+          numColumns={numColumns}
           data={presentedArtworks}
           renderItem={({ item: artwork, i }) => {
             return (
@@ -85,10 +87,8 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
                       })
                 }
                 selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
-                style={{
-                  marginLeft: i % 2 === 0 ? 0 : space("1"),
-                  marginRight: i % 2 === 0 ? space("1") : 0,
-                }}
+                pl={i % numColumns === 0 ? 0 : 1}
+                pr={i % numColumns === numColumns - 1 ? 0 : 1}
               />
             )
           }}
