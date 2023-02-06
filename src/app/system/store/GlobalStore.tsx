@@ -1,8 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
-import { sanitize } from "app/utils/persistence"
+import { performMigrations } from "app/system/store/migrations"
+import { sanitize } from "app/system/store/persistence/sanitize"
+import { storageAdapter } from "app/system/store/persistence/storageAdapter"
 import { GlobalStoreModel, getGlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 
 const STORE_VERSION = 0
@@ -10,33 +11,6 @@ const STORE_VERSION = 0
 if (Platform.OS === "ios") {
   // @ts-ignore
   window.requestIdleCallback = null
-}
-
-const asyncStorage = {
-  async getItem(key: string) {
-    try {
-      const res = await AsyncStorage.getItem(key)
-      if (res) {
-        return JSON.parse(res)
-      }
-    } catch (error) {
-      throw error
-    }
-  },
-  async setItem(key: string, data: string) {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(data))
-    } catch (error) {
-      throw error
-    }
-  },
-  async removeItem(key: string) {
-    try {
-      await AsyncStorage.removeItem(key)
-    } catch (error) {
-      throw error
-    }
-  },
 }
 
 function createGlobalStore() {
@@ -52,7 +26,7 @@ function createGlobalStore() {
 
   const store = createStore<GlobalStoreModel>(
     persist(getGlobalStoreModel(), {
-      storage: asyncStorage,
+      storage: storageAdapter,
       transformers: [{ in: (data) => sanitize(data), out: (data) => sanitize(data) }],
     }),
     {
@@ -63,13 +37,16 @@ function createGlobalStore() {
     }
   )
 
+  performMigrations(store)
+
   return store
 }
 
-// tslint:disable-next-line:variable-name
+// TODO: If this variable is moved within the file (say, to the bottom, where it
+// is out of the way) tests start to fail. Fix this order of operations issue.
 export const __globalStoreTestUtils__ = __TEST__
   ? {
-      // this can be used to mock the initial state before mounting a test renderer
+      // This can be used to mock the initial state before mounting a test renderer
       // e.g. `__globalStoreTestUtils__?.injectState({ nativeState: { selectedTab: "sell" } })`
       // takes effect until the next test starts
       injectState: (state: DeepPartial<GlobalStoreState>) => {

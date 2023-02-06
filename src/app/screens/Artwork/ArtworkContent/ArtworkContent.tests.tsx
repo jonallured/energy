@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { ArtworkContent } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
@@ -13,7 +14,7 @@ describe("ArtworkContent", () => {
   })
 
   it("renders without throwing an error", async () => {
-    const { queryByText } = await renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         provenance: "some provenance",
         price: "some price",
@@ -23,14 +24,14 @@ describe("ArtworkContent", () => {
       }),
     })
 
-    expect(queryByText("some provenance")).toBeTruthy()
-    expect(queryByText("internal display price")).toBeTruthy()
-    expect(queryByText("some medium")).toBeTruthy()
+    expect(screen.queryByText("some provenance")).toBeTruthy()
+    expect(screen.queryByText("internal display price")).toBeTruthy()
+    expect(screen.queryByText("some medium")).toBeTruthy()
   })
 
   describe("Price display ", () => {
     it("should display internal display price if available and not price", async () => {
-      const { queryByText } = await renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           price: "some price",
           internalDisplayPrice: "internal display price",
@@ -38,12 +39,12 @@ describe("ArtworkContent", () => {
         }),
       })
 
-      expect(queryByText("internal display price")).toBeTruthy()
-      expect(queryByText("some price")).toBeFalsy()
+      expect(screen.queryByText("internal display price")).toBeTruthy()
+      expect(screen.queryByText("some price")).toBeFalsy()
     })
 
     it("should display internal display price if available and not parent price", async () => {
-      const { queryByText } = await renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           price: "some price",
           internalDisplayPrice: null,
@@ -51,14 +52,14 @@ describe("ArtworkContent", () => {
         }),
       })
 
-      expect(queryByText("internal display price")).toBeFalsy()
-      expect(queryByText("some price")).toBeTruthy()
+      expect(screen.queryByText("internal display price")).toBeFalsy()
+      expect(screen.queryByText("some price")).toBeTruthy()
     })
   })
 
   describe("Editions set is available ", () => {
     it("it should display details of edition set instead of parent details", async () => {
-      const { queryByText } = await renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           price: "parent price",
           internalDisplayPrice: "parent internalDisplayPrice",
@@ -87,16 +88,16 @@ describe("ArtworkContent", () => {
         }),
       })
 
-      expect(queryByText("parent price")).toBeFalsy()
-      expect(queryByText("parent internalDisplayPrice")).toBeFalsy()
-      expect(queryByText("edition 2 price")).toBeFalsy()
-      expect(queryByText("parent in")).toBeFalsy()
-      expect(queryByText("edition 1 internalDisplayPrice")).toBeTruthy()
-      expect(queryByText("edition 2 cm")).toBeTruthy()
+      expect(screen.queryByText("parent price")).toBeFalsy()
+      expect(screen.queryByText("parent internalDisplayPrice")).toBeFalsy()
+      expect(screen.queryByText("edition 2 price")).toBeFalsy()
+      expect(screen.queryByText("parent in")).toBeFalsy()
+      expect(screen.queryByText("edition 1 internalDisplayPrice")).toBeTruthy()
+      expect(screen.queryByText("edition 2 cm")).toBeTruthy()
     })
 
     it("should only display editions set price if available and not parent price", async () => {
-      const { queryByText } = await renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           price: "parent price",
           internalDisplayPrice: null,
@@ -113,16 +114,16 @@ describe("ArtworkContent", () => {
         }),
       })
 
-      expect(queryByText("parent price")).toBeFalsy()
-      expect(queryByText("edition 1 price")).toBeTruthy()
-      expect(queryByText("edition 2 price")).toBeTruthy()
+      expect(screen.queryByText("parent price")).toBeFalsy()
+      expect(screen.queryByText("edition 1 price")).toBeTruthy()
+      expect(screen.queryByText("edition 2 price")).toBeTruthy()
     })
   })
 
   describe("show/hide price based on presentation mode settings", () => {
     // FIXME: Look at flaky test
-    xit("should not hide the price if the Presantation Mode = OFF and Hide Price switch = OFF", async () => {
-      const { queryByText } = await renderWithRelay({
+    it("should not hide the price if the Presantation Mode = OFF and Hide Price switch = OFF", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           price: "5000$",
           internalDisplayPrice: null,
@@ -137,11 +138,11 @@ describe("ArtworkContent", () => {
         },
       })
 
-      expect(queryByText("5000$")).toBeTruthy()
+      expect(screen.queryByText("5000$")).toBeTruthy()
     })
 
     it("should not hide the price if the Presantation Mode = ON and Hide Price switch = OFF", async () => {
-      const { queryByText } = await renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           price: "5000$",
           internalDisplayPrice: null,
@@ -156,12 +157,12 @@ describe("ArtworkContent", () => {
         },
       })
 
-      expect(queryByText("5000$")).toBeTruthy()
+      expect(screen.queryByText("5000$")).toBeTruthy()
     })
 
     describe("For sold works", () => {
       it("should hide the price if the 'Presantation Mode' = ON and 'Hide Price For Sold Works' switch = ON", async () => {
-        const { queryByText } = await renderWithRelay({
+        await renderWithRelay({
           Artwork: () => ({
             price: "5000$",
             availability: "sold",
@@ -178,11 +179,11 @@ describe("ArtworkContent", () => {
           },
         })
 
-        expect(queryByText("5000$")).toBeFalsy()
+        expect(screen.queryByText("5000$")).toBeFalsy()
       })
 
       it("should NOT hide the price if the 'Presantation Mode' = ON and 'Hide Price For Sold Works' switch = OFF", async () => {
-        const { queryByText } = await renderWithRelay({
+        await renderWithRelay({
           Artwork: () => ({
             price: "5000$",
             availability: "sold",
@@ -199,14 +200,13 @@ describe("ArtworkContent", () => {
           },
         })
 
-        expect(queryByText("5000$")).toBeTruthy()
+        expect(screen.queryByText("5000$")).toBeTruthy()
       })
     })
 
     describe("For Confidential Notes", () => {
-      // FIXME: Look at flaky test
-      xit("should not hide the Confidential Notes if the Presantation Mode = OFF and Hide Confidential Notes = OFF", async () => {
-        const { queryByText } = await renderWithRelay({
+      it("should not hide the Confidential Notes if the Presantation Mode = OFF and Hide Confidential Notes = OFF", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             confidentialNotes: "This is love",
           }),
@@ -219,11 +219,11 @@ describe("ArtworkContent", () => {
           },
         })
 
-        expect(queryByText("This is love")).toBeTruthy()
+        expect(screen.queryByText("This is love")).toBeTruthy()
       })
 
       it("should not hide the Confidential Notes if the Presantation Mode = OFF and Hide Confidential Notes = OFF", async () => {
-        const { queryByText } = await renderWithRelay({
+        await renderWithRelay({
           Artwork: () => ({
             confidentialNotes: "This is love",
           }),
@@ -236,7 +236,7 @@ describe("ArtworkContent", () => {
           },
         })
 
-        expect(queryByText("This is love")).toBeFalsy()
+        expect(screen.queryByText("This is love")).toBeFalsy()
       })
     })
   })

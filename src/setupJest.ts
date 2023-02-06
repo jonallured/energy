@@ -170,3 +170,7 @@ jest.mock("react-native-gesture-handler", () => {
 jest.mock("app/system/wrappers/CachedImage", () => ({
   CachedImage: jest.requireActual("react-native").Image,
 }))
+
+jest.mock("app/system/hooks/useSystemIsDoneBooting", () => ({
+  useSystemIsDoneBooting: () => true,
+}))

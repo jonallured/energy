@@ -10,7 +10,7 @@ const typescriptOnly = (file: string) => file.includes(".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
 
 // Modified or Created can be treated the same a lot of the time
-const getCreatedFileNames = (createdFiles: string[]) => createdFiles.filter(filesOnly)
+const getFileNames = (createdFiles: string[]) => createdFiles.filter(filesOnly)
 
 const testOnlyFilter = (filename: string) => filename.includes(".tests") && typescriptOnly(filename)
 
@@ -19,7 +19,7 @@ const testOnlyFilter = (filename: string) => filename.includes(".tests") && type
  */
 // We are trying to migrate away from moment towards luxon
 const preventUsingMoment = () => {
-  const newMomentImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
+  const newMomentImports = getFileNames(danger.git.created_files).filter((filename) => {
     const content = fs.readFileSync(filename).toString()
     return content.includes('from "moment"') || content.includes('from "moment-timezone"')
   })
@@ -35,7 +35,7 @@ See [docs](https://moment.github.io/luxon/api-docs/index.html).
 
 // We are trying to migrate away from test-renderer towards @testing-library/react-native
 const preventUsingTestRenderer = () => {
-  const newTRImports = getCreatedFileNames(danger.git.created_files)
+  const newTRImports = getFileNames(danger.git.created_files)
     .filter(testOnlyFilter)
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
@@ -56,7 +56,7 @@ See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c
 }
 
 function preventDefaultLazyQueryLoaderImport() {
-  const newQueryLoaderImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
+  const newQueryLoaderImports = getFileNames(danger.git.created_files).filter((filename) => {
     const content = fs.readFileSync(filename).toString()
     return content.includes("useLazyLoadQuery")
   })
@@ -67,7 +67,7 @@ function preventDefaultLazyQueryLoaderImport() {
 }
 
 function preventDefaultImageImport() {
-  const newQueryLoaderImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
+  const newQueryLoaderImports = getFileNames(danger.git.created_files).filter((filename) => {
     const content = fs.readFileSync(filename).toString()
     return content.includes("<Image ")
   })
@@ -109,6 +109,15 @@ const verifyRemainingDevWork = () => {
   }
 }
 
+export const warnAboutMigrationsIfChangingModels = () => {
+  const files = danger.git.modified_files.filter((fileName) => fileName?.includes("Model"))
+  if (files.length > 0) {
+    warn(
+      `It looks like you've modified a store model. If necessary, please be sure to add a migration to \`migrations.ts/\`. See the [migration-docs](https://github.com/artsy/eigen/blob/main/docs/adding_state_migrations.md) for more info.`
+    )
+  }
+}
+
 // Force the usage of WebPs
 const IMAGE_EXTENSIONS_TO_AVOID = ["png", "jpg", "jpeg"]
 const IMAGE_EXTENSIONS = [...IMAGE_EXTENSIONS_TO_AVOID, "webp"]
@@ -130,7 +139,7 @@ export const useWebPs = (fileNames: string[]) => {
   }
 }
 ;(async function () {
-  const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
+  const newCreatedFileNames = getFileNames(danger.git.created_files)
 
   preventUsingMoment()
   preventUsingTestRenderer()
@@ -138,4 +147,5 @@ export const useWebPs = (fileNames: string[]) => {
   preventDefaultImageImport()
   verifyRemainingDevWork()
   useWebPs(newCreatedFileNames)
+  warnAboutMigrationsIfChangingModels()
 })()

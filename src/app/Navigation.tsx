@@ -7,7 +7,6 @@ import {
   useNavigation,
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { useStoreRehydrated } from "easy-peasy"
 import { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import SplashScreen from "react-native-splash-screen"
@@ -23,6 +22,7 @@ import { SettingsNavigation, SettingsNavigationScreens } from "app/screens/Setti
 import { ShowsNavigation, ShowsNavigationScreens } from "app/screens/Shows/navigation"
 import { useErrorReporting } from "app/system/hooks/useErrorReporting"
 import { useNetworkStatusListener } from "app/system/hooks/useNetworkStatusListener"
+import { useSystemIsDoneBooting } from "app/system/hooks/useSystemIsDoneBooting"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
@@ -45,7 +45,7 @@ type Screens = {
 export const StackNav = createStackNavigator<NavigationScreens>()
 
 export const Main = () => {
-  const isRehydrated = useStoreRehydrated()
+  const isDoneBooting = useSystemIsDoneBooting()
   const isOnline = useIsOnline()
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
@@ -62,12 +62,12 @@ export const Main = () => {
       SplashScreen.hide()
     }
 
-    if (isRehydrated) {
+    if (isDoneBooting) {
       workAfterRehydrate()
     }
-  }, [isRehydrated])
+  }, [isDoneBooting])
 
-  if (!isRehydrated) {
+  if (!isDoneBooting) {
     return null
   }
 

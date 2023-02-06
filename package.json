@@ -159,6 +159,7 @@
     "prettier": "2.8.2",
     "react-test-renderer": "18.2.0",
     "relay-compiler": "^14.1.0",
+    "rn-flipper-async-storage-advanced": "^1.0.4",
     "sha1": "^1.1.1",
     "sha1-sum": "^1.0.0",
     "typescript": "^4.9.4"
