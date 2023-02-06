@@ -24,7 +24,7 @@ export function migrateState<State extends { version: number }>({
       throw new Error("[migrateState]: No migrator found for app version " + nextVersion)
     }
 
-    if (__DEV__) {
+    if (__DEV__ && !__TEST__) {
       console.log(
         `[migrateState]: Migrating from version ${state.version} to ${nextVersion}. Current state:`,
         current(state)

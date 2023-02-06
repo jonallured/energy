@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { AlbumDocuments } from "app/screens/Albums/AlbumTabs/AlbumDocuments"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
@@ -11,8 +11,10 @@ describe("AlbumDocuments", () => {
   })
 
   it("renders correctly", async () => {
-    await renderWithRelay()
-    expect(screen.UNSAFE_getAllByType(DocumentGridItem)).toHaveLength(1)
+    renderWithRelay()
+    await waitFor(() => {
+      expect(screen.UNSAFE_getAllByType(DocumentGridItem)).toHaveLength(1)
+    })
   })
 
   it("removes documents from the album if they are deleted", async () => {
@@ -29,7 +31,7 @@ describe("AlbumDocuments", () => {
       },
     })
 
-    await renderWithRelay({
+    renderWithRelay({
       PartnerDocumentConnection: () => ({
         edges: [
           {
@@ -46,7 +48,9 @@ describe("AlbumDocuments", () => {
       }),
     })
 
-    expect(screen.UNSAFE_getAllByType(DocumentGridItem)).toHaveLength(2)
+    await waitFor(() => {
+      expect(screen.UNSAFE_getAllByType(DocumentGridItem)).toHaveLength(2)
+    })
 
     await flushPromiseQueue()
 

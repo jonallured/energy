@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 import { ShowInstalls } from "./ShowInstalls"
@@ -13,14 +14,18 @@ describe("ShowInstalls", () => {
   })
 
   it("renders ListEmptyComponent", async () => {
-    const { getByText } = await renderWithRelay(mockPropsEmptyList)
-    expect(getByText("No show installs shots to display")).toBeTruthy()
+    const { getByText } = renderWithRelay(mockPropsEmptyList)
+    await waitFor(() => {
+      expect(getByText("No show installs shots to display")).toBeTruthy()
+    })
   })
 
   it("renders the list of installs", async () => {
-    const { getByTestId } = await renderWithRelay(mockProps)
-    images.forEach((image) => {
-      expect(getByTestId(image.resized.url)).toBeTruthy()
+    const { getByTestId } = renderWithRelay(mockProps)
+    await waitFor(() => {
+      images.forEach((image) => {
+        expect(getByTestId(image.resized.url)).toBeTruthy()
+      })
     })
   })
 })

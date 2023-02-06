@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { range } from "lodash"
 import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
@@ -13,8 +14,10 @@ describe("Shows", () => {
   })
 
   it("only renders the list of shows with artworkCount value more than 0", async () => {
-    const { queryAllByText } = await renderWithRelay(mockProps)
-    expect(queryAllByText("Gustav Klimts shows")).toHaveLength(9)
+    const { queryAllByText } = renderWithRelay(mockProps)
+    await waitFor(() => {
+      expect(queryAllByText("Gustav Klimts shows")).toHaveLength(9)
+    })
   })
 })
 

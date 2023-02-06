@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { graphql } from "react-relay"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
@@ -16,7 +17,7 @@ describe("ArtworkGridItem", () => {
   })
 
   it("should NOT HIDE the availabilty status dot if the 'Presantation Mode = OFF' ", async () => {
-    const { queryByTestId } = await renderWithRelay({
+    const { queryByTestId } = renderWithRelay({
       Artwork: () => ({
         availability: "for sale",
       }),
@@ -29,11 +30,13 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    expect(queryByTestId("availability-dot")).toBeTruthy()
+    await waitFor(() => {
+      expect(queryByTestId("availability-dot")).toBeTruthy()
+    })
   })
 
   it("should NOT HIDE the availabilty status dot if the 'Presantation Mode = ON' and 'Hide Works Availability' switch = OFF", async () => {
-    const { queryByTestId } = await renderWithRelay({
+    const { queryByTestId } = renderWithRelay({
       Artwork: () => ({
         availability: "for sale",
       }),
@@ -46,11 +49,13 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    expect(queryByTestId("availability-dot")).toBeTruthy()
+    await waitFor(() => {
+      expect(queryByTestId("availability-dot")).toBeTruthy()
+    })
   })
 
   it("should HIDE the availabilty status dot if the 'Presantation Mode = ON' and 'Hide Works Availability' switch = ON", async () => {
-    const { queryByTestId } = await renderWithRelay({
+    const { queryByTestId } = renderWithRelay({
       Artwork: () => ({
         availability: "for sale",
       }),
@@ -63,6 +68,8 @@ describe("ArtworkGridItem", () => {
       },
     })
 
-    expect(queryByTestId("availability-dot")).toBeFalsy()
+    await waitFor(() => {
+      expect(queryByTestId("availability-dot")).toBeFalsy()
+    })
   })
 })

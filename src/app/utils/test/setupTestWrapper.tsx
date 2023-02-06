@@ -37,7 +37,7 @@ export interface SetupTestWrapperProps<T extends OperationType> {
  * })
  *
  * it('works', () => {
- *   const { getByText } = await renderWithRelay()
+ *   const { getByText } = renderWithRelay()
  *   expect(getByText('name')).toBeTruthy()
  * })
  *
@@ -65,7 +65,7 @@ export interface SetupTestWrapperProps<T extends OperationType> {
  * })
  *
  * it('works', () => {
- *   const { getByText } = await renderWithRelay({
+ *   const { getByText } = renderWithRelay({
  *     Me: () => ({ name: 'Mock Name' })
  *   })
  *
@@ -78,9 +78,9 @@ export const setupTestWrapper = <T extends OperationType>({
   query,
   variables = {},
 }: SetupTestWrapperProps<T>) => {
-  const renderWithRelay = async (
+  const renderWithRelay = (
     mockResolvers: MockResolvers = {}
-  ): Promise<RenderResult & { mockEnvironment: RelayMockEnvironment }> => {
+  ): RenderResult & { mockEnvironment: RelayMockEnvironment } => {
     const mockEnvironment = createMockEnvironment()
 
     const TestRenderer = () => {
@@ -108,7 +108,7 @@ export const setupTestWrapper = <T extends OperationType>({
 
     const view = renderWithWrappers(<TestRenderer />, mockEnvironment)
 
-    await mockEnvironmentPayload({
+    mockEnvironmentPayload({
       mockEnvironment,
       mockResolvers,
       preloaded,

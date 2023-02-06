@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { range } from "lodash"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { Artists } from "app/screens/Artists/Artists"
@@ -12,8 +13,10 @@ describe("Artists", () => {
   })
 
   it("renders the list of artists", async () => {
-    const { queryAllByText } = await renderWithRelay(mockProps)
-    expect(queryAllByText("Gustav Klimt")).toHaveLength(10)
+    const { queryAllByText } = renderWithRelay(mockProps)
+    await waitFor(() => {
+      expect(queryAllByText("Gustav Klimt")).toHaveLength(10)
+    })
   })
 })
 

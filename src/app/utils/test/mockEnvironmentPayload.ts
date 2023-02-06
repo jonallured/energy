@@ -3,41 +3,36 @@ import { takeRight } from "lodash"
 import { MockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { SetupTestWrapperProps } from "app/utils/test/setupTestWrapper"
-import { flushPromiseQueue } from "./flushPromiseQueue"
 
 interface MockEnvironmentPayloadProps extends Omit<SetupTestWrapperProps<any>, "Component"> {
   mockEnvironment: MockEnvironment
   mockResolvers: MockResolvers
 }
 
-export async function mockEnvironmentPayload({
+export function mockEnvironmentPayload({
   preloaded,
   mockEnvironment,
   query,
   variables,
   mockResolvers,
 }: MockEnvironmentPayloadProps) {
-  act(() => {
-    const resolve = preloaded
-      ? mockEnvironment.mock.queueOperationResolver
-      : mockEnvironment.mock.resolveMostRecentOperation
+  const resolve = preloaded
+    ? mockEnvironment.mock.queueOperationResolver
+    : mockEnvironment.mock.resolveMostRecentOperation
 
-    if (preloaded) {
-      if (!query) {
-        throw new Error("A `query` is required when using `preloaded` prop.")
-      }
-      mockEnvironment.mock.queuePendingOperation(query, variables)
+  if (preloaded) {
+    if (!query) {
+      throw new Error("A `query` is required when using `preloaded` prop.")
     }
+    mockEnvironment.mock.queuePendingOperation(query, variables)
+  }
 
-    resolve((operation: any) => {
-      return MockPayloadGenerator.generate(operation, {
-        ...defaultMockResolvers,
-        ...mockResolvers,
-      })
+  resolve((operation: any) => {
+    return MockPayloadGenerator.generate(operation, {
+      ...defaultMockResolvers,
+      ...mockResolvers,
     })
   })
-
-  await flushPromiseQueue()
 }
 
 const counters: { [path: string]: number } = {}

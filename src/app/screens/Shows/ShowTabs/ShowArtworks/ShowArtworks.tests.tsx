@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { range } from "lodash"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
@@ -14,8 +15,10 @@ describe("ShowArtworks", () => {
   })
 
   it("renders the list of works", async () => {
-    const { getByTestId } = await renderWithRelay(mockProps)
-    expect(getByTestId("show-artwork-list").props.data).toHaveLength(10)
+    const { getByTestId } = renderWithRelay(mockProps)
+    await waitFor(() => {
+      expect(getByTestId("show-artwork-list").props.data).toHaveLength(10)
+    })
   })
 })
 

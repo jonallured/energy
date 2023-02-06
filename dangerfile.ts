@@ -1,7 +1,5 @@
 import * as fs from "fs"
 import { danger, fail, warn } from "danger"
-// TypeScript thinks we're in React Native,
-// so the node API gives us errors:
 
 /**
  * Helpers
@@ -110,10 +108,12 @@ const verifyRemainingDevWork = () => {
 }
 
 export const warnAboutMigrationsIfChangingModels = () => {
-  const files = danger.git.modified_files.filter((fileName) => fileName?.includes("Model"))
+  const files = danger.git.modified_files.filter(
+    (fileName) => fileName?.includes("Model") && !fileName?.includes(".tests.")
+  )
   if (files.length > 0) {
     warn(
-      `It looks like you've modified a store model. If necessary, please be sure to add a migration to \`migrations.ts/\`. See the [migration-docs](https://github.com/artsy/eigen/blob/main/docs/adding_state_migrations.md) for more info.`
+      `It looks like you've modified a store model. If necessary, please be sure to add a migration to \`migrations.ts\`. See the [migration-docs](https://github.com/artsy/eigen/blob/main/docs/adding_state_migrations.md) for more info.`
     )
   }
 }

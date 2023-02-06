@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { range } from "lodash"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistArtworks } from "app/screens/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
@@ -15,24 +16,28 @@ describe("ArtistArtworks", () => {
   })
 
   it("renders the list of works", async () => {
-    const { getByTestId } = await renderWithRelay(mockProps)
-    expect(getByTestId("artist-artwork-list").props.data).toHaveLength(10)
+    const { getByTestId } = renderWithRelay(mockProps)
+    await waitFor(() => {
+      expect(getByTestId("artist-artwork-list").props.data).toHaveLength(10)
+    })
   })
 
   describe("show/hide artworks based on presentation mode settings", () => {
     it("should NOT HIDE the artworks if 'Presantation Mode' = OFF and 'Hide Work sNot For Sale' switch = OFF", async () => {
-      const { getByTestId } = await renderWithRelay(newMockProps)
+      const { getByTestId } = renderWithRelay(newMockProps)
       __globalStoreTestUtils__?.injectState({
         presentationMode: {
           isPresentationModeEnabled: false,
           isHideWorksNotForSaleEnabled: false,
         },
       })
-      expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
+      await waitFor(() => {
+        expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
+      })
     })
 
     it("should NOT HIDE the artworks if 'Presantation Mode' = OFF", async () => {
-      const { getByTestId } = await renderWithRelay(newMockProps)
+      const { getByTestId } = renderWithRelay(newMockProps)
       __globalStoreTestUtils__?.injectState({
         presentationMode: {
           isPresentationModeEnabled: false,
@@ -40,12 +45,14 @@ describe("ArtistArtworks", () => {
           isHideUnpublishedWorksEnabled: true,
         },
       })
-      expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
+      await waitFor(() => {
+        expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
+      })
     })
 
     describe("if Presentation mode is ON ", () => {
       it("should NOT HIDE the artworks if 'Hide Works Not For Sale' switch = OFF and 'Hide Unpublished Works' switch = OFF ", async () => {
-        const { queryByText } = await renderWithRelay(newMockProps)
+        const { queryByText } = renderWithRelay(newMockProps)
         __globalStoreTestUtils__?.injectState({
           presentationMode: {
             isPresentationModeEnabled: true,
@@ -53,15 +60,17 @@ describe("ArtistArtworks", () => {
             isHideUnpublishedWorksEnabled: false,
           },
         })
-        expect(queryByText("Date of not for sale and unpublished artwork")).toBeTruthy()
-        expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
-        expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
-        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+        await waitFor(() => {
+          expect(queryByText("Date of not for sale and unpublished artwork")).toBeTruthy()
+          expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
+          expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
+          expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+        })
       })
     })
 
     it("should HIDE the artworks not for sale if 'Hide Works Not For Sale' switch = ON ", async () => {
-      const { queryByText } = await renderWithRelay(newMockProps)
+      const { queryByText } = renderWithRelay(newMockProps)
       __globalStoreTestUtils__?.injectState({
         presentationMode: {
           isPresentationModeEnabled: true,
@@ -69,14 +78,16 @@ describe("ArtistArtworks", () => {
           isHideUnpublishedWorksEnabled: false,
         },
       })
-      expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
-      expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
-      expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
-      expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+      await waitFor(() => {
+        expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
+        expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
+        expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
+        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+      })
     })
 
     it("should HIDE the unpublished artworks if 'Hide Unpublished Works' switch = ON ", async () => {
-      const { queryByText } = await renderWithRelay(newMockProps)
+      const { queryByText } = renderWithRelay(newMockProps)
       __globalStoreTestUtils__?.injectState({
         presentationMode: {
           isPresentationModeEnabled: true,
@@ -84,14 +95,16 @@ describe("ArtistArtworks", () => {
           isHideUnpublishedWorksEnabled: true,
         },
       })
-      expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
-      expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
-      expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
-      expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+      await waitFor(() => {
+        expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
+        expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
+        expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
+        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+      })
     })
 
     it("should HIDE artworks not for sale and unpublished artworks if 'Hide Works Not For Sale' switch = ON and 'Hide Unpublished Works' switch = ON ", async () => {
-      const { queryByText } = await renderWithRelay(newMockProps)
+      const { queryByText } = renderWithRelay(newMockProps)
       __globalStoreTestUtils__?.injectState({
         presentationMode: {
           isPresentationModeEnabled: true,
@@ -99,10 +112,12 @@ describe("ArtistArtworks", () => {
           isHideWorksNotForSaleEnabled: true,
         },
       })
-      expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
-      expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
-      expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
-      expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+      await waitFor(() => {
+        expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
+        expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
+        expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
+        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+      })
     })
   })
 })

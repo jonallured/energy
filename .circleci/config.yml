@@ -69,26 +69,6 @@ commands:
       - run:
           name: Run Relay compiler
           command: yarn relay
-  test-js:
-    steps:
-      - restore_cache:
-          keys:
-            - v1-jest-{{ .Branch }}
-      # - run:
-      #     name: Run TypeScript check
-      #     command: yarn type-check
-      # - run:
-      #     name: Run TSLint check
-      #     command: yarn lint
-      - run:
-          name: Run jest tests
-          command: yarn jest --ci --forceExit --runInBand --reporters=default --reporters=jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-      - save_cache:
-          key: v1-jest-{{ .Branch }}
-          paths:
-            - .jest
   install-gems:
     steps:
       - restore_cache:
@@ -211,9 +191,9 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
-      # - run:
-      #     name: Danger
-      #     command: yarn danger ci --verbose
+      - run:
+          name: Danger
+          command: yarn danger ci --verbose
 
   check-if-app-has-been-approved-for-release:
     environment:
@@ -250,7 +230,6 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - test-js
       - run:
           name: Generate app_build manifest
           command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
@@ -263,6 +242,39 @@ jobs:
           paths:
             - .manifests
             - dist
+
+  test-js:
+    parallelism: 4
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+          name: Run Jest tests
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+      - store_artifacts:
+          path: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+
+  type-check:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
 
   build-test-app-ios:
     environment:
@@ -454,6 +466,23 @@ workflows:
                 - main
                 - release
                 - staging
+
+      - test-js:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
+      - type-check:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
       - check-pr:
           filters:
             branches:
@@ -488,6 +517,8 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
+            - test-js
+            - type-check
             - build-test-js
             - horizon/block
       - build-test-app-android:
@@ -499,5 +530,7 @@ workflows:
                 - beta-ios
                 - update-changelog
           requires:
+            - test-js
+            - type-check
             - build-test-js
             - horizon/block
