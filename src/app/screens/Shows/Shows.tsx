@@ -28,7 +28,7 @@ export const Shows = () => {
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
-      contentContainerStyle={{ paddingBottom: space("2") }}
+      contentContainerStyle={{ paddingBottom: space(2) }}
       renderItem={({ item: show }) => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (

@@ -72,7 +72,7 @@ export const Settings = () => {
 
         {isUserDev && (
           <Join separator={<Spacer y={1} />}>
-            <Spacer y="2" />
+            <Spacer y={2} />
             <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
               Folio Design Language
             </Button>
@@ -85,7 +85,7 @@ export const Settings = () => {
           </Join>
         )}
 
-        <Spacer y="2" />
+        <Spacer y={2} />
 
         <Join separator={<Spacer y={1} />}>
           <Touchable

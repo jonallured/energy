@@ -25,9 +25,9 @@ export const Albums = () => {
         data={albums}
         numColumns={isTablet() ? 2 : 1}
         contentContainerStyle={{
-          paddingTop: space("2"),
-          paddingBottom: space("2") + 60,
-          paddingHorizontal: space("2"),
+          paddingTop: space(2),
+          paddingBottom: space(2) + 60,
+          paddingHorizontal: space(2),
         }}
         renderItem={({ item: album }) => (
           <Touchable
@@ -39,14 +39,14 @@ export const Albums = () => {
           </Touchable>
         )}
         keyExtractor={(item) => item?.id}
-        ListEmptyComponent={<ListEmptyComponent mx={0} />}
+        ListEmptyComponent={<ListEmptyComponent />}
       />
       <Flex
         position="absolute"
         bottom={0}
         px={2}
         pt={2}
-        pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}
+        pb={safeAreaInsets.bottom > 0 ? `${safeAreaInsets.bottom}px` : 2}
         width="100%"
       >
         <Button block onPress={() => navigation.navigate("CreateOrEditAlbum", { mode: "create" })}>

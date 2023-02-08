@@ -77,8 +77,8 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
             }
             selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
             style={{
-              marginLeft: i % 2 === 0 ? 0 : space("1"),
-              marginRight: i % 2 === 0 ? space("1") : 0,
+              marginLeft: i % 2 === 0 ? 0 : space(1),
+              marginRight: i % 2 === 0 ? space(1) : 0,
             }}
           />
         )}

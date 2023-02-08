@@ -16,7 +16,7 @@ export const DevMenu = () => {
         <Flex backgroundColor="devpurple" flex={1} />
       </Screen.Background>
       <Screen.Body>
-        <Join separator={<Spacer y="1" />}>
+        <Join separator={<Spacer y={1} />}>
           <Button
             block
             onPress={() => {

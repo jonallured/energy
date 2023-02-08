@@ -10,6 +10,7 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils/extractNodes"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
   const space = useSpace()
@@ -38,8 +39,8 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
     <TabsScrollView>
       <MasonryList
         contentContainerStyle={{
-          marginTop: documents.length ? space("2") : 0,
-          paddingRight: space("2"),
+          marginTop: documents.length ? space(2) : 0,
+          paddingRight: space(2),
         }}
         numColumns={2}
         data={documents}
@@ -61,7 +62,9 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
           />
         )}
         keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
+        ListEmptyComponent={
+          <ListEmptyComponent text="No documents" mx={SCREEN_HORIZONTAL_PADDING} />
+        }
       />
     </TabsScrollView>
   )

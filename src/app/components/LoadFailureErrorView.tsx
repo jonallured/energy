@@ -32,7 +32,7 @@ export const LoadFailureErrorView: React.FC<LoadFailureErrorViewProps & BoxProps
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
       <Text variant="lg-display">Unable to load</Text>
-      <Text variant="sm-display" mb="1">
+      <Text variant="sm-display" mb={1}>
         Please try again
       </Text>
       <Touchable

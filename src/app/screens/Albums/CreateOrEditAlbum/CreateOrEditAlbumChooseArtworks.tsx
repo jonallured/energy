@@ -113,8 +113,8 @@ export const CreateOrEditAlbumChooseArtworks = () => {
                   artwork={artwork}
                   disable
                   style={{
-                    marginLeft: i % 2 === 0 ? 0 : space("1"),
-                    marginRight: i % 2 === 0 ? space("1") : 0,
+                    marginLeft: i % 2 === 0 ? 0 : space(1),
+                    marginRight: i % 2 === 0 ? space(1) : 0,
                   }}
                 />
               )
@@ -125,8 +125,8 @@ export const CreateOrEditAlbumChooseArtworks = () => {
                 onPress={() => selectArtworkHandler(artwork.internalID)}
                 selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
                 style={{
-                  marginLeft: i % 2 === 0 ? 0 : space("1"),
-                  marginRight: i % 2 === 0 ? space("1") : 0,
+                  marginLeft: i % 2 === 0 ? 0 : space(1),
+                  marginRight: i % 2 === 0 ? space(1) : 0,
                 }}
               />
             )

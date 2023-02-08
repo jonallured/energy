@@ -115,7 +115,7 @@ export const OfflineModeSettings = () => {
               )}
             </Button>
 
-            <Spacer y="1" />
+            <Spacer y={1} />
 
             {lastSync && (
               <Text color="onBackgroundMedium">

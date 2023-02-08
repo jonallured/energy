@@ -12,7 +12,7 @@ export const LargeTitle = () => {
   }
 
   return (
-    <Flex height={LARGE_TITLE_HEIGHT} pl="2" justifyContent="center" alignSelf="flex-start">
+    <Flex height={LARGE_TITLE_HEIGHT} pl={2} justifyContent="center" alignSelf="flex-start">
       <Text variant="lg-display" numberOfLines={2}>
         {title ?? ""}
       </Text>
@@ -22,7 +22,7 @@ export const LargeTitle = () => {
 
 export const PlaceholderLargeTitle = () => {
   return (
-    <Flex height={LARGE_TITLE_HEIGHT} pl="2" justifyContent="center" alignSelf="flex-start">
+    <Flex height={LARGE_TITLE_HEIGHT} pl={2} justifyContent="center" alignSelf="flex-start">
       <Skeleton>
         <SkeletonText variant="lg-display" numberOfLines={2}>
           Loading Name

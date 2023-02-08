@@ -115,7 +115,7 @@ export const LoginScreen = () => {
         <Text variant="md" mt={0.5}>
           With Your Artsy Partner Account
         </Text>
-        <Spacer y="4" />
+        <Spacer y={4} />
         <Input
           ref={emailInputRef}
           autoCapitalize="none"
@@ -197,7 +197,7 @@ export const LoginScreen = () => {
             />
           </>
         )}
-        <Spacer y="4" />
+        <Spacer y={4} />
         <Button
           onPress={() => handleSubmit()}
           block
@@ -209,14 +209,14 @@ export const LoginScreen = () => {
         >
           Log in
         </Button>
-        <Spacer y="2" />
+        <Spacer y={2} />
         <Text variant="xs" pb={1} textAlign="center" color="onBackgroundMedium">
           Once you log in, Artsy Folio will begin downloading your artworks. We recommend using a
           stable Wifi connection.
         </Text>
 
         <CloseToTheBottomOfScrollView>
-          <Flex pb={insets.bottom > 0 ? insets.bottom : 2} alignItems="center">
+          <Flex pb={insets.bottom > 0 ? `${insets.bottom}px` : 2} alignItems="center">
             <Text>Looking for Artsy Mobile?</Text>
             <TouchableOpacity onPress={handleOpenArtsyMobile}>
               <Text underline>Tap here to open</Text>
@@ -236,7 +236,7 @@ const CloseToTheBottomOfScrollView = ({ children }: { children: React.ReactNode 
   const inner = (
     <>
       {children}
-      <Spacer y="2" />
+      <Spacer y={2} />
     </>
   )
 

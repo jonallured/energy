@@ -39,7 +39,7 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
       <MasonryList
         testID="show-installs-list"
         contentContainerStyle={{
-          marginTop: installs.length ? space("2") : 0,
+          marginTop: installs.length ? space(2) : 0,
           paddingRight: space(2),
         }}
         numColumns={2}

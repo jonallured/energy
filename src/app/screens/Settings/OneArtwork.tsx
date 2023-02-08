@@ -15,7 +15,7 @@ export const OneArtwork = () => {
           value={value}
           onChangeText={(e) => GlobalStore.actions.email.saveOneArtworkSubject(e)}
         />
-        <Text mt="1" color="onBackgroundMedium">
+        <Text mt={1} color="onBackgroundMedium">
           $title and $artist will be replaced by the artwork title and artist
         </Text>
       </Screen.Body>

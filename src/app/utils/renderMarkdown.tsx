@@ -170,7 +170,7 @@ export function defaultRules({
 
         const variant = map[node.level] || "md"
         return (
-          <Text mb="1" key={state.key} variant={variant}>
+          <Text mb={1} key={state.key} variant={variant}>
             {output(node.content, state)}
           </Text>
         )

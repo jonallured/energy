@@ -94,7 +94,7 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
           }}
         >
           <Separator />
-          <Flex alignItems="center" mx="2">
+          <Flex alignItems="center" mx={2}>
             {props.modalRows}
             <Spacer y={4} />
             {props.extraButtons}
@@ -126,7 +126,7 @@ export const BottomSheetModalRow = ({
         <Flex width={25} alignItems="center" justifyContent="center">
           {Icon}
         </Flex>
-        <Flex justifyContent="center" flex={1} ml="1">
+        <Flex justifyContent="center" flex={1} ml={1}>
           <Text>{label}</Text>
           {subtitle && (
             <Flex flexDirection="row" alignItems="center">

@@ -39,8 +39,8 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
           <ArtworkGridItem
             artwork={artwork}
             style={{
-              marginLeft: i % numColumns === 0 ? 0 : space("1"),
-              marginRight: i % numColumns === numColumns - 1 ? space("1") : 0,
+              marginLeft: i % numColumns === 0 ? 0 : space(1),
+              marginRight: i % numColumns === numColumns - 1 ? space(1) : 0,
             }}
           />
         )}

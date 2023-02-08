@@ -1,4 +1,4 @@
-import { Flex, FlexProps, SpacingUnit, useSpace } from "@artsy/palette-mobile"
+import { Flex, FlexProps, SpacingUnitDSValueNumber, useSpace } from "@artsy/palette-mobile"
 import { getChildrenByType, removeChildrenByType } from "react-nanny"
 import {
   KeyboardAvoidingView,
@@ -20,7 +20,7 @@ import {
 import { useAnimatedHeaderScrolling } from "../hooks"
 import { Wrap } from "app/components/Wrap"
 
-export const SCREEN_HORIZONTAL_PADDING: SpacingUnit = "2"
+export const SCREEN_HORIZONTAL_PADDING: SpacingUnitDSValueNumber = 2
 
 interface BodyProps extends Pick<FlexProps, "backgroundColor"> {
   children?: React.ReactNode
@@ -63,7 +63,7 @@ export const Body = ({
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <ScrollView
               keyboardShouldPersistTaps="handled"
-              contentInset={{ bottom: bottomViewHeight + space("2") }}
+              contentInset={{ bottom: bottomViewHeight + space(2) }}
               scrollEventThrottle={0.0000000001}
               onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
                 scrollOffsetY.value = event.nativeEvent.contentOffset.y

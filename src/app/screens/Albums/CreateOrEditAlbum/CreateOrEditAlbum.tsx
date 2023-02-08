@@ -213,8 +213,8 @@ export const CreateOrEditAlbum = () => {
                 <ArtworkGridItem
                   artwork={artwork}
                   style={{
-                    marginLeft: i % 2 === 0 ? 0 : space("1"),
-                    marginRight: i % 2 === 0 ? space("1") : 0,
+                    marginLeft: i % 2 === 0 ? 0 : space(1),
+                    marginRight: i % 2 === 0 ? space(1) : 0,
                   }}
                 />
               )
@@ -225,8 +225,8 @@ export const CreateOrEditAlbum = () => {
                 onPress={() => selectArtworkHandler(artwork.internalID)}
                 selectedToRemove={selectedArtworksToRemove.includes(artwork.internalID)}
                 style={{
-                  marginLeft: i % 2 === 0 ? 0 : space("1"),
-                  marginRight: i % 2 === 0 ? space("1") : 0,
+                  marginLeft: i % 2 === 0 ? 0 : space(1),
+                  marginRight: i % 2 === 0 ? space(1) : 0,
                 }}
               />
             )

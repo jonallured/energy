@@ -24,7 +24,7 @@ export const FloatingHeader = ({ onBack, rightElements }: FloatingHeaderProps) =
         left={0}
         right={0}
         height={NAVBAR_HEIGHT}
-        px={10}
+        px={1}
         flexDirection="row"
         alignItems="center"
       >

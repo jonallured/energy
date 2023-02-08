@@ -87,13 +87,13 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
                       })
                 }
                 selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
-                pl={i % numColumns === 0 ? 0 : 1}
-                pr={i % numColumns === numColumns - 1 ? 0 : 1}
+                pl={i % numColumns === 0 ? undefined : 1}
+                pr={i % numColumns === numColumns - 1 ? undefined : 1}
               />
             )
           }}
           keyExtractor={(item) => item.internalID}
-          ListEmptyComponent={<ListEmptyComponent text="No artworks" mx={0} />}
+          ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
         />
       </TabsScrollView>
     </>

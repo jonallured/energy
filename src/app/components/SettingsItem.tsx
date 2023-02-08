@@ -10,7 +10,7 @@ interface SettingsItemProps {
 
 const SettingsItemRoot = ({ title, subtitle, children }: SettingsItemProps) => (
   <>
-    <Spacer y="2" />
+    <Spacer y={2} />
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
       <Text>{title}</Text>
       {children}
@@ -20,7 +20,7 @@ const SettingsItemRoot = ({ title, subtitle, children }: SettingsItemProps) => (
         {subtitle}
       </Text>
     )}
-    <Spacer y="2" />
+    <Spacer y={2} />
     <Screen.FullWidthItem>
       <Separator />
     </Screen.FullWidthItem>

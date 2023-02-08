@@ -99,14 +99,14 @@ export const AddItemsToAlbum = () => {
       <Screen.Header title="Add to Album" />
       <Screen.Body fullwidth>
         <FlatList
-          contentContainerStyle={{ paddingHorizontal: space("2") }}
+          contentContainerStyle={{ paddingHorizontal: space(2) }}
           data={albums}
           keyExtractor={(item) => item?.id}
           renderItem={({ item: album }) => {
             return (
               <Flex key={album.id}>
                 <Touchable onPress={() => selectAlbumHandler(album.id)}>
-                  <Flex mb={3} mt={1}>
+                  <Flex mb={4} mt={1}>
                     <AlbumListItem album={album} />
                   </Flex>
                   {selectedAlbumIds.includes(album.id) && (

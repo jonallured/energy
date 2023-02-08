@@ -35,8 +35,8 @@ export const BottomView = ({ children }: { children: React.ReactNode }) => {
       />
       <Flex
         px={SCREEN_HORIZONTAL_PADDING}
-        pt="1"
-        pb={keyboardShowing ? "1" : undefined}
+        pt={1}
+        pb={keyboardShowing ? 1 : undefined}
         backgroundColor="background"
       >
         {children}

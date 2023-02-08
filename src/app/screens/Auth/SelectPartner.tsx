@@ -89,7 +89,7 @@ const SelectPartner = () => {
             {partner!.name}
           </Button>
         )}
-        ItemSeparatorComponent={() => <Spacer mt={2} />}
+        ItemSeparatorComponent={() => <Spacer y={2} />}
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={

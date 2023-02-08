@@ -22,7 +22,7 @@ export const ImageModal = ({ isModalVisible, setIsModalVisible, uri }: ImageModa
       animationType="fade"
       presentationStyle="fullScreen"
     >
-      <Flex backgroundColor="background" flex={1} pt={insets.top}>
+      <Flex backgroundColor="background" flex={1} pt={`${insets.top}px`}>
         <ReactNativeZoomableView maxZoom={2}>
           <CachedImage
             uri={uri}
@@ -32,7 +32,7 @@ export const ImageModal = ({ isModalVisible, setIsModalVisible, uri }: ImageModa
             fadeInOnLoad={false}
           />
         </ReactNativeZoomableView>
-        <Flex position="absolute" pt={insets.top + 8} left={-8} px={2}>
+        <Flex position="absolute" pt={`${insets.top + 8}px`} left={-8} px={2}>
           <BackButton showX onPress={() => setIsModalVisible(false)} />
         </Flex>
       </Flex>

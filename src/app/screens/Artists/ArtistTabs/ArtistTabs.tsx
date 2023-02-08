@@ -102,7 +102,7 @@ export const ArtistTabs = () => {
           px={2}
           pt={1}
           backgroundColor="background"
-          pb={safeAreaInsets.bottom > 0 ? safeAreaInsets.bottom : 2}
+          pb={safeAreaInsets.bottom > 0 ? `${safeAreaInsets.bottom}px` : 2}
           width="100%"
         >
           <Text variant="xs" color="primary" mb={1} textAlign="center">

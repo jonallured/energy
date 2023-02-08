@@ -40,7 +40,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
       heading: {
         react: (node, output, state) => {
           return (
-            <Text mb="1" key={state.key} variant="sm">
+            <Text mb={1} key={state.key} variant="sm">
               {output(node.content, state)}
             </Text>
           )
@@ -159,14 +159,14 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   }
 
   return (
-    <Flex flex={1} mt={safeAreaInsets.top}>
+    <Flex flex={1} mt={`${safeAreaInsets.top}px`}>
       <ImageModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         uri={image?.resized?.url ?? ""}
       />
 
-      <Flex height={imageFlexHeight} px={space(2)}>
+      <Flex height={imageFlexHeight} px={2}>
         {image?.resized?.url ? (
           <Touchable
             style={{ width: "100%", height: "100%" }}
@@ -175,7 +175,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
             <CachedImage
               uri={image?.resized?.url}
               placeholderHeight={image?.resized?.height}
-              style={{ flex: 1, width: "100%", marginBottom: space(3) }}
+              style={{ flex: 1, width: "100%", marginBottom: space(4) }}
               resizeMode="contain"
             />
           </Touchable>
