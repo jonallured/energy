@@ -1,4 +1,4 @@
-import { Button, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
@@ -99,17 +99,21 @@ export const OfflineModeSettings = () => {
           <>
             <Button block onPress={handleSyncButtonPress} disabled={!isOnline || syncProgress > 0}>
               {isSyncing ? (
-                <>
+                <Flex flexDirection="row" alignItems="center" justifyContent="center">
+                  <Text color="onPrimaryHigh">{syncStatus}</Text>
                   <Text color="onPrimaryHigh">
-                    {syncStatus}{" "}
                     <AnimatedEllipsis
                       style={{
                         color: color("onPrimaryHigh"),
+                        position: "relative",
+                        top: 1,
                       }}
-                    />{" "}
+                    />
+                  </Text>
+                  <Text ml="2px" color="onPrimaryHigh">
                     {syncProgress}
                   </Text>
-                </>
+                </Flex>
               ) : (
                 `Start sync${isOnline ? "" : " (Offline)"}`
               )}

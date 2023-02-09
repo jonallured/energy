@@ -82,6 +82,9 @@ const syncResults: SyncResultsData = {
   errors: [],
 }
 
+// Safe timeout for fetches, so that the PromisePool doesn't clog
+const POOL_TIMEOUT = 10000
+
 interface SyncManagerOptions {
   onComplete: () => void
   onProgress: (currentProgress: string | number) => void
@@ -103,6 +106,9 @@ export function initSyncManager({
     throw new Error("[sync] Error initializing sync: `partnerID` is required")
   }
 
+  // Flag for when we enter retry loop. When retrying, don't log status updates.
+  let isRetryingFromFailed = false
+
   const { fetchOrCatch } = initFetchOrCatch({
     relayEnvironment,
     onError: (error) => {
@@ -112,7 +118,10 @@ export function initSyncManager({
 
   const updateStatus = (...messages: any[]) => {
     log(...messages)
-    onStatusChange(messages[0])
+
+    if (!isRetryingFromFailed) {
+      onStatusChange(messages[0])
+    }
   }
 
   const startSync = async () => {
@@ -368,7 +377,8 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing images"))
-      .withConcurrency(50)
+      .withConcurrency(20)
+      .withTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -382,7 +392,8 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing install shots"))
-      .withConcurrency(50)
+      .withConcurrency(20)
+      .withTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -398,6 +409,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
       .withConcurrency(20)
+      .withTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "document",
@@ -412,7 +424,9 @@ export function initSyncManager({
       return
     }
 
-    updateStatus("Retrying sync for errors")
+    updateStatus("Validating sync")
+
+    isRetryingFromFailed = true
 
     const MAX_RETRY_ATTEMPTS = 2
 
@@ -460,11 +474,15 @@ export function initSyncManager({
 
     // Start retry loop
     await retry()
+
+    isRetryingFromFailed = false
   }
 
   const reportProgress = (message: string) => {
     const onProgressCallback: OnProgressCallback<string> = (_, pool) => {
-      onStatusChange(`${message}: ${Math.floor(pool.processedPercentage())}%`)
+      if (!isRetryingFromFailed) {
+        onStatusChange(`${message}: ${Math.floor(pool.processedPercentage())}%`)
+      }
     }
     return onProgressCallback
   }

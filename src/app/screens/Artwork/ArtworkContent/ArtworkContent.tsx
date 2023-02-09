@@ -66,7 +66,6 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   })
 
   const screenHeight = useScreenDimensions().height
-  const imageFlexHeight = screenHeight - BOTTOM_SHEET_HEIGHT - NAVBAR_HEIGHT
   const extraAndroidMargin = Platform.OS === "android" ? 40 : 0
 
   const snapPoints = useMemo(
@@ -159,14 +158,14 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
   }
 
   return (
-    <Flex flex={1} mt={`${safeAreaInsets.top}px`}>
+    <Flex height="100%">
       <ImageModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         uri={image?.resized?.url ?? ""}
       />
 
-      <Flex height={imageFlexHeight} px={2}>
+      <Flex px={2}>
         {image?.resized?.url ? (
           <Touchable
             style={{ width: "100%", height: "100%" }}

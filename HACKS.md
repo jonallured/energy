@@ -36,3 +36,15 @@ When this issue is resolved, possibly when we upgrade one or more of: react nati
 
 https://github.com/expo/expo/issues/18129
 Android builds are failing on expo dependencies, adding the react native version fixes it.
+
+## Use forked version of @supercharge/promise-pool
+
+#### When can we remove this:
+
+Currently waiting for a new feature (`useTimeout`) to be published. See comment [here](https://github.com/supercharge/promise-pool/pull/69#issuecomment-1423359753).
+
+#### Explanation/Context:
+
+See: https://github.com/supercharge/promise-pool/issues/48
+
+There are times when syncing very large galleries offline that timeouts can occur during fetches. The `useTimeout` feature is currently in the `main` branch but not published to NPM, and so foked the pool and built a version into `dist` [here](https://github.com/damassi/promise-pool/commit/4fa04cb49f71edd6f4f2cdda822f772bcbdc627b) and updated package.json to point at fork.

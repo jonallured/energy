@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Image, ImageProps } from "react-native"
+import { Image, ImageProps, Platform } from "react-native"
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -23,7 +23,10 @@ export const CachedImage: React.FC<CachedImageProps> = ({
   ...restProps
 }) => {
   const isDoneLoading = useRef(false)
-  const opacity = useSharedValue(fadeInOnLoad ? 0 : 1)
+
+  const initialOpacity = Platform.OS === "ios" ? 0 : 1
+  const opacity = useSharedValue(fadeInOnLoad ? initialOpacity : 1)
+
   const fadeInAnimStyle = useAnimatedStyle(() => ({ opacity: opacity.value }), [])
   const localUri = useLocalUri(uri ?? "")
 
