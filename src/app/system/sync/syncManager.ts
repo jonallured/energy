@@ -378,7 +378,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing images"))
       .withConcurrency(20)
-      .withTimeout(POOL_TIMEOUT)
+      .withTaskTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -393,7 +393,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing install shots"))
       .withConcurrency(20)
-      .withTimeout(POOL_TIMEOUT)
+      .withTaskTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -409,7 +409,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
       .withConcurrency(20)
-      .withTimeout(POOL_TIMEOUT)
+      .withTaskTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "document",
