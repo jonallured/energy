@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/palette-mobile@8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-8.0.0.tgz#f8caff47781bc5b16715d9fea4579c02df49c647"
-  integrity sha512-axu4rXl4IWpbaMzqcvzMmaOXoJ/DRv4hDzsw+6Ds+B1AOEGa7tRJuwlnAnrvJVMscnypkq72QViB1uZB0YmCxg==
+"@artsy/palette-mobile@8.7.1":
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-8.7.1.tgz#b6e1497e4408cc57c85c272c3ac9670b48cd8186"
+  integrity sha512-yCwr3VdAPenRB8gg8cIicW7h6ORa3Zv2XcG1DESNO8GmbMjQO8Qy+iIGhtMiJad+ba6uFFxx0/5v+O8cfhjtvA==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -21,7 +21,6 @@
     events "^3.3.0"
     lodash "^4.17.21"
     react-nanny "^2.15.0"
-    styled-components "^5.3.6"
     styled-system "^5.1.5"
 
 "@artsy/palette-tokens@4.0.1", "@artsy/palette-tokens@^4.0.1":
@@ -3026,17 +3025,17 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
-"@types/react-native@*":
-  version "0.70.8"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.8.tgz#3302a0f7eddcd3350448ca17a9e415d02b1efde6"
-  integrity sha512-jvs5QMOrlyi0ScfT5Brha2roDoOWtbIOadNkp0jsueVen5+pH4SQAYtzL6xu0+dIcx3J/5LtZ/JYby2C1/zUug==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-native@0.69.16":
   version "0.69.16"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.69.16.tgz#6ae7002840f7f4a2e598630e8daba9a7e691e692"
   integrity sha512-wNaFnc3fyl33OcoZxRpamb9LN6B4bBkvQS/SswJLLM+h6y7SpsKmAIwKAxFAdttr+DZj9pVMwTIn6XA4Bto3KQ==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-native@^0.70":
+  version "0.70.10"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.10.tgz#494576e0dc20aa319003f0cdd99192124d64038d"
+  integrity sha512-m9B9hJk1w/c04zj5PCYTjJNXt+1UvKtzJj4nO/BjiS4s/zmUdkLdnbLqRQCQiTA0wuvvMbrffuPdheRtYu/M1Q==
   dependencies:
     "@types/react" "*"
 
@@ -3113,13 +3112,13 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/styled-components-react-native@^5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@types/styled-components-react-native/-/styled-components-react-native-5.2.0.tgz#0299813cafd059c81dd4e056f5e098419d5404f0"
-  integrity sha512-J5w74FBkXjHO9+9gYX2CgwEWFDE1LxrBUhmkoc0y1tLZ8RoQ0AZEgljXvqY2dl5rRkTgh941VpmPKnntIyVNtg==
+"@types/styled-components-react-native@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@types/styled-components-react-native/-/styled-components-react-native-5.2.1.tgz#08cba1f638c7a3a0b7017954d6e59baef36fb022"
+  integrity sha512-XI/SWDSLSe7IjZXA9jS0vv4WPpV2B+nQhefUqk00usNHxhErlzPtTGdhjMZgrH0uYz5R0hLLIandhmhDTLkKBg==
   dependencies:
     "@types/react" "*"
-    "@types/react-native" "*"
+    "@types/react-native" "^0.70"
     "@types/styled-components" "*"
 
 "@types/styled-components@*":
