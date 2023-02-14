@@ -2007,7 +2007,7 @@ type Artwork implements Node & Searchable & Sellable {
   ): AuctionResultConnection
   conditionDescription: ArtworkInfoRow
 
-  # Notes by a partner on the artwork, requires partner access
+  # Notes by a partner or MyCollection user on the artwork, can only be accessed by partner or the user that owns the artwork
   confidentialNotes: String
   consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
@@ -10494,6 +10494,10 @@ type MarkAllNotificationsAsReadSuccess {
   success: Boolean
 }
 
+type MarkdownContent {
+  content(format: Format): String
+}
+
 type MarketingCollection {
   artworksConnection(
     acquireable: Boolean
@@ -11946,6 +11950,7 @@ input MyCollectionCreateArtworkInput {
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
+  confidentialNotes: String
   costCurrencyCode: String
   costMajor: Int
   costMinor: Int
@@ -12033,6 +12038,7 @@ input MyCollectionUpdateArtworkInput {
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
+  confidentialNotes: String
   costCurrencyCode: String
   costMajor: Int
   costMinor: Int
@@ -14089,6 +14095,7 @@ type Query {
   ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
+  markdown(content: String!): MarkdownContent
   marketingCategories: [MarketingCollectionCategory!]!
 
   # Find a marketing collection by ID or slug
@@ -18263,6 +18270,7 @@ type Viewer {
   ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
+  markdown(content: String!): MarkdownContent
   marketingCollections(
     artistID: String
     category: String
