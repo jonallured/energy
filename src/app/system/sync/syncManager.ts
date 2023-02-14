@@ -124,6 +124,13 @@ export function initSyncManager({
     }
   }
 
+  // Noticed that sometimes the `Error.captureStackTrace` is not available when
+  // running on the device. This is a workaround to make sure it's available and
+  // so that the app doesn't crash if encountering errors during sync.
+  if (!("captureStackTrace" in Error)) {
+    ;(Error as any).captureStackTrace = log
+  }
+
   const startSync = async () => {
     updateStatus("Starting sync")
     onStart()
@@ -152,9 +159,9 @@ export function initSyncManager({
 
       // Media sync. We collect all urls from the queries above and sync the
       // images, install shots, and documents last.
-      syncImages,
       syncInstallShots,
       syncDocuments,
+      syncImages,
     ]
 
     // Since some items depend on the next, fetch the above sequentially.
@@ -404,8 +411,8 @@ export function initSyncManager({
 
   const syncDocuments = async () => {
     const urls = parsers.getDocumentsUrls()
-
     const accessToken = GlobalStore.getState().auth.userAccessToken!
+
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
       .withConcurrency(20)
