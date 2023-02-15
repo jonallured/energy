@@ -214,8 +214,8 @@ lane :upload_sentry_artifacts do |options|
   else
     sh("yarn bundle:android")
     # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
-    source_map_path = 'dist/index.android.bundle.map'
-    bundle_path = 'dist/index.android.bundle'
+    source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
+    bundle_path = 'android/app/src/main/assets/index.android.bundle'
     outfile = '~/index.android.bundle'
   end
 
