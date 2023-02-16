@@ -1396,6 +1396,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   deathday: String
   disablePriceContext: Boolean
   displayLabel: String
+  displayName: String
   duplicates: [Artist]
 
   # Custom-sorted list of shows for an artist, in order of significance.
@@ -1464,6 +1465,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     tagID: String
     width: String
   ): FilterArtworksConnection
+  first: String
 
   # A string showing the total number of works and those for sale
   formattedArtworksCount: String
@@ -1511,6 +1513,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   isPersonalArtist: Boolean
   isPublic: Boolean
   isShareable: Boolean
+  last: String
   location: String
   marketingCollections(
     category: String
@@ -1519,6 +1522,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     slugs: [String!]
   ): [MarketingCollection]
   meta: ArtistMeta
+  middle: String
   name: String
   nationality: String
   partnerArtists(
@@ -11831,6 +11835,9 @@ type Mutation {
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
 
+  # Update the artist
+  updateArtist(input: UpdateArtistMutationInput!): UpdateArtistMutationPayload
+
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
 
@@ -16581,6 +16588,31 @@ type UpdateAppSecondFactorPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   secondFactorOrErrors: AppSecondFactorOrErrorsUnion!
+}
+
+type UpdateArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtistMutationInput {
+  clientMutationId: String
+  displayName: String
+  first: String
+  id: String!
+  last: String
+  middle: String
+}
+
+type UpdateArtistMutationPayload {
+  # On success: the updated artist
+  artistOrError: UpdateArtistResponseOrError
+  clientMutationId: String
+}
+
+union UpdateArtistResponseOrError = UpdateArtistFailure | UpdateArtistSuccess
+
+type UpdateArtistSuccess {
+  artist: Artist
 }
 
 type updateArtworkFailure {
