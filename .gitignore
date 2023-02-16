@@ -42,6 +42,10 @@ yarn-error.log
 .jest/cache
 .cache
 
+# Yalc local publishing for local dev
+.yalc/
+yalc.lock
+
 # BUCK
 buck-out/
 \.buckd/
