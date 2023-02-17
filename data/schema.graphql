@@ -10952,6 +10952,7 @@ type Me implements Node {
     toBeReplied: Boolean
     type: ConversationsInputMode = USER
   ): ConversationConnection
+  counts: MeCounts
   createdAt(
     format: String
 
@@ -11265,6 +11266,11 @@ type Me implements Node {
 
   # A list of lots a user is watching.
   watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
+}
+
+type MeCounts {
+  followedArtists: Int!
+  savedArtworks: Int!
 }
 
 type MergeArtistsFailure {
