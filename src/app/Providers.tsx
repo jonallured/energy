@@ -47,7 +47,7 @@ const ThemeProvider: React.FC = ({ children }) => {
   }, [])
 
   const isDarkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme) === "dark"
-  const theme = isDarkMode ? "v5dark" : "v5light"
+  const theme = isDarkMode ? "v3dark" : "v3light"
 
   return (
     <Theme theme={theme}>

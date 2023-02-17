@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 
 interface ArtworkDetailProps {
   size?: "big" | "small"
@@ -21,16 +21,13 @@ export const ArtworkDetail: React.FC<ArtworkDetailProps> = ({ size = "big", labe
   )
 }
 
-export const ArtworkDetailLineItem: React.FC<Pick<ArtworkDetailProps, "value"> & FlexProps> = ({
-  value,
-  ...rest
-}) => {
+export const ArtworkDetailLineItem: React.FC<Pick<ArtworkDetailProps, "value">> = ({ value }) => {
   if (!value) {
     return null
   }
 
   return (
-    <Text variant="sm" color="onBackgroundMedium" {...rest}>
+    <Text variant="sm" color="onBackgroundMedium">
       {value}
     </Text>
   )

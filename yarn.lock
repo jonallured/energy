@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/palette-mobile@8.7.1":
-  version "8.7.1"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-8.7.1.tgz#b6e1497e4408cc57c85c272c3ac9670b48cd8186"
-  integrity sha512-yCwr3VdAPenRB8gg8cIicW7h6ORa3Zv2XcG1DESNO8GmbMjQO8Qy+iIGhtMiJad+ba6uFFxx0/5v+O8cfhjtvA==
+"@artsy/palette-mobile@10.0.3":
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-10.0.3.tgz#5490b1f8c85831ef15c9c6e1c58b1736a5e7ee44"
+  integrity sha512-7w+MW5KRp7ndmPOx543UfFMHYwsqlLy+Wt7Y99/CvyLyUkquN0IiGIsHDIERl7BqkwuVj4/pH0Q5lninn2ocUA==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -23,7 +23,7 @@
     react-nanny "^2.15.0"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@4.0.1", "@artsy/palette-tokens@^4.0.1":
+"@artsy/palette-tokens@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-4.0.1.tgz#ef171c0449f3c0a1c0765253a06beec160b0eed1"
   integrity sha512-JQ4t6eCAL3LpYnwyIMJCKc3UiVWY17IvKadNXRXfplo+GFZUqZs61nFGlchNWZvtNESpHkGKOksA5dZq3G1wiw==

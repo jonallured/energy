@@ -1,4 +1,4 @@
-import { Flex, FlexProps, SpacingUnitDSValueNumberNegative } from "@artsy/palette-mobile"
+import { Flex, FlexProps, SpacingUnitDSValue } from "@artsy/palette-mobile"
 import { SCREEN_HORIZONTAL_PADDING } from "./Body"
 import { useScreenIsFullWidthBody } from "../atoms"
 
@@ -8,9 +8,7 @@ export const FullWidthItem = (props: FlexProps) => {
   return (
     <Flex
       {...props}
-      mx={
-        fullWidthBody ? undefined : (-SCREEN_HORIZONTAL_PADDING as SpacingUnitDSValueNumberNegative)
-      }
+      mx={fullWidthBody ? undefined : (-SCREEN_HORIZONTAL_PADDING as SpacingUnitDSValue)}
     />
   )
 }

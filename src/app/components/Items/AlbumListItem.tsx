@@ -1,16 +1,10 @@
-import {
-  Spacer,
-  Flex,
-  Text,
-  SpacingUnitDSValueNumber,
-  SpacingUnitDSValueNumberNegative,
-} from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, SpacingUnitDSValue } from "@artsy/palette-mobile"
 import { isTablet } from "react-native-device-info"
 import { Album } from "app/system/store/Models/AlbumsModel"
 import { AlbumListImage } from "./AlbumListImage"
 
 export const AlbumListItem = ({ album }: { album: Album }) => {
-  const overlapSize: SpacingUnitDSValueNumber = 2
+  const overlapSize: SpacingUnitDSValue = 2
   const first3Artworks = album.artworkIds.slice(0, 3)
   const variant = isTablet() ? "sm" : "xs"
 
@@ -22,7 +16,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
             backgroundColor="black60"
             flex={1}
             height={150}
-            mr={-overlapSize as SpacingUnitDSValueNumberNegative}
+            mr={-overlapSize as SpacingUnitDSValue}
           />
         )}
         {first3Artworks.length < 2 && (
@@ -30,7 +24,7 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
             backgroundColor="black30"
             flex={1}
             height={100}
-            mr={-overlapSize as SpacingUnitDSValueNumberNegative}
+            mr={-overlapSize as SpacingUnitDSValue}
           />
         )}
         {first3Artworks.reverse().map((artworkId) => (
