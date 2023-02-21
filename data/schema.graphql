@@ -6805,6 +6805,9 @@ type Conversation implements Node {
   # Gravity inquiry id.
   inquiryID: String
 
+  # The inquiry request associated with the conversation.
+  inquiryRequest: PartnerInquiryRequest
+
   # An optional type-specific ID.
   internalID: ID
 
@@ -12999,6 +13002,14 @@ type PartnerEdge {
 
 type PartnerInquiryRequest {
   collectorProfile: InquirerCollectorProfile
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  questions: [InquiryQuestion]
+  shippingLocation: Location
 }
 
 # A location
