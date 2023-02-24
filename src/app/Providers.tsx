@@ -23,10 +23,8 @@ export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment 
             <RelayProvider relayEnvironment={relayEnvironment}>
               <SafeAreaProvider>
                 <ProvideScreenDimensions>
-                  {/*  */}
                   {children}
                   <JotaiNexus />
-                  {/*  */}
                 </ProvideScreenDimensions>
               </SafeAreaProvider>
             </RelayProvider>

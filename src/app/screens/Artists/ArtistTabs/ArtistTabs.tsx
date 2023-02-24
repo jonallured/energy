@@ -14,12 +14,12 @@ import {
   BottomSheetModalView,
   BottomSheetRef,
 } from "app/components/BottomSheetModalView"
+import { PortalProvider } from "app/components/Portal"
 import { TabScreen } from "app/components/Tabs/TabScreen"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { useHeaderSelectModeConfig } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils/extractNodes"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { imageSize } from "app/utils/imageSize"
@@ -66,34 +66,30 @@ export const ArtistTabs = () => {
     bottomSheetRef.current?.closeBottomSheetModal()
   }
 
-  const selectModeConfig = useHeaderSelectModeConfig()
-
   return (
     <BottomSheetModalProvider>
-      <Screen>
-        <Screen.AnimatedTitleHeader
-          title={name}
-          selectModeConfig={selectModeConfig}
-          hideRightElements={!isOnline}
-        />
-        <Screen.AnimatedTitleTabsBody>
-          <Tabs.Tab name="ArtistArtworks" label="Works">
-            <TabScreen>
-              <ArtistArtworks slug={slug} />
-            </TabScreen>
-          </Tabs.Tab>
-          <Tabs.Tab name="ArtistShows" label="Shows">
-            <TabScreen>
-              <ArtistShows slug={slug} />
-            </TabScreen>
-          </Tabs.Tab>
-          <Tabs.Tab name="ArtistDocuments" label="Documents">
-            <TabScreen>
-              <ArtistDocuments slug={slug} />
-            </TabScreen>
-          </Tabs.Tab>
-        </Screen.AnimatedTitleTabsBody>
-      </Screen>
+      <PortalProvider>
+        <Screen>
+          <Screen.AnimatedTitleHeader title={name} hideRightElements={!isOnline} />
+          <Screen.AnimatedTitleTabsBody>
+            <Tabs.Tab name="ArtistArtworks" label="Works">
+              <TabScreen>
+                <ArtistArtworks slug={slug} />
+              </TabScreen>
+            </Tabs.Tab>
+            <Tabs.Tab name="ArtistShows" label="Shows">
+              <TabScreen>
+                <ArtistShows slug={slug} />
+              </TabScreen>
+            </Tabs.Tab>
+            <Tabs.Tab name="ArtistDocuments" label="Documents">
+              <TabScreen>
+                <ArtistDocuments slug={slug} />
+              </TabScreen>
+            </Tabs.Tab>
+          </Screen.AnimatedTitleTabsBody>
+        </Screen>
+      </PortalProvider>
 
       {selectedItems.length > 0 && (
         <Flex
@@ -109,7 +105,7 @@ export const ArtistTabs = () => {
             Selected items: {selectedItems.length}
           </Text>
           <Button block onPress={addToButtonHandler}>
-            Add to ...
+            Add to or email...
           </Button>
         </Flex>
       )}
@@ -247,16 +243,11 @@ export const artistTabsQuery = graphql`
 `
 
 export const SkeletonArtistTabs = () => {
-  const selectModeConfig = useHeaderSelectModeConfig()
   const isOnline = useIsOnline()
 
   return (
     <Screen>
-      <Screen.AnimatedTitleHeader
-        title=""
-        selectModeConfig={selectModeConfig}
-        hideRightElements={!isOnline}
-      />
+      <Screen.AnimatedTitleHeader title="" hideRightElements={!isOnline} />
       <Screen.AnimatedTitleTabsBody>
         <Tabs.Tab name="ArtistArtworks" label="Works">
           <TabsScrollView>

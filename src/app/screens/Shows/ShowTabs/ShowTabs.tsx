@@ -12,11 +12,11 @@ import {
   BottomSheetModalView,
   BottomSheetModalRow,
 } from "app/components/BottomSheetModalView"
+import { PortalProvider } from "app/components/Portal"
 import { TabScreen } from "app/components/Tabs/TabScreen"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { useHeaderSelectModeConfig } from "app/system/store/selectModeAtoms"
 import { Screen } from "palette"
 import { ShowArtworks } from "./ShowArtworks/ShowArtworks"
 import { ShowDocuments } from "./ShowDocuments/ShowDocuments"
@@ -33,31 +33,32 @@ export const ShowTabs = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
 
-  const selectModeConfig = useHeaderSelectModeConfig()
   const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
 
   return (
     <BottomSheetModalProvider>
-      <Screen>
-        <Screen.AnimatedTitleHeader title={data.show?.name!} selectModeConfig={selectModeConfig} />
-        <Screen.AnimatedTitleTabsBody>
-          <Tabs.Tab name="ShowArtworks" label="Works">
-            <TabScreen>
-              <ShowArtworks slug={slug} />
-            </TabScreen>
-          </Tabs.Tab>
-          <Tabs.Tab name="ShowInstalls" label="Installs">
-            <TabScreen>
-              <ShowInstalls slug={slug} />
-            </TabScreen>
-          </Tabs.Tab>
-          <Tabs.Tab name="ShowDocuments" label="Documents">
-            <TabScreen>
-              <ShowDocuments slug={slug} />
-            </TabScreen>
-          </Tabs.Tab>
-        </Screen.AnimatedTitleTabsBody>
-      </Screen>
+      <PortalProvider>
+        <Screen>
+          <Screen.AnimatedTitleHeader title={data.show?.name!} />
+          <Screen.AnimatedTitleTabsBody>
+            <Tabs.Tab name="ShowArtworks" label="Works">
+              <TabScreen>
+                <ShowArtworks slug={slug} />
+              </TabScreen>
+            </Tabs.Tab>
+            <Tabs.Tab name="ShowInstalls" label="Installs">
+              <TabScreen>
+                <ShowInstalls slug={slug} />
+              </TabScreen>
+            </Tabs.Tab>
+            <Tabs.Tab name="ShowDocuments" label="Documents">
+              <TabScreen>
+                <ShowDocuments slug={slug} />
+              </TabScreen>
+            </Tabs.Tab>
+          </Screen.AnimatedTitleTabsBody>
+        </Screen>
+      </PortalProvider>
 
       {selectedItems.length > 0 && (
         <Flex
@@ -73,7 +74,7 @@ export const ShowTabs = () => {
             Selected items: {selectedItems.length}
           </Text>
           <Button block onPress={bottomSheetRef.current?.showBottomSheetModal}>
-            Add to ...
+            Add to or email...
           </Button>
         </Flex>
       )}
@@ -115,13 +116,12 @@ export const showTabsQuery = graphql`
 `
 
 export const SkeletonShowTabs = () => {
-  const selectModeConfig = useHeaderSelectModeConfig()
   const safeAreaInsets = useSafeAreaInsets()
 
   return (
     <BottomSheetModalProvider>
       <Screen>
-        <Screen.AnimatedTitleHeader title="" selectModeConfig={selectModeConfig} />
+        <Screen.AnimatedTitleHeader title="" />
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="ShowArtworks" label="Works">
             <></>

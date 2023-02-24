@@ -9,6 +9,8 @@ export interface SelectModeModel {
     installs: Array<string>
     documents: Array<string>
     items: Computed<SelectModeModel["sessionState"], Array<{ type: ItemType; item: string }>>
+
+    selectModeAllSelected: boolean
   }
 
   // code actions
@@ -20,10 +22,17 @@ export interface SelectModeModel {
   // supporting actions
   setSelectMode: Action<this, this["sessionState"]["isActive"]>
   clearSelectedItems: Action<this>
+
+  // TODO
+  selectModeSelectAll: Action<this>
+  selectModeUnselectAll: Action<this>
 }
 
 export const getSelectModeModel = (): SelectModeModel => ({
   sessionState: {
+    // TODO: audit, as related to isActive below
+    selectModeAllSelected: false,
+
     isActive: false,
     artworks: [],
     installs: [],
@@ -69,6 +78,7 @@ export const getSelectModeModel = (): SelectModeModel => ({
   }),
   setSelectedItems: action((state, { type, items }) => {
     const arrayToLookAt = findStateArrayByType(type)
+    console.log("umm", arrayToLookAt)
     state.sessionState[arrayToLookAt] = items
   }),
 
@@ -79,6 +89,14 @@ export const getSelectModeModel = (): SelectModeModel => ({
     state.sessionState.artworks = []
     state.sessionState.installs = []
     state.sessionState.documents = []
+  }),
+
+  // TODO: Audit
+  selectModeSelectAll: action((state) => {
+    state.sessionState.selectModeAllSelected = true
+  }),
+  selectModeUnselectAll: action((state) => {
+    state.sessionState.selectModeAllSelected = false
   }),
 })
 

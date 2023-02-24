@@ -1,4 +1,4 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -14,6 +14,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
+  const space = useSpace()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -29,28 +30,34 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
   const margin = 20
 
   return (
-    <TabsFlatList
-      columnWrapperStyle={
-        isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
-      }
-      data={shows}
-      numColumns={isTablet() ? 2 : 1}
-      renderItem={({ item: show }) => (
-        <Touchable
-          onPress={() =>
-            navigation.navigate("ShowTabs", {
-              slug: show.slug,
-            })
-          }
-          style={{ width: isTablet() ? (screenWidth - margin * 3) / 2 : undefined }}
-          disabled={isSelectModeActive}
-        >
-          <ShowListItem show={show} disabled={isSelectModeActive} />
-        </Touchable>
-      )}
-      keyExtractor={(item) => item?.internalID}
-      ListEmptyComponent={<ListEmptyComponent text="No shows" />}
-    />
+    <>
+      <TabsFlatList
+        columnWrapperStyle={
+          isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
+        }
+        contentContainerStyle={{
+          marginTop: space(2),
+          paddingHorizontal: space(2),
+        }}
+        data={shows}
+        numColumns={isTablet() ? 2 : 1}
+        renderItem={({ item: show }) => (
+          <Touchable
+            onPress={() =>
+              navigation.navigate("ShowTabs", {
+                slug: show.slug,
+              })
+            }
+            style={{ width: isTablet() ? (screenWidth - margin * 3) / 2 : undefined }}
+            disabled={isSelectModeActive}
+          >
+            <ShowListItem show={show} disabled={isSelectModeActive} />
+          </Touchable>
+        )}
+        keyExtractor={(item) => item?.internalID}
+        ListEmptyComponent={<ListEmptyComponent text="No shows" />}
+      />
+    </>
   )
 }
 

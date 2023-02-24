@@ -2,15 +2,17 @@ import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { isEqual } from "lodash"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
+import { Portal } from "app/components/Portal"
+import { SelectMode } from "app/components/SelectMode"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
@@ -34,57 +36,67 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   const selectedArtworkIds = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.artworks
   )
-  useHeaderSelectModeInTab("ShowArtworks", {
-    allSelected: isEqual(
-      new Set(selectedArtworkIds),
-      new Set(presentedArtworks.map((a) => a.internalID))
-    ),
-    selectAllFn: () =>
-      void GlobalStore.actions.selectMode.setSelectedItems({
-        type: "artwork",
-        items: artworks.map((a) => a.internalID),
-      }),
-    unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.setSelectedItems({
-        type: "artwork",
-        items: [],
-      }),
-  })
+
+  const activeTab = useFocusedTab()
+
+  const allSelected = isEqual(
+    new Set(selectedArtworkIds),
+    new Set(presentedArtworks.map((a) => a.internalID))
+  )
 
   return (
-    <TabsScrollView>
-      <MasonryList
-        testID="show-artwork-list"
-        contentContainerStyle={{
-          marginTop: space(2),
-          paddingHorizontal: space(2),
-        }}
-        numColumns={isTablet() ? 3 : 2}
-        data={presentedArtworks}
-        renderItem={({ item: artwork, i }) => (
-          <ArtworkGridItem
-            artwork={artwork}
-            onPress={() =>
-              isSelectModeActive
-                ? GlobalStore.actions.selectMode.toggleSelectedItem({
-                    type: "artwork",
-                    item: artwork.internalID,
-                  })
-                : navigation.navigate("Artwork", {
-                    slug: artwork.slug,
-                    contextArtworkSlugs: artworkSlugs,
-                  })
-            }
-            selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
-            style={{
-              marginLeft: i % 2 === 0 ? 0 : space(1),
-              marginRight: i % 2 === 0 ? space(1) : 0,
-            }}
-          />
-        )}
-        keyExtractor={(item) => item.internalID}
-      />
-    </TabsScrollView>
+    <>
+      <Portal active={activeTab === "ShowArtworks"}>
+        <SelectMode
+          allSelected={allSelected}
+          selectAll={() => {
+            GlobalStore.actions.selectMode.setSelectedItems({
+              type: "artwork",
+              items: artworks.map((a) => a.internalID),
+            })
+          }}
+          unselectAll={() => {
+            GlobalStore.actions.selectMode.setSelectedItems({
+              type: "artwork",
+              items: [],
+            })
+          }}
+        />
+      </Portal>
+      <TabsScrollView>
+        <MasonryList
+          testID="show-artwork-list"
+          contentContainerStyle={{
+            marginTop: space(2),
+            paddingHorizontal: space(2),
+          }}
+          numColumns={isTablet() ? 3 : 2}
+          data={presentedArtworks}
+          renderItem={({ item: artwork, i }) => (
+            <ArtworkGridItem
+              artwork={artwork}
+              onPress={() =>
+                isSelectModeActive
+                  ? GlobalStore.actions.selectMode.toggleSelectedItem({
+                      type: "artwork",
+                      item: artwork.internalID,
+                    })
+                  : navigation.navigate("Artwork", {
+                      slug: artwork.slug,
+                      contextArtworkSlugs: artworkSlugs,
+                    })
+              }
+              selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+              style={{
+                marginLeft: i % 2 === 0 ? 0 : space(1),
+                marginRight: i % 2 === 0 ? space(1) : 0,
+              }}
+            />
+          )}
+          keyExtractor={(item) => item.internalID}
+        />
+      </TabsScrollView>
+    </>
   )
 }
 

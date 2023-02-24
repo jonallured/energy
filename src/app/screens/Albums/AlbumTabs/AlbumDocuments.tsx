@@ -39,8 +39,8 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
     <TabsScrollView>
       <MasonryList
         contentContainerStyle={{
-          marginTop: documents.length ? space(2) : 0,
-          paddingRight: space(2),
+          marginTop: space(2),
+          paddingHorizontal: space(2),
         }}
         numColumns={2}
         data={documents}
@@ -55,9 +55,7 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
           />
         )}
         keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={
-          <ListEmptyComponent text="No documents" mx={SCREEN_HORIZONTAL_PADDING} />
-        }
+        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
       />
     </TabsScrollView>
   )

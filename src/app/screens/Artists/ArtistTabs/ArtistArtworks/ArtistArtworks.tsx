@@ -2,16 +2,18 @@ import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { isEqual } from "lodash"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { Portal } from "app/components/Portal"
+import { SelectMode } from "app/components/SelectMode"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
@@ -43,33 +45,40 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
 
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
-
-  useHeaderSelectModeInTab("ArtistArtworks", {
-    allSelected: isEqual(
-      new Set(selectedArtworkIds),
-      new Set(presentedArtworks.map((a) => a.internalID))
-    ),
-    selectAllFn: () =>
-      void GlobalStore.actions.selectMode.setSelectedItems({
-        type: "artwork",
-        items: artworks.map((a) => a.internalID),
-      }),
-    unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.setSelectedItems({
-        type: "artwork",
-        items: [],
-      }),
-  })
-
   const numColumns = isTablet() ? 3 : 2
+
+  const activeTab = useFocusedTab()
+
+  const allSelected = isEqual(
+    new Set(selectedArtworkIds),
+    new Set(presentedArtworks.map((a) => a.internalID))
+  )
 
   return (
     <>
+      <Portal active={activeTab === "ArtistArtworks"}>
+        <SelectMode
+          allSelected={allSelected}
+          selectAll={() => {
+            GlobalStore.actions.selectMode.setSelectedItems({
+              type: "artwork",
+              items: artworks.map((a) => a.internalID),
+            })
+          }}
+          unselectAll={() => {
+            GlobalStore.actions.selectMode.setSelectedItems({
+              type: "artwork",
+              items: [],
+            })
+          }}
+        />
+      </Portal>
+
       <TabsScrollView>
         <MasonryList
           testID="artist-artwork-list"
           contentContainerStyle={{
-            marginTop: artworks.length ? space(2) : 0,
+            marginTop: space(2),
             paddingHorizontal: space(2),
           }}
           numColumns={numColumns}

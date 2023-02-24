@@ -1,8 +1,6 @@
 import { Button, DEFAULT_HIT_SLOP, Spacer } from "@artsy/palette-mobile"
 import { ArrowLeftIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { SelectModeConfig } from "app/system/store/selectModeAtoms"
-import { noop } from "lodash"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
 import { useSetHandledTopSafeArea } from "../atoms"
 
@@ -21,8 +19,6 @@ export interface ActualHeaderProps {
 
   animatedTitle?: boolean
   titleShown?: boolean
-
-  selectModeConfig?: Partial<SelectModeConfig>
 }
 
 export const ActualHeader = ({
@@ -34,31 +30,9 @@ export const ActualHeader = ({
   onBack,
   animatedTitle = false,
   titleShown = false,
-  selectModeConfig: {
-    selectModeActive,
-    selectModeToggle,
-    selectModeAllSelected,
-    selectModeSelectAll,
-    selectModeUnselectAll,
-  } = {},
 }: ActualHeaderProps) => {
   useSetHandledTopSafeArea(true)
   const navigation = useNavigation()
-
-  const usingSelectMode = selectModeToggle !== undefined
-
-  if (
-    __DEV__ &&
-    usingSelectMode &&
-    (selectModeActive === undefined ||
-      selectModeToggle === undefined ||
-      selectModeAllSelected === undefined ||
-      selectModeSelectAll === undefined ||
-      selectModeUnselectAll === undefined)
-  ) {
-    console.warn("For select mode, you need all `selectMode*` props defined.")
-    return null
-  }
 
   const actualLeftElements = (() => {
     switch (true) {
@@ -67,18 +41,6 @@ export const ActualHeader = ({
       }
       case leftElements !== undefined: {
         return leftElements
-      }
-      case usingSelectMode && selectModeActive: {
-        return (
-          <Button
-            size="small"
-            variant="fillGray"
-            onPress={selectModeAllSelected ? selectModeUnselectAll : selectModeSelectAll}
-            longestText="Unselect All"
-          >
-            {selectModeAllSelected ? "Unselect All" : "Select All"}
-          </Button>
-        )
       }
       default: {
         return (
@@ -98,13 +60,6 @@ export const ActualHeader = ({
     switch (true) {
       case hideRightElements: {
         return null
-      }
-      case usingSelectMode: {
-        return (
-          <Button size="small" variant="fillGray" onPress={selectModeToggle} longestText="Cancel">
-            {selectModeActive ? "Cancel" : "Select"}
-          </Button>
-        )
       }
       default: {
         return rightElements

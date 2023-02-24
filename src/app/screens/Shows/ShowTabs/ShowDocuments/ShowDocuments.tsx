@@ -1,16 +1,17 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { isEqual } from "lodash"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
 import { ShowDocumentsQuery } from "__generated__/ShowDocumentsQuery.graphql"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { Portal } from "app/components/Portal"
+import { SelectMode } from "app/components/SelectMode"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { useHeaderSelectModeInTab } from "app/system/store/selectModeAtoms"
 import { extractNodes } from "app/utils/extractNodes"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 
 export const ShowDocuments = ({ slug }: { slug: string }) => {
   const space = useSpace()
@@ -24,49 +25,60 @@ export const ShowDocuments = ({ slug }: { slug: string }) => {
   const selectedDocumentIds = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.documents
   )
-  useHeaderSelectModeInTab("ShowDocuments", {
-    allSelected: isEqual(new Set(selectedDocumentIds), new Set(documents.map((d) => d.internalID))),
-    selectAllFn: () =>
-      void GlobalStore.actions.selectMode.setSelectedItems({
-        type: "document",
-        items: documents.map((d) => d.internalID),
-      }),
-    unselectAllFn: () =>
-      void GlobalStore.actions.selectMode.setSelectedItems({ type: "document", items: [] }),
-  })
+
+  const activeTab = useFocusedTab()
+
+  const allSelected = isEqual(
+    new Set(selectedDocumentIds),
+    new Set(documents.map((d) => d.internalID))
+  )
 
   return (
-    <TabsScrollView>
-      <MasonryList
-        contentContainerStyle={{
-          marginTop: documents.length ? space(2) : 0,
-          paddingRight: space(2),
-        }}
-        numColumns={2}
-        data={documents}
-        renderItem={({ item: document }) => (
-          <DocumentGridItem
-            document={{
-              url: document.publicURL,
-              title: document.title,
-              id: document.internalID,
-              size: document.filesize,
-            }}
-            onPress={() =>
-              GlobalStore.actions.selectMode.toggleSelectedItem({
-                type: "document",
-                item: document.internalID,
-              })
-            }
-            selectedToAdd={selectedDocumentIds.includes(document.internalID)}
-          />
-        )}
-        keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={
-          <ListEmptyComponent text="No documents" mx={SCREEN_HORIZONTAL_PADDING} />
-        }
-      />
-    </TabsScrollView>
+    <>
+      <Portal active={activeTab === "ShowDocuments"}>
+        <SelectMode
+          allSelected={allSelected}
+          selectAll={() => {
+            GlobalStore.actions.selectMode.setSelectedItems({
+              type: "document",
+              items: documents.map((d) => d.internalID),
+            })
+          }}
+          unselectAll={() => {
+            GlobalStore.actions.selectMode.setSelectedItems({ type: "document", items: [] })
+          }}
+        />
+      </Portal>
+      <TabsScrollView>
+        <MasonryList
+          contentContainerStyle={{
+            marginTop: space(2),
+            paddingHorizontal: space(2),
+          }}
+          numColumns={2}
+          data={documents}
+          renderItem={({ item: document }) => (
+            <DocumentGridItem
+              document={{
+                url: document.publicURL,
+                title: document.title,
+                id: document.internalID,
+                size: document.filesize,
+              }}
+              onPress={() =>
+                GlobalStore.actions.selectMode.toggleSelectedItem({
+                  type: "document",
+                  item: document.internalID,
+                })
+              }
+              selectedToAdd={selectedDocumentIds.includes(document.internalID)}
+            />
+          )}
+          keyExtractor={(item) => item.internalID}
+          ListEmptyComponent={<ListEmptyComponent text="No documents" />}
+        />
+      </TabsScrollView>
+    </>
   )
 }
 

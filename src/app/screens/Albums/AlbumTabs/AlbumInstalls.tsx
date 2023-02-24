@@ -12,7 +12,7 @@ export const AlbumInstalls = ({ installShotUrls }: { installShotUrls: string[] }
       <MasonryList
         contentContainerStyle={{
           marginTop: space(2),
-          paddingRight: space(2),
+          paddingHorizontal: space(2),
         }}
         numColumns={2}
         data={installShotUrls}
