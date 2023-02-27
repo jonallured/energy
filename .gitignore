@@ -2,6 +2,12 @@
 #
 .DS_Store
 
+# VSCode debugger
+#
+
+.vscode/.react
+
+
 # Xcode
 #
 build/
