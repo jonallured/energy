@@ -1,7 +1,7 @@
 import { Button, Flex } from "@artsy/palette-mobile"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface SelectModeProps {
   allSelected: boolean

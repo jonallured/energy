@@ -1,8 +1,8 @@
 import { waitFor } from "@testing-library/react-native"
-import { range } from "lodash"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { Artists } from "app/screens/Artists/Artists"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
+import { range } from "lodash"
 
 describe("Artists", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistsQuery>({

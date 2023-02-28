@@ -1,8 +1,5 @@
 import { Button, Flex, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { DateTime } from "luxon"
-import { useMemo, useState } from "react"
-import { Alert } from "react-native"
 import { NavigationScreens } from "app/Navigation"
 import { AnimatedEllipsis } from "app/components/AnimatedEllipsis"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
@@ -11,7 +8,10 @@ import { relayChecksum } from "app/system/sync/_generatedRelayChecksum"
 import { clearFileCache } from "app/system/sync/fileCache"
 import { initSyncManager } from "app/system/sync/syncManager"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
+import { DateTime } from "luxon"
 import { Screen } from "palette"
+import { useMemo, useState } from "react"
+import { Alert } from "react-native"
 
 export const OfflineModeSettings = () => {
   const color = useColor()

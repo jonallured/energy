@@ -1,8 +1,5 @@
 import { Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useWindowDimensions } from "react-native"
-import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ShowListItem } from "app/components/Items/ShowListItem"
@@ -12,6 +9,9 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
+import { graphql } from "react-relay"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
   const space = useSpace()

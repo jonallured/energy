@@ -1,13 +1,13 @@
-import { useState } from "react"
-import { StyleSheet, View } from "react-native"
-import PagerView from "react-native-pager-view"
-import { NativeProps as PagerViewNativeProps } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent"
 import { ScrollableLazyScreen } from "app/components/ScrollableScreensView/ScrollableLazyScreen"
 import {
   ScrollableScreenEntity,
   ScrollableScreensContextValue,
   ScrollableScreensContext,
 } from "app/components/ScrollableScreensView/ScrollableScreensContext"
+import { useState } from "react"
+import { StyleSheet, View } from "react-native"
+import PagerView from "react-native-pager-view"
+import { NativeProps as PagerViewNativeProps } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent"
 
 interface ScrollableScreensViewProps {
   screens: ScrollableScreenEntity[]

@@ -1,10 +1,10 @@
 import { Button, Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
-import { NativeModules } from "react-native"
 import { ARTNativeModules } from "app/native_modules/ARTNativeModules"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
+import { NativeModules } from "react-native"
 
 export const DevMenu = () => {
   const navigation = useNavigation()

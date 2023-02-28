@@ -1,6 +1,6 @@
 import { Spacer, Flex, Text, SpacingUnitDSValue } from "@artsy/palette-mobile"
-import { isTablet } from "react-native-device-info"
 import { Album } from "app/system/store/Models/AlbumsModel"
+import { isTablet } from "react-native-device-info"
 import { AlbumListImage } from "./AlbumListImage"
 
 export const AlbumListItem = ({ album }: { album: Album }) => {

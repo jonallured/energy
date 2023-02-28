@@ -1,8 +1,8 @@
 import { CheckCircleFillIcon, Flex, Touchable } from "@artsy/palette-mobile"
-import { useState } from "react"
 import { ImageModal } from "app/components/ImageModal"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
+import { useState } from "react"
 
 interface ArtworkImageGridItemProps {
   url: string

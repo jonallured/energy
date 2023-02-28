@@ -1,13 +1,13 @@
 import { Flex, Button, SearchInput, Separator, Text, Spacer } from "@artsy/palette-mobile"
-import { useState, useEffect, useRef, Suspense } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
-import { graphql } from "react-relay"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
 import { Screen } from "palette"
+import { useState, useEffect, useRef, Suspense } from "react"
+import { ActivityIndicator, FlatList } from "react-native"
+import { graphql } from "react-relay"
 
 interface SelectPartnerHeaderProps {
   onSearchChange: (term: string) => void

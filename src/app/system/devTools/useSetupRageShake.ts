@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { NavigationScreens } from "app/Navigation"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { useEffect } from "react"
 import { NativeModules } from "react-native"
 import RNShake from "react-native-shake"
-import { NavigationScreens } from "app/Navigation"
-import { GlobalStore } from "app/system/store/GlobalStore"
 
 export const useSetupRageShake = () => {
   const nav = useNavigation<NavigationProp<NavigationScreens>>()

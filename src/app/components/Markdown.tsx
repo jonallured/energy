@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from "@artsy/palette-mobile"
-import _ from "lodash"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
+import _ from "lodash"
 
 interface Props {
   rules?: { [key: string]: any }

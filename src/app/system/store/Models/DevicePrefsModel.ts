@@ -1,7 +1,7 @@
+import { clearFileCache } from "app/system/sync/fileCache"
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { DateTime } from "luxon"
 import { Appearance } from "react-native"
-import { clearFileCache } from "app/system/sync/fileCache"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
 export interface DevicePrefsModel {

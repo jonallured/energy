@@ -10,9 +10,6 @@ import {
 } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { useFormik } from "formik"
-import { useState } from "react"
-import { object, string } from "yup"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
@@ -22,7 +19,10 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
+import { useFormik } from "formik"
 import { Screen } from "palette"
+import { useState } from "react"
+import { object, string } from "yup"
 
 interface CreateAlbumValuesSchema {
   albumName: string

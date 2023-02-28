@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react-native"
+import { Providers } from "app/Providers"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockEnvironment } from "relay-test-utils"
-import { Providers } from "app/Providers"
 
 export const renderWithWrappers = (
   component: React.ReactNode,

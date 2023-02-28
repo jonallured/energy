@@ -6,13 +6,13 @@ import {
   Touchable,
   TrashIcon,
 } from "@artsy/palette-mobile"
-import { ViewProps } from "react-native"
-import { isTablet } from "react-native-device-info"
-import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { AvailabilityDot } from "app/components/StatusDot"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
+import { ViewProps } from "react-native"
+import { isTablet } from "react-native-device-info"
+import { graphql, useFragment } from "react-relay"
 
 export interface ArtworkGridItemProps extends FlexProps {
   artwork: ArtworkGridItem_artwork$key

@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react-native"
-import { range } from "lodash"
 import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
+import { range } from "lodash"
 import { Shows } from "./Shows"
 
 describe("Shows", () => {

@@ -1,6 +1,6 @@
+import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import fetchMock from "jest-fetch-mock"
 import { GraphQLResponseErrors, MiddlewareNextFn } from "react-relay-network-modern"
-import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { checkAuthenticationMiddleware } from "./checkAuthenticationMiddleware"
 import { GraphQLRequest } from "./types"
 

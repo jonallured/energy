@@ -1,16 +1,16 @@
 import { Button, Flex, Input, Text, useColor, Spacer } from "@artsy/palette-mobile"
-import { useFormik } from "formik"
-import { useRef, useState } from "react"
-import { Linking, Platform, TouchableOpacity } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { object, string } from "yup"
 import { MeasuredView } from "app/components/MeasuredView"
 import { useSetupRageShake } from "app/system/devTools/useSetupRageShake"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { attemptAlbumMigration } from "app/utils/attemptAlbumMigration"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import { useFormik } from "formik"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { useRef, useState } from "react"
+import { Linking, Platform, TouchableOpacity } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { object, string } from "yup"
 
 export interface LoginSchema {
   email: string

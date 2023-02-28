@@ -1,8 +1,5 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
-import { isEqual } from "lodash"
-import { useFocusedTab } from "react-native-collapsible-tab-view"
-import { graphql } from "react-relay"
 import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
@@ -12,6 +9,9 @@ import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { isEqual } from "lodash"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
+import { graphql } from "react-relay"
 
 export const ArtistDocuments = ({ slug }: { slug: string }) => {
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)!

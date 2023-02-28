@@ -1,8 +1,8 @@
-import { Component } from "react"
 import { ErrorView } from "app/components/ErrorView"
 import { GlobalErrorView } from "app/components/GlobalErrorView"
 import { LoadFailureErrorView } from "app/components/LoadFailureErrorView"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { Component } from "react"
 
 interface RetryErrorBoundaryProps {
   children: React.ReactNode

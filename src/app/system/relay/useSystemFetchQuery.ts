@@ -1,8 +1,7 @@
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { useEffect, useState } from "react"
 import { GraphQLTaggedNode, VariablesOf, fetchQuery, useRelayEnvironment } from "react-relay"
 import { CacheConfig, FetchQueryFetchPolicy, OperationType, RenderPolicy } from "relay-runtime"
-import { GlobalStore } from "app/system/store/GlobalStore"
-import { useIsOnline } from "app/utils/hooks/useIsOnline"
 
 /**
  * In order to handle more fine-grained errors we need to use `useSystemFetchQuery`

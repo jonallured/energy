@@ -1,4 +1,3 @@
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ArtistShowsQuery$rawResponse } from "__generated__/ArtistShowsQuery.graphql"
@@ -9,6 +8,7 @@ import { getFileFromCache, saveFileToCache } from "app/system/sync/fileCache"
 import { initSyncManager, loadRelayDataFromOfflineCache, _tests } from "app/system/sync/syncManager"
 import { initFetchOrCatch } from "app/system/sync/utils/fetchOrCatch"
 import { flushPromiseQueue } from "app/utils/test/flushPromiseQueue"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 jest.mock("app/system/sync/utils/fetchOrCatch")
 jest.mock("app/system/sync/fileCache")

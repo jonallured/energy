@@ -1,8 +1,7 @@
-import { act } from "@testing-library/react-native"
+import { SetupTestWrapperProps } from "app/utils/test/setupTestWrapper"
 import { takeRight } from "lodash"
 import { MockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { SetupTestWrapperProps } from "app/utils/test/setupTestWrapper"
 
 interface MockEnvironmentPayloadProps extends Omit<SetupTestWrapperProps<any>, "Component"> {
   mockEnvironment: MockEnvironment

@@ -1,7 +1,5 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
-import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
@@ -10,6 +8,8 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
+import { isTablet } from "react-native-device-info"
+import { graphql } from "react-relay"
 
 export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!

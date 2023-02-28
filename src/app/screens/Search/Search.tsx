@@ -9,11 +9,11 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { NavigationScreens } from "app/Navigation"
 import { useAtom } from "jotai"
 import { throttle } from "lodash"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { NavigationScreens } from "app/Navigation"
 import { Screen } from "palette"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { SearchPills } from "./SearchPills"
 import { SearchResult } from "./SearchResult"
 import { disabledPillsAtom, selectedPillAtom } from "./searchAtoms"

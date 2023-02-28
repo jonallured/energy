@@ -1,8 +1,8 @@
 import "@testing-library/jest-native/extend-expect"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
-import React from "react"
 import { ignoreLogsInTests } from "app/system/devTools/ignoreLogs"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks/useScreenDimensions"
+import React from "react"
 
 // @ts-expect-error
 // eslint-disable-next-line import/order

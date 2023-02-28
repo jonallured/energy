@@ -1,8 +1,8 @@
 import { BackButton, Flex } from "@artsy/palette-mobile"
 import { ReactNativeZoomableView } from "@openspacelabs/react-native-zoomable-view"
+import { CachedImage } from "app/system/wrappers/CachedImage"
 import { Modal } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { CachedImage } from "app/system/wrappers/CachedImage"
 
 interface ImageModalProps {
   isModalVisible: boolean

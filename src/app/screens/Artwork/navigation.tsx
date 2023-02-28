@@ -1,8 +1,8 @@
-import { Suspense } from "react"
 import { StackNav } from "app/Navigation"
 import { Artwork, SkeletonArtwork } from "app/screens/Artwork/Artwork"
 import { ArtworkWebView } from "app/screens/Artwork/ArtworkWebView"
 import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
+import { Suspense } from "react"
 
 export type ArtworkNavigationScreens = {
   Artwork: { slug: string; contextArtworkSlugs?: string[] }

@@ -1,6 +1,6 @@
-import { urlMiddleware } from "react-relay-network-modern/node8"
 import { unsafe__getAuth, unsafe__getEnvironment } from "app/system/store/GlobalStore"
 import { getUserAgent } from "app/utils/getUserAgent"
+import { urlMiddleware } from "react-relay-network-modern/node8"
 
 export const metaphysicsUrlMiddleware = () => {
   return urlMiddleware({

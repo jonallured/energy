@@ -1,8 +1,8 @@
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo"
-import { useEffect } from "react"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadRelayDataFromOfflineCache } from "app/system/sync/syncManager"
+import { useEffect } from "react"
 
 export const useNetworkStatusListener = () => {
   const { resetRelayEnvironment } = useSystemRelayEnvironment()

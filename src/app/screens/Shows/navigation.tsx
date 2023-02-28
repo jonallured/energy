@@ -1,7 +1,7 @@
-import { Suspense } from "react"
 import { StackNav } from "app/Navigation"
 import { ShowTabs, SkeletonShowTabs } from "app/screens/Shows/ShowTabs/ShowTabs"
 import { RetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
+import { Suspense } from "react"
 
 export type ShowsNavigationScreens = {
   ShowTabs: { slug: string }

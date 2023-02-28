@@ -1,7 +1,7 @@
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { FetchPolicy, GraphQLTaggedNode, VariablesOf, useLazyLoadQuery } from "react-relay"
 
 import { CacheConfig, OperationType, RenderPolicy } from "relay-runtime"
-import { GlobalStore } from "app/system/store/GlobalStore"
 
 /**
  * A wrapper around useLazyLoadQuery that uses the global fetch policy in order

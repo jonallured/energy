@@ -9,10 +9,6 @@ import {
 } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import * as MailComposer from "expo-mail-composer"
-import { useMemo, useRef } from "react"
-import { ActivityIndicator } from "react-native"
-import { graphql } from "react-relay"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import {
@@ -25,8 +21,12 @@ import { ScrollableScreensView } from "app/components/ScrollableScreensView/Scro
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
+import * as MailComposer from "expo-mail-composer"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { useMemo, useRef } from "react"
+import { ActivityIndicator } from "react-native"
+import { graphql } from "react-relay"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
 

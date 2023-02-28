@@ -1,6 +1,6 @@
+import { initFetchOrCatch } from "app/system/sync/utils/fetchOrCatch"
 import { fetchQuery, GraphQLTaggedNode } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { initFetchOrCatch } from "app/system/sync/utils/fetchOrCatch"
 
 jest.mock("react-relay")
 

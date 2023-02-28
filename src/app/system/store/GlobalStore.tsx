@@ -1,9 +1,9 @@
-import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
-import { Platform } from "react-native"
-import { Action, Middleware } from "redux"
 import { performMigrations } from "app/system/store/migrations"
 import { sanitize } from "app/system/store/persistence/sanitize"
 import { storageAdapter } from "app/system/store/persistence/storageAdapter"
+import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
+import { Platform } from "react-native"
+import { Action, Middleware } from "redux"
 import { GlobalStoreModel, getGlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 
 const STORE_VERSION = 0

@@ -1,6 +1,6 @@
+import { ScrollableScreenEntity } from "app/components/ScrollableScreensView/ScrollableScreensContext"
 import { useEffect, useState } from "react"
 import styled from "styled-components/native"
-import { ScrollableScreenEntity } from "app/components/ScrollableScreensView/ScrollableScreensContext"
 
 interface ScrollableLazyScreenProps {
   screen: ScrollableScreenEntity

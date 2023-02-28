@@ -7,9 +7,6 @@ import {
   useNavigation,
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { useEffect } from "react"
-import { TouchableOpacity } from "react-native"
-import SplashScreen from "react-native-splash-screen"
 import { AlbumsNavigation, AlbumNavigationScreens } from "app/screens/Albums/navigation"
 import { ArtistNavigation, ArtistNavigationScreens } from "app/screens/Artists/navigation"
 import { useWebViewCookies } from "app/screens/Artwork/ArtworkWebView"
@@ -27,6 +24,9 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { loadUrlMap } from "app/system/sync/fileCache"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { StatusBar } from "palette/organisms/StatusBar"
+import { useEffect } from "react"
+import { TouchableOpacity } from "react-native"
+import SplashScreen from "react-native-splash-screen"
 
 export type NavigationScreens = AuthNavigationScreens &
   AlbumNavigationScreens &

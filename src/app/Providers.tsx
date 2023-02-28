@@ -1,14 +1,14 @@
 import { Theme } from "@artsy/palette-mobile"
-import JotaiNexus from "jotai-nexus"
-import { useEffect } from "react"
-import { Appearance, StatusBar } from "react-native"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayProvider } from "app/system/relay/RelayProvider"
 import { GlobalStoreProvider, GlobalStore } from "app/system/store/GlobalStore"
 import { GlobalRetryErrorBoundary } from "app/system/wrappers/RetryErrorBoundary"
 import { SuspenseWrapper } from "app/system/wrappers/SuspenseWrapper"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import JotaiNexus from "jotai-nexus"
+import { useEffect } from "react"
+import { Appearance, StatusBar } from "react-native"
+import { SafeAreaProvider } from "react-native-safe-area-context"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface ProviderProps {
   relayEnvironment?: RelayModernEnvironment

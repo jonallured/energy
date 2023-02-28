@@ -1,9 +1,5 @@
 import { Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { zip } from "lodash"
-import { useWindowDimensions } from "react-native"
-import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtistListItem } from "app/components/Items/ArtistListItem"
@@ -12,7 +8,11 @@ import { TabsFlatList } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { zip } from "lodash"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
+import { graphql } from "react-relay"
 
 export const Artists = () => {
   const space = useSpace()

@@ -1,7 +1,7 @@
-import { action, Action, State } from "easy-peasy"
 import { CURRENT_APP_VERSION } from "app/system/store/migrations"
 import { migrateState } from "app/system/store/persistence/migrateState"
 import { assignDeep } from "app/system/store/persistence/sanitize"
+import { action, Action, State } from "easy-peasy"
 import { AlbumsModel, getAlbumsModel } from "./AlbumsModel"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"

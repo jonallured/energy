@@ -1,11 +1,11 @@
 import { RenderResult } from "@testing-library/react-native"
+import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 import { QueryRenderer } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
-import { mockEnvironmentPayload } from "app/utils/test/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 
 export interface SetupTestWrapperProps<T extends OperationType> {
   Component: React.ComponentType<any>

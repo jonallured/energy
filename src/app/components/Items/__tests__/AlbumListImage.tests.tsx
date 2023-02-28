@@ -1,9 +1,9 @@
 import { waitFor } from "@testing-library/react-native"
-import { Image } from "react-native"
-import { fetchQuery } from "react-relay"
 import { AlbumListImage } from "app/components/Items/AlbumListImage"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
+import { Image } from "react-native"
+import { fetchQuery } from "react-relay"
 
 jest.mock("react-relay", () => ({
   ...jest.requireActual("react-relay"),

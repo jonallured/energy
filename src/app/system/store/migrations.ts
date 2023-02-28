@@ -1,5 +1,5 @@
-import { Store } from "easy-peasy"
 import { GlobalStoreModel } from "app/system/store/Models/GlobalStoreModel"
+import { Store } from "easy-peasy"
 
 /**
  * IMPORTANT

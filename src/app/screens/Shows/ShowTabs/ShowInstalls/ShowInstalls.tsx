@@ -1,8 +1,5 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
-import { isEqual } from "lodash"
-import { useFocusedTab } from "react-native-collapsible-tab-view"
-import { graphql } from "react-relay"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
@@ -12,6 +9,9 @@ import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { imageSize } from "app/utils/imageSize"
+import { isEqual } from "lodash"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
+import { graphql } from "react-relay"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
   const installsData = useSystemQueryLoader<ShowInstallsQuery>(showInstallsQuery, {

@@ -1,8 +1,8 @@
 import { waitFor } from "@testing-library/react-native"
-import { graphql } from "react-relay"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("ArtworkGridItem", () => {
   const { renderWithRelay } = setupTestWrapper({

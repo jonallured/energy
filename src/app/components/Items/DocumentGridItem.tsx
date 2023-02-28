@@ -1,12 +1,12 @@
 import { CheckCircleFillIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { last } from "lodash"
-import { useEffect, useState } from "react"
-import { ActivityIndicator } from "react-native"
-import FileViewer from "react-native-file-viewer"
 import { FileTypeIcon } from "app/components/FileTypeIcon"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { downloadFileToCache, useLocalUri } from "app/system/sync/fileCache"
 import { formatBytes } from "app/utils/formatBytes"
+import { last } from "lodash"
+import { useEffect, useState } from "react"
+import { ActivityIndicator } from "react-native"
+import FileViewer from "react-native-file-viewer"
 
 export interface DocumentEntity {
   id: string

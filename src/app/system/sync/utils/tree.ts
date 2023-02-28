@@ -1,6 +1,6 @@
+import { forEachAsyncLinear } from "app/system/sync/utils/asyncIterators"
 import prettyBytes from "pretty-bytes"
 import { DocumentDirectoryPath, stat, readdir } from "react-native-fs"
-import { forEachAsyncLinear } from "app/system/sync/utils/asyncIterators"
 
 export type TreeFile = { name: string; size: number; prettySize: string }
 export type TreeDirectory = TreeFile & { children: Record<string, TreeNode> }

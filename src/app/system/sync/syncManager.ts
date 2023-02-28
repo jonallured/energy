@@ -1,8 +1,4 @@
 import { PromisePool, OnProgressCallback } from "@supercharge/promise-pool"
-import { compact, once, uniqBy } from "lodash"
-import { Alert } from "react-native"
-import { RelayNetworkLayerRequest } from "react-relay-network-modern"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import {
   ArtistArtworksQuery,
   ArtistArtworksQuery$data,
@@ -44,6 +40,10 @@ import { RelayContextProps } from "app/system/relay/RelayProvider"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { imageSize } from "app/utils/imageSize"
+import { compact, once, uniqBy } from "lodash"
+import { Alert } from "react-native"
+import { RelayNetworkLayerRequest } from "react-relay-network-modern"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
 import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 

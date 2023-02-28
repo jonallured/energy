@@ -1,7 +1,7 @@
-import _ from "lodash"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { CURRENT_APP_VERSION, Versions } from "app/system/store/migrations"
 import { migrateState } from "app/system/store/persistence/migrateState"
+import _ from "lodash"
 
 describe("migrateState", () => {
   it("leaves an object untouched if there are no migrations pending", () => {

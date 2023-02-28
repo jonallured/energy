@@ -25,17 +25,8 @@ module.exports = {
   // TODO: Fix issue with it trying to lint root-level files
   parserOptions: { project: "./tsconfig.json" },
   settings: {
-    // This is needed to make eslint happy with name aliases
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"],
-    },
-    "import/resolver": {
-      typescript: {
-        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
-        // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
-        // use <root>/path/to/folder/tsconfig.json
-        project: "<root>/tsconfig.json",
-      },
+    react: {
+      version: "detect",
     },
   },
   rules: {

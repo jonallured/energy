@@ -1,7 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
+import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
-import { TabsScrollView } from "app/components/Tabs/TabsContent"
 
 type ArtsySuspenseProps = {
   withTabs?: boolean

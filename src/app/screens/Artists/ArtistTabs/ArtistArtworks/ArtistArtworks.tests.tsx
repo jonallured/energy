@@ -1,9 +1,9 @@
 import { waitFor } from "@testing-library/react-native"
-import { range } from "lodash"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistArtworks } from "app/screens/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
+import { range } from "lodash"
 
 jest.mock("react-native-collapsible-tab-view", () => ({
   ...jest.requireActual("react-native-collapsible-tab-view"),

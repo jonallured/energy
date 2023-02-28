@@ -1,7 +1,5 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { zip } from "lodash"
-import { FlatList } from "react-native"
 import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtistListItem } from "app/components/Items/ArtistListItem"
@@ -9,7 +7,9 @@ import { artistsQuery } from "app/screens/Artists/Artists"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { zip } from "lodash"
 import { Screen } from "palette"
+import { FlatList } from "react-native"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
   NavigationScreens,

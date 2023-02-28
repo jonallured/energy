@@ -1,10 +1,10 @@
 import { Spacer, Button, Text, Touchable, Flex, ArrowRightIcon, Join } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useState } from "react"
-import { getVersion } from "react-native-device-info"
 import { NavigationScreens } from "app/Navigation"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
+import { useState } from "react"
+import { getVersion } from "react-native-device-info"
 
 export const Settings = () => {
   const appVersion = getVersion()

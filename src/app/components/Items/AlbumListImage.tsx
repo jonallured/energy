@@ -1,11 +1,11 @@
-import { ImageProps } from "react-native"
-import { graphql } from "react-relay"
 import { AlbumListImageQuery } from "__generated__/AlbumListImageQuery.graphql"
 import { useSystemFetchQuery } from "app/system/relay/useSystemFetchQuery"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { imageSize } from "app/utils/imageSize"
+import { ImageProps } from "react-native"
+import { graphql } from "react-relay"
 
 interface AlbumListImageProps {
   slug: string

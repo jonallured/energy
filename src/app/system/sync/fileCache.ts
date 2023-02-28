@@ -1,3 +1,4 @@
+import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { atom, useAtom } from "jotai"
 import { readAtom, writeAtom } from "jotai-nexus"
 import { parse } from "qs"
@@ -12,7 +13,6 @@ import {
   downloadFile,
 } from "react-native-fs"
 import { v4 as uuidv4 } from "uuid"
-import { useIsOnline } from "app/utils/hooks/useIsOnline"
 
 const PATH_CACHE = DocumentDirectoryPath + "/cache"
 const PATH_CACHE_IMAGES = PATH_CACHE + "/images"

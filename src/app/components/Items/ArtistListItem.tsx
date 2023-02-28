@@ -1,8 +1,8 @@
 import { Avatar, Flex, Text } from "@artsy/palette-mobile"
-import { isTablet } from "react-native-device-info"
-import { graphql, useFragment } from "react-relay"
 import { ArtistListItem_artist$key } from "__generated__/ArtistListItem_artist.graphql"
 import { useLocalUri } from "app/system/sync/fileCache"
+import { isTablet } from "react-native-device-info"
+import { graphql, useFragment } from "react-relay"
 
 interface ArtistListItemProps {
   artist: ArtistListItem_artist$key

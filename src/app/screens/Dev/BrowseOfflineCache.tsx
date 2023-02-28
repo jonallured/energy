@@ -1,9 +1,9 @@
 import { Separator, Text } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import { useEffect, useState } from "react"
-import { DocumentDirectoryPath } from "react-native-fs"
 import { isTreeDirectory, tree, TreeNode } from "app/system/sync/utils/tree"
 import { Screen } from "palette"
+import { useEffect, useState } from "react"
+import { DocumentDirectoryPath } from "react-native-fs"
 
 export const BrowseOfflineCache = () => {
   const [files, setFiles] = useState<Record<string, TreeNode>>({})

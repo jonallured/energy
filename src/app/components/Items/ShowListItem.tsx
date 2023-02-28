@@ -1,8 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { isTablet } from "react-native-device-info"
-import { graphql, useFragment } from "react-relay"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
 import { CachedImage } from "app/system/wrappers/CachedImage"
+import { isTablet } from "react-native-device-info"
+import { graphql, useFragment } from "react-relay"
 
 interface ShowListItemProps {
   show: ShowListItem_show$key

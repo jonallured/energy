@@ -1,5 +1,5 @@
-import { current, produce, setAutoFreeze } from "immer"
 import { CURRENT_APP_VERSION, energyAppMigrations, Migrations } from "app/system/store/migrations"
+import { current, produce, setAutoFreeze } from "immer"
 
 export function migrateState<State extends { version: number }>({
   state,

@@ -1,6 +1,6 @@
+import { GlobalStore, unsafe__getEnvironment } from "app/system/store/GlobalStore"
 import { Alert } from "react-native"
 import { Middleware } from "react-relay-network-modern/node8"
-import { GlobalStore, unsafe__getEnvironment } from "app/system/store/GlobalStore"
 
 let willShowAlert = false
 

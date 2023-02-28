@@ -1,3 +1,5 @@
+import { ImagePlaceholder } from "app/components/ImagePlaceholder"
+import { useLocalUri } from "app/system/sync/fileCache"
 import { useRef } from "react"
 import { Image, ImageProps, Platform } from "react-native"
 import Animated, {
@@ -6,8 +8,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
-import { ImagePlaceholder } from "app/components/ImagePlaceholder"
-import { useLocalUri } from "app/system/sync/fileCache"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
   placeholderHeight: number | null | undefined

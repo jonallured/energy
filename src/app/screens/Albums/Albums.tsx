@@ -1,13 +1,13 @@
 import { Button, Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useWindowDimensions } from "react-native"
-import { isTablet } from "react-native-device-info"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { NavigationScreens } from "app/Navigation"
 import { AlbumListItem } from "app/components/Items/AlbumListItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsFlatList } from "app/components/Tabs/TabsContent"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { useWindowDimensions } from "react-native"
+import { isTablet } from "react-native-device-info"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const Albums = () => {
   const space = useSpace()

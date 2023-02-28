@@ -1,3 +1,4 @@
+import { useAnimatedHeaderScrolling } from "palette/organisms/Screen/hooks"
 import {
   FlatList,
   FlatListProps,
@@ -7,7 +8,6 @@ import {
   SectionListProps,
 } from "react-native"
 import { Tabs, useCurrentTabScrollY } from "react-native-collapsible-tab-view"
-import { useAnimatedHeaderScrolling } from "palette/organisms/Screen/hooks"
 
 // When testing with react-native-collapsible-tab-view and reanimated,
 // we had problems making the tests run in jest.

@@ -1,10 +1,5 @@
 import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { useCallback, useMemo, useRef, useState } from "react"
-import { Linking, Platform } from "react-native"
-import QRCode from "react-native-qrcode-generator"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql } from "react-relay"
 import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
 import { ImageModal } from "app/components/ImageModal"
 import { ImagePlaceholder } from "app/components/ImagePlaceholder"
@@ -21,6 +16,11 @@ import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { imageSize } from "app/utils/imageSize"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { NAVBAR_HEIGHT } from "palette/organisms/Screen/notExposed/ActualHeader"
+import { useCallback, useMemo, useRef, useState } from "react"
+import { Linking, Platform } from "react-native"
+import QRCode from "react-native-qrcode-generator"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql } from "react-relay"
 
 const BOTTOM_SHEET_HEIGHT = 180
 

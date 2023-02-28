@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react-native"
-import { range } from "lodash"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
+import { range } from "lodash"
 import { ShowArtworks } from "./ShowArtworks"
 
 jest.mock("react-native-collapsible-tab-view", () => ({

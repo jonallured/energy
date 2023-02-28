@@ -1,8 +1,5 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
-import { difference } from "lodash"
-import { useEffect } from "react"
-import { graphql } from "react-relay"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
@@ -10,7 +7,9 @@ import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { difference } from "lodash"
+import { useEffect } from "react"
+import { graphql } from "react-relay"
 
 export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!

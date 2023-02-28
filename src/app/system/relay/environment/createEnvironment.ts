@@ -1,3 +1,4 @@
+import { showLoggerMiddleware, showPerfMiddleware } from "app/utils/loggers"
 import {
   cacheMiddleware,
   loggerMiddleware,
@@ -6,7 +7,6 @@ import {
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 import { RecordMap } from "relay-runtime/lib/store/RelayStoreTypes"
-import { showLoggerMiddleware, showPerfMiddleware } from "app/utils/loggers"
 
 const createNetworkLayer = () => {
   /**

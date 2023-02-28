@@ -1,13 +1,13 @@
 import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { useState } from "react"
-import { FlatList } from "react-native"
 import { NavigationScreens } from "app/Navigation"
 import { AlbumListItem } from "app/components/Items/AlbumListItem"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 import { useScreenBottomViewHeight } from "palette/organisms/Screen/atoms"
+import { useState } from "react"
+import { FlatList } from "react-native"
 
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 

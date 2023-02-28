@@ -1,10 +1,6 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { isEqual } from "lodash"
-import { useFocusedTab } from "react-native-collapsible-tab-view"
-import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
@@ -16,6 +12,10 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
+import { isEqual } from "lodash"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
+import { isTablet } from "react-native-device-info"
+import { graphql } from "react-relay"
 
 export const ShowArtworks = ({ slug }: { slug: string }) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
