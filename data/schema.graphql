@@ -11285,6 +11285,14 @@ type Me implements Node {
     # Filter shows by chronological event status
     status: EventStatus
   ): ShowConnection
+
+  # A list of artworks similar to recently viewed artworks.
+  similarToRecentlyViewedConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   type: String
 
   # The count of conversations with unread messages.
