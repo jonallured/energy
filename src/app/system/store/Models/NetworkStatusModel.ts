@@ -25,6 +25,12 @@ export const getNetworkStatusModel = (): NetworkStatusModel => ({
     state.isOnline = isOnline
   }),
 
+  setRelayFetchKey: action((state) => {
+    state.relayFetchKey += 1
+  }),
+
+  // Listeners
+
   /**
    * When the network status changes, update the fetch policy for our relay
    * system query renderers.
@@ -39,8 +45,4 @@ export const getNetworkStatusModel = (): NetworkStatusModel => ({
       }
     }
   ),
-
-  setRelayFetchKey: action((state) => {
-    state.relayFetchKey += 1
-  }),
 })

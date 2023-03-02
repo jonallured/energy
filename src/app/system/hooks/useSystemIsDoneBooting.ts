@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 export const useSystemIsDoneBooting = () => {
   const isStoreRehydrated = useStoreRehydrated() // from easy-peasy persistence
   const isDonePerformingMigrations = GlobalStore.useAppState(
-    (state) => state.sessionState.isDonePerformingMigrations
+    (state) => state.system.sessionState.isDonePerformingMigrations
   )
   const [isDoneBooting, setIsDoneBooting] = useState(false)
 

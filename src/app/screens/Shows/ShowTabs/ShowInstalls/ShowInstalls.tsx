@@ -1,15 +1,15 @@
-import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { Portal } from "app/components/Portal"
-import { SelectMode } from "app/components/SelectMode"
+import { isAllSelected, isSelected, SelectMode } from "app/components/SelectMode"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemInstall } from "app/system/store/Models/SelectModeModel"
+import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
 import { imageSize } from "app/utils/imageSize"
-import { isEqual } from "lodash"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
 
@@ -19,19 +19,14 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
     imageSize,
   })
 
-  const installs = installsData.show?.images ?? []
-  const space = useSpace()
+  const installs = (installsData.show?.images ?? []) as SelectedItemInstall[]
 
-  const selectedInstalls = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.installs
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
   )
 
   const activeTab = useFocusedTab()
-
-  const allSelected = isEqual(
-    new Set(selectedInstalls),
-    new Set(installs.map((i) => i!.resized?.url))
-  )
+  const allSelected = isAllSelected(selectedItems, installs)
 
   return (
     <>
@@ -39,13 +34,10 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
         <SelectMode
           allSelected={allSelected}
           selectAll={() => {
-            GlobalStore.actions.selectMode.setSelectedItems({
-              type: "install",
-              items: installs.map((i) => i!.resized!.url),
-            })
+            GlobalStore.actions.selectMode.selectItems(installs)
           }}
           unselectAll={() => {
-            GlobalStore.actions.selectMode.setSelectedItems({ type: "install", items: [] })
+            GlobalStore.actions.selectMode.clearSelectedItems()
           }}
         />
       </Portal>
@@ -53,23 +45,15 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
       <TabsScrollView>
         <MasonryList
           testID="show-installs-list"
-          contentContainerStyle={{
-            marginTop: space(2),
-            paddingHorizontal: space(2),
-          }}
+          contentContainerStyle={getContentContainerStyle(installs)}
           numColumns={2}
           data={installs}
           keyExtractor={(item: any, index: any) => item?.internalID ?? `${index}`}
           renderItem={({ item: showInstall }) => (
             <ArtworkImageGridItem
               url={showInstall?.resized?.url ?? ""}
-              onPress={() =>
-                void GlobalStore.actions.selectMode.toggleSelectedItem({
-                  type: "install",
-                  item: showInstall!.resized!.url,
-                })
-              }
-              selectedToAdd={selectedInstalls.includes(showInstall!.resized!.url)}
+              onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(showInstall)}
+              selectedToAdd={isSelected(selectedItems, showInstall)}
             />
           )}
           ListEmptyComponent={<ListEmptyComponent text="No show installs shots to display" />}
@@ -83,6 +67,7 @@ export const showInstallsQuery = graphql`
   query ShowInstallsQuery($slug: String!, $imageSize: Int!) {
     show(id: $slug) {
       images(default: true) {
+        __typename
         internalID
         resized(width: $imageSize, version: "normalized") {
           height

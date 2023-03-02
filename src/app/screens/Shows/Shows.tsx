@@ -1,4 +1,4 @@
-import { Touchable, useSpace } from "@artsy/palette-mobile"
+import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
@@ -8,13 +8,13 @@ import { TabsFlatList } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
 import { imageSize } from "app/utils/imageSize"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
 export const Shows = () => {
-  const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const data = useSystemQueryLoader<ShowsQuery>(showsQuery, { partnerID: partnerID!, imageSize })
@@ -28,7 +28,7 @@ export const Shows = () => {
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
-      contentContainerStyle={{ paddingBottom: space(2) }}
+      contentContainerStyle={getContentContainerStyle(shows)}
       renderItem={({ item: show }) => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (

@@ -1,6 +1,7 @@
 import { waitFor } from "@testing-library/react-native"
 import { AlbumListImage } from "app/components/Items/AlbumListImage"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { renderWithWrappers } from "app/utils/test/renderWithWrappers"
 import { Image } from "react-native"
 import { fetchQuery } from "react-relay"
@@ -38,18 +39,18 @@ describe("AlbumListImage", () => {
   })
 
   it("removes an artwork from an album if 404", async () => {
-    const artworkIdToRemove = "test-slug-1"
+    const artworkToRemove = { internalID: "test-slug-1" }
 
     __globalStoreTestUtils__?.injectState({
       albums: {
         albums: [
           {
             id: "test-album-1",
-            artworkIds: [artworkIdToRemove, "test-slug-2"],
+            items: [artworkToRemove, { internalID: "test-slug-2" }] as SelectedItemArtwork[],
           },
           {
             id: "test-album-2",
-            artworkIds: [artworkIdToRemove, "test-slug-3"],
+            items: [artworkToRemove, { internalID: "test-slug-3" }] as SelectedItemArtwork[],
           },
         ],
       },
@@ -61,13 +62,13 @@ describe("AlbumListImage", () => {
       }),
     }))
 
-    const screen = renderWithWrappers(<AlbumListImage slug={artworkIdToRemove} />)
+    const screen = renderWithWrappers(<AlbumListImage slug={artworkToRemove.internalID} />)
 
     await waitFor(() => {
       expect(screen.UNSAFE_queryAllByType(Image).length).toBe(0)
 
       __globalStoreTestUtils__?.getCurrentState().albums.albums.forEach((album) => {
-        expect(album.artworkIds).not.toContain(artworkIdToRemove)
+        expect(album.items).not.toContain(artworkToRemove)
       })
     })
   })

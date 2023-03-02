@@ -1,7 +1,6 @@
 import { BriefcaseIcon, Button, EnvelopeIcon, Flex, Text } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { ArtistTabsQuery } from "__generated__/ArtistTabsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import {
   BottomSheetModalRow,
@@ -11,19 +10,15 @@ import {
 import { PortalProvider } from "app/components/Portal"
 import { TabScreen } from "app/components/Tabs/TabScreen"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
+import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils/extractNodes"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
-import { imageSize } from "app/utils/imageSize"
-import * as MailComposer from "expo-mail-composer"
 import { Screen } from "palette"
 import { useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql } from "react-relay"
 import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
 import { ArtistShows } from "./ArtistShows/ArtistShows"
@@ -35,28 +30,16 @@ export const ArtistTabs = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
-
   const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
-
   const isOnline = useIsOnline()
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const selectedWorks = GlobalStore.useAppState((state) => state.selectMode.sessionState.artworks)
-  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
-
-  const oneArtworkSubject = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)
-  const multipleArtworksBySameArtistSubject = GlobalStore.useAppState(
-    (state) => state.email.multipleArtworksBySameArtistSubject
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
   )
+  const { sendMail } = useMailComposer()
 
-  const artworkData = useSystemQueryLoader<ArtistTabsQuery>(artistTabsQuery, {
-    partnerID,
-    // TODO: Do we really need this for fetching artworks? The flatlist displays
-    // all of our artworks regardless. Revisit if we start doing lazy load.
-    artworkIDs: [], // selectedWorks,
-    imageSize,
-  })
-
-  const artworkInfo = extractNodes(artworkData.partner?.artworksConnection)
+  const shareByEmailHandler = async () => {
+    await sendMail()
+  }
 
   const addToButtonHandler = () => {
     bottomSheetRef.current?.showBottomSheetModal()
@@ -105,7 +88,7 @@ export const ArtistTabs = () => {
             Selected items: {selectedItems.length}
           </Text>
           <Button block onPress={addToButtonHandler}>
-            Add to or email...
+            Add to Album or Email
           </Button>
         </Flex>
       )}
@@ -120,86 +103,16 @@ export const ArtistTabs = () => {
               label="Add to Album"
               onPress={() => {
                 saveNavBeforeAddingToAlbum()
-                navigation.navigate("AddItemsToAlbum", { closeBottomSheetModal })
+                navigation.navigate("AddItemsToAlbum", {
+                  closeBottomSheetModal,
+                  artworksToAdd: selectedItems,
+                })
               }}
             />
             <BottomSheetModalRow
               Icon={<EnvelopeIcon fill="onBackgroundHigh" />}
               label="Share by Email"
-              onPress={() => {
-                if (selectedWorks.length == 1) {
-                  const { title, artistNames, price, medium, mediumType, dimensions, image, date } =
-                    artworkInfo[0]!
-                  console.log(title, artistNames, artworkInfo[0])
-                  const bodyHTML = `
-                    <html>
-                      <body>
-                        <img
-                          height="60%"
-                          src="${image?.resized?.url ? image?.resized?.url : ""}"
-                        />
-                        <h1>${artistNames ?? ""}</h1>
-                        <p>${title ?? ""}, ${date ? date : ""}</p>
-                        <p>${price ?? ""}</p>
-                        <p>${mediumType?.name ?? ""}</p>
-                        <p>${medium ?? ""}</p>
-                        <p>${dimensions?.cm ?? ""}</p>
-                      </body>
-                    </html>
-                      `
-                  MailComposer.composeAsync({
-                    subject: oneArtworkSubject
-                      .replace("$title", title ?? "")
-                      .replace("$artist", artistNames ?? ""),
-                    isHtml: true,
-                    body: bodyHTML,
-                  })
-                    .then(() => {})
-                    .catch((err) => {
-                      console.log("err", err)
-                    })
-                } else if (selectedWorks.length > 1) {
-                  const artistNames = artworkInfo[0].artistNames
-                  //construct many artworks part
-                  let artworksInfoInHTML = ""
-
-                  artworkInfo.map((artwork) => {
-                    const { title, price, medium, mediumType, dimensions, image, date } = artwork
-                    artworksInfoInHTML += `
-                      <img
-                      height="60%"
-                      src="${image?.resized?.url ?? ""}"
-                      />
-                      <p>${title ?? ""}, ${date ?? ""}</p>
-                      <p>${price ?? ""}</p>
-                      <p>${mediumType?.name ?? ""}</p>
-                      <p>${medium ?? ""}</p>
-                      <p>${dimensions?.cm ?? ""}</p>
-                      `
-                  })
-                  const bodyHTML = `
-                    <html>
-                      <body>
-                        <h1>${artistNames ?? ""}</h1>
-                        ${artworksInfoInHTML}
-                      </body>
-                    </html>
-                      `
-
-                  MailComposer.composeAsync({
-                    subject: multipleArtworksBySameArtistSubject.replace(
-                      "$artist",
-                      artistNames ?? ""
-                    ),
-                    isHtml: true,
-                    body: bodyHTML,
-                  })
-                    .then(() => {})
-                    .catch((err) => {
-                      console.log("err", err)
-                    })
-                }
-              }}
+              onPress={shareByEmailHandler}
               isLastRow
             />
           </>
@@ -208,39 +121,6 @@ export const ArtistTabs = () => {
     </BottomSheetModalProvider>
   )
 }
-
-export const artistTabsQuery = graphql`
-  query ArtistTabsQuery($partnerID: String!, $artworkIDs: [String], $imageSize: Int!) {
-    partner(id: $partnerID) {
-      artworksConnection(first: 3, artworkIDs: $artworkIDs, includeUnpublished: true) {
-        edges {
-          node {
-            artistNames
-            internalID
-            title
-            image {
-              resized(width: $imageSize, version: "normalized") {
-                url
-              }
-            }
-            title
-            price
-            date
-            medium
-            mediumType {
-              name
-            }
-            dimensions {
-              in
-              cm
-            }
-            internalID
-          }
-        }
-      }
-    }
-  }
-`
 
 export const SkeletonArtistTabs = () => {
   const isOnline = useIsOnline()

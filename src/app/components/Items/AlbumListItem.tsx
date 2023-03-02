@@ -1,11 +1,13 @@
 import { Spacer, Flex, Text, SpacingUnitDSValue } from "@artsy/palette-mobile"
 import { Album } from "app/system/store/Models/AlbumsModel"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { isTablet } from "react-native-device-info"
 import { AlbumListImage } from "./AlbumListImage"
 
 export const AlbumListItem = ({ album }: { album: Album }) => {
   const overlapSize: SpacingUnitDSValue = 2
-  const first3Artworks = album.artworkIds.slice(0, 3)
+  const albumItems = album.items ?? []
+  const first3Artworks = albumItems.slice(0, 3)
   const variant = isTablet() ? "sm" : "xs"
 
   return (
@@ -27,21 +29,26 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
             mr={-overlapSize as SpacingUnitDSValue}
           />
         )}
-        {first3Artworks.reverse().map((artworkId) => (
-          <AlbumListImage
-            slug={artworkId}
-            key={artworkId}
-            style={{
-              flex: 1,
-              marginRight: -overlapSize,
-            }}
-          />
-        ))}
+        {first3Artworks.reverse().map((item) => {
+          if (!item) return null
+          const artwork = item as SelectedItemArtwork
+
+          return (
+            <AlbumListImage
+              slug={artwork.slug}
+              key={artwork.internalID}
+              style={{
+                flex: 1,
+                marginRight: -overlapSize,
+              }}
+            />
+          )
+        })}
       </Flex>
       <Flex mt={1}>
         <Text variant={variant}>{album.name}</Text>
         <Text variant={variant} color="onBackgroundMedium">
-          {album.artworkIds.length} Artworks
+          {albumItems.length} {albumItems.length === 1 ? "Item" : "Items"}
         </Text>
       </Flex>
       <Spacer y={1} />

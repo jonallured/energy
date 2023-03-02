@@ -26,8 +26,11 @@ interface GlobalStoreStateModel {
   // Meta state / actions
   version: number
   performMigrations: Action<this>
-  sessionState: {
-    isDonePerformingMigrations: boolean
+
+  system: {
+    sessionState: {
+      isDonePerformingMigrations: boolean
+    }
   }
 }
 
@@ -39,6 +42,12 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
+  system: {
+    sessionState: {
+      isDonePerformingMigrations: false,
+    },
+  },
+
   version: CURRENT_APP_VERSION,
 
   albums: getAlbumsModel(),
@@ -58,12 +67,9 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   // Migrates the locally persisted state to the latest version
   performMigrations: action((state) => {
     migrateState({ state })
-    state.sessionState.isDonePerformingMigrations = true
-  }),
 
-  sessionState: {
-    isDonePerformingMigrations: false,
-  },
+    state.system.sessionState.isDonePerformingMigrations = true
+  }),
 
   // For testing only. noop otherwise.
   __inject: __TEST__

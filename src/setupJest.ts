@@ -18,6 +18,8 @@ global.clearImmediate = jest.fn()
 
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+
 jest.mock("react-native-config", () => {
   const mockConfig = {
     // 👇 examples until we actually have some for energy

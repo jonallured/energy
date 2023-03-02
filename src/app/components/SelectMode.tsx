@@ -1,5 +1,7 @@
 import { Button, Flex } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItem } from "app/system/store/Models/SelectModeModel"
+import { isEqual } from "lodash"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -50,4 +52,19 @@ export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, 
       </Button>
     </Flex>
   )
+}
+
+export const isAllSelected = (selectedItems: SelectedItem[], items: SelectedItem[]) => {
+  const allSelected = isEqual(
+    new Set(selectedItems.map((item) => item?.internalID)),
+    new Set(items.map((item) => item?.internalID))
+  )
+  return allSelected
+}
+
+export const isSelected = (selectedItems: SelectedItem[], item: SelectedItem) => {
+  const isSelected = !!selectedItems.find(
+    (selectedItem) => selectedItem?.internalID === item?.internalID
+  )
+  return isSelected
 }

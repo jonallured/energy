@@ -6,19 +6,22 @@ import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { Portal } from "app/components/Portal"
-import { SelectMode } from "app/components/SelectMode"
+import { isAllSelected, isSelected, SelectMode } from "app/components/SelectMode"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
-import { isEqual } from "lodash"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
-export const ArtistArtworks = ({ slug }: { slug: string }) => {
+interface ArtistArtworkProps {
+  slug: string
+}
+
+export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
@@ -33,14 +36,14 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
-  const selectedArtworkIds = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.artworks
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
   )
 
   const space = useSpace()
 
-  const selectArtworkHandler = (artwork: string) => {
-    GlobalStore.actions.selectMode.toggleSelectedItem({ type: "artwork", item: artwork })
+  const selectArtworkHandler = (artwork: (typeof artworks)[0]) => {
+    GlobalStore.actions.selectMode.toggleSelectedItem(artwork)
   }
 
   // Filterering based on presentation mode
@@ -48,11 +51,7 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
   const numColumns = isTablet() ? 3 : 2
 
   const activeTab = useFocusedTab()
-
-  const allSelected = isEqual(
-    new Set(selectedArtworkIds),
-    new Set(presentedArtworks.map((a) => a.internalID))
-  )
+  const allSelected = isAllSelected(selectedItems, presentedArtworks)
 
   return (
     <>
@@ -60,16 +59,10 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
         <SelectMode
           allSelected={allSelected}
           selectAll={() => {
-            GlobalStore.actions.selectMode.setSelectedItems({
-              type: "artwork",
-              items: artworks.map((a) => a.internalID),
-            })
+            GlobalStore.actions.selectMode.selectItems(artworks)
           }}
           unselectAll={() => {
-            GlobalStore.actions.selectMode.setSelectedItems({
-              type: "artwork",
-              items: [],
-            })
+            GlobalStore.actions.selectMode.clearSelectedItems()
           }}
         />
       </Portal>
@@ -89,13 +82,13 @@ export const ArtistArtworks = ({ slug }: { slug: string }) => {
                 artwork={artwork}
                 onPress={() =>
                   isSelectModeActive
-                    ? selectArtworkHandler(artwork.internalID)
+                    ? selectArtworkHandler(artwork)
                     : navigation.navigate("Artwork", {
                         slug: artwork.slug,
                         contextArtworkSlugs: artworkSlugs,
                       })
                 }
-                selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+                selectedToAdd={isSelected(selectedItems, artwork)}
                 pl={i % numColumns === 0 ? undefined : 1}
                 pr={i % numColumns === numColumns - 1 ? undefined : 1}
               />
@@ -115,11 +108,16 @@ export const artistArtworksQuery = graphql`
       artworksConnection(first: 100, artistID: $slug, includeUnpublished: true) {
         edges {
           node {
-            internalID
-            slug
-            published
-            availability
+            ...Artwork_artworkProps @relay(mask: false)
             ...ArtworkGridItem_artwork @arguments(imageSize: $imageSize)
+
+            image {
+              resized(width: $imageSize, version: "normalized") {
+                height
+                url
+              }
+              aspectRatio
+            }
           }
         }
       }

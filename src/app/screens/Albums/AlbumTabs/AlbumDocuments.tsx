@@ -1,4 +1,3 @@
-import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
 import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
@@ -7,13 +6,13 @@ import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
 import { difference } from "lodash"
 import { useEffect } from "react"
 import { graphql } from "react-relay"
 
 export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const space = useSpace()
 
   const documentsData = useSystemQueryLoader<AlbumDocumentsQuery>(albumDocumentsQuery, {
     partnerID,
@@ -29,7 +28,7 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
     const documentIdsToRemove = difference(documentIDs, fetchedDocumentIds)
 
     documentIdsToRemove.forEach((documentId) => {
-      GlobalStore.actions.albums.removeDocumentFromAlbums({ documentId })
+      GlobalStore.actions.albums.removeItemFromAlbums(documentId)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentIDs])
@@ -37,10 +36,7 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
   return (
     <TabsScrollView>
       <MasonryList
-        contentContainerStyle={{
-          marginTop: space(2),
-          paddingHorizontal: space(2),
-        }}
+        contentContainerStyle={getContentContainerStyle(documents)}
         numColumns={2}
         data={documents}
         renderItem={({ item: document }) => (

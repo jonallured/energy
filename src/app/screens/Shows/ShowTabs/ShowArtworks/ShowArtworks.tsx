@@ -5,14 +5,13 @@ import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { Portal } from "app/components/Portal"
-import { SelectMode } from "app/components/SelectMode"
+import { isAllSelected, isSelected, SelectMode } from "app/components/SelectMode"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
-import { isEqual } from "lodash"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -33,16 +32,12 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
-  const selectedArtworkIds = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.artworks
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
   )
 
   const activeTab = useFocusedTab()
-
-  const allSelected = isEqual(
-    new Set(selectedArtworkIds),
-    new Set(presentedArtworks.map((a) => a.internalID))
-  )
+  const allSelected = isAllSelected(selectedItems, presentedArtworks)
 
   return (
     <>
@@ -50,16 +45,10 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
         <SelectMode
           allSelected={allSelected}
           selectAll={() => {
-            GlobalStore.actions.selectMode.setSelectedItems({
-              type: "artwork",
-              items: artworks.map((a) => a.internalID),
-            })
+            GlobalStore.actions.selectMode.selectItems(artworks)
           }}
           unselectAll={() => {
-            GlobalStore.actions.selectMode.setSelectedItems({
-              type: "artwork",
-              items: [],
-            })
+            GlobalStore.actions.selectMode.clearSelectedItems()
           }}
         />
       </Portal>
@@ -77,16 +66,13 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
               artwork={artwork}
               onPress={() =>
                 isSelectModeActive
-                  ? GlobalStore.actions.selectMode.toggleSelectedItem({
-                      type: "artwork",
-                      item: artwork.internalID,
-                    })
+                  ? GlobalStore.actions.selectMode.toggleSelectedItem(artwork)
                   : navigation.navigate("Artwork", {
                       slug: artwork.slug,
                       contextArtworkSlugs: artworkSlugs,
                     })
               }
-              selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+              selectedToAdd={isSelected(selectedItems, artwork)}
               style={{
                 marginLeft: i % 2 === 0 ? 0 : space(1),
                 marginRight: i % 2 === 0 ? space(1) : 0,
@@ -106,11 +92,16 @@ export const showArtworksQuery = graphql`
       artworksConnection(first: 100) {
         edges {
           node {
-            internalID
-            slug
-            published
-            availability
+            ...Artwork_artworkProps @relay(mask: false)
             ...ArtworkGridItem_artwork @arguments(imageSize: $imageSize)
+
+            image {
+              resized(width: $imageSize, version: "normalized") {
+                height
+                url
+              }
+              aspectRatio
+            }
           }
         }
       }

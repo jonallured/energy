@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { ARTNativeModules } from "app/native_modules/ARTNativeModules"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { Screen } from "palette"
 import { NativeModules } from "react-native"
 
@@ -33,15 +34,12 @@ export const DevMenu = () => {
           <Button block onPress={() => NativeModules.DevMenu.show()}>
             Show native dev menu
           </Button>
-          <Button
-            block
-            onPress={() => void ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}
-          >
+          <Button block onPress={() => ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}>
             Add native test albums
           </Button>
           <Button
             block
-            onPress={() => void ARTNativeModules.ARTAlbumMigrationModule.resetAlbumReadAttempts()}
+            onPress={() => ARTNativeModules.ARTAlbumMigrationModule.resetAlbumReadAttempts()}
           >
             Reset Album Read Attempts
           </Button>
@@ -53,13 +51,16 @@ export const DevMenu = () => {
                 albums.forEach((nativeAlbum) => {
                   const album = {
                     name: nativeAlbum.name,
-                    artworkIds: nativeAlbum.artworkIDs,
-                    installShotUrls: [],
-                    documentIds: [],
+                    items: nativeAlbum.artworkIDs.map((internalID) => ({
+                      __typename: "Artwork",
+                      internalID,
+                      slug: internalID,
+                    })) as SelectedItemArtwork[],
                   }
                   console.log("Got album name", album.name)
-                  console.log("Got album artworkIDs", album.artworkIds)
-                  console.log("Got album artworkIDs", album)
+                  console.log("Got album items", album.items)
+                  console.log("Got album", album)
+
                   GlobalStore.actions.albums.addAlbum(album)
                 })
               }

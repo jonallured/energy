@@ -12,27 +12,21 @@ import { FlatList } from "react-native"
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
-  const { closeBottomSheetModal, artworkIdToAdd } = useRoute<HomeTabsRoute>().params
+  const { closeBottomSheetModal, artworkToAdd, artworksToAdd } = useRoute<HomeTabsRoute>().params
   const bottomViewHeight = useScreenBottomViewHeight()
-
+  const space = useSpace()
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const [hasSavedNav, navigateToSaved] = useNavigationSavedForKey("before-adding-to-album")
+
+  const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
+
+  const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
-  const selectedArtworks = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.artworks
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
   )
-  const selectedInstalls = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.installs
-  )
-  const selectedDocuments = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.documents
-  )
-
-  const albums = GlobalStore.useAppState((state) => state.albums.albums)
-  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
-  const space = useSpace()
 
   const selectAlbumHandler = (albumId: string) => {
     if (!selectedAlbumIds.includes(albumId)) {
@@ -46,52 +40,31 @@ export const AddItemsToAlbum = () => {
   const addArtworkToTheSelectedAlbums = () => {
     try {
       if (isSelectModeActive) {
-        GlobalStore.actions.albums.addItemsInAlbums({
+        GlobalStore.actions.albums.addItemsToAlbums({
           albumIds: selectedAlbumIds,
-          artworkIdsToAdd: selectedArtworks,
-          installShotUrlsToAdd: selectedInstalls,
-          documentIdsToAdd: selectedDocuments,
+          items: selectedItems,
         })
-      } else if (artworkIdToAdd !== undefined) {
-        GlobalStore.actions.albums.addItemsInAlbums({
+      } else if (artworkToAdd !== undefined) {
+        GlobalStore.actions.albums.addItemsToAlbums({
           albumIds: selectedAlbumIds,
-          artworkIdsToAdd: [artworkIdToAdd],
-          installShotUrlsToAdd: [],
-          documentIdsToAdd: [],
+          items: [artworkToAdd],
         })
       }
-      hasSavedNav ? navigateToSaved() : navigation.goBack()
+
+      if (hasSavedNav) {
+        navigateToSaved()
+      } else {
+        navigation.goBack()
+      }
+
       closeBottomSheetModal?.()
+
       if (isSelectModeActive) {
         GlobalStore.actions.selectMode.cancelSelectMode()
       }
     } catch (error) {
       console.error(error)
     }
-  }
-
-  const renderButton = () => {
-    if (selectedAlbumIds.length <= 0) {
-      return (
-        <Button
-          block
-          onPress={() => {
-            navigation.navigate("CreateOrEditAlbum", {
-              mode: "create",
-              artworkIdToAdd,
-              closeBottomSheetModal,
-            })
-          }}
-        >
-          Create New Album
-        </Button>
-      )
-    }
-    return (
-      <Button block onPress={addArtworkToTheSelectedAlbums}>
-        Add
-      </Button>
-    )
   }
 
   return (
@@ -127,7 +100,28 @@ export const AddItemsToAlbum = () => {
           style={{ top: space(2), marginBottom: bottomViewHeight }}
         />
 
-        <Screen.BottomView>{renderButton()}</Screen.BottomView>
+        <Screen.BottomView>
+          {selectedAlbumIds.length <= 0 ? (
+            <Button
+              block
+              onPress={() => {
+                GlobalStore.actions.selectMode.cancelSelectMode()
+
+                navigation.navigate("CreateOrEditAlbum", {
+                  mode: "create",
+                  artworksToAdd: artworksToAdd! ?? [artworkToAdd],
+                  closeBottomSheetModal,
+                })
+              }}
+            >
+              Create New Album
+            </Button>
+          ) : (
+            <Button block onPress={addArtworkToTheSelectedAlbums}>
+              Add
+            </Button>
+          )}
+        </Screen.BottomView>
       </Screen.Body>
     </Screen>
   )

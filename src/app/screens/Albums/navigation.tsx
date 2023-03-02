@@ -4,21 +4,31 @@ import { AlbumTabs } from "app/screens/Albums/AlbumTabs/AlbumTabs"
 import { CreateOrEditAlbum } from "app/screens/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
 import { CreateOrEditAlbumChooseArtist } from "app/screens/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
 import { CreateOrEditAlbumChooseArtworks } from "app/screens/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtworks"
+import { SelectedItem } from "app/system/store/Models/SelectModeModel"
 
 export type AlbumNavigationScreens = {
   AddItemsToAlbum: {
-    artworkIdToAdd?: string
+    artworkToAdd?: SelectedItem
+    artworksToAdd?: SelectedItem[]
     closeBottomSheetModal?: () => void
   }
   AlbumTabs: { albumId: string }
   CreateOrEditAlbum: {
     mode: "create" | "edit"
     albumId?: string
-    artworkIdToAdd?: string
+    artworkToAdd?: SelectedItem
+    artworksToAdd?: SelectedItem[]
     closeBottomSheetModal?: () => void
   }
-  CreateOrEditAlbumChooseArtist: { mode: "create" | "edit"; albumId?: string }
-  CreateOrEditAlbumChooseArtworks: { mode: "create" | "edit"; slug: string; albumId?: string }
+  CreateOrEditAlbumChooseArtist: {
+    mode: "create" | "edit"
+    albumId?: string
+  }
+  CreateOrEditAlbumChooseArtworks: {
+    mode: "create" | "edit"
+    albumId?: string
+    slug: string
+  }
 }
 
 export const AlbumsNavigation = () => {

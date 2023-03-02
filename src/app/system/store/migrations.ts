@@ -10,9 +10,10 @@ import { Store } from "easy-peasy"
 export const Versions = {
   AddActivePartnerId: 1,
   MigrateActivePartnerIdToAuthModel: 2,
+  MigrateRefactoredSelectModeStore: 3,
 }
 
-export const CURRENT_APP_VERSION = Versions.MigrateActivePartnerIdToAuthModel
+export const CURRENT_APP_VERSION = Versions.MigrateRefactoredSelectModeStore
 
 export type Migrations = Record<number, (oldState: any) => any>
 
@@ -23,6 +24,44 @@ export const energyAppMigrations: Migrations = {
   [Versions.MigrateActivePartnerIdToAuthModel]: (state) => {
     state.auth.activePartnerId = ""
     delete state.activePartnerId
+  },
+  [Versions.MigrateRefactoredSelectModeStore]: (state) => {
+    delete state.sessionState
+
+    state.albums = {
+      albums: state.albums.albums?.map((album: any) => {
+        const artworks =
+          album.artworkIds?.map((slug: string) => ({
+            __typename: "Artwork",
+            internalID: slug,
+            slug,
+          })) ?? []
+        const documents =
+          album.documentIds?.map((slug: string) => ({
+            __typename: "Document",
+            internalID: slug,
+            slug,
+          })) ?? []
+        const installShots =
+          album.installShotUrls?.map((url: string) => ({
+            __typename: "Image",
+            internalID: null,
+            resized: {
+              height: null,
+              url,
+            },
+          })) ?? []
+
+        const migratedAlbum = {
+          createdAt: album?.createdAt,
+          id: album?.id,
+          name: album?.name,
+          items: [...artworks, ...documents, ...installShots],
+        }
+
+        return migratedAlbum
+      }),
+    }
   },
 }
 

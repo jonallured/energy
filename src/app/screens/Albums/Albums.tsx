@@ -29,15 +29,17 @@ export const Albums = () => {
           paddingBottom: space(2) + 60,
           paddingHorizontal: space(2),
         }}
-        renderItem={({ item: album }) => (
-          <Touchable
-            onPress={() => navigation.navigate("AlbumTabs", { albumId: album.id })}
-            key={album.id}
-            style={{ width: isTablet() ? (screenWidth - 60) / 2 : "auto" }}
-          >
-            <AlbumListItem album={album} />
-          </Touchable>
-        )}
+        renderItem={({ item: album }) => {
+          return (
+            <Touchable
+              onPress={() => navigation.navigate("AlbumTabs", { albumId: album.id })}
+              key={album.id}
+              style={{ width: isTablet() ? (screenWidth - 60) / 2 : "auto" }}
+            >
+              <AlbumListItem album={album} />
+            </Touchable>
+          )
+        }}
         keyExtractor={(item) => item?.id}
         ListEmptyComponent={<ListEmptyComponent />}
       />

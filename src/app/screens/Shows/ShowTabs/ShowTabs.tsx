@@ -10,6 +10,7 @@ import {
 } from "app/components/BottomSheetModalView"
 import { PortalProvider } from "app/components/Portal"
 import { TabScreen } from "app/components/Tabs/TabScreen"
+import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
@@ -33,7 +34,15 @@ export const ShowTabs = () => {
   const safeAreaInsets = useSafeAreaInsets()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
 
-  const selectedItems = GlobalStore.useAppState((state) => state.selectMode.sessionState.items)
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
+  )
+
+  const { sendMail } = useMailComposer()
+
+  const shareByEmailHandler = async () => {
+    await sendMail()
+  }
 
   return (
     <BottomSheetModalProvider>
@@ -74,7 +83,7 @@ export const ShowTabs = () => {
             Selected items: {selectedItems.length}
           </Text>
           <Button block onPress={bottomSheetRef.current?.showBottomSheetModal}>
-            Add to or email...
+            Add to Album or Email
           </Button>
         </Flex>
       )}
@@ -97,7 +106,7 @@ export const ShowTabs = () => {
             <BottomSheetModalRow
               Icon={<EnvelopeIcon fill="onBackgroundHigh" />}
               label="Share by Email"
-              onPress={() => console.log("Do nothing")}
+              onPress={shareByEmailHandler}
               isLastRow
             />
           </>
@@ -111,6 +120,19 @@ export const showTabsQuery = graphql`
   query ShowTabsQuery($slug: String!) {
     show(id: $slug) {
       name
+
+      artworksConnection(first: 99) {
+        edges {
+          node {
+            ...Artwork_artworkProps @relay(mask: false)
+            image {
+              resized(width: 200, version: "normalized") {
+                url
+              }
+            }
+          }
+        }
+      }
     }
   }
 `

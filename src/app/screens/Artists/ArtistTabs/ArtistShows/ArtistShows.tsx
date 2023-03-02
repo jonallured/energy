@@ -1,4 +1,4 @@
-import { Touchable, useSpace } from "@artsy/palette-mobile"
+import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
@@ -8,13 +8,13 @@ import { TabsFlatList } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
 import { imageSize } from "app/utils/imageSize"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
 export const ArtistShows = ({ slug }: { slug: string }) => {
-  const space = useSpace()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -34,10 +34,7 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
       columnWrapperStyle={
         isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
       }
-      contentContainerStyle={{
-        marginTop: space(2),
-        paddingHorizontal: space(2),
-      }}
+      contentContainerStyle={getContentContainerStyle(shows)}
       data={shows}
       numColumns={isTablet() ? 2 : 1}
       renderItem={({ item: show }) => (

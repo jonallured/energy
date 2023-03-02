@@ -23,7 +23,8 @@ export const AlbumListImage = ({ slug, style }: AlbumListImageProps) => {
     onError: (error) => {
       // If not found, assume a 404 and remove the artwork from the users album
       if ((error.message as string).includes("Artwork Not Found")) {
-        GlobalStore.actions.albums.removeArtworkFromAlbums({ artworkId: slug })
+        // FIXME; this should be internalID
+        GlobalStore.actions.albums.removeItemFromAlbums(slug)
       }
     },
   })

@@ -5,17 +5,16 @@ import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { CreateOrEditAlbumChooseArtworksQuery } from "__generated__/CreateOrEditAlbumChooseArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
+import { isAllSelected } from "app/components/SelectMode"
 import { artistArtworksQuery } from "app/screens/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
-import { intersection } from "lodash"
+import { differenceBy } from "lodash"
 import { Screen } from "palette"
-import { useState } from "react"
 import { graphql } from "react-relay"
-import { useArtworksByMode } from "./useArtworksByMode"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
   NavigationScreens,
@@ -44,57 +43,40 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
 
-  const selectedArtworks = useArtworksByMode(mode, slug)
-  const selectedArtworksForThisArtist = intersection(
-    artworks.map((artwork) => artwork.internalID),
-    selectedArtworks
+  const selectedItems = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.selectedItems
   )
-  const [selectedArtworkIds, setSelectedArtworkIds] = useState(selectedArtworksForThisArtist)
-  const [areAllArtworkSelected, setAreAllArtworkSelected] = useState<boolean>(false)
 
-  // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
-  const selectArtworkHandler = (artworkId: string) => {
-    if (!selectedArtworkIds.includes(artworkId)) {
-      setSelectedArtworkIds([...selectedArtworkIds, artworkId])
-      setAreAllArtworkSelected(false)
-    } else {
-      const unselectedArtworkIds = selectedArtworkIds.filter((id) => id !== artworkId)
-      setSelectedArtworkIds(unselectedArtworkIds)
-      setAreAllArtworkSelected(false)
-    }
-  }
-
-  const selectAllArtworkHandler = (toggleSelectAllArtwork: boolean) => {
-    if (toggleSelectAllArtwork) {
-      setSelectedArtworkIds(artworks.map((artwork) => artwork.internalID))
-    } else {
-      setSelectedArtworkIds([])
-    }
-    setAreAllArtworkSelected(toggleSelectAllArtwork)
-  }
-
   const selectArtworksToAddToAnAlbum = () => {
-    const currentArtworks = {
-      artistSlug: slug,
-      artworkIds: selectedArtworkIds,
-    }
-    if (mode === "edit" && albumId) {
-      GlobalStore.actions.albums.selectArtworksForExistingAlbum(currentArtworks)
-    } else {
-      GlobalStore.actions.albums.selectArtworksForNewAlbum(currentArtworks)
-    }
-    navigation.navigate("CreateOrEditAlbum", { mode, albumId })
+    GlobalStore.actions.selectMode.cancelSelectMode()
+
+    navigation.navigate("CreateOrEditAlbum", {
+      mode,
+      albumId,
+      artworksToAdd: selectedItems,
+    })
   }
+
+  const allSelected = isAllSelected(selectedItems, presentedArtworks)
 
   return (
     <Screen>
       <Screen.Header
         title={mode === "edit" ? "Save to Album" : "Add to Album"}
         rightElements={
-          <Button size="small" onPress={() => selectAllArtworkHandler(!areAllArtworkSelected)}>
-            {selectedArtworkIds.length === artworks.length ? "Unselect All" : "Select All"}
+          <Button
+            size="small"
+            onPress={() => {
+              if (allSelected) {
+                GlobalStore.actions.selectMode.clearSelectedItems()
+              } else {
+                GlobalStore.actions.selectMode.selectItems(artworks)
+              }
+            }}
+          >
+            {selectedItems.length === artworks.length ? "Unselect All" : "Select All"}
           </Button>
         }
       />
@@ -107,23 +89,14 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           data={presentedArtworks}
           keyExtractor={(item) => item?.internalID}
           renderItem={({ item: artwork, i }) => {
-            if (album?.artworkIds?.includes(artwork.internalID)) {
-              return (
-                <ArtworkGridItem
-                  artwork={artwork}
-                  disable
-                  style={{
-                    marginLeft: i % 2 === 0 ? 0 : space(1),
-                    marginRight: i % 2 === 0 ? space(1) : 0,
-                  }}
-                />
-              )
-            }
             return (
               <ArtworkGridItem
                 artwork={artwork}
-                onPress={() => selectArtworkHandler(artwork.internalID)}
-                selectedToAdd={selectedArtworkIds.includes(artwork.internalID)}
+                disable={!!album?.items?.find((item) => item?.internalID === artwork.internalID)}
+                onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(artwork)}
+                selectedToAdd={
+                  !!selectedItems.find((item) => item?.internalID === artwork.internalID)
+                }
                 style={{
                   marginLeft: i % 2 === 0 ? 0 : space(1),
                   marginRight: i % 2 === 0 ? space(1) : 0,
@@ -134,13 +107,9 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         />
         <Flex pt={1}>
           <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
-            Selected artworks for {artistNameData.artist?.name}: {selectedArtworkIds.length}
+            Selected artworks for {artistNameData.artist?.name}: {selectedItems.length}
           </Text>
-          <Button
-            block
-            onPress={selectArtworksToAddToAnAlbum}
-            disabled={selectedArtworkIds.length <= 0}
-          >
+          <Button block onPress={selectArtworksToAddToAnAlbum} disabled={selectedItems.length <= 0}>
             {mode === "edit" ? "Save" : "Add"}
           </Button>
         </Flex>

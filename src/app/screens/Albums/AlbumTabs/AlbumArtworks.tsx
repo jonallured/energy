@@ -1,6 +1,8 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
+import { NavigationScreens } from "app/Navigation"
 import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
@@ -12,6 +14,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
 export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const space = useSpace()
 
@@ -42,6 +45,11 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
               marginLeft: i % numColumns === 0 ? 0 : space(1),
               marginRight: i % numColumns === numColumns - 1 ? space(1) : 0,
             }}
+            onPress={() => {
+              navigation.navigate("Artwork", {
+                slug: artwork.slug,
+              })
+            }}
           />
         )}
         keyExtractor={(item) => item.internalID}
@@ -57,11 +65,8 @@ export const albumArtworksQuery = graphql`
       artworksConnection(first: 100, artworkIDs: $artworkIDs, includeUnpublished: true) {
         edges {
           node {
-            internalID
-            slug
-            published
-            availability
             ...ArtworkGridItem_artwork
+            ...Artwork_artworkProps @relay(mask: false)
           }
         }
       }

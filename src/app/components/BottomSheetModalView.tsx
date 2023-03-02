@@ -49,10 +49,16 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
 
     return (
       <BottomSheetModal
+        style={{
+          zIndex: 1,
+          shadowOpacity: 0.2,
+          shadowRadius: 5,
+          shadowOffset: { width: 0, height: 0 },
+        }}
         backdropComponent={() => (
           <Touchable
             style={{
-              opacity: 0.4,
+              opacity: 0.0,
               width: "100%",
               height: "100%",
               position: "absolute",
@@ -71,7 +77,7 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
           <Flex
             alignItems="center"
             justifyContent="center"
-            height="50"
+            height="50px"
             backgroundColor="surface"
             borderTopLeftRadius={10}
             borderTopRightRadius={10}
@@ -120,7 +126,12 @@ export const BottomSheetModalRow = ({
   isLastRow,
   onPress,
 }: BottomSheetModalRowProps) => (
-  <Touchable onPress={onPress} underlayColor="transparent" style={{ width: "100%", height: 100 }}>
+  <Touchable
+    onPress={onPress}
+    underlayColor="transparent"
+    activeOpacity={0.5}
+    style={{ width: "100%", height: 100 }}
+  >
     <Flex flex={1}>
       <Flex flexDirection="row" flex={1}>
         <Flex width={25} alignItems="center" justifyContent="center">

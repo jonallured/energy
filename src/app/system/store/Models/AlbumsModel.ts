@@ -1,122 +1,85 @@
+import { SelectedItem } from "app/system/store/Models/SelectModeModel"
 import { action, Action } from "easy-peasy"
-import { uniq } from "lodash"
+import { uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import uuid from "react-native-uuid"
-
-type ArtistSlug = string
-type ArtworkId = string
-type InstallShotUrl = string
-type DocumentId = string
 
 export interface Album {
   id: Readonly<string>
   name: string
-  artworkIds: ArtworkId[]
-  installShotUrls: InstallShotUrl[]
-  documentIds: DocumentId[]
+  items: SelectedItem[]
   createdAt: string
 }
 
 export interface AlbumsModel {
-  sessionState: {
-    selectedArtworksForNewAlbum: Record<ArtistSlug, ArtworkId[]>
-    selectedArtworksForExistingAlbum: Record<ArtistSlug, ArtworkId[]>
-  }
   albums: Album[]
   addAlbum: Action<
     this,
     {
       name: string
-      artworkIds: ArtworkId[]
-      installShotUrls: InstallShotUrl[]
-      documentIds: DocumentId[]
+      items: SelectedItem[]
     }
   >
   removeAlbum: Action<this, string>
-  editAlbum: Action<this, { albumId: string; name: string; artworkIds: ArtworkId[] }>
-  addItemsInAlbums: Action<
+  editAlbum: Action<
+    this,
+    {
+      albumId: string
+      name: string
+      items: SelectedItem[]
+    }
+  >
+  addItemsToAlbums: Action<
     this,
     {
       albumIds: string[]
-      artworkIdsToAdd: ArtworkId[]
-      installShotUrlsToAdd: InstallShotUrl[]
-      documentIdsToAdd: DocumentId[]
+      items: SelectedItem[]
     }
   >
-  removeArtworkFromAlbums: Action<this, { artworkId: string }>
-  removeDocumentFromAlbums: Action<this, { documentId: string }>
-  selectArtworksForNewAlbum: Action<this, { artistSlug: ArtistSlug; artworkIds: ArtworkId[] }>
-  selectArtworksForExistingAlbum: Action<this, { artistSlug: ArtistSlug; artworkIds: ArtworkId[] }>
-  clearSelectedArtworksForEditAlbum: Action<this>
+
+  removeItemFromAlbums: Action<this, string>
 }
 
 export const getAlbumsModel = (): AlbumsModel => ({
-  sessionState: {
-    selectedArtworksForNewAlbum: {},
-    selectedArtworksForExistingAlbum: {},
-  },
   albums: [],
+
   addAlbum: action((state, album) => {
     const id = uuid.v4().toString()
     const createdAt = DateTime.now().toISO()
-    state.albums.push({
+    const newAlbum = {
       id,
       createdAt,
       ...album,
-    })
-    state.sessionState.selectedArtworksForNewAlbum = {}
+    }
+    state.albums.push(newAlbum)
   }),
+
   removeAlbum: action((state, albumId) => {
     state.albums = state.albums.filter((x) => x.id !== albumId)
   }),
-  editAlbum: action((state, { albumId, name, artworkIds }) => {
+
+  // TODO: listen for this and deselect
+  editAlbum: action((state, { albumId, name, items }) => {
     const index = state.albums.findIndex((x) => x.id === albumId)
     if (index === -1) {
       throw new Error("Album not found")
     }
     state.albums[index].name = name
-    state.albums[index].artworkIds = artworkIds
-    state.sessionState.selectedArtworksForExistingAlbum = {}
+    state.albums[index].items = items
   }),
-  addItemsInAlbums: action(
-    (
-      state,
-      { albumIds, artworkIdsToAdd = [], installShotUrlsToAdd = [], documentIdsToAdd = [] }
-    ) => {
-      albumIds.forEach((albumId) => {
-        const index = state.albums.findIndex((x) => x.id === albumId)
-        if (index !== -1) {
-          state.albums[index].artworkIds = uniq([
-            ...state.albums[index].artworkIds,
-            ...artworkIdsToAdd,
-          ])
-          state.albums[index].installShotUrls = state.albums[index].installShotUrls
-            ? uniq([...state.albums[index].installShotUrls, ...installShotUrlsToAdd])
-            : installShotUrlsToAdd
-          state.albums[index].documentIds = state.albums[index].documentIds
-            ? uniq([...state.albums[index].documentIds, ...documentIdsToAdd])
-            : documentIdsToAdd
-        }
-      })
-    }
-  ),
-  removeArtworkFromAlbums: action((state, { artworkId }) => {
-    state.albums.forEach((album) => {
-      album.artworkIds = album.artworkIds.filter((id) => id !== artworkId)
+
+  addItemsToAlbums: action((state, { albumIds, items = [] }) => {
+    albumIds.forEach((albumId) => {
+      const index = state.albums.findIndex((x) => x.id === albumId)
+      if (index !== -1) {
+        state.albums[index].items = uniqBy([...state.albums[index].items, ...items], "internalID")
+      }
     })
   }),
-  removeDocumentFromAlbums: action((state, { documentId }) => {
+
+  removeItemFromAlbums: action((state, internalID) => {
     state.albums.forEach((album) => {
-      album.documentIds = album.documentIds.filter((id) => id !== documentId)
+      album.items = album.items.filter((item) => item?.internalID !== internalID)
     })
-  }),
-  selectArtworksForNewAlbum: action((state, { artistSlug, artworkIds }) => {
-    state.sessionState.selectedArtworksForNewAlbum[artistSlug] = artworkIds
-  }),
-  selectArtworksForExistingAlbum: action((state, { artistSlug, artworkIds }) => {
-    state.sessionState.selectedArtworksForExistingAlbum[artistSlug] = artworkIds
-  }),
-  clearSelectedArtworksForEditAlbum: action((state) => {
-    state.sessionState.selectedArtworksForExistingAlbum = {}
   }),
 })

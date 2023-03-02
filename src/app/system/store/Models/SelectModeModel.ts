@@ -1,104 +1,109 @@
-import { action, Action, computed, Thunk, Computed, thunk } from "easy-peasy"
-
-type ItemType = "artwork" | "install" | "document"
+import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
+import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
+import { ShowInstallsQuery$data } from "__generated__/ShowInstallsQuery.graphql"
+import { GlobalStoreModel } from "app/system/store/Models/GlobalStoreModel"
+import { action, Action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
 
 export interface SelectModeModel {
   sessionState: {
     isActive: boolean
-    artworks: Array<string>
-    installs: Array<string>
-    documents: Array<string>
-    items: Computed<SelectModeModel["sessionState"], Array<{ type: ItemType; item: string }>>
+    selectedItems: Array<SelectedItem>
   }
 
-  // code actions
+  // Actions
   toggleSelectMode: Thunk<this>
   cancelSelectMode: Thunk<this>
-  toggleSelectedItem: Action<this, { type: ItemType; item: string }>
-  setSelectedItems: Action<this, { type: ItemType; items: Array<string> }>
-
-  // supporting actions
-  setSelectMode: Action<this, this["sessionState"]["isActive"]>
+  toggleSelectedItem: Action<this, SelectedItem>
+  selectItems: Action<this, Array<SelectedItem>>
+  setIsActive: Action<this, this["sessionState"]["isActive"]>
   clearSelectedItems: Action<this>
+
+  // listeners
+  onAlbumCreated: ThunkOn<this, null, GlobalStoreModel>
 }
 
 export const getSelectModeModel = (): SelectModeModel => ({
   sessionState: {
     isActive: false,
-    artworks: [],
-    installs: [],
-    documents: [],
-    items: computed((state) => {
-      return [
-        ...state.artworks.map((artwork): { type: ItemType; item: string } => ({
-          type: "artwork",
-          item: artwork,
-        })),
-        ...state.installs.map((installShot): { type: ItemType; item: string } => ({
-          type: "install",
-          item: installShot,
-        })),
-        ...state.documents.map((document): { type: ItemType; item: string } => ({
-          type: "document",
-          item: document,
-        })),
-      ]
-    }),
+    selectedItems: [],
   },
 
   toggleSelectMode: thunk((actions, _, { getState }) => {
     const newValue = !getState().sessionState.isActive
-    actions.setSelectMode(newValue)
+    actions.setIsActive(newValue)
     if (newValue === false) {
       actions.clearSelectedItems()
     }
   }),
+
   cancelSelectMode: thunk((actions) => {
-    actions.setSelectMode(false)
+    actions.setIsActive(false)
     actions.clearSelectedItems()
   }),
-  toggleSelectedItem: action((state, { type, item }) => {
-    const arrayToLookAt = findStateArrayByType(type)
-    if (state.sessionState[arrayToLookAt].includes(item)) {
-      state.sessionState[arrayToLookAt] = state.sessionState[arrayToLookAt].filter(
-        (i) => i !== item
+
+  toggleSelectedItem: action((state, item) => {
+    const foundItem = state.sessionState.selectedItems.find(
+      (selectedItems) => selectedItems?.internalID === item?.internalID
+    )
+
+    if (foundItem) {
+      state.sessionState.selectedItems = state.sessionState.selectedItems.filter(
+        (selectedItem) => selectedItem?.internalID !== item?.internalID
       )
     } else {
-      state.sessionState[arrayToLookAt].push(item)
+      state.sessionState.selectedItems.push(item)
     }
   }),
-  setSelectedItems: action((state, { type, items }) => {
-    const arrayToLookAt = findStateArrayByType(type)
-    state.sessionState[arrayToLookAt] = items
+
+  selectItems: action((state, items) => {
+    state.sessionState.selectedItems = items
   }),
 
-  setSelectMode: action((state, value) => {
+  setIsActive: action((state, value) => {
     state.sessionState.isActive = value
   }),
+
   clearSelectedItems: action((state) => {
-    state.sessionState.artworks = []
-    state.sessionState.installs = []
-    state.sessionState.documents = []
+    state.sessionState.selectedItems = []
   }),
+
+  // Listeners
+
+  /**
+   * When an album is created or artworks are added, we want to exit select mode.
+   */
+  onAlbumCreated: thunkOn(
+    (_actions, storeActions) => [
+      storeActions.albums.addItemsToAlbums,
+      storeActions.albums.addAlbum,
+      storeActions.albums.editAlbum,
+    ],
+    (actions) => {
+      actions.cancelSelectMode()
+    }
+  ),
 })
 
-function findStateArrayByType(type: ItemType) {
-  let arrayToLookAt: Extract<
-    keyof SelectModeModel["sessionState"],
-    "artworks" | "installs" | "documents"
-  >
-  switch (type) {
-    case "artwork":
-      arrayToLookAt = "artworks"
-      break
-    case "install":
-      arrayToLookAt = "installs"
-      break
-    case "document":
-      arrayToLookAt = "documents"
-      break
-    default:
-      assertNever(type)
-  }
-  return arrayToLookAt
-}
+// Overly verbose, but the only way to mark MP types as non-nullable in order to
+// map to the same type in the store.
+export type SelectedItem =
+  // Artwork
+  | NonNullable<
+      NonNullable<
+        NonNullable<NonNullable<ArtistArtworksQuery$data["partner"]>["artworksConnection"]>["edges"]
+      >[0]
+    >["node"]
+  // Document
+  | NonNullable<
+      NonNullable<
+        NonNullable<
+          NonNullable<ArtistDocumentsQuery$data["partner"]>["documentsConnection"]
+        >["edges"]
+      >[0]
+    >["node"]
+  // Installs
+  | NonNullable<NonNullable<NonNullable<ShowInstallsQuery$data["show"]>["images"]>[0]>
+
+export type SelectedItemArtwork = Extract<SelectedItem, { __typename: "Artwork" }>
+export type SelectedItemInstall = Extract<SelectedItem, { __typename: "Image" }>
+export type SelectedItemDocument = Extract<SelectedItem, { __typename: "Document" }>

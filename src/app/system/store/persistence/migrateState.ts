@@ -1,6 +1,8 @@
 import { CURRENT_APP_VERSION, energyAppMigrations, Migrations } from "app/system/store/migrations"
 import { current, produce, setAutoFreeze } from "immer"
 
+const enableLogging = __DEV__ && !__TEST__
+
 export function migrateState<State extends { version: number }>({
   state,
   migrations = energyAppMigrations,
@@ -24,9 +26,9 @@ export function migrateState<State extends { version: number }>({
       throw new Error("[migrateState]: No migrator found for app version " + nextVersion)
     }
 
-    if (__DEV__ && !__TEST__) {
+    if (enableLogging) {
       console.log(
-        `[migrateState]: Migrating from version ${state.version} to ${nextVersion}. Current state:`,
+        `[migrateState]: Migrating from version ${state.version} to ${nextVersion}. Old state:`,
         current(state)
       )
     }
@@ -44,5 +46,10 @@ export function migrateState<State extends { version: number }>({
       state.version = nextVersion
     }
   }
+
+  if (enableLogging) {
+    console.log(`[migrateState]: Complete.`, current(state))
+  }
+
   return state
 }

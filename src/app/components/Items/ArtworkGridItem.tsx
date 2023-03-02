@@ -79,7 +79,7 @@ export const ArtworkGridItem = ({
           right={1}
           alignItems="center"
           p={0.5}
-          borderRadius={50}
+          borderRadius="50px"
           justifyContent="center"
           backgroundColor="red100"
         >

@@ -4,6 +4,11 @@ import { NavigationScreens } from "app/Navigation"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabScreen } from "app/components/Tabs/TabScreen"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import {
+  SelectedItem,
+  SelectedItemArtwork,
+  SelectedItemInstall,
+} from "app/system/store/Models/SelectModeModel"
 import { Screen } from "palette"
 import { Alert } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
@@ -46,9 +51,10 @@ export const AlbumTabs = () => {
   }
 
   const editAlbumHandler = () => {
-    GlobalStore.actions.albums.clearSelectedArtworksForEditAlbum()
     navigation.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
   }
+
+  const { artworkIds, installShotUrls, documentIds } = getAlbumIds(album.items)
 
   return (
     <Screen>
@@ -68,18 +74,49 @@ export const AlbumTabs = () => {
       <Screen.AnimatedTitleTabsBody>
         <Tabs.Tab name="AlbumArtworks" label="Works">
           <TabScreen>
-            <AlbumArtworks artworkIds={album.artworkIds} />
+            <AlbumArtworks artworkIds={artworkIds} />
           </TabScreen>
         </Tabs.Tab>
         <Tabs.Tab name="AlbumInstalls" label="Installs">
-          <AlbumInstalls installShotUrls={album.installShotUrls} />
+          <AlbumInstalls installShotUrls={installShotUrls} />
         </Tabs.Tab>
         <Tabs.Tab name="AlbumDocuments" label="Documents">
           <TabScreen>
-            <AlbumDocuments documentIDs={album.documentIds} />
+            <AlbumDocuments documentIDs={documentIds} />
           </TabScreen>
         </Tabs.Tab>
       </Screen.AnimatedTitleTabsBody>
     </Screen>
   )
+}
+
+export const getAlbumIds = (items: SelectedItem[]) => {
+  const artworkIds = items
+    .filter((item) => {
+      const artwork = item as SelectedItemArtwork
+      return artwork.__typename === "Artwork"
+    })
+    .map((artwork) => artwork?.internalID as string)
+
+  const installShotUrls = items
+    .filter((item) => {
+      return item?.__typename === "Image"
+    })
+    .map((image) => {
+      return (image as SelectedItemInstall).resized?.url!
+    })
+
+  const documentIds = items
+    .filter((item) => {
+      return item?.__typename === "PartnerDocument"
+    })
+    .map((document) => {
+      return document?.internalID as string
+    })
+
+  return {
+    artworkIds,
+    installShotUrls,
+    documentIds,
+  }
 }

@@ -11,7 +11,6 @@ import {
   ArtistShowsQuery,
   ArtistShowsQuery$rawResponse,
 } from "__generated__/ArtistShowsQuery.graphql"
-import { ArtistTabsQuery, ArtistTabsQuery$data } from "__generated__/ArtistTabsQuery.graphql"
 import { ArtistsQuery, ArtistsQuery$data } from "__generated__/ArtistsQuery.graphql"
 import {
   ArtworkContentQuery,
@@ -28,7 +27,6 @@ import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { artistArtworksQuery } from "app/screens/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
 import { artistDocumentsQuery } from "app/screens/Artists/ArtistTabs/ArtistDocuments/ArtistDocuments"
 import { artistShowsQuery } from "app/screens/Artists/ArtistTabs/ArtistShows/ArtistShows"
-import { artistTabsQuery } from "app/screens/Artists/ArtistTabs/ArtistTabs"
 import { artistsQuery } from "app/screens/Artists/Artists"
 import { artworkContentQuery } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
 import { showArtworksQuery } from "app/screens/Shows/ShowTabs/ShowArtworks/ShowArtworks"
@@ -50,7 +48,6 @@ import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 interface SyncResultsData {
   artistsQuery?: ArtistsQuery$data
   showsQuery?: ShowsQuery$data
-  artistTabsQuery?: ArtistTabsQuery$data[]
   artistArtworksQuery?: ArtistArtworksQuery$data[]
   artworkContentQuery?: ArtworkContentQuery$data[]
   artistShowsQuery?: ArtistShowsQuery$rawResponse[]
@@ -69,7 +66,6 @@ interface SyncResultsData {
 const syncResults: SyncResultsData = {
   artistsQuery: undefined,
   showsQuery: undefined,
-  artistTabsQuery: [],
   artistArtworksQuery: [],
   artworkContentQuery: [],
   artistShowsQuery: [],
@@ -143,7 +139,6 @@ export function initSyncManager({
       syncShowsQuery,
 
       // Sub-queries. Order matters
-      syncArtistTabsQuery,
       syncArtistArtworksQuery,
       syncArtworkContentQuery,
       syncArtistShowsQuery,
@@ -213,26 +208,6 @@ export function initSyncManager({
   /**
    * Sub-queries
    */
-
-  const syncArtistTabsQuery = async () => {
-    const artistSlugs = parsers.getArtistSlugs()
-
-    // PromisePool is used to limit concurrency so we don't accidentally spam
-    // our servers. By default it's 10 but can be adjusted.
-    const { results } = await PromisePool.for(artistSlugs)
-      .onTaskStarted(reportProgress("Syncing artist tabs"))
-      .process(async (_) => {
-        return await fetchOrCatch<ArtistTabsQuery>(artistTabsQuery, {
-          partnerID,
-          artworkIDs: [],
-          imageSize,
-        })
-      })
-
-    syncResults.artistTabsQuery = results
-
-    updateStatus("Complete. `artistTabsQuery`", syncResults.artistTabsQuery)
-  }
 
   const syncArtistArtworksQuery = async () => {
     const artistSlugs = parsers.getArtistSlugs()

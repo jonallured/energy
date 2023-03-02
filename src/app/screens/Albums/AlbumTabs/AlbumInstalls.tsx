@@ -1,19 +1,14 @@
-import { useSpace } from "@artsy/palette-mobile"
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
+import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
 
 export const AlbumInstalls = ({ installShotUrls }: { installShotUrls: string[] }) => {
-  const space = useSpace()
-
   return (
     <TabsScrollView>
       <MasonryList
-        contentContainerStyle={{
-          marginTop: space(2),
-          paddingHorizontal: space(2),
-        }}
+        contentContainerStyle={getContentContainerStyle(installShotUrls)}
         numColumns={2}
         data={installShotUrls}
         keyExtractor={(item, index) => item ?? `${index}`}
