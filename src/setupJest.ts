@@ -10,6 +10,12 @@ import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 
 ignoreLogsInTests()
 
+// Patch setImmediate for Jest 27
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-implied-eval
+global.setImmediate = (fn) => global.setTimeout(fn, 0)
+global.clearImmediate = jest.fn()
+
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("react-native-config", () => {
