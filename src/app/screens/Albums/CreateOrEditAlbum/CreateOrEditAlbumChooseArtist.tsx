@@ -9,6 +9,7 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { zip } from "lodash"
 import { Screen } from "palette"
+import { useCallback } from "react"
 import { FlatList } from "react-native"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
@@ -22,15 +23,33 @@ export const CreateOrEditAlbumChooseArtist = () => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artistsData = useSystemQueryLoader<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
-  const counts = artistsData.partner?.allArtistsConnection?.edges?.map(
-    (edge) => edge?.counts?.managedArtworks as string
+  const counts =
+    artistsData.partner?.allArtistsConnection?.edges?.map(
+      (edge) => edge?.counts?.managedArtworks as string
+    ) ?? []
+
+  const items = zip(artists, counts)
+
+  const renderItem = useCallback(
+    ({ item: [artist, count] }) => (
+      <Touchable
+        onPress={() =>
+          navigation.navigate("CreateOrEditAlbumChooseArtworks", {
+            mode,
+            albumId,
+            slug: artist.slug,
+          })
+        }
+      >
+        <ArtistListItem artist={artist} count={count} />
+      </Touchable>
+    ),
+    []
   )
 
   if (!counts || !artists) {
     return null
   }
-
-  const items = zip(artists, counts)
 
   return (
     <Screen>
@@ -39,19 +58,9 @@ export const CreateOrEditAlbumChooseArtist = () => {
         <FlatList
           data={items}
           keyExtractor={(item, index) => item[0]?.internalID ?? `${index}`}
-          renderItem={({ item: [artist, count] }) => (
-            <Touchable
-              onPress={() =>
-                navigation.navigate("CreateOrEditAlbumChooseArtworks", {
-                  mode,
-                  albumId,
-                  slug: artist!.slug,
-                })
-              }
-            >
-              <ArtistListItem artist={artist!} count={count!} />
-            </Touchable>
-          )}
+          renderItem={renderItem}
+          removeClippedSubviews
+          windowSize={5}
         />
       </Screen.Body>
     </Screen>

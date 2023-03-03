@@ -220,7 +220,6 @@ export const SkeletonArtwork = () => {
       </Screen>
 
       <BottomSheetModalView
-        // ref={bottomSheetRef}
         modalHeight={370}
         modalRows={
           <>

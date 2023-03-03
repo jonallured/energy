@@ -12,8 +12,8 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
-import { differenceBy } from "lodash"
 import { Screen } from "palette"
+import { useCallback } from "react"
 import { graphql } from "react-relay"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
@@ -61,6 +61,22 @@ export const CreateOrEditAlbumChooseArtworks = () => {
 
   const allSelected = isAllSelected(selectedItems, presentedArtworks)
 
+  const renderItem = useCallback(({ item: artwork, i }) => {
+    return (
+      <ArtworkGridItem
+        artwork={artwork}
+        disable={!!album?.items?.find((item) => item?.internalID === artwork.internalID)}
+        onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(artwork)}
+        selectedToAdd={!!selectedItems.find((item) => item?.internalID === artwork.internalID)}
+        style={{
+          marginLeft: i % 2 === 0 ? 0 : space(1),
+          marginRight: i % 2 === 0 ? space(1) : 0,
+        }}
+      />
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Screen>
       <Screen.Header
@@ -88,22 +104,8 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           numColumns={2}
           data={presentedArtworks}
           keyExtractor={(item) => item?.internalID}
-          renderItem={({ item: artwork, i }) => {
-            return (
-              <ArtworkGridItem
-                artwork={artwork}
-                disable={!!album?.items?.find((item) => item?.internalID === artwork.internalID)}
-                onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(artwork)}
-                selectedToAdd={
-                  !!selectedItems.find((item) => item?.internalID === artwork.internalID)
-                }
-                style={{
-                  marginLeft: i % 2 === 0 ? 0 : space(1),
-                  marginRight: i % 2 === 0 ? space(1) : 0,
-                }}
-              />
-            )
-          }}
+          renderItem={renderItem}
+          removeClippedSubviews
         />
         <Flex pt={1}>
           <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">

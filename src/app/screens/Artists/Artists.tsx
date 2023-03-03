@@ -10,6 +10,7 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { zip } from "lodash"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { useCallback } from "react"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -21,46 +22,51 @@ export const Artists = () => {
   const artistsData = useSystemQueryLoader<ArtistsQuery>(artistsQuery, { partnerID })
   const artists = extractNodes(artistsData.partner?.allArtistsConnection)
   const screenWidth = useWindowDimensions().width
-  const counts = artistsData.partner?.allArtistsConnection?.edges?.map(
-    (edge) => edge?.counts?.managedArtworks as string
-  )
-  if (!counts || !artists) {
-    return null
-  }
+  const counts =
+    artistsData.partner?.allArtistsConnection?.edges?.map(
+      (edge) => edge?.counts?.managedArtworks as string
+    ) ?? []
+
   const margin = 20
   const width = isTablet() ? (screenWidth - 2 * margin) / 2 : undefined
 
   const items = zip(artists, counts)
+
+  const renderItem = useCallback(({ item }) => {
+    const artist = item[0]!
+    const count = item[1]!
+    return (
+      <Touchable
+        onPress={() =>
+          navigation.navigate("ArtistTabs", {
+            slug: artist.slug,
+            name: artist.name!,
+          })
+        }
+        style={{ width }}
+      >
+        <Flex mx={SCREEN_HORIZONTAL_PADDING}>
+          <ArtistListItem artist={artist} count={count} />
+        </Flex>
+      </Touchable>
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (!counts || !artists) {
+    return null
+  }
 
   return (
     <TabsFlatList
       data={items}
       numColumns={isTablet() ? 2 : 1}
       contentContainerStyle={{ marginTop: space(1), paddingBottom: space(1) }}
-      renderItem={({ item }) => {
-        const artist = item[0]!
-        const count = item[1]!
-        return (
-          <Touchable
-            onPress={() =>
-              navigation.navigate("ArtistTabs", {
-                slug: artist.slug,
-                name: artist.name!,
-              })
-            }
-            style={{ width }}
-          >
-            <Flex mx={SCREEN_HORIZONTAL_PADDING}>
-              <ArtistListItem artist={artist} count={count} />
-            </Flex>
-          </Touchable>
-        )
-      }}
+      renderItem={renderItem}
       ListEmptyComponent={<ListEmptyComponent text="No artists" />}
-      keyExtractor={(item) => {
-        const artist = item[0]!
-        return artist.internalID
-      }}
+      keyExtractor={(item) => item?.[0]?.internalID!}
+      windowSize={5}
+      removeClippedSubviews
     />
   )
 }

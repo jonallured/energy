@@ -12,7 +12,7 @@ import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
@@ -49,6 +49,25 @@ export const AlbumArtworks: React.FC<AlbumArtworksProps> = ({
     onArtworksDoneLoading(artworks as SelectedItemArtwork[])
   }, [artworksData, onArtworksDoneLoading])
 
+  const renderItem = useCallback(
+    ({ item: artwork, i }) => (
+      <ArtworkGridItem
+        artwork={artwork}
+        style={{
+          marginLeft: i % numColumns === 0 ? 0 : space(1),
+          marginRight: i % numColumns === numColumns - 1 ? space(1) : 0,
+        }}
+        onPress={() => {
+          navigation.navigate("Artwork", {
+            slug: artwork.slug,
+          })
+        }}
+      />
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
   return (
     <TabsScrollView>
       <MasonryList
@@ -58,22 +77,10 @@ export const AlbumArtworks: React.FC<AlbumArtworksProps> = ({
         }}
         numColumns={numColumns}
         data={presentedArtworks}
-        renderItem={({ item: artwork, i }) => (
-          <ArtworkGridItem
-            artwork={artwork}
-            style={{
-              marginLeft: i % numColumns === 0 ? 0 : space(1),
-              marginRight: i % numColumns === numColumns - 1 ? space(1) : 0,
-            }}
-            onPress={() => {
-              navigation.navigate("Artwork", {
-                slug: artwork.slug,
-              })
-            }}
-          />
-        )}
+        renderItem={renderItem}
         keyExtractor={(item) => item.internalID}
         ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
+        removeClippedSubviews
       />
     </TabsScrollView>
   )
