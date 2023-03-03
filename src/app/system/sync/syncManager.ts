@@ -12,10 +12,7 @@ import {
   ArtistShowsQuery$rawResponse,
 } from "__generated__/ArtistShowsQuery.graphql"
 import { ArtistsQuery, ArtistsQuery$data } from "__generated__/ArtistsQuery.graphql"
-import {
-  ArtworkContentQuery,
-  ArtworkContentQuery$data,
-} from "__generated__/ArtworkContentQuery.graphql"
+import { ArtworkQuery, ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
 import { ShowArtworksQuery, ShowArtworksQuery$data } from "__generated__/ShowArtworksQuery.graphql"
 import {
   ShowDocumentsQuery,
@@ -28,7 +25,7 @@ import { artistArtworksQuery } from "app/screens/Artists/ArtistTabs/ArtistArtwor
 import { artistDocumentsQuery } from "app/screens/Artists/ArtistTabs/ArtistDocuments/ArtistDocuments"
 import { artistShowsQuery } from "app/screens/Artists/ArtistTabs/ArtistShows/ArtistShows"
 import { artistsQuery } from "app/screens/Artists/Artists"
-import { artworkContentQuery } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
+import { artworkQuery } from "app/screens/Artwork/Artwork"
 import { showArtworksQuery } from "app/screens/Shows/ShowTabs/ShowArtworks/ShowArtworks"
 import { showDocumentsQuery } from "app/screens/Shows/ShowTabs/ShowDocuments/ShowDocuments"
 import { showInstallsQuery } from "app/screens/Shows/ShowTabs/ShowInstalls/ShowInstalls"
@@ -49,7 +46,7 @@ interface SyncResultsData {
   artistsQuery?: ArtistsQuery$data
   showsQuery?: ShowsQuery$data
   artistArtworksQuery?: ArtistArtworksQuery$data[]
-  artworkContentQuery?: ArtworkContentQuery$data[]
+  artworkQuery?: ArtworkQuery$data[]
   artistShowsQuery?: ArtistShowsQuery$rawResponse[]
   showTabsQuery?: ShowTabsQuery$data[]
   artistDocumentsQuery?: ArtistDocumentsQuery$data[]
@@ -67,7 +64,7 @@ const syncResults: SyncResultsData = {
   artistsQuery: undefined,
   showsQuery: undefined,
   artistArtworksQuery: [],
-  artworkContentQuery: [],
+  artworkQuery: [],
   artistShowsQuery: [],
   showTabsQuery: [],
   artistDocumentsQuery: [],
@@ -140,7 +137,7 @@ export function initSyncManager({
 
       // Sub-queries. Order matters
       syncArtistArtworksQuery,
-      syncArtworkContentQuery,
+      syncArtworkQuery,
       syncArtistShowsQuery,
       syncArtistDocumentsQuery,
       syncShowTabsQuery,
@@ -227,22 +224,22 @@ export function initSyncManager({
     updateStatus("Complete. `artistArtworksQuery`", syncResults.artistArtworksQuery)
   }
 
-  const syncArtworkContentQuery = async () => {
+  const syncArtworkQuery = async () => {
     const artworkSlugs = parsers.getArtistArtworkSlugs()
 
     const { results } = await PromisePool.for(artworkSlugs)
       .onTaskStarted(reportProgress("Syncing artist artwork content"))
       .withConcurrency(20)
       .process(async (slug) => {
-        return await fetchOrCatch<ArtworkContentQuery>(artworkContentQuery, {
+        return await fetchOrCatch<ArtworkQuery>(artworkQuery, {
           slug,
           imageSize,
         })
       })
 
-    syncResults.artworkContentQuery = results
+    syncResults.artworkQuery = results
 
-    updateStatus("Complete. `artistArtworksContentData`", syncResults.artworkContentQuery)
+    updateStatus("Complete. `artistArtworksContentData`", syncResults.artworkQuery)
   }
 
   const syncArtistShowsQuery = async () => {
@@ -541,7 +538,7 @@ const parsers = {
 
   getImageUrls: (): string[] => {
     const imageUrls = compact(
-      (syncResults.artworkContentQuery ?? []).flatMap((artworkContent) => [
+      (syncResults.artworkQuery ?? []).flatMap((artworkContent) => [
         artworkContent.artwork?.image?.resized?.url!,
         artworkContent.artwork?.artist?.imageUrl!,
       ])

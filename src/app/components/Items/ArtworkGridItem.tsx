@@ -48,10 +48,10 @@ export const ArtworkGridItem = ({
         style={style}
       >
         <CachedImage
-          uri={artwork.image?.resized?.url}
-          placeholderHeight={artwork.image?.resized?.height}
+          uri={artwork.gridImage?.resized?.url}
+          placeholderHeight={artwork.gridImage?.resized?.height}
           style={{
-            aspectRatio: artwork.image?.aspectRatio ?? 1,
+            aspectRatio: artwork.gridImage?.aspectRatio ?? 1,
           }}
         />
         <Text italic variant={fontSize} color="onBackgroundMedium" mt={1}>
@@ -95,7 +95,9 @@ export const ArtworkGridItemFragment = graphql`
     internalID
     title
     date
-    image {
+
+    # Alias the field so that we can use unmasked data from parent queries
+    gridImage: image {
       resized(width: $imageSize, version: "normalized") {
         height
         url

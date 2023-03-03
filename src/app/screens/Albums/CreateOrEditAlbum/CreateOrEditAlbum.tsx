@@ -20,9 +20,11 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { SelectedItem } from "app/system/store/Models/SelectModeModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
+import { imageSize } from "app/utils/imageSize"
 import { useFormik } from "formik"
 import { differenceBy } from "lodash"
 import { Screen } from "palette"
+import { Platform } from "react-native"
 import { object, string } from "yup"
 
 interface CreateAlbumValuesSchema {
@@ -70,6 +72,7 @@ export const CreateOrEditAlbum = () => {
   const artworksData = useSystemQueryLoader<AlbumArtworksQuery>(albumArtworksQuery, {
     partnerID,
     artworkIDs: artworksToSave.map((artwork) => artwork?.internalID!),
+    imageSize,
   })
 
   /* If we pass empty ids(selectedArtworks) as parameter in the albumArtworksQuery API,
@@ -82,7 +85,7 @@ export const CreateOrEditAlbum = () => {
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
-  const { handleSubmit, handleChange, values, errors, validateForm, isValid, dirty, isSubmitting } =
+  const { handleSubmit, handleChange, values, errors, validateForm, isValid, isSubmitting } =
     useFormik<CreateAlbumValuesSchema>({
       initialValues: {
         albumName: mode === "edit" ? album?.name ?? "" : "",
@@ -124,7 +127,16 @@ export const CreateOrEditAlbum = () => {
     })
 
   const isActionButtonEnabled = isValid && !isSubmitting && artworksToSave.length > 0
-  console.log(isActionButtonEnabled, selectedItems)
+
+  const CreateOrEditButton = () => {
+    return (
+      <Flex px={1} py={2}>
+        <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
+          {mode === "edit" ? "Save" : "Create"}
+        </Button>
+      </Flex>
+    )
+  }
 
   return (
     <Screen>
@@ -186,13 +198,13 @@ export const CreateOrEditAlbum = () => {
           }}
           keyExtractor={(item) => item.internalID}
         />
-        <Screen.BottomView>
-          <Flex px={1} pt={2}>
-            <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
-              {mode === "edit" ? "Save" : "Create"}
-            </Button>
-          </Flex>
-        </Screen.BottomView>
+        {Platform.OS === "ios" ? (
+          <Screen.BottomView>
+            <CreateOrEditButton />
+          </Screen.BottomView>
+        ) : (
+          <CreateOrEditButton />
+        )}
       </Screen.Body>
     </Screen>
   )

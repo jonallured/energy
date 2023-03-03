@@ -22,12 +22,12 @@ import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { SelectedItem } from "app/system/store/Models/SelectModeModel"
+import { SelectedItem, SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { imageSize } from "app/utils/imageSize"
 import { filter } from "lodash"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
-import { useMemo, useRef } from "react"
+import { Suspense, useMemo, useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
@@ -40,6 +40,26 @@ export type ArtworkItemProps = ArtworkQuery$data["artwork"]
 export const Artwork = () => {
   const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
   const artworkSlugs = contextArtworkSlugs ?? [slug]
+
+  const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => {
+    return {
+      name: slug,
+      Component: () => {
+        return (
+          <Suspense fallback={<SkeletonArtwork />}>
+            <ArtworkPage slug={slug} />
+          </Suspense>
+        )
+      },
+    }
+  })
+
+  return (
+    <ScrollableScreensView screens={screens} initialScreenName={slug} prefetchScreensCount={5} />
+  )
+}
+
+export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
   const bottomSheetRef = useRef<BottomSheetRef>(null)
@@ -48,12 +68,6 @@ export const Artwork = () => {
     imageSize,
   })
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
-
-  const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => ({
-    name: slug,
-    content: <ArtworkContent slug={slug} />,
-  }))
-
   const { artwork } = artworkData
 
   const numberOfAlbumsIncludingArtwork = useMemo(() => {
@@ -68,7 +82,7 @@ export const Artwork = () => {
 
   const sendByEmailHandler = async () => {
     if (artwork) {
-      await sendMail(artwork)
+      await sendMail({ artworks: [artwork as unknown as SelectedItemArtwork] })
     }
   }
 
@@ -91,7 +105,7 @@ export const Artwork = () => {
           }
         />
         <Screen.Body fullwidth nosafe>
-          <ScrollableScreensView screens={screens} initialScreenName={slug} />
+          <ArtworkContent artwork={artwork!} />
         </Screen.Body>
       </Screen>
 
@@ -140,10 +154,11 @@ export const Artwork = () => {
   )
 }
 
-const artworkQuery = graphql`
+export const artworkQuery = graphql`
   query ArtworkQuery($slug: String!, $imageSize: Int!) {
     artwork(id: $slug) {
       ...Artwork_artworkProps @relay(mask: false)
+      ...ArtworkContent_artwork @arguments(imageSize: $imageSize)
 
       image {
         resized(width: $imageSize, version: "normalized") {
@@ -161,6 +176,9 @@ export const Artwork_artworkProps = graphql`
   fragment Artwork_artworkProps on Artwork {
     __typename
     artistNames
+    artist {
+      imageUrl
+    }
     availability
     date
     dimensions {

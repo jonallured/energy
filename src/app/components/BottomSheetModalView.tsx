@@ -7,8 +7,10 @@ import {
   Text,
   Touchable,
   useColor,
+  DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
 
 interface BottomSheetModalViewProps {
@@ -24,6 +26,7 @@ export interface BottomSheetRef {
 
 export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalViewProps>(
   (props, ref) => {
+    const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
     const bottomSheetModalRef = useRef<BottomSheetModal>(null)
     const color = useColor()
 
@@ -50,10 +53,8 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
     return (
       <BottomSheetModal
         style={{
+          ...getBottomSheetShadowStyle(isDarkMode),
           zIndex: 1,
-          shadowOpacity: 0.2,
-          shadowRadius: 5,
-          shadowOffset: { width: 0, height: 0 },
         }}
         backdropComponent={() => (
           <Touchable
@@ -86,6 +87,7 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
               <Touchable
                 onPress={() => bottomSheetModalRef.current?.close()}
                 underlayColor="transparent"
+                hitSlop={DEFAULT_HIT_SLOP}
               >
                 <CloseIcon fill="onSurfaceHigh" />
               </Touchable>
@@ -155,3 +157,13 @@ export const BottomSheetModalRow = ({
     </Flex>
   </Touchable>
 )
+
+export const getBottomSheetShadowStyle = (isDarkMode: boolean) => ({
+  backgroundColor: isDarkMode ? "black" : "white",
+  shadowColor: "black",
+  zIndex: 1,
+  shadowOpacity: 0.2,
+  shadowRadius: 5,
+  shadowOffset: { width: 0, height: 0 },
+  elevation: 10,
+})

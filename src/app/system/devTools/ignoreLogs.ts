@@ -23,7 +23,6 @@ export const ignoreLogs = () => {
  */
 export const ignoreLogsInTests = () => {
   const warn = console.warn
-  const error = console.error
 
   console.warn = (...logs) => {
     const log = logs[0]
@@ -31,15 +30,6 @@ export const ignoreLogsInTests = () => {
 
     if (!isIgnored) {
       warn(...logs)
-    }
-  }
-
-  console.error = (...errors) => {
-    const errorLog = errors[0]
-    const isIgnored = IGNORED_ERRORS.some((ignoredError) => errorLog.message.includes(ignoredError))
-
-    if (!isIgnored) {
-      error(...errors)
     }
   }
 }

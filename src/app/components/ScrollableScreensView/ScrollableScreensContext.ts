@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
 export type ScrollableScreenEntity = {
-  content: JSX.Element
+  Component: React.FC<any>
   name: string
 }
 

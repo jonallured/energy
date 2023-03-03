@@ -14,6 +14,7 @@ import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { Screen } from "palette"
 import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
@@ -41,7 +42,7 @@ export const ShowTabs = () => {
   const { sendMail } = useMailComposer()
 
   const shareByEmailHandler = async () => {
-    await sendMail()
+    await sendMail({ artworks: selectedItems as SelectedItemArtwork[] })
   }
 
   return (

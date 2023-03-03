@@ -1,8 +1,22 @@
-import { EditIcon, Flex, Touchable, TrashIcon, useSpace } from "@artsy/palette-mobile"
+import {
+  DEFAULT_HIT_SLOP,
+  EditIcon,
+  EnvelopeIcon,
+  MoreIcon,
+  Touchable,
+  TrashIcon,
+} from "@artsy/palette-mobile"
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "app/Navigation"
+import {
+  BottomSheetModalRow,
+  BottomSheetModalView,
+  BottomSheetRef,
+} from "app/components/BottomSheetModalView"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabScreen } from "app/components/Tabs/TabScreen"
+import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import {
   SelectedItem,
@@ -10,6 +24,8 @@ import {
   SelectedItemInstall,
 } from "app/system/store/Models/SelectModeModel"
 import { Screen } from "palette"
+import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
+import { useRef, useState } from "react"
 import { Alert } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { AlbumArtworks } from "./AlbumArtworks"
@@ -23,7 +39,9 @@ export const AlbumTabs = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
-  const space = useSpace()
+  const bottomSheetRef = useRef<BottomSheetRef>(null)
+  const [albumArtworks, setAlbumArtworks] = useState<SelectedItemArtwork[]>([])
+  const { sendMail } = useMailComposer()
 
   if (!album) {
     return <ListEmptyComponent />
@@ -50,43 +68,79 @@ export const AlbumTabs = () => {
     )
   }
 
-  const editAlbumHandler = () => {
-    navigation.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
-  }
-
   const { artworkIds, installShotUrls, documentIds } = getAlbumIds(album.items)
 
+  const addToButtonHandler = () => {
+    bottomSheetRef.current?.showBottomSheetModal()
+  }
+
+  const editAlbumHandler = () => {
+    navigation.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
+    bottomSheetRef.current?.closeBottomSheetModal()
+  }
+
+  const emailAlbumHandler = () => {
+    bottomSheetRef.current?.closeBottomSheetModal()
+    sendMail({ artworks: albumArtworks })
+  }
+
   return (
-    <Screen>
-      <Screen.AnimatedTitleHeader
-        title={album.name}
-        rightElements={
-          <Flex flexDirection="row" alignItems="center">
-            <Touchable onPress={deleteAlbumHandler} style={{ marginRight: space(2) }}>
-              <TrashIcon fill="onBackgroundHigh" width={25} height={25} />
+    <BottomSheetModalProvider>
+      <Screen>
+        <Screen.AnimatedTitleHeader
+          title={album.name}
+          rightElements={
+            <Touchable
+              onPress={addToButtonHandler}
+              hitSlop={DEFAULT_HIT_SLOP}
+              style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
+            >
+              <MoreIcon />
             </Touchable>
-            <Touchable onPress={editAlbumHandler}>
-              <EditIcon fill="onBackgroundHigh" width={25} height={25} />
-            </Touchable>
-          </Flex>
+          }
+        />
+        <Screen.AnimatedTitleTabsBody>
+          <Tabs.Tab name="AlbumArtworks" label="Works">
+            <TabScreen>
+              <AlbumArtworks artworkIds={artworkIds} onArtworksDoneLoading={setAlbumArtworks} />
+            </TabScreen>
+          </Tabs.Tab>
+          <Tabs.Tab name="AlbumInstalls" label="Installs">
+            <AlbumInstalls installShotUrls={installShotUrls} />
+          </Tabs.Tab>
+          <Tabs.Tab name="AlbumDocuments" label="Documents">
+            <TabScreen>
+              <AlbumDocuments documentIDs={documentIds} />
+            </TabScreen>
+          </Tabs.Tab>
+        </Screen.AnimatedTitleTabsBody>
+      </Screen>
+
+      <BottomSheetModalView
+        ref={bottomSheetRef}
+        modalHeight={370}
+        modalRows={
+          <>
+            <BottomSheetModalRow
+              Icon={<EditIcon fill="onBackgroundHigh" />}
+              label="Edit Album"
+              onPress={editAlbumHandler}
+            />
+            <BottomSheetModalRow
+              Icon={<TrashIcon fill="onBackgroundHigh" />}
+              label="Delete Album"
+              onPress={deleteAlbumHandler}
+            />
+            <BottomSheetModalRow
+              Icon={<EnvelopeIcon fill="onBackgroundHigh" />}
+              label="Send Album by Email"
+              onPress={emailAlbumHandler}
+              isLastRow
+            />
+          </>
         }
       />
-      <Screen.AnimatedTitleTabsBody>
-        <Tabs.Tab name="AlbumArtworks" label="Works">
-          <TabScreen>
-            <AlbumArtworks artworkIds={artworkIds} />
-          </TabScreen>
-        </Tabs.Tab>
-        <Tabs.Tab name="AlbumInstalls" label="Installs">
-          <AlbumInstalls installShotUrls={installShotUrls} />
-        </Tabs.Tab>
-        <Tabs.Tab name="AlbumDocuments" label="Documents">
-          <TabScreen>
-            <AlbumDocuments documentIDs={documentIds} />
-          </TabScreen>
-        </Tabs.Tab>
-      </Screen.AnimatedTitleTabsBody>
-    </Screen>
+    </BottomSheetModalProvider>
   )
 }
 

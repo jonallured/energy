@@ -316,7 +316,7 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.7):
     - React-Core
-  - react-native-pager-view (6.1.2):
+  - react-native-pager-view (6.1.4):
     - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
@@ -734,7 +734,7 @@ SPEC CHECKSUMS:
   react-native-flipper: 7e4b1c3fe1a2eecbe7304e5ff6b89231b3ec61dc
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
-  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
+  react-native-pager-view: b58cb9e9f42f64e50cab3040815772c1d119a2e2
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457

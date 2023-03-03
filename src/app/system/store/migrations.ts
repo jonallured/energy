@@ -11,9 +11,10 @@ export const Versions = {
   AddActivePartnerId: 1,
   MigrateActivePartnerIdToAuthModel: 2,
   MigrateRefactoredSelectModeStore: 3,
+  MigrateEmailModelCCName: 4,
 }
 
-export const CURRENT_APP_VERSION = Versions.MigrateRefactoredSelectModeStore
+export const CURRENT_APP_VERSION = Versions.MigrateEmailModelCCName
 
 export type Migrations = Record<number, (oldState: any) => any>
 
@@ -62,6 +63,10 @@ export const energyAppMigrations: Migrations = {
         return migratedAlbum
       }),
     }
+  },
+  [Versions.MigrateEmailModelCCName]: (state) => {
+    state.email.ccRecipients = state.email.emailsCC
+    delete state.email.emailsCC
   },
 }
 

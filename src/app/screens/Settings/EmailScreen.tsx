@@ -14,7 +14,7 @@ import { Screen } from "palette"
 
 export const EmailScreen = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const emailCC = GlobalStore.useAppState((state) => state.email.emailsCC)
+  const emailCC = GlobalStore.useAppState((state) => state.email.ccRecipients)
   const greeting = GlobalStore.useAppState((state) => state.email.greetings)
   const signature = GlobalStore.useAppState((state) => state.email.signature)
 
@@ -26,19 +26,19 @@ export const EmailScreen = () => {
           <Input
             title="CC Email"
             value={emailCC}
-            onChangeText={(e) => GlobalStore.actions.email.saveEmailsCC(e)}
+            onChangeText={(e) => GlobalStore.actions.email.setCCRecipients(e)}
           />
           <Input
             title="Greeting"
             multiline
             value={greeting}
-            onChangeText={(e) => GlobalStore.actions.email.saveGreetings(e)}
+            onChangeText={(e) => GlobalStore.actions.email.setGreetings(e)}
           />
           <Input
             title="Signature"
             multiline
             value={signature}
-            onChangeText={(e) => GlobalStore.actions.email.saveSignature(e)}
+            onChangeText={(e) => GlobalStore.actions.email.setSignature(e)}
           />
           <Text mt={2} mb={1} color="onBackgroundMedium">
             This signature will be displayed together with any signature you specified in your iOS

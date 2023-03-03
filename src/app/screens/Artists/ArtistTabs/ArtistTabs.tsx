@@ -13,6 +13,7 @@ import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { useIsOnline } from "app/utils/hooks/useIsOnline"
 import { Screen } from "palette"
 import { useRef } from "react"
@@ -38,7 +39,7 @@ export const ArtistTabs = () => {
   const { sendMail } = useMailComposer()
 
   const shareByEmailHandler = async () => {
-    await sendMail()
+    await sendMail({ artworks: selectedItems as SelectedItemArtwork[] })
   }
 
   const addToButtonHandler = () => {

@@ -13,7 +13,7 @@ export const OneArtwork = () => {
         <Input
           multiline
           value={value}
-          onChangeText={(e) => GlobalStore.actions.email.saveOneArtworkSubject(e)}
+          onChangeText={(e) => GlobalStore.actions.email.setOneArtworkSubject(e)}
         />
         <Text mt={1} color="onBackgroundMedium">
           $title and $artist will be replaced by the artwork title and artist

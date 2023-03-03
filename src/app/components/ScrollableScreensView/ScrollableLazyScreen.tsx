@@ -22,7 +22,11 @@ export const ScrollableLazyScreen: React.FC<ScrollableLazyScreenProps> = ({
   }, [shouldRender])
 
   if (canMount) {
-    return <Container>{screen.content}</Container>
+    return (
+      <Container>
+        <screen.Component />
+      </Container>
+    )
   }
 
   return <Container pointerEvents="box-none" />

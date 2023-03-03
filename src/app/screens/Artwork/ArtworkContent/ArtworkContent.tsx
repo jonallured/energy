@@ -1,6 +1,7 @@
 import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
+import { ArtworkContent_artwork$key } from "__generated__/ArtworkContent_artwork.graphql"
+import { getBottomSheetShadowStyle } from "app/components/BottomSheetModalView"
 import { ImageModal } from "app/components/ImageModal"
 import { ImagePlaceholder } from "app/components/ImagePlaceholder"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
@@ -9,31 +10,32 @@ import {
   ArtworkDetail,
   ArtworkDetailLineItem,
 } from "app/screens/Artwork/ArtworkContent/ArtworkDetail"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
-import { imageSize } from "app/utils/imageSize"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { NAVBAR_HEIGHT } from "palette/organisms/Screen/notExposed/ActualHeader"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-generator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 const BOTTOM_SHEET_HEIGHT = 180
 
-export const ArtworkContent = ({ slug }: { slug: string }) => {
+interface ArtworkContentProps {
+  artwork: ArtworkContent_artwork$key
+}
+
+export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
+  const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
   const [isScrollEnabled, setIsScrollEnabled] = useState(false)
   const { color, space } = useTheme()
   const bottomSheetRef = useRef<BottomSheet>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const safeAreaInsets = useSafeAreaInsets()
-  const artworkData = useSystemQueryLoader<ArtworkContentQuery>(artworkContentQuery, {
-    slug,
-    imageSize,
-  })
+  const artworkData = useFragment(artworkContentQuery, artwork)
+  const touchActivated = useRef<any>(null)
 
   const markdownRules = defaultRules({
     ruleOverrides: {
@@ -101,13 +103,13 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     (state) => state.presentationMode.isPresentationModeEnabled
   )
 
-  if (!artworkData.artwork) {
+  if (!artworkData) {
     return <ListEmptyComponent />
   }
 
   // Destructing all the artwork fields here
   const {
-    image,
+    artworkImage,
     artistNames,
     title,
     date,
@@ -130,7 +132,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     exhibitionHistory,
     literature,
     availability,
-  } = artworkData.artwork
+  } = artworkData
 
   const shouldDisplayTheDetailBox =
     mediumType ||
@@ -157,24 +159,49 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
     return <Text weight="regular">{price}</Text>
   }
 
+  const onPressIn = (event: any) => {
+    const { pageX, pageY } = event.nativeEvent
+
+    touchActivated.current = {
+      pageX,
+      pageY,
+    }
+  }
+
+  const onPress = (event: any) => {
+    const { pageX, pageY } = event.nativeEvent
+    const absX = Math.abs(touchActivated.current?.pageX! - pageX)
+    const absY = Math.abs(touchActivated.current?.pageY! - pageY)
+    const dragged = absX > 2 || absY > 2
+
+    if (!dragged) {
+      setIsModalVisible(!isModalVisible)
+    }
+  }
+
   return (
-    <Flex height="100%">
+    <Flex height="100%" ref={touchActivated}>
       <ImageModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
-        uri={image?.resized?.url ?? ""}
+        uri={artworkImage?.resized?.url ?? ""}
       />
 
-      <Flex px={2}>
-        {image?.resized?.url ? (
+      <Flex px={2} py={4}>
+        {artworkImage?.resized?.url ? (
           <Touchable
             style={{ width: "100%", height: "100%" }}
-            onPress={() => setIsModalVisible(!isModalVisible)}
+            onPressIn={onPressIn}
+            onPress={onPress}
           >
             <CachedImage
-              uri={image?.resized?.url}
-              placeholderHeight={image?.resized?.height}
-              style={{ flex: 1, width: "100%", marginBottom: space(4) }}
+              uri={artworkImage?.resized?.url}
+              placeholderHeight={artworkImage?.resized?.height}
+              style={{
+                flex: 1,
+                width: "100%",
+                maxHeight: "78%",
+              }}
               resizeMode="contain"
             />
           </Touchable>
@@ -203,7 +230,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
           </Touchable>
         )}
         backgroundStyle={{ borderTopWidth: 1, borderColor: color("black10") }}
-        style={{ shadowColor: "black", shadowOpacity: 0.08, shadowRadius: 5 }}
+        style={getBottomSheetShadowStyle(isDarkMode)}
       >
         <BottomSheetScrollView
           style={{
@@ -218,7 +245,7 @@ export const ArtworkContent = ({ slug }: { slug: string }) => {
               {showQRCode && (
                 <Flex mr={2}>
                   <QRCode
-                    value={`https://artsy.net/artwork/${slug}`}
+                    value={`https://artsy.net/artwork/${artworkData.slug}`}
                     size={100}
                     bgColor="black"
                     fgColor="white"
@@ -336,60 +363,44 @@ const BorderBox: React.FC = ({ children }) => {
 }
 
 export const artworkContentQuery = graphql`
-  query ArtworkContentQuery($slug: String!, $imageSize: Int!) {
-    artwork(id: $slug) {
-      image {
-        resized(width: $imageSize, version: "normalized") {
-          height
-          url
-        }
-        aspectRatio
+  fragment ArtworkContent_artwork on Artwork @argumentDefinitions(imageSize: { type: "Int" }) {
+    ...Artwork_artworkProps @relay(mask: false)
+
+    artworkImage: image {
+      resized(width: $imageSize, version: "normalized") {
+        url
+        height
       }
-      artist {
-        imageUrl
-      }
-      title
-      price
-      date
-      medium
-      mediumType {
-        name
-      }
-      editionSets {
-        dimensions {
-          cm
-          in
-        }
-        editionOf
-        saleMessage
-        internalDisplayPrice
-        price
-      }
+    }
+
+    editionSets {
       dimensions {
         cm
         in
       }
-      inventoryId
-      artistNames
-      signature
-      provenance
-      exhibitionHistory
-      literature
-      imageRights
-      series
-      certificateOfAuthenticity {
-        details
-      }
-      conditionDescription {
-        details
-      }
-      framed {
-        details
-      }
-      availability
-      confidentialNotes
+      editionOf
+      saleMessage
       internalDisplayPrice
-      additionalInformation
+      price
     }
+    inventoryId
+    signature
+    provenance
+    exhibitionHistory
+    literature
+    imageRights
+    series
+    certificateOfAuthenticity {
+      details
+    }
+    conditionDescription {
+      details
+    }
+    framed {
+      details
+    }
+    confidentialNotes
+    internalDisplayPrice
+    additionalInformation
   }
 `

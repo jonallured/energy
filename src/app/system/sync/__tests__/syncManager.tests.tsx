@@ -2,7 +2,7 @@ import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.grap
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ArtistShowsQuery$rawResponse } from "__generated__/ArtistShowsQuery.graphql"
 import { ArtistsQuery$data } from "__generated__/ArtistsQuery.graphql"
-import { ArtworkContentQuery$data } from "__generated__/ArtworkContentQuery.graphql"
+import { ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
 import { ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { getFileFromCache, saveFileToCache } from "app/system/sync/fileCache"
 import { initSyncManager, loadRelayDataFromOfflineCache, _tests } from "app/system/sync/syncManager"
@@ -170,7 +170,7 @@ describe("syncManager", () => {
     })
 
     it("#getImageUrls", () => {
-      syncResults.artworkContentQuery = [
+      syncResults.artworkQuery = [
         {
           artwork: {
             image: {
@@ -180,7 +180,7 @@ describe("syncManager", () => {
             },
           },
         },
-      ] as unknown as ArtworkContentQuery$data[]
+      ] as unknown as ArtworkQuery$data[]
 
       expect(parsers.getImageUrls()).toEqual(["image-url-1"])
     })

@@ -8,12 +8,23 @@ import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
+import { imageSize } from "app/utils/imageSize"
+import { useEffect } from "react"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
-export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
+interface AlbumArtworksProps {
+  artworkIds: string[]
+  onArtworksDoneLoading: (artworks: SelectedItemArtwork[]) => void
+}
+
+export const AlbumArtworks: React.FC<AlbumArtworksProps> = ({
+  artworkIds,
+  onArtworksDoneLoading,
+}) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const space = useSpace()
@@ -21,6 +32,7 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
   const artworksData = useSystemQueryLoader<AlbumArtworksQuery>(albumArtworksQuery, {
     partnerID,
     artworkIDs: artworkIds,
+    imageSize,
   })
   const artworks =
     artworkIds.length > 0 ? extractNodes(artworksData.partner?.artworksConnection) : []
@@ -28,6 +40,14 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
   // Filterering based on presentation mode
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
   const numColumns = isTablet() ? 3 : 2
+
+  useEffect(() => {
+    const artworks = extractNodes(artworksData.partner?.artworksConnection)
+
+    // Pass artworks to parent component so that the emailer has access to them
+    // if invoked from the bottom sheet
+    onArtworksDoneLoading(artworks as SelectedItemArtwork[])
+  }, [artworksData, onArtworksDoneLoading])
 
   return (
     <TabsScrollView>
@@ -60,13 +80,21 @@ export const AlbumArtworks = ({ artworkIds }: { artworkIds: string[] }) => {
 }
 
 export const albumArtworksQuery = graphql`
-  query AlbumArtworksQuery($partnerID: String!, $artworkIDs: [String]) {
+  query AlbumArtworksQuery($partnerID: String!, $artworkIDs: [String], $imageSize: Int!) {
     partner(id: $partnerID) {
       artworksConnection(first: 100, artworkIDs: $artworkIDs, includeUnpublished: true) {
         edges {
           node {
             ...ArtworkGridItem_artwork
             ...Artwork_artworkProps @relay(mask: false)
+
+            image {
+              resized(width: $imageSize, version: "normalized") {
+                height
+                url
+              }
+              aspectRatio
+            }
           }
         }
       }

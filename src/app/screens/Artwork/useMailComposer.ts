@@ -1,101 +1,103 @@
-import { ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
-import { Artwork_artworkProps$data } from "__generated__/Artwork_artworkProps.graphql"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { EmailModel } from "app/system/store/Models/EmailModel"
 import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
+import { FilterActionTypes, StateMapper } from "easy-peasy"
 import * as MailComposer from "expo-mail-composer"
+import { uniq } from "lodash"
 import { Alert } from "react-native"
 
 export const useMailComposer = () => {
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
-  const oneArtworkSubject = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)
-  const multipleArtworksBySameArtistSubject = GlobalStore.useAppState(
-    (state) => state.email.multipleArtworksBySameArtistSubject
-  )
+  const emailSettings = GlobalStore.useAppState((state) => state.email)
 
   /**
    * Send email with artwork info, using a passed artwork object or the selected
    * items from the select mode session.
    */
-  const sendMail = async (artwork?: ArtworkEmailSnippetProps) => {
-    // Sending email from artwork screen
-    if (artwork) {
-      const { title, artistNames } = artwork
+  const sendMail = async (props: { artworks: SelectedItemArtwork[] }) => {
+    const artworksToMail = props.artworks
+    const firstSelectedItem = artworksToMail[0]
+    const ccRecipients = emailSettings.ccRecipients ? [emailSettings.ccRecipients] : undefined
 
-      const bodyHTML = getArtworkEmailTemplate(artwork)
+    // One item
+    if (artworksToMail.length === 1) {
+      const { title, artistNames } = firstSelectedItem
 
       try {
+        const subject = emailSettings.oneArtworkSubject
+          .replace("$title", title ?? "")
+          .replace("$artist", artistNames ?? "")
+
+        const body = getArtworkEmailTemplate({ artwork: firstSelectedItem, emailSettings })
+
+        log(subject, body, ccRecipients)
+
         await MailComposer.composeAsync({
-          subject: oneArtworkSubject
-            .replace("$title", title ?? "")
-            .replace("$artist", artistNames ?? ""),
           isHtml: true,
-          body: bodyHTML,
+          subject,
+          body,
+          ccRecipients,
         })
       } catch (error) {
         console.log("[useMailComposer] Error sending email:", error)
 
-        alertOnEmailFailure()
+        alertOnEmailFailure(error)
       }
+      // Sending multiple items
+    } else if (artworksToMail.length > 1) {
+      let aggregatedArtworks = ""
 
-      // Sending email from select mode
-    } else {
-      const firstSelectedItem = selectedItems[0] as SelectedItemArtwork
-
-      // One item
-      if (selectedItems.length === 1) {
-        const { title, artistNames } = firstSelectedItem
-
-        const bodyHTML = getArtworkEmailTemplate(firstSelectedItem)
-
-        try {
-          await MailComposer.composeAsync({
-            subject: oneArtworkSubject
-              .replace("$title", title ?? "")
-              .replace("$artist", artistNames ?? ""),
-            isHtml: true,
-            body: bodyHTML,
-          })
-        } catch (error) {
-          console.log("[useMailComposer] Error sending email:", error)
-
-          alertOnEmailFailure()
-        }
-        // Sending multiple items
-      } else if (selectedItems.length > 1) {
-        const artistNames = firstSelectedItem.artistNames
-        let artworksInfoInHTML = ""
-
-        selectedItems.map((selectedItem) => {
-          artworksInfoInHTML += getArtworkEmailTemplate(
-            selectedItem as typeof firstSelectedItem,
-            false
-          )
+      artworksToMail.map((selectedItem) => {
+        aggregatedArtworks += getArtworkEmailTemplate({
+          artwork: selectedItem,
+          fullHtml: false,
+          emailSettings,
         })
+      })
 
-        const bodyHTML = `
-          <html>
-            <body>
-              <h1>${artistNames ?? ""}</h1>
-              ${artworksInfoInHTML}
-            </body>
-          </html>
-        `
+      const subject = (() => {
+        const artistNames = uniq(artworksToMail.map((artwork) => artwork.artistNames))
 
-        console.log(bodyHTML)
-
-        try {
-          await MailComposer.composeAsync({
-            subject: multipleArtworksBySameArtistSubject.replace("$artist", artistNames ?? ""),
-            isHtml: true,
-            body: bodyHTML,
-          })
-        } catch (error) {
-          console.log("[useMailComposer] Error sending email:", error)
-
-          alertOnEmailFailure()
+        switch (true) {
+          case artistNames.length === 1: {
+            return emailSettings.multipleArtworksBySameArtistSubject.replace(
+              "$artist",
+              artistNames[0] ?? ""
+            )
+          }
+          case artistNames.length > 1: {
+            return emailSettings.multipleArtworksAndArtistsSubject
+          }
+          default: {
+            return ""
+          }
         }
+      })()
+
+      const body = `
+        <html>
+          <body>
+            ${emailSettings.greetings ? `<p>${emailSettings.greetings}</p><br/>` : ""}
+            ${aggregatedArtworks}
+            ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
+          </body>
+        </html>
+      ` // Remove tagged template whitespace
+        .replace(/\s+/g, " ")
+        .trim()
+
+      try {
+        log(subject, body, ccRecipients)
+
+        await MailComposer.composeAsync({
+          isHtml: true,
+          ccRecipients,
+          subject,
+          body,
+        })
+      } catch (error) {
+        console.log("[useMailComposer] Error sending email:", error)
+
+        alertOnEmailFailure(error)
       }
     }
   }
@@ -105,12 +107,15 @@ export const useMailComposer = () => {
   }
 }
 
-export type ArtworkEmailSnippetProps = Omit<
-  Artwork_artworkProps$data & NonNullable<ArtworkQuery$data["artwork"]>,
-  " $fragmentSpread" | " $fragmentType"
->
-
-export function getArtworkEmailTemplate(artwork: ArtworkEmailSnippetProps, fullHtml = true) {
+export const getArtworkEmailTemplate = ({
+  artwork,
+  fullHtml = true,
+  emailSettings,
+}: {
+  artwork: SelectedItemArtwork
+  fullHtml?: boolean
+  emailSettings: StateMapper<FilterActionTypes<EmailModel>>
+}) => {
   if (!artwork) {
     return ""
   }
@@ -129,28 +134,75 @@ export function getArtworkEmailTemplate(artwork: ArtworkEmailSnippetProps, fullH
   } = artwork
 
   const snippet = `
-    <img
-      height="60%"
-      src="${image?.resized?.url ? image?.resized?.url : ""}"
-    />
-    <h1>${artistNames ?? ""}</h1>
-    <p>${title ?? ""}, ${date ? date : ""}</p>
-    <p>${price ?? ""}</p>
-    <p>${mediumType?.name ?? ""}</p>
-    <p>${medium ?? ""}</p>
-    <p>${dimensions?.cm ?? ""}</p>
-    ${published ? `<a href="https://www.artsy.net${href}>View on Artsy</p>` : ""}
+    ${
+      image?.resized?.url
+        ? `<img
+            height="60%"
+            src="${image?.resized?.url}"
+          />`
+        : ""
+    }
+
+    ${artistNames ? `<h1>${artistNames}</h1>` : ""}
+
+    <p>${(() => {
+      let titleAggregator = ""
+      if (title && date) {
+        titleAggregator = title + ", " + date
+      } else if (title && !date) {
+        titleAggregator += title
+      } else if (!title && date) {
+        titleAggregator += date
+      } else {
+        titleAggregator = ""
+      }
+      return titleAggregator
+    })()}</p>
+
+    ${price ? `<p>${price}</p>` : ""}
+    ${mediumType?.name ? `<p>${mediumType?.name}</p>` : ""}
+    ${medium ? `<p>${medium}</p>` : ""}
+    ${dimensions?.in ? `<p>${dimensions?.in}</p>` : ""}
+    ${published ? `<a href="https://www.artsy.net${href}">View on Artsy</a>` : ""}
 `
 
-  const htmlWrapper = fullHtml ? `<html><body>${snippet}</body></html>` : snippet
+  const htmlWrapper = (
+    fullHtml
+      ? `
+        <html>
+          <body>
+            ${emailSettings.greetings ? `<p>${emailSettings.greetings}</p><br />` : ""}
+            ${snippet}
+            ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
+          </body>
+        </html>`
+      : snippet
+  )
+    // Remove tagged template whitespace
+    .replace(/\s+/g, " ")
+    .trim()
+
   return htmlWrapper
 }
 
-const alertOnEmailFailure = () => {
-  Alert.alert("Error sending email, please try again.", "", [
+const alertOnEmailFailure = (error: any) => {
+  Alert.alert("Email not sent.", error.message, [
     {
       text: "OK",
       style: "cancel",
     },
   ])
+}
+
+const log = (subject: string, body: string, ccRecipients: string[] | undefined) => {
+  if (__DEV__ && !__TEST__) {
+    console.log(
+      "[useMailComposer] Sending email:",
+      {
+        subject,
+        ccRecipients,
+      },
+      body
+    )
+  }
 }

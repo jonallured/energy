@@ -1,16 +1,24 @@
 import { screen, waitFor } from "@testing-library/react-native"
-import { ArtworkContentQuery } from "__generated__/ArtworkContentQuery.graphql"
+import { ArtworkContentTestQuery } from "__generated__/ArtworkContentTestQuery.graphql"
 import { ArtworkContent } from "app/screens/Artwork/ArtworkContent/ArtworkContent"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
+import { graphql } from "react-relay"
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
 }))
 
 describe("ArtworkContent", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtworkContentQuery>({
-    Component: () => <ArtworkContent slug="foo" />,
+  const { renderWithRelay } = setupTestWrapper<ArtworkContentTestQuery>({
+    Component: (props) => <ArtworkContent slug="foo" {...props} />,
+    query: graphql`
+      query ArtworkContentTestQuery {
+        artwork(id: "foo") {
+          ...ArtworkContent_artwork
+        }
+      }
+    `,
   })
 
   it("renders without throwing an error", async () => {

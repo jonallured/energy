@@ -13,7 +13,7 @@ export const MultipleArtworksAndArtists = () => {
         <Input
           multiline
           value={value}
-          onChangeText={(e) => GlobalStore.actions.email.saveMultipleArtworksAndArtistsSubject(e)}
+          onChangeText={(e) => GlobalStore.actions.email.setMultipleArtworksAndArtistsSubject(e)}
         />
       </Screen.Body>
     </Screen>

@@ -13,7 +13,7 @@ export const MultipleArtworksBySameArtist = () => {
         <Input
           multiline
           value={value}
-          onChangeText={(e) => GlobalStore.actions.email.saveMultipleArtworksBySameArtistSubject(e)}
+          onChangeText={(e) => GlobalStore.actions.email.setMultipleArtworksBySameArtistSubject(e)}
         />
         <Text m={1} color="onBackgroundMedium">
           $artist will be replaced by the name of the artist
