@@ -98,6 +98,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   const isAvailabilityHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.worksAvailability
   )
+
   const showQRCode = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )

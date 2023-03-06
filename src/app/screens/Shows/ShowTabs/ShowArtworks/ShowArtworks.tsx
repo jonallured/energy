@@ -12,7 +12,6 @@ import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
 import { imageSize } from "app/utils/imageSize"
-import { useCallback } from "react"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -40,29 +39,6 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
   const activeTab = useFocusedTab()
   const allSelected = isAllSelected(selectedItems, presentedArtworks)
 
-  const renderItem = useCallback(
-    ({ item: artwork, i }) => (
-      <ArtworkGridItem
-        artwork={artwork}
-        onPress={() =>
-          isSelectModeActive
-            ? GlobalStore.actions.selectMode.toggleSelectedItem(artwork)
-            : navigation.navigate("Artwork", {
-                slug: artwork.slug,
-                contextArtworkSlugs: artworkSlugs,
-              })
-        }
-        selectedToAdd={isSelected(selectedItems, artwork)}
-        style={{
-          marginLeft: i % 2 === 0 ? 0 : space(1),
-          marginRight: i % 2 === 0 ? space(1) : 0,
-        }}
-      />
-    ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-
   return (
     <>
       <Portal active={activeTab === "ShowArtworks"}>
@@ -85,9 +61,25 @@ export const ShowArtworks = ({ slug }: { slug: string }) => {
           }}
           numColumns={isTablet() ? 3 : 2}
           data={presentedArtworks}
-          renderItem={renderItem}
+          renderItem={({ item: artwork, i }) => (
+            <ArtworkGridItem
+              artwork={artwork}
+              onPress={() =>
+                isSelectModeActive
+                  ? GlobalStore.actions.selectMode.toggleSelectedItem(artwork)
+                  : navigation.navigate("Artwork", {
+                      slug: artwork.slug,
+                      contextArtworkSlugs: artworkSlugs,
+                    })
+              }
+              selectedToAdd={isSelected(selectedItems, artwork)}
+              style={{
+                marginLeft: i % 2 === 0 ? 0 : space(1),
+                marginRight: i % 2 === 0 ? space(1) : 0,
+              }}
+            />
+          )}
           keyExtractor={(item) => item.internalID}
-          removeClippedSubviews
         />
       </TabsScrollView>
     </>
