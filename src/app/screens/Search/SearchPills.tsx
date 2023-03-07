@@ -3,9 +3,9 @@ import { useAtom } from "jotai"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
 import { disabledPillsAtom, selectedPillAtom } from "./searchAtoms"
 
-export type PillType = "Artists" | "Shows" | "Albums" | "All"
+export type PillType = "Artists" | "Shows" | "All"
 
-const PILLS: PillType[] = ["Artists", "Shows", "Albums"]
+const PILLS: PillType[] = ["Artists", "Shows"]
 
 export const SearchPills = () => {
   const [selectedPill, setSelectedPill] = useAtom(selectedPillAtom)

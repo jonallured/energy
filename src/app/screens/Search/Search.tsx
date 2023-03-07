@@ -32,7 +32,7 @@ export const Search = () => {
   useEffect(() => {
     if (inputText.length < MINIMUM_SEARCH_INPUT_LENGTH) {
       setSelectedPill(null)
-      setDisabledPills(["Albums"])
+      setDisabledPills([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputText])

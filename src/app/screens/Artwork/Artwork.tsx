@@ -111,11 +111,6 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
         modalRows={
           <>
             <BottomSheetModalRow
-              Icon={<ArtworkIcon fill="onBackgroundHigh" />}
-              label="View in Room"
-              onPress={() => {}}
-            />
-            <BottomSheetModalRow
               Icon={<EditIcon fill="onBackgroundHigh" />}
               label="Send by Email"
               onPress={sendByEmailHandler}
@@ -227,11 +222,6 @@ export const SkeletonArtwork = () => {
         modalHeight={370}
         modalRows={
           <>
-            <BottomSheetModalRow
-              Icon={<ArtworkIcon fill="onBackgroundHigh" />}
-              label="View in Room"
-              onPress={() => {}}
-            />
             <BottomSheetModalRow
               Icon={<EditIcon fill="onBackgroundHigh" />}
               label="Send by Email"

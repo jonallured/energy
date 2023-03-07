@@ -46,7 +46,6 @@ export const StackNav = createStackNavigator<NavigationScreens>()
 
 export const Main = () => {
   const isDoneBooting = useSystemIsDoneBooting()
-  const isOnline = useIsOnline()
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
@@ -96,7 +95,7 @@ export const Main = () => {
         {showDevMenuButton && <DevMenuButton />}
       </NavigationContainer>
 
-      <StatusBar backgroundColor={isOnline ? "transparent" : "pink"} />
+      <StatusBar backgroundColor="transparent" />
     </>
   )
 }

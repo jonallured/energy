@@ -102,10 +102,10 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
           }}
         >
           <Separator />
-          <Flex alignItems="center" mx={2}>
+          <Flex alignItems="center">
             {props.modalRows}
             <Spacer y={4} />
-            {props.extraButtons}
+            <Flex mx={2}>{props.extraButtons}</Flex>
           </Flex>
         </BottomSheetScrollView>
       </BottomSheetModal>
@@ -135,7 +135,7 @@ export const BottomSheetModalRow = ({
     style={{ width: "100%", height: 100 }}
   >
     <Flex flex={1}>
-      <Flex flexDirection="row" flex={1}>
+      <Flex flexDirection="row" flex={1} mx={1}>
         <Flex width={25} alignItems="center" justifyContent="center">
           {Icon}
         </Flex>

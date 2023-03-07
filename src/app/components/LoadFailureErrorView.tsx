@@ -1,4 +1,5 @@
 import { BoxProps, Flex, ReloadIcon, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { GlobalStore } from "app/system/store/GlobalStore"
 import { debounce } from "lodash"
 import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
@@ -14,6 +15,7 @@ export const LoadFailureErrorView: React.FC<LoadFailureErrorViewProps & BoxProps
   ...restProps
 }) => {
   const color = useColor()
+  const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -70,7 +72,7 @@ export const LoadFailureErrorView: React.FC<LoadFailureErrorViewProps & BoxProps
             ],
           }}
         >
-          <ReloadIcon height={25} width={25} />
+          <ReloadIcon height={25} width={25} fill={isDarkMode ? "white100" : "black100"} />
         </Animated.View>
       </Touchable>
       <Flex m={2}>
