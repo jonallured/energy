@@ -9,7 +9,6 @@ describe("Shows", () => {
     Component: Shows,
     variables: {
       partnerID: "foo",
-      imageSize: 200,
     },
   })
 

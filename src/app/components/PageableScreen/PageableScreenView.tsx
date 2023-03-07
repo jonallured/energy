@@ -1,27 +1,27 @@
-import { ScrollableLazyScreen } from "app/components/ScrollableScreensView/ScrollableLazyScreen"
+import { PageableLazyScreen } from "app/components/PageableScreen/PageableLazyScreen"
 import {
   ScrollableScreenEntity,
-  ScrollableScreensContextValue,
-  ScrollableScreensContext,
-} from "app/components/ScrollableScreensView/ScrollableScreensContext"
+  PageableScreensContextValue,
+  PageableScreensContext,
+} from "app/components/PageableScreen/PageableScreensContext"
 import { useState } from "react"
 import { StyleSheet, View } from "react-native"
 import PagerView from "react-native-pager-view"
 import { NativeProps as PagerViewNativeProps } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent"
 
-interface ScrollableScreensViewProps {
+interface PageableScreenViewProps {
   screens: ScrollableScreenEntity[]
   initialScreenName?: string
   prefetchScreensCount?: number
 }
 
-export const ScrollableScreensView: React.FC<ScrollableScreensViewProps> = (props) => {
+export const PageableScreenView: React.FC<PageableScreenViewProps> = (props) => {
   const { screens, initialScreenName, prefetchScreensCount = 1 } = props
   const [activeScreenIndex, setActiveScreenIndex] = useState(
     initialScreenName ? screens.findIndex((screen) => screen.name === initialScreenName) : 0
   )
 
-  const context: ScrollableScreensContextValue = {
+  const context: PageableScreensContextValue = {
     activeScreenIndex,
     activeScreen: screens[activeScreenIndex],
   }
@@ -31,7 +31,7 @@ export const ScrollableScreensView: React.FC<ScrollableScreensViewProps> = (prop
   }
 
   return (
-    <ScrollableScreensContext.Provider value={context}>
+    <PageableScreensContext.Provider value={context}>
       <PagerView
         style={styles.container}
         overScrollMode="never"
@@ -43,12 +43,12 @@ export const ScrollableScreensView: React.FC<ScrollableScreensViewProps> = (prop
 
           return (
             <View style={styles.page} key={screen.name}>
-              <ScrollableLazyScreen screen={screen} shouldRender={shouldRender} />
+              <PageableLazyScreen screen={screen} shouldRender={shouldRender} />
             </View>
           )
         })}
       </PagerView>
-    </ScrollableScreensContext.Provider>
+    </PageableScreensContext.Provider>
   )
 }
 

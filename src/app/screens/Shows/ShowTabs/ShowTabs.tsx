@@ -20,9 +20,9 @@ import { useRef } from "react"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
-import { ShowArtworks } from "./ShowArtworks/ShowArtworks"
-import { ShowDocuments } from "./ShowDocuments/ShowDocuments"
-import { ShowInstalls } from "./ShowInstalls/ShowInstalls"
+import { ShowArtworks } from "./ShowArtworks"
+import { ShowDocuments } from "./ShowDocuments"
+import { ShowInstalls } from "./ShowInstalls"
 
 type ShowTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
@@ -126,11 +126,6 @@ export const showTabsQuery = graphql`
         edges {
           node {
             ...Artwork_artworkProps @relay(mask: false)
-            image {
-              resized(width: 200, version: "normalized") {
-                url
-              }
-            }
           }
         }
       }

@@ -106,4 +106,4 @@ export type SelectedItem =
 
 export type SelectedItemArtwork = Extract<SelectedItem, { __typename: "Artwork" }>
 export type SelectedItemInstall = Extract<SelectedItem, { __typename: "Image" }>
-export type SelectedItemDocument = Extract<SelectedItem, { __typename: "Document" }>
+export type SelectedItemDocument = Extract<SelectedItem, { __typename: "PartnerDocument" }>

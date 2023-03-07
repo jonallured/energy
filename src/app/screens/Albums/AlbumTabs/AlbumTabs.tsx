@@ -25,7 +25,7 @@ import {
 } from "app/system/store/Models/SelectModeModel"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { Alert } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { AlbumArtworks } from "./AlbumArtworks"
@@ -40,7 +40,6 @@ export const AlbumTabs = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
   const bottomSheetRef = useRef<BottomSheetRef>(null)
-  const [albumArtworks, setAlbumArtworks] = useState<SelectedItemArtwork[]>([])
   const { sendMail } = useMailComposer()
 
   if (!album) {
@@ -68,7 +67,7 @@ export const AlbumTabs = () => {
     )
   }
 
-  const { artworkIds, installShotUrls, documentIds } = getAlbumIds(album.items)
+  const { installShotImages, documentIds } = getAlbumIds(album.items)
 
   const addToButtonHandler = () => {
     bottomSheetRef.current?.showBottomSheetModal()
@@ -81,7 +80,12 @@ export const AlbumTabs = () => {
 
   const emailAlbumHandler = () => {
     bottomSheetRef.current?.closeBottomSheetModal()
-    sendMail({ artworks: albumArtworks })
+
+    const artworks = album.items.filter(
+      (item) => item?.__typename === "Artwork"
+    ) as SelectedItemArtwork[]
+
+    sendMail({ artworks })
   }
 
   return (
@@ -102,11 +106,11 @@ export const AlbumTabs = () => {
         <Screen.AnimatedTitleTabsBody>
           <Tabs.Tab name="AlbumArtworks" label="Works">
             <TabScreen>
-              <AlbumArtworks artworkIds={artworkIds} onArtworksDoneLoading={setAlbumArtworks} />
+              <AlbumArtworks albumId={albumId} />
             </TabScreen>
           </Tabs.Tab>
           <Tabs.Tab name="AlbumInstalls" label="Installs">
-            <AlbumInstalls installShotUrls={installShotUrls} />
+            <AlbumInstalls images={installShotImages} />
           </Tabs.Tab>
           <Tabs.Tab name="AlbumDocuments" label="Documents">
             <TabScreen>
@@ -152,12 +156,12 @@ export const getAlbumIds = (items: SelectedItem[]) => {
     })
     .map((artwork) => artwork?.internalID as string)
 
-  const installShotUrls = items
+  const installShotImages = items
     .filter((item) => {
       return item?.__typename === "Image"
     })
     .map((image) => {
-      return (image as SelectedItemInstall).resized?.url!
+      return image as SelectedItemInstall
     })
 
   const documentIds = items
@@ -170,7 +174,7 @@ export const getAlbumIds = (items: SelectedItem[]) => {
 
   return {
     artworkIds,
-    installShotUrls,
+    installShotImages,
     documentIds,
   }
 }

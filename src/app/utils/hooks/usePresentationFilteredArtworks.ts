@@ -1,16 +1,11 @@
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { useMemo } from "react"
 
-interface PresentedArtworkProps {
-  readonly internalID: string
-  readonly slug: string
-  readonly published: boolean
-  readonly availability: string | null
-}
-
-export const usePresentationFilteredArtworks = <T extends PresentedArtworkProps>(
-  artworks: Array<T>
+export const usePresentationFilteredArtworks = <T extends SelectedItemArtwork>(
+  items: Array<T>
 ): Array<T> => {
+  const artworks = items.filter((item) => item.__typename === "Artwork")
   const isUnpublishedWorksHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.unpublishedWorks
   )

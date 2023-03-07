@@ -194,9 +194,7 @@ describe("syncManager", () => {
                 {
                   node: {
                     coverImage: {
-                      resized: {
-                        url: "image-url-1",
-                      },
+                      url: "image-url-1",
                     },
                   },
                 },

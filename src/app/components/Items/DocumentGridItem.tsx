@@ -57,7 +57,7 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
 
   return (
     <Touchable disabled={isDownloading} onPress={isSelectModeActive ? onPress : openFile}>
-      <Flex mb={4} pl={2} opacity={selectedToAdd ? 0.4 : 1}>
+      <Flex mb={4} opacity={selectedToAdd ? 0.4 : 1} width="100%">
         <Flex height={200} position="relative">
           <Flex flex={1} bg="black10" />
           <Flex

@@ -1,28 +1,13 @@
-import {
-  Spacer,
-  ArrowRightIcon,
-  Button,
-  Flex,
-  Input,
-  Text,
-  Touchable,
-  useSpace,
-} from "@artsy/palette-mobile"
-import { MasonryList } from "@react-native-seoul/masonry-list"
+import { Spacer, ArrowRightIcon, Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
-import { ArtworkGridItem } from "app/components/Items/ArtworkGridItem"
-import { albumArtworksQuery } from "app/screens/Albums/AlbumTabs/AlbumArtworks"
+import { ArtworksList } from "app/components/Lists/ArtworksList"
+import { useAlbum } from "app/screens/Albums/useAlbum"
 import { useNavigationSavedForKey } from "app/system/hooks/useNavigationSave"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { SelectedItem } from "app/system/store/Models/SelectModeModel"
-import { extractNodes } from "app/utils/extractNodes"
-import { usePresentationFilteredArtworks } from "app/utils/hooks/usePresentationFilteredArtworks"
-import { imageSize } from "app/utils/imageSize"
+import { SelectedItem, SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { useFormik } from "formik"
-import { differenceBy } from "lodash"
+import { differenceBy, uniqBy } from "lodash"
 import { Screen } from "palette"
 import { Platform } from "react-native"
 import { object, string } from "yup"
@@ -45,7 +30,6 @@ export const CreateOrEditAlbum = () => {
 
   const [hasSavedNav, navigateToSaved] = useNavigationSavedForKey("before-adding-to-album")
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
 
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -53,9 +37,11 @@ export const CreateOrEditAlbum = () => {
   const selectedItems = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.selectedItems
   )
-  const albums = GlobalStore.useAppState((state) => state.albums.albums)
-  const album = albums.find((album) => album.id === albumId)
-  const space = useSpace()
+
+  const { album, artworks } = useAlbum({ albumId: albumId as string })
+
+  // If we already have items in the album, merge them in
+  const albumItems = album?.items ?? []
 
   // Assigning selected artworks
   let artworksToSave: SelectedItem[] = []
@@ -64,26 +50,10 @@ export const CreateOrEditAlbum = () => {
     artworksToSave = [artworkToAdd]
   } else if (artworksToAdd) {
     // Selecting multiple artworks from choose artworks screen
-    artworksToSave = artworksToAdd
+    artworksToSave = uniqBy([...artworksToAdd, ...albumItems], "internalID")
   } else {
     artworksToSave = [...(album?.items ?? [])]
   }
-
-  const artworksData = useSystemQueryLoader<AlbumArtworksQuery>(albumArtworksQuery, {
-    partnerID,
-    artworkIDs: artworksToSave.map((artwork) => artwork?.internalID!),
-    imageSize,
-  })
-
-  /* If we pass empty ids(selectedArtworks) as parameter in the albumArtworksQuery API,
-  MP returns random artworks(instead of returning empty object),
-  To avoid we have this condition to assign the artworks with fetched data only
-  when the selectedArtworks is not empty */
-  const artworks =
-    artworksToSave.length > 0 ? extractNodes(artworksData.partner?.artworksConnection) : []
-
-  // Filterering based on presentation mode
-  const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   const { handleSubmit, handleChange, values, errors, validateForm, isValid, isSubmitting } =
     useFormik<CreateAlbumValuesSchema>({
@@ -138,9 +108,13 @@ export const CreateOrEditAlbum = () => {
     )
   }
 
+  const showAddMessage = isSelectModeActive || !artworkToAdd
+  const showRemoveMessage = mode === "edit" && artworks.length > 0
+
   return (
     <Screen>
       <Screen.Header title={mode === "edit" ? "Edit Album" : "Create Album"} />
+
       <Screen.Body>
         <Flex>
           <Input
@@ -152,52 +126,41 @@ export const CreateOrEditAlbum = () => {
           />
         </Flex>
         <Spacer y={2} />
-        {isSelectModeActive ||
-          (!artworkToAdd && (
-            <Touchable
-              onPress={() =>
-                navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })
-              }
-            >
-              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Text>Add Items to Album</Text>
-                <ArrowRightIcon fill="onBackgroundHigh" />
-              </Flex>
-            </Touchable>
-          ))}
 
-        {mode === "edit" && presentedArtworks.length > 0 && (
+        {showAddMessage && (
+          <Touchable
+            onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
+          >
+            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Text>Add Items to Album</Text>
+              <ArrowRightIcon fill="onBackgroundHigh" />
+            </Flex>
+          </Touchable>
+        )}
+
+        {showRemoveMessage && (
           <Text mt={2} variant="xs" color="onBackgroundMedium">
             Select artworks to remove from album
           </Text>
         )}
 
-        <MasonryList
-          contentContainerStyle={{
-            marginTop: space(2),
+        <ArtworksList
+          artworks={artworksToSave as SelectedItemArtwork[]}
+          onItemPress={(item) => {
+            GlobalStore.actions.selectMode.toggleSelectedItem(item)
           }}
-          numColumns={2}
-          data={presentedArtworks}
-          renderItem={({ item: artwork, i }) => {
+          checkIfSelectedToRemove={(item) => {
             return (
-              <ArtworkGridItem
-                artwork={artwork}
-                onPress={() => {
-                  GlobalStore.actions.selectMode.toggleSelectedItem(artwork as SelectedItem)
-                }}
-                selectedToRemove={
-                  mode === "edit" &&
-                  !!selectedItems.find((item) => item?.internalID === artwork.internalID)
-                }
-                style={{
-                  marginLeft: i % 2 === 0 ? 0 : space(1),
-                  marginRight: i % 2 === 0 ? space(1) : 0,
-                }}
-              />
+              mode === "edit" &&
+              !!selectedItems.find((selectedItem) => selectedItem?.internalID === item.internalID)
             )
           }}
-          keyExtractor={(item) => item.internalID}
+          contentContainerStyle={{
+            paddingHorizontal: 0,
+          }}
+          isStatic
         />
+
         {Platform.OS === "ios" ? (
           <Screen.BottomView>
             <CreateOrEditButton />

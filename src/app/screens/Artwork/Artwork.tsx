@@ -16,14 +16,13 @@ import {
   BottomSheetModalView,
   BottomSheetModalRow,
 } from "app/components/BottomSheetModalView"
-import { ScrollableScreenEntity } from "app/components/ScrollableScreensView/ScrollableScreensContext"
-import { ScrollableScreensView } from "app/components/ScrollableScreensView/ScrollableScreensView"
+import { PageableScreenView } from "app/components/PageableScreen/PageableScreenView"
+import { ScrollableScreenEntity } from "app/components/PageableScreen/PageableScreensContext"
 import { useMailComposer } from "app/screens/Artwork/useMailComposer"
 import { useNavigationSave } from "app/system/hooks/useNavigationSave"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
-import { imageSize } from "app/utils/imageSize"
 import { filter } from "lodash"
 import { Screen } from "palette"
 import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
@@ -54,9 +53,7 @@ export const Artwork = () => {
     }
   })
 
-  return (
-    <ScrollableScreensView screens={screens} initialScreenName={slug} prefetchScreensCount={5} />
-  )
+  return <PageableScreenView screens={screens} initialScreenName={slug} prefetchScreensCount={5} />
 }
 
 export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
@@ -65,7 +62,6 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const artworkData = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
     slug,
-    imageSize,
   })
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const { artwork } = artworkData
@@ -155,16 +151,10 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
 }
 
 export const artworkQuery = graphql`
-  query ArtworkQuery($slug: String!, $imageSize: Int!) {
+  query ArtworkQuery($slug: String!) {
     artwork(id: $slug) {
       ...Artwork_artworkProps @relay(mask: false)
-      ...ArtworkContent_artwork @arguments(imageSize: $imageSize)
-
-      image {
-        resized(width: $imageSize, version: "normalized") {
-          url
-        }
-      }
+      ...ArtworkContent_artwork
     }
   }
 `
@@ -186,6 +176,14 @@ export const Artwork_artworkProps = graphql`
       cm
     }
     href
+    image {
+      resized(width: 700, version: "normalized") {
+        width
+        height
+        url
+      }
+      aspectRatio
+    }
     internalID
     medium
     mediumType {
@@ -213,14 +211,19 @@ export const SkeletonArtwork = () => {
           }
         />
         <Screen.Body fullwidth nosafe>
-          <Flex backgroundColor="background" flex={1} justifyContent="center" alignItems="center">
+          <Flex
+            backgroundColor="background"
+            flex={1}
+            justifyContent="center"
+            alignItems="center"
+            height="78%"
+          >
             <ActivityIndicator />
           </Flex>
         </Screen.Body>
       </Screen>
 
       <BottomSheetModalView
-        // ref={bottomSheetRef}
         modalHeight={370}
         modalRows={
           <>

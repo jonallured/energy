@@ -1,5 +1,5 @@
 import { CheckCircleFillIcon, Flex, Touchable } from "@artsy/palette-mobile"
-import { ImageModal } from "app/components/ImageModal"
+import { ArtworkImageModal } from "app/components/ArtworkImageModal"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { CachedImage } from "app/system/wrappers/CachedImage"
 import { useState } from "react"
@@ -22,7 +22,12 @@ export const ArtworkImageGridItem = ({
 
   return (
     <Flex mb={4} pl={2} testID={url}>
-      <ImageModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} uri={url} />
+      <ArtworkImageModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        uri={url}
+      />
+
       <Touchable
         style={{ width: "100%", height: "100%" }}
         onPress={
@@ -35,8 +40,9 @@ export const ArtworkImageGridItem = ({
         }
       >
         <Flex opacity={selectedToAdd ? 0.4 : 1}>
-          <CachedImage uri={url} style={{ aspectRatio: 1 }} placeholderHeight={170} />
+          <CachedImage uri={url} aspectRatio={1} />
         </Flex>
+
         {selectedToAdd && (
           <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
             <CheckCircleFillIcon height={30} width={30} fill="blue100" />

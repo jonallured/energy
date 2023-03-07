@@ -13,6 +13,7 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = (props) => {
   const artist = useFragment<ArtistListItem_artist$key>(ArtistListItemFragment, props.artist)
   const variant = isTablet() ? "sm" : "xs"
   const src = useLocalUri(artist.imageUrl!)
+
   return (
     <Flex py={1} flexDirection="row">
       <Avatar src={src} size={variant} initials={src ? "" : artist.initials!} />

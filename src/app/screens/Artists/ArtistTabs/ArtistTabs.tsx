@@ -20,9 +20,9 @@ import { useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { ArtistArtworks } from "./ArtistArtworks/ArtistArtworks"
-import { ArtistDocuments } from "./ArtistDocuments/ArtistDocuments"
-import { ArtistShows } from "./ArtistShows/ArtistShows"
+import { ArtistArtworks } from "./ArtistArtworks"
+import { ArtistDocuments } from "./ArtistDocuments"
+import { ArtistShows } from "./ArtistShows"
 
 type ArtistTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 

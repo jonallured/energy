@@ -1,18 +1,13 @@
-import { ScrollableScreenEntity } from "app/components/ScrollableScreensView/ScrollableScreensContext"
+import { ScrollableScreenEntity } from "app/components/PageableScreen/PageableScreensContext"
 import { useEffect, useState } from "react"
 import styled from "styled-components/native"
 
-interface ScrollableLazyScreenProps {
+interface PageableLazyScreenProps {
   screen: ScrollableScreenEntity
   shouldRender: boolean
 }
 
-// TODO: Remove this component when we need to request data for all artworks
-export const ScrollableLazyScreen: React.FC<ScrollableLazyScreenProps> = ({
-  screen,
-  shouldRender,
-}) => {
-  // If `canMount` is true, then we should render screen contents. Otherwise, a stub is displayed.
+export const PageableLazyScreen: React.FC<PageableLazyScreenProps> = ({ screen, shouldRender }) => {
   const [canMount, setCanMount] = useState(false)
 
   useEffect(() => {

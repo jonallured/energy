@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
-import { ArtistArtworks } from "app/screens/Artists/ArtistTabs/ArtistArtworks/ArtistArtworks"
+import { ArtistArtworks } from "app/screens/Artists/ArtistTabs/ArtistArtworks"
 import { __globalStoreTestUtils__ } from "app/system/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
 import { range } from "lodash"
@@ -18,7 +18,7 @@ describe("ArtistArtworks", () => {
   it("renders the list of works", async () => {
     const { getByTestId } = renderWithRelay(mockProps)
     await waitFor(() => {
-      expect(getByTestId("artist-artwork-list").props.data).toHaveLength(10)
+      expect(getByTestId("ArtworksList").props.data).toHaveLength(10)
     })
   })
 
@@ -32,7 +32,7 @@ describe("ArtistArtworks", () => {
         },
       })
       await waitFor(() => {
-        expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
+        expect(getByTestId("ArtworksList").props.data).toHaveLength(4)
       })
     })
 
@@ -46,7 +46,7 @@ describe("ArtistArtworks", () => {
         },
       })
       await waitFor(() => {
-        expect(getByTestId("artist-artwork-list").props.data).toHaveLength(4)
+        expect(getByTestId("ArtworksList").props.data).toHaveLength(4)
       })
     })
 

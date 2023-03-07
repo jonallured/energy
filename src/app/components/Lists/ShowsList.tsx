@@ -1,31 +1,23 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { NavigationScreens } from "app/Navigation"
 import { ShowListItem } from "app/components/Items/ShowListItem"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { TabsFlatList } from "app/components/Tabs/TabsContent"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils/extractNodes"
 import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
-import { imageSize } from "app/utils/imageSize"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
 
-export const ArtistShows = ({ slug }: { slug: string }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
+interface ShowsListProps {
+  shows: any[]
+}
+
+export const ShowsList: React.FC<ShowsListProps> = ({ shows }) => {
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const showsData = useSystemQueryLoader<ArtistShowsQuery>(artistShowsQuery, {
-    partnerID,
-    slug,
-    imageSize,
-  })
-  const shows = extractNodes(showsData.partner?.showsConnection)
   const screenWidth = useWindowDimensions().width
   const margin = 20
 
@@ -37,17 +29,17 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
       contentContainerStyle={getContentContainerStyle(shows)}
       data={shows}
       numColumns={isTablet() ? 2 : 1}
-      renderItem={({ item: show }) => (
+      renderItem={({ item }) => (
         <Touchable
           onPress={() =>
             navigation.navigate("ShowTabs", {
-              slug: show.slug,
+              slug: item.slug,
             })
           }
           style={{ width: isTablet() ? (screenWidth - margin * 3) / 2 : undefined }}
           disabled={isSelectModeActive}
         >
-          <ShowListItem show={show} disabled={isSelectModeActive} />
+          <ShowListItem show={item} disabled={isSelectModeActive} />
         </Touchable>
       )}
       keyExtractor={(item) => item?.internalID}
@@ -55,24 +47,3 @@ export const ArtistShows = ({ slug }: { slug: string }) => {
     />
   )
 }
-
-export const artistShowsQuery = graphql`
-  query ArtistShowsQuery($partnerID: String!, $slug: String!, $imageSize: Int!) @raw_response_type {
-    partner(id: $partnerID) {
-      showsConnection(first: 100, status: ALL, artistID: $slug) {
-        edges {
-          node {
-            ...ShowListItem_show @arguments(imageSize: $imageSize)
-            internalID
-            slug
-            coverImage {
-              resized(width: $imageSize, version: "normalized") {
-                url
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`

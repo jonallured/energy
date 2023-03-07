@@ -1,14 +1,23 @@
 import { Spacer, Flex, Text, SpacingUnitDSValue } from "@artsy/palette-mobile"
+import { useAlbum } from "app/screens/Albums/useAlbum"
 import { Album } from "app/system/store/Models/AlbumsModel"
-import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
+import { CachedImage } from "app/system/wrappers/CachedImage"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { isTablet } from "react-native-device-info"
-import { AlbumListImage } from "./AlbumListImage"
 
-export const AlbumListItem = ({ album }: { album: Album }) => {
-  const overlapSize: SpacingUnitDSValue = 2
-  const albumItems = album.items ?? []
-  const first3Artworks = albumItems.slice(0, 3)
+// FIXME: move over delete functionality
+// import { AlbumListImage } from "./AlbumListImage"
+
+interface AlbumListItemProps {
+  album: Album
+}
+
+export const AlbumListItem: React.FC<AlbumListItemProps> = ({ album }) => {
+  const { artworks } = useAlbum({ albumId: album.id })
+  const placeholderHeight = useScreenDimensions().height / 5
+  const first3Artworks = artworks.slice(0, 3)
   const variant = isTablet() ? "sm" : "xs"
+  const overlapSize: SpacingUnitDSValue = 2
 
   return (
     <Flex my={2}>
@@ -29,26 +38,31 @@ export const AlbumListItem = ({ album }: { album: Album }) => {
             mr={-overlapSize as SpacingUnitDSValue}
           />
         )}
-        {first3Artworks.reverse().map((item) => {
-          if (!item) return null
-          const artwork = item as SelectedItemArtwork
+        {first3Artworks.reverse().map((artwork) => {
+          if (!artwork) {
+            return null
+          }
 
           return (
-            <AlbumListImage
-              slug={artwork.slug}
+            <CachedImage
               key={artwork.internalID}
+              uri={artwork.image?.resized?.url as string}
+              aspectRatio={artwork.image?.aspectRatio}
               style={{
                 flex: 1,
                 marginRight: -overlapSize,
+                maxHeight: 150,
               }}
+              placeholderHeight={placeholderHeight}
             />
           )
         })}
       </Flex>
+
       <Flex mt={1}>
         <Text variant={variant}>{album.name}</Text>
         <Text variant={variant} color="onBackgroundMedium">
-          {albumItems.length} {albumItems.length === 1 ? "Item" : "Items"}
+          {artworks.length} {artworks.length === 1 ? "Item" : "Items"}
         </Text>
       </Flex>
       <Spacer y={1} />

@@ -9,13 +9,14 @@ import {
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { AvailabilityDot } from "app/components/StatusDot"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemArtwork } from "app/system/store/Models/SelectModeModel"
 import { CachedImage } from "app/system/wrappers/CachedImage"
 import { ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 export interface ArtworkGridItemProps extends FlexProps {
-  artwork: ArtworkGridItem_artwork$key
+  artwork: SelectedItemArtwork
   onPress?: () => void
   selectedToAdd?: boolean
   selectedToRemove?: boolean
@@ -23,16 +24,15 @@ export interface ArtworkGridItemProps extends FlexProps {
   style?: ViewProps["style"]
 }
 
-export const ArtworkGridItem = ({
-  artwork: propArtwork,
+export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
+  artwork,
   disable,
   selectedToAdd,
   selectedToRemove,
   onPress,
   style,
   ...flexProps
-}: ArtworkGridItemProps) => {
-  const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, propArtwork)
+}) => {
   const fontSize = isTablet() ? "sm" : "xs"
 
   const isAvailabilityHidden = GlobalStore.useAppState(
@@ -43,17 +43,12 @@ export const ArtworkGridItem = ({
     <Touchable disabled={disable} onPress={onPress}>
       <Flex
         {...flexProps}
-        mb={4}
+        mb={2}
         opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}
         style={style}
       >
-        <CachedImage
-          uri={artwork.gridImage?.resized?.url}
-          placeholderHeight={artwork.gridImage?.resized?.height}
-          style={{
-            aspectRatio: artwork.gridImage?.aspectRatio ?? 1,
-          }}
-        />
+        <CachedImage uri={artwork.image?.resized?.url} aspectRatio={artwork.image?.aspectRatio} />
+
         <Text italic variant={fontSize} color="onBackgroundMedium" mt={1}>
           {!isAvailabilityHidden && <AvailabilityDot availability={artwork.availability} />}{" "}
           {artwork.title}
@@ -90,21 +85,17 @@ export const ArtworkGridItem = ({
   )
 }
 
-export const ArtworkGridItemFragment = graphql`
-  fragment ArtworkGridItem_artwork on Artwork @argumentDefinitions(imageSize: { type: "Int" }) {
-    internalID
-    title
-    date
+export const ArtworkGridItemFragmentContainer: React.FC<
+  ArtworkGridItemProps & {
+    artwork: ArtworkGridItem_artwork$key
+  }
+> = (props) => {
+  const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, props.artwork)
+  return <ArtworkGridItem {...props} artwork={artwork as unknown as SelectedItemArtwork} />
+}
 
-    # Alias the field so that we can use unmasked data from parent queries
-    gridImage: image {
-      resized(width: $imageSize, version: "normalized") {
-        height
-        url
-      }
-      aspectRatio
-    }
-    published
-    availability
+export const ArtworkGridItemFragment = graphql`
+  fragment ArtworkGridItem_artwork on Artwork {
+    ...Artwork_artworkProps @relay(mask: false)
   }
 `

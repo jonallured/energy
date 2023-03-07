@@ -1,5 +1,7 @@
+import { useColor, useSpace } from "@artsy/palette-mobile"
 import { ImagePlaceholder } from "app/components/ImagePlaceholder"
 import { useLocalUri } from "app/system/sync/fileCache"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import React, { useRef } from "react"
 import { Image, ImageProps, Platform } from "react-native"
 import Animated, {
@@ -10,16 +12,22 @@ import Animated, {
 } from "react-native-reanimated"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
-  placeholderHeight: number | null | undefined
+  width?: string | number | undefined
+  height?: string | number | undefined
+  placeholderHeight?: number | undefined
+  aspectRatio?: number | null | undefined
   uri: string | undefined
   fadeInOnLoad?: boolean
 }
 
 export const CachedImage: React.FC<CachedImageProps> = React.memo(
-  ({ fadeInOnLoad = true, placeholderHeight, style, uri, ...restProps }) => {
+  ({ fadeInOnLoad = true, style, uri, width, height, aspectRatio = 1, ...restProps }) => {
     const isDoneLoading = useRef(false)
+    const color = useColor()
+    const space = useSpace()
+    const screenDimensions = useScreenDimensions()
 
-    const initialOpacity = Platform.OS === "ios" ? 0 : 1
+    const initialOpacity = Platform.OS === "ios" ? 0.2 : 1
     const opacity = useSharedValue(fadeInOnLoad ? initialOpacity : 1)
 
     const fadeInAnimStyle = useAnimatedStyle(() => ({ opacity: opacity.value }), [])
@@ -30,11 +38,19 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
     }
 
     if (uri === undefined || localUri === undefined) {
-      return <ImagePlaceholder height={placeholderHeight ?? 0} />
+      return <ImagePlaceholder height={restProps.placeholderHeight} />
     }
 
     if (opacity.value === 1) {
       isDoneLoading.current = true
+    }
+
+    const initialStyle = {
+      ...(style as object),
+      aspectRatio,
+      width,
+      height,
+      maxWidth: screenDimensions.width - space(4),
     }
 
     // Hack to get around the lack of memoization support in `useSharedValue` and
@@ -43,14 +59,15 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
     let styleProps
     if (isDoneLoading.current === true) {
       ImageWrapper = Image
-      styleProps = [style]
+      styleProps = [initialStyle]
     } else {
       ImageWrapper = Animated.Image
-      styleProps = [style, fadeInAnimStyle]
+      styleProps = [initialStyle, fadeInAnimStyle]
     }
 
     return (
       <ImageWrapper
+        backgroundColor={color("black30")}
         {...restProps}
         style={styleProps}
         source={{ uri: localUri ?? uri }}

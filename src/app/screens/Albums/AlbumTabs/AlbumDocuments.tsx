@@ -1,12 +1,10 @@
-import { MasonryList } from "@react-native-seoul/masonry-list"
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
-import { DocumentGridItem } from "app/components/Items/DocumentGridItem"
-import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { DocumentList } from "app/components/Lists/DocumentList"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
 import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
+import { SelectedItemDocument } from "app/system/store/Models/SelectModeModel"
 import { extractNodes } from "app/utils/extractNodes"
-import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
 import { difference } from "lodash"
 import { useEffect } from "react"
 import { graphql } from "react-relay"
@@ -35,23 +33,7 @@ export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
 
   return (
     <TabsScrollView>
-      <MasonryList
-        contentContainerStyle={getContentContainerStyle(documents)}
-        numColumns={2}
-        data={documents}
-        renderItem={({ item: document }) => (
-          <DocumentGridItem
-            document={{
-              url: document.publicURL,
-              title: document.title,
-              id: document.internalID,
-              size: document.filesize,
-            }}
-          />
-        )}
-        keyExtractor={(item) => item.internalID}
-        ListEmptyComponent={<ListEmptyComponent text="No documents" />}
-      />
+      <DocumentList documents={documents as SelectedItemDocument[]} />
     </TabsScrollView>
   )
 }

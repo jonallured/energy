@@ -38,6 +38,7 @@ export const CreateOrEditAlbumChooseArtist = () => {
       <Screen.Body>
         <FlatList
           data={items}
+          initialNumToRender={50}
           keyExtractor={(item, index) => item[0]?.internalID ?? `${index}`}
           renderItem={({ item: [artist, count] }) => (
             <Touchable

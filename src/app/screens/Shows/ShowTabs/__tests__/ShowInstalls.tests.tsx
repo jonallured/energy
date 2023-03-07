@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react-native"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
+import { ShowInstalls } from "app/screens/Shows/ShowTabs/ShowInstalls"
 import { setupTestWrapper } from "app/utils/test/setupTestWrapper"
-import { ShowInstalls } from "./ShowInstalls"
 
 jest.mock("react-native-collapsible-tab-view", () => ({
   ...jest.requireActual("react-native-collapsible-tab-view"),
@@ -14,9 +14,13 @@ describe("ShowInstalls", () => {
   })
 
   it("renders ListEmptyComponent", async () => {
-    const { getByText } = renderWithRelay(mockPropsEmptyList)
+    const { getByText } = renderWithRelay({
+      Show: () => ({
+        images: [],
+      }),
+    })
     await waitFor(() => {
-      expect(getByText("No show installs shots to display")).toBeTruthy()
+      expect(getByText("No show install shots to display")).toBeTruthy()
     })
   })
 
@@ -24,26 +28,20 @@ describe("ShowInstalls", () => {
     const { getByTestId } = renderWithRelay(mockProps)
     await waitFor(() => {
       images.forEach((image) => {
-        expect(getByTestId(image.resized.url)).toBeTruthy()
+        expect(getByTestId(image.url)).toBeTruthy()
       })
     })
   })
 })
 
-const mockPropsEmptyList = {
-  Show: () => ({
-    images: [],
-  }),
-}
-
 const images = [
   {
     internalID: "first-install-shot",
-    resized: { url: "some-url-1" },
+    url: "some-url-1",
   },
   {
     internalID: "second-install-shot",
-    resized: { url: "some-url-2" },
+    url: "some-url-2",
   },
 ]
 

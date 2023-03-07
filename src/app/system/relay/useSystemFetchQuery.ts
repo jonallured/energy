@@ -36,7 +36,8 @@ export function useSystemFetchQuery<TQuery extends OperationType>({
   cacheConfig,
   onError,
 }: UseSystemFetchQueryProps<TQuery>) {
-  const [response, setResponse] = useState<TQuery["response"] | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState<TQuery["response"] | null>(null)
   const environment = useRelayEnvironment()
   const fetchPolicy = GlobalStore.useAppState(
     (state) => state.networkStatus.relayFetchPolicy
@@ -45,18 +46,21 @@ export function useSystemFetchQuery<TQuery extends OperationType>({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchQuery<TQuery>(environment, query, variables, {
+        setIsLoading(true)
+        const response = await fetchQuery<TQuery>(environment, query, variables, {
           ...cacheConfig,
           fetchPolicy,
         }).toPromise()
 
-        setResponse(data)
+        setData(response)
       } catch (error: any) {
         console.log("[useSystemFetchQuery] Error:", error)
 
         if (onError) {
           onError(error)
         }
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -64,5 +68,5 @@ export function useSystemFetchQuery<TQuery extends OperationType>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(variables)])
 
-  return response
+  return { data, isLoading }
 }

@@ -1,8 +1,8 @@
 import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ArtworkContent_artwork$key } from "__generated__/ArtworkContent_artwork.graphql"
+import { ArtworkImageModalQueryRenderer } from "app/components/ArtworkImageModal"
 import { getBottomSheetShadowStyle } from "app/components/BottomSheetModalView"
-import { ImageModal } from "app/components/ImageModal"
 import { ImagePlaceholder } from "app/components/ImagePlaceholder"
 import { ListEmptyComponent } from "app/components/ListEmptyComponent"
 import { Markdown } from "app/components/Markdown"
@@ -15,7 +15,7 @@ import { CachedImage } from "app/system/wrappers/CachedImage"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { NAVBAR_HEIGHT } from "palette/organisms/Screen/notExposed/ActualHeader"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { Suspense, useCallback, useMemo, useRef, useState } from "react"
 import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-generator"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -67,15 +67,15 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
     },
   })
 
-  const screenHeight = useScreenDimensions().height
+  const screenDimensions = useScreenDimensions()
   const extraAndroidMargin = Platform.OS === "android" ? 40 : 0
 
   const snapPoints = useMemo(
     () => [
       BOTTOM_SHEET_HEIGHT - extraAndroidMargin,
-      screenHeight - NAVBAR_HEIGHT - safeAreaInsets.top - extraAndroidMargin,
+      screenDimensions.height - NAVBAR_HEIGHT - safeAreaInsets.top - extraAndroidMargin,
     ],
-    [safeAreaInsets.top, screenHeight, extraAndroidMargin]
+    [safeAreaInsets.top, screenDimensions.height, extraAndroidMargin]
   )
 
   // Enable scroll only when the bottom sheet is expanded.
@@ -109,7 +109,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
 
   // Destructing all the artwork fields here
   const {
-    artworkImage,
+    image,
     artistNames,
     title,
     date,
@@ -179,35 +179,47 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
     }
   }
 
+  const resizedImage = {
+    width: screenDimensions.width - space(2),
+    height: screenDimensions.width / (image?.aspectRatio as number) - space(2),
+  }
+
   return (
     <Flex height="100%" ref={touchActivated}>
-      <ImageModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        uri={artworkImage?.resized?.url ?? ""}
-      />
+      <Suspense fallback={null}>
+        <ArtworkImageModalQueryRenderer
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          slug={artworkData.slug}
+        />
+      </Suspense>
 
-      <Flex px={2} py={4}>
-        {artworkImage?.resized?.url ? (
-          <Touchable
-            style={{ width: "100%", height: "100%" }}
-            onPressIn={onPressIn}
-            onPress={onPress}
-          >
-            <CachedImage
-              uri={artworkImage?.resized?.url}
-              placeholderHeight={artworkImage?.resized?.height}
+      <Flex height="78%" justifyContent="center">
+        <Flex px={2} py={4}>
+          {image?.resized?.url ? (
+            <Touchable
               style={{
-                flex: 1,
-                width: "100%",
-                maxHeight: "78%",
+                width: resizedImage.width,
+                height: resizedImage.height,
               }}
-              resizeMode="contain"
-            />
-          </Touchable>
-        ) : (
-          <ImagePlaceholder height={400} />
-        )}
+              onPressIn={onPressIn}
+              onPress={onPress}
+            >
+              <CachedImage
+                uri={image?.resized?.url}
+                width={resizedImage.width}
+                height={resizedImage.height}
+                aspectRatio={image?.aspectRatio}
+                style={{
+                  zIndex: 1000,
+                  flex: 1,
+                }}
+              />
+            </Touchable>
+          ) : (
+            <ImagePlaceholder height={400} />
+          )}
+        </Flex>
       </Flex>
 
       <BottomSheet
@@ -363,15 +375,8 @@ const BorderBox: React.FC = ({ children }) => {
 }
 
 export const artworkContentQuery = graphql`
-  fragment ArtworkContent_artwork on Artwork @argumentDefinitions(imageSize: { type: "Int" }) {
+  fragment ArtworkContent_artwork on Artwork {
     ...Artwork_artworkProps @relay(mask: false)
-
-    artworkImage: image {
-      resized(width: $imageSize, version: "normalized") {
-        url
-        height
-      }
-    }
 
     editionSets {
       dimensions {

@@ -1,20 +1,15 @@
-import { MasonryList } from "@react-native-seoul/masonry-list"
-import { ArtworkImageGridItem } from "app/components/Items/ArtworkImageGridItem"
-import { ListEmptyComponent } from "app/components/ListEmptyComponent"
+import { InstallationsList } from "app/components/Lists/InstallationsList"
 import { TabsScrollView } from "app/components/Tabs/TabsContent"
-import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
+import { SelectedItemInstall } from "app/system/store/Models/SelectModeModel"
 
-export const AlbumInstalls = ({ installShotUrls }: { installShotUrls: string[] }) => {
+interface AlbumInstallsProps {
+  images: SelectedItemInstall[]
+}
+
+export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ images }) => {
   return (
     <TabsScrollView>
-      <MasonryList
-        contentContainerStyle={getContentContainerStyle(installShotUrls)}
-        numColumns={2}
-        data={installShotUrls}
-        keyExtractor={(item, index) => item ?? `${index}`}
-        renderItem={({ item: url }) => <ArtworkImageGridItem url={url} />}
-        ListEmptyComponent={<ListEmptyComponent text="No installs shots to display" />}
-      />
+      <InstallationsList images={images} />
     </TabsScrollView>
   )
 }

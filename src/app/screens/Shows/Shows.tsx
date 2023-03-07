@@ -9,7 +9,6 @@ import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { getContentContainerStyle } from "app/utils/getContentContainerStyle"
-import { imageSize } from "app/utils/imageSize"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -17,7 +16,7 @@ import { graphql } from "react-relay"
 export const Shows = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
-  const data = useSystemQueryLoader<ShowsQuery>(showsQuery, { partnerID: partnerID!, imageSize })
+  const data = useSystemQueryLoader<ShowsQuery>(showsQuery, { partnerID: partnerID! })
   const shows = extractNodes(data.partner?.showsConnection)
   const screenWidth = useWindowDimensions().width
 
@@ -54,15 +53,15 @@ export const Shows = () => {
 }
 
 export const showsQuery = graphql`
-  query ShowsQuery($partnerID: String!, $imageSize: Int!) {
+  query ShowsQuery($partnerID: String!) {
     partner(id: $partnerID) {
       showsConnection(first: 100, status: ALL) {
         edges {
           node {
+            ...ShowListItem_show
             internalID
             slug
             artworksCount
-            ...ShowListItem_show @arguments(imageSize: $imageSize)
           }
         }
       }
