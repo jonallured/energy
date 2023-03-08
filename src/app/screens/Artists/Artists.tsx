@@ -1,87 +1,17 @@
-import { Flex, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArtistsQuery } from "__generated__/ArtistsQuery.graphql"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { NavigationScreens } from "app/Navigation"
-import { ArtistListItem } from "app/components/Items/ArtistListItem"
-import { ListEmptyComponent } from "app/components/ListEmptyComponent"
-import { TabsFlatList } from "app/components/Tabs/TabsContent"
-import { useSystemQueryLoader } from "app/system/relay/useSystemQueryLoader"
-import { GlobalStore } from "app/system/store/GlobalStore"
-import { extractNodes } from "app/utils/extractNodes"
-import { zip } from "lodash"
-import { SCREEN_HORIZONTAL_PADDING } from "palette/organisms/Screen/exposed/Body"
-import { useWindowDimensions } from "react-native"
-import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
+import { ArtistsList } from "app/components/Lists/ArtistsList"
 
-export const Artists = () => {
-  const space = useSpace()
+export const Artists: React.FC = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const artistsData = useSystemQueryLoader<ArtistsQuery>(artistsQuery, { partnerID })
-  const artists = extractNodes(artistsData.partner?.allArtistsConnection)
-  const screenWidth = useWindowDimensions().width
-  const counts = artistsData.partner?.allArtistsConnection?.edges?.map(
-    (edge) => edge?.counts?.managedArtworks as string
-  )
-  if (!counts || !artists) {
-    return null
+
+  const handleItemPress = (item: ArtistListItem_artist$data) => {
+    navigation.navigate("ArtistTabs", {
+      slug: item.slug,
+      name: item.name as string,
+    })
   }
-  const margin = 20
-  const width = isTablet() ? (screenWidth - 2 * margin) / 2 : undefined
 
-  const items = zip(artists, counts)
-
-  return (
-    <TabsFlatList
-      data={items}
-      numColumns={isTablet() ? 2 : 1}
-      contentContainerStyle={{ marginTop: space(1), paddingBottom: space(1) }}
-      renderItem={({ item }) => {
-        const artist = item[0]!
-        const count = item[1]!
-        return (
-          <Touchable
-            onPress={() =>
-              navigation.navigate("ArtistTabs", {
-                slug: artist.slug,
-                name: artist.name!,
-              })
-            }
-            style={{ width }}
-          >
-            <Flex mx={SCREEN_HORIZONTAL_PADDING}>
-              <ArtistListItem artist={artist} count={count} />
-            </Flex>
-          </Touchable>
-        )
-      }}
-      ListEmptyComponent={<ListEmptyComponent text="No artists" />}
-      keyExtractor={(item) => {
-        const artist = item[0]!
-        return artist.internalID
-      }}
-    />
-  )
+  return <ArtistsList onItemPress={handleItemPress} />
 }
-
-export const artistsQuery = graphql`
-  query ArtistsQuery($partnerID: String!) {
-    partner(id: $partnerID) {
-      allArtistsConnection(includeAllFields: true) {
-        totalCount
-        edges {
-          counts {
-            managedArtworks
-          }
-          node {
-            name
-            slug
-            internalID
-            ...ArtistListItem_artist
-          }
-        }
-      }
-    }
-  }
-`

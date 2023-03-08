@@ -11,7 +11,7 @@ import {
   ArtistShowsQuery,
   ArtistShowsQuery$rawResponse,
 } from "__generated__/ArtistShowsQuery.graphql"
-import { ArtistsQuery, ArtistsQuery$data } from "__generated__/ArtistsQuery.graphql"
+import { ArtistsListQuery, ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
 import {
   ArtworkImageModalQuery,
   ArtworkImageModalQuery$data,
@@ -26,10 +26,10 @@ import { ShowInstallsQuery, ShowInstallsQuery$data } from "__generated__/ShowIns
 import { ShowTabsQuery, ShowTabsQuery$data } from "__generated__/ShowTabsQuery.graphql"
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { artworkImageModalQuery } from "app/components/ArtworkImageModal"
+import { artistsListQuery } from "app/components/Lists/ArtistsList"
 import { artistArtworksQuery } from "app/screens/Artists/ArtistTabs/ArtistArtworks"
 import { artistDocumentsQuery } from "app/screens/Artists/ArtistTabs/ArtistDocuments"
 import { artistShowsQuery } from "app/screens/Artists/ArtistTabs/ArtistShows"
-import { artistsQuery } from "app/screens/Artists/Artists"
 import { artworkQuery } from "app/screens/Artwork/Artwork"
 import { showArtworksQuery } from "app/screens/Shows/ShowTabs/ShowArtworks"
 import { showDocumentsQuery } from "app/screens/Shows/ShowTabs/ShowDocuments"
@@ -48,7 +48,7 @@ import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCa
 import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 
 interface SyncResultsData {
-  artistsQuery?: ArtistsQuery$data
+  artistsListQuery?: ArtistsListQuery$data
   showsQuery?: ShowsQuery$data
   artistArtworksQuery?: ArtistArtworksQuery$data[]
   artworkQuery?: ArtworkQuery$data[]
@@ -67,7 +67,7 @@ interface SyncResultsData {
  * Intial sync results data
  */
 const syncResults: SyncResultsData = {
-  artistsQuery: undefined,
+  artistsListQuery: undefined,
   showsQuery: undefined,
   artistArtworksQuery: [],
   artworkQuery: [],
@@ -192,11 +192,11 @@ export function initSyncManager({
   const syncArtistsQuery = async () => {
     updateStatus("Syncing artists")
 
-    syncResults.artistsQuery = await fetchOrCatch<ArtistsQuery>(artistsQuery, {
+    syncResults.artistsListQuery = await fetchOrCatch<ArtistsListQuery>(artistsListQuery, {
       partnerID,
     })
 
-    updateStatus("Complete. `artistsQuery`", syncResults.artistsQuery)
+    updateStatus("Complete. `artistsListQuery`", syncResults.artistsListQuery)
   }
 
   const syncShowsQuery = async () => {
@@ -499,7 +499,7 @@ export function initSyncManager({
 
 const parsers = {
   getArtistSlugs: (): string[] => {
-    const artists = extractNodes(syncResults.artistsQuery?.partner?.allArtistsConnection)
+    const artists = extractNodes(syncResults.artistsListQuery?.partner?.allArtistsConnection)
 
     const artistSlugs = compact(
       artists.map((artist) => {

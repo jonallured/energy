@@ -1,7 +1,7 @@
 import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ArtistShowsQuery$rawResponse } from "__generated__/ArtistShowsQuery.graphql"
-import { ArtistsQuery$data } from "__generated__/ArtistsQuery.graphql"
+import { ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
 import { ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
 import { ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { getFileFromCache, saveFileToCache } from "app/system/sync/fileCache"
@@ -94,7 +94,7 @@ describe("syncManager", () => {
     const { syncResults, parsers } = _tests
 
     it("#getArtistSlugs", () => {
-      syncResults.artistsQuery = {
+      syncResults.artistsListQuery = {
         partner: {
           allArtistsConnection: {
             edges: [
@@ -106,7 +106,7 @@ describe("syncManager", () => {
             ],
           },
         },
-      } as unknown as ArtistsQuery$data
+      } as unknown as ArtistsListQuery$data
 
       expect(parsers.getArtistSlugs()).toEqual(["artist-1"])
     })
