@@ -39,14 +39,3 @@ export const TabsScrollView = (props: ScrollViewProps) => {
   // @ts-expect-error
   return <Tabs.ScrollView {...props} />
 }
-
-export const TabsSectionList = <T,>(props: SectionListProps<T>) => {
-  if (__TEST__) return <SectionList {...props} />
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const scrollY = useCurrentTabScrollY()
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useAnimatedHeaderScrolling(scrollY, true)
-
-  return <Tabs.SectionList {...props} />
-}

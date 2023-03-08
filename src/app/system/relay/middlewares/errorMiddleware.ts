@@ -72,6 +72,7 @@ const trackError = (
   })
 }
 
+// ts-prune-ignore-next
 export const errorMiddleware = () => {
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const res = await next(req)

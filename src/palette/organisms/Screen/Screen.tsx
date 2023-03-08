@@ -1,7 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { getChildByType, getChildrenByTypeDeep } from "react-nanny"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-// import { Children } from "shared/types"
 import { AnimatedTitleHeader, PlaceholderAnimatedTitleHeader } from "./exposed/AnimatedTitleHeader"
 import {
   AnimatedTitleTabsBody,
@@ -13,13 +12,8 @@ import { FloatingHeader } from "./exposed/FloatingHeader"
 import { Header } from "./exposed/Header"
 import { RawHeader } from "./exposed/RawHeader"
 import { PlaceholderTabsBody, TabsBody } from "./exposed/TabsBody"
-import { Children } from "app/utils/types"
 
-export type ScreenProps = Children & {
-  raw?: boolean
-}
-
-export const ScreenWrapper = ({ children, raw = false }: ScreenProps) => {
+export const ScreenWrapper: React.FC<{ raw?: boolean }> = ({ children, raw = false }) => {
   if (raw) return <Flex flex={1}>{children}</Flex>
 
   return <ScreenRoot>{children}</ScreenRoot>
@@ -44,7 +38,7 @@ const warnIfAnimatedTitleHeaderWithoutBodySupport = (children: React.ReactNode) 
   )
 }
 
-const ScreenRoot = ({ children }: Children) => {
+const ScreenRoot: React.FC = ({ children }) => {
   // react-nanny needs a `__TYPE` for finding children in the `exposed` folder.
   // Add one like so: `MyCoolHeader.defaultProps = { __TYPE: "screen:my-cool-header" }`
 

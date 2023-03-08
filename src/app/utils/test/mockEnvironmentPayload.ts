@@ -43,18 +43,6 @@ const generateID = (pathComponents: readonly string[] | undefined) => {
   return counters[path]
 }
 
-/**
- * Used to generate results in an array.
- * Usage: ```
- * Artist: () => ({
- *   auctionResultsConnection: {
- *     edges: mockEdges(10), // <- this will generate an array with 10 results, all prefilled
- *   }
- * })
- * ```
- */
-export const mockEdges = (length: number) => new Array(length).fill({ node: {} })
-
 const paths: { [name: string]: string } = {}
 
 const mockResolver = (ctx: MockResolverContext) => {

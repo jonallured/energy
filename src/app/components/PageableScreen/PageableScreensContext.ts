@@ -12,6 +12,7 @@ export interface PageableScreensContextValue {
 
 export const PageableScreensContext = createContext(null as unknown as PageableScreensContextValue)
 
+// ts-prune-ignore-next
 export const usePageableScreensContext = () => {
   const context = useContext<PageableScreensContextValue>(PageableScreensContext)
 

@@ -34,8 +34,6 @@ import { EditArtworkInCms } from "./EditArtworkInCms"
 
 type ArtworkRoute = RouteProp<NavigationScreens, "Artwork">
 
-export type ArtworkItemProps = ArtworkQuery$data["artwork"]
-
 export const Artwork = () => {
   const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
   const artworkSlugs = contextArtworkSlugs ?? [slug]
@@ -157,6 +155,7 @@ export const artworkQuery = graphql`
 /**
  * Shared fragment to be used whenever we need to display an artwork
  */
+// ts-prune-ignore-next
 export const Artwork_artworkProps = graphql`
   fragment Artwork_artworkProps on Artwork {
     __typename

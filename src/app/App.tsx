@@ -7,6 +7,7 @@ import { ignoreLogs } from "app/system/devTools/ignoreLogs"
 setupFlipper()
 ignoreLogs()
 
+// ts-prune-ignore-next
 export const App = () => (
   <>
     <AsyncStorageDevtools />
