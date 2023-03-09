@@ -117,7 +117,7 @@
     "@jest/globals": "^29.4.3",
     "@testing-library/jest-native": "^5.4.2",
     "@testing-library/react-hooks": "^8.0.1",
-    "@testing-library/react-native": "11.5.2",
+    "@testing-library/react-native": "^11.5.3",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.2.0",
