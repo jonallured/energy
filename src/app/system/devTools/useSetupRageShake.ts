@@ -18,7 +18,7 @@ export const useSetupRageShake = () => {
   useEffect(() => {
     if (isUserDev) {
       const subscription = RNShake.addListener(() => {
-        nav.navigate("DevMenu")
+        GlobalStore.actions.devicePrefs.setShowDevMenuButton(true)
       })
 
       return () => subscription.remove()

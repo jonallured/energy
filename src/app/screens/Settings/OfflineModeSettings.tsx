@@ -1,6 +1,4 @@
 import { Button, Flex, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationScreens } from "app/Navigation"
 import { AnimatedEllipsis } from "app/components/AnimatedEllipsis"
 import { useSystemRelayEnvironment } from "app/system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "app/system/store/GlobalStore"
@@ -16,7 +14,6 @@ import { Alert } from "react-native"
 export const OfflineModeSettings = () => {
   const color = useColor()
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
-  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { relayEnvironment } = useSystemRelayEnvironment()
 
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
@@ -146,12 +143,6 @@ export const OfflineModeSettings = () => {
           <Button block onPress={handleClearFileCache}>
             Clear cache
           </Button>
-
-          {(isUserDev || __DEV__) && (
-            <Button block onPress={() => navigation.navigate("BrowseOfflineCache")}>
-              Browse offline cache
-            </Button>
-          )}
         </Join>
       </Screen.Body>
     </Screen>

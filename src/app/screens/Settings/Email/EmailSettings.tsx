@@ -12,7 +12,7 @@ import { NavigationScreens } from "app/Navigation"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 
-export const EmailScreen = () => {
+export const EmailSettings = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const emailCC = GlobalStore.useAppState((state) => state.email.ccRecipients)
   const greeting = GlobalStore.useAppState((state) => state.email.greetings)

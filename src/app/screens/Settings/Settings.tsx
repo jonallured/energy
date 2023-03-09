@@ -1,6 +1,7 @@
 import { Spacer, Button, Text, Touchable, Flex, ArrowRightIcon, Join } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "app/Navigation"
+import { DevMenu } from "app/screens/Settings/DevMenu"
 import { GlobalStore } from "app/system/store/GlobalStore"
 import { Screen } from "palette"
 import { useState } from "react"
@@ -14,7 +15,6 @@ export const Settings = () => {
   const showDevMenuButtonInternalToggle = GlobalStore.useAppState(
     (state) => state.devicePrefs.showDevMenuButtonInternalToggle
   )
-  const { setShowDevMenuButton } = GlobalStore.actions.devicePrefs
   const [tapCount, updateTapCount] = useState(0)
 
   return (
@@ -58,7 +58,7 @@ export const Settings = () => {
             </Flex>
           </Touchable>
 
-          <Touchable onPress={() => navigation.navigate("EmailScreen")}>
+          <Touchable onPress={() => navigation.navigate("EmailSettings")}>
             <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
               <Text>Email</Text>
               <ArrowRightIcon fill="onBackground" />
@@ -73,15 +73,18 @@ export const Settings = () => {
         {isUserDev && (
           <Join separator={<Spacer y={1} />}>
             <Spacer y={2} />
-            <Button block onPress={() => navigation.navigate("FolioDesignLanguage")}>
-              Folio Design Language
+            <Button
+              block
+              onPress={() =>
+                GlobalStore.actions.devicePrefs.setShowDevMenuButton(
+                  !showDevMenuButtonInternalToggle
+                )
+              }
+            >
+              Toggle Developer Menu
             </Button>
-            <Button block onPress={() => navigation.navigate("InsteadOfStorybook")}>
-              Instead of Storybook
-            </Button>
-            <Button block onPress={() => setShowDevMenuButton(!showDevMenuButtonInternalToggle)}>
-              Toggle DevMenu button (just shake on ios)
-            </Button>
+
+            {showDevMenuButtonInternalToggle && <DevMenu />}
           </Join>
         )}
 
