@@ -21,9 +21,13 @@ module.exports = {
     "plugin:react/jsx-runtime",
     "prettier", // "prettier" needs to be last!
   ],
-  parser: "@typescript-eslint/parser",
-  // TODO: Fix issue with it trying to lint root-level files
-  parserOptions: { project: "./tsconfig.json" },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 6,
+    sourceType: "module",
+  },
   settings: {
     react: {
       version: "detect",
@@ -42,7 +46,6 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
-    "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
     "import/order": [
       ERR,
       {
@@ -67,21 +70,25 @@ module.exports = {
      * Disabled
      */
 
+    "@typescript-eslint/await-thenable": OFF,
     "@typescript-eslint/ban-ts-comment": OFF,
     "@typescript-eslint/ban-types": OFF,
     "@typescript-eslint/explicit-module-boundary-types": OFF,
     "@typescript-eslint/no-empty-function": OFF,
     "@typescript-eslint/no-explicit-any": OFF,
     "@typescript-eslint/no-floating-promises": OFF,
+    "@typescript-eslint/no-implied-eval": OFF,
     "@typescript-eslint/no-misused-promises": OFF,
     "@typescript-eslint/no-non-null-asserted-optional-chain": OFF,
     "@typescript-eslint/no-non-null-assertion": OFF,
+    "@typescript-eslint/no-unnecessary-type-assertion": OFF,
     "@typescript-eslint/no-unsafe-argument": OFF,
     "@typescript-eslint/no-unsafe-assignment": OFF,
     "@typescript-eslint/no-unsafe-call": OFF,
     "@typescript-eslint/no-unsafe-member-access": OFF,
     "@typescript-eslint/no-unsafe-return": OFF,
     "@typescript-eslint/no-var-requires": OFF,
+    "@typescript-eslint/require-await": OFF,
     "@typescript-eslint/restrict-plus-operands": OFF,
     "@typescript-eslint/restrict-template-expressions": OFF,
     "@typescript-eslint/strict-boolean-expressions": OFF,

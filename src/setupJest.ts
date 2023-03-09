@@ -1,8 +1,8 @@
 import "@testing-library/jest-native/extend-expect"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
-import { ignoreLogsInTests } from "app/system/devTools/ignoreLogs"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks/useScreenDimensions"
 import React from "react"
+import { ignoreLogsInTests } from "system/devTools/ignoreLogs"
+import { ScreenDimensionsWithSafeAreas } from "utils/hooks/useScreenDimensions"
 
 // @ts-expect-error
 // eslint-disable-next-line import/order
@@ -92,7 +92,7 @@ jest.mock("@gorhom/bottom-sheet", () => {
   }
 })
 
-jest.mock("app/utils/hooks/useScreenDimensions", () => {
+jest.mock("utils/hooks/useScreenDimensions", () => {
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
     height: 550,
@@ -107,7 +107,7 @@ jest.mock("app/utils/hooks/useScreenDimensions", () => {
     },
   }
   return {
-    ...jest.requireActual("app/utils/hooks/useScreenDimensions"),
+    ...jest.requireActual("utils/hooks/useScreenDimensions"),
     ProvideScreenDimensions: ({ children }: { children: React.ReactNode }) => children,
     useScreenDimensions: () => screenDimensions,
   }
@@ -175,10 +175,10 @@ jest.mock("react-native-gesture-handler", () => {
   }
 })
 
-jest.mock("app/system/wrappers/CachedImage", () => ({
+jest.mock("system/wrappers/CachedImage", () => ({
   CachedImage: jest.requireActual("react-native").Image,
 }))
 
-jest.mock("app/system/hooks/useSystemIsDoneBooting", () => ({
+jest.mock("system/hooks/useSystemIsDoneBooting", () => ({
   useSystemIsDoneBooting: () => true,
 }))

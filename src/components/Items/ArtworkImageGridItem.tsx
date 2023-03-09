@@ -1,0 +1,54 @@
+import { CheckCircleFillIcon, Flex, Touchable } from "@artsy/palette-mobile"
+import { ArtworkImageModal } from "components/ArtworkImageModal"
+import { useState } from "react"
+import { GlobalStore } from "system/store/GlobalStore"
+import { CachedImage } from "system/wrappers/CachedImage"
+
+interface ArtworkImageGridItemProps {
+  url: string
+  onPress?: () => void
+  selectedToAdd?: boolean
+}
+
+export const ArtworkImageGridItem = ({
+  url,
+  onPress,
+  selectedToAdd,
+}: ArtworkImageGridItemProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
+
+  return (
+    <Flex mb={4} pl={2} testID={url}>
+      <ArtworkImageModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        uri={url}
+      />
+
+      <Touchable
+        style={{ width: "100%", height: "100%" }}
+        onPress={
+          isSelectModeActive
+            ? onPress
+            : () => {
+                if (!url) return
+                setIsModalVisible((v) => !v)
+              }
+        }
+      >
+        <Flex opacity={selectedToAdd ? 0.4 : 1}>
+          <CachedImage uri={url} aspectRatio={1} />
+        </Flex>
+
+        {selectedToAdd && (
+          <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
+            <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+          </Flex>
+        )}
+      </Touchable>
+    </Flex>
+  )
+}

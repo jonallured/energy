@@ -1,17 +1,14 @@
-const moduleNameMap = require("./alias").jestModuleNameMap
-
 module.exports = {
-  preset: "react-native",
-  moduleFileExtensions: ["ts", "tsx", "js"],
-  testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
-  testEnvironment: "jsdom",
   globals: { __TEST__: true },
-  moduleNameMapper: moduleNameMap,
+  moduleFileExtensions: ["ts", "tsx", "js"],
+  preset: "react-native",
+  setupFilesAfterEnv: ["jest-extended/all", "./src/setupJest.ts"],
+  testMatch: ["<rootDir>/src/**/*.tests.(ts|tsx|js)"],
+  testEnvironment: "jsdom",
   transform: {
     ".*[jt]sx?$": "babel-jest",
     "\\.graphql$": "jest-raw-loader",
   },
-  setupFilesAfterEnv: ["jest-extended/all", "./src/setupJest.ts"],
 
   // docs on this: https://jestjs.io/docs/tutorial-react-native#transformignorepatterns-customization
   transformIgnorePatterns: [
@@ -32,5 +29,4 @@ module.exports = {
       "|react-native-webview" +
       ")/)",
   ],
-  watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
 }

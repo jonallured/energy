@@ -3,4 +3,4 @@
 
 
 yarn type-check
-yarn relay && git add ./src/app/system/sync/_generatedRelayChecksum.ts
+yarn relay && git add ./src/system/sync/_generatedRelayChecksum.ts
