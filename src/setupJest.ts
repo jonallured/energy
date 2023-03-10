@@ -1,18 +1,14 @@
 import "@testing-library/jest-native/extend-expect"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 import React from "react"
-import { ignoreLogsInTests } from "system/devTools/ignoreLogs"
-import { ScreenDimensionsWithSafeAreas } from "utils/hooks/useScreenDimensions"
 
 // @ts-expect-error
 // eslint-disable-next-line import/order
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
-
-ignoreLogsInTests()
+import { ScreenDimensionsWithSafeAreas } from "utils/hooks/useScreenDimensions"
 
 // Patch setImmediate for Jest 27
 // @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-implied-eval
 global.setImmediate = (fn) => global.setTimeout(fn, 0)
 global.clearImmediate = jest.fn()
 
@@ -89,6 +85,8 @@ jest.mock("@gorhom/bottom-sheet", () => {
     __esModule: true,
     default: react.View,
     BottomSheetScrollView: react.ScrollView,
+    BottomSheetModalProvider: react.View,
+    BottomSheetModalView: react.View,
   }
 })
 
@@ -174,6 +172,10 @@ jest.mock("react-native-gesture-handler", () => {
     TouchableWithoutFeedback,
   }
 })
+
+jest.mock("system/wrappers/RetryErrorBoundary", () => ({
+  GlobalRetryErrorBoundary: ({ children }: any) => children,
+}))
 
 jest.mock("system/wrappers/CachedImage", () => ({
   CachedImage: jest.requireActual("react-native").Image,

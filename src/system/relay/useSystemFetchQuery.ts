@@ -18,7 +18,7 @@ import { GlobalStore } from "system/store/GlobalStore"
  * })
  */
 
-interface UseSystemFetchQueryProps<TQuery extends OperationType> {
+export interface UseSystemFetchQueryProps<TQuery extends OperationType> {
   query: GraphQLTaggedNode
   variables: VariablesOf<TQuery>
   cacheConfig?: {

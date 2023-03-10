@@ -1,4 +1,3 @@
-import { AlbumListImage } from "screens/Albums/AlbumTabs/AlbumListImage"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { Album } from "system/store/Models/AlbumsModel"
@@ -14,9 +13,24 @@ describe("AlbumListItem", () => {
     createdAt: "bar",
     name: "My Album",
     items: [
-      { internalID: "1", slug: "artwork-1", image: { resized: { url: "image-1" } } },
-      { internalID: "2", slug: "artwork-2", image: { resized: { url: "image-2" } } },
-      { internalID: "3", slug: "artwork-3", image: { resized: { url: "image-3" } } },
+      {
+        internalID: "1",
+        slug: "artwork-1",
+        image: { resized: { url: "image-1" } },
+        __typename: "Artwork",
+      },
+      {
+        internalID: "2",
+        slug: "artwork-2",
+        image: { resized: { url: "image-2" } },
+        __typename: "Artwork",
+      },
+      {
+        internalID: "3",
+        slug: "artwork-3",
+        image: { resized: { url: "image-3" } },
+        __typename: "Artwork",
+      },
     ] as SelectedItemArtwork[],
   } as Album
 
@@ -46,10 +60,10 @@ describe("AlbumListItem", () => {
   })
 
   it("renders album images with empty artwork array", () => {
-    mockUseAlbum.mockImplementation(() => {})
     const emptyAlbum = { id: "foo", createdAt: "bar", name: "Empty Album", items: [] } as Album
+    mockUseAlbum.mockImplementation(() => ({ album: emptyAlbum, artworks: [] }))
     const { UNSAFE_queryAllByType } = renderWithWrappers(<AlbumListItem album={emptyAlbum} />)
-    expect(UNSAFE_queryAllByType(AlbumListImage)).toEqual([])
+    expect(UNSAFE_queryAllByType(CachedImage).length).toBe(0)
   })
 
   it("renders album images with less than 2 artworks", () => {

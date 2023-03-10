@@ -1,16 +1,16 @@
-import { DocumentGridItem } from "components/Items/DocumentGridItem"
-import { AlbumDocuments } from "screens/Albums/AlbumTabs/AlbumDocuments"
+import { ArtworkGridItem } from "components/Items/ArtworkGridItem"
+import { AlbumArtworks } from "screens/Albums/AlbumTabs/AlbumArtworks"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useValidateAlbumItems } from "screens/Albums/useValidateAlbumItems"
 import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
-import { SelectedItemDocument } from "system/store/Models/SelectModeModel"
+import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { renderWithWrappers } from "utils/test/renderWithWrappers"
 
 jest.mock("screens/Albums/useAlbum")
 jest.mock("screens/Albums/useValidateAlbumItems")
-jest.mock("components/Items/DocumentGridItem")
+jest.mock("components/Items/ArtworkGridItem")
 
-describe("AlbumDocuments", () => {
+describe("AlbumArtworks", () => {
   const albumId = "1"
 
   const mockUseAlbum = useAlbum as jest.Mock
@@ -18,11 +18,11 @@ describe("AlbumDocuments", () => {
 
   beforeEach(() => {
     mockUseAlbum.mockReturnValue({
-      documents: [
-        { internalID: "1", title: "Document 1", __typename: "PartnerDocument" },
-        { internalID: "2", title: "Document 2", __typename: "PartnerDocument" },
-        { internalID: "3", title: "Document 3", __typename: "PartnerDocument" },
-      ] as SelectedItemDocument[],
+      artworks: [
+        { internalID: "1", title: "Artwork 1", __typename: "Artwork" },
+        { internalID: "2", title: "Artwork 2", __typename: "Artwork" },
+        { internalID: "3", title: "Artwork 3", __typename: "Artwork" },
+      ] as SelectedItemArtwork[],
     })
 
     __globalStoreTestUtils__?.injectState({
@@ -36,17 +36,17 @@ describe("AlbumDocuments", () => {
     jest.resetAllMocks()
   })
 
-  it("renders a list of documents", async () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(<AlbumDocuments albumId={albumId} />)
-    expect(UNSAFE_getAllByType(DocumentGridItem)).toHaveLength(3)
+  it("renders a list of artworks", async () => {
+    const { UNSAFE_getAllByType } = renderWithWrappers(<AlbumArtworks albumId={albumId} />)
+    expect(UNSAFE_getAllByType(ArtworkGridItem)).toHaveLength(3)
   })
 
   it("validates the album items on mount", () => {
-    renderWithWrappers(<AlbumDocuments albumId={albumId} />)
+    renderWithWrappers(<AlbumArtworks albumId={albumId} />)
 
     expect(mockUseValidateAlbumItems).toHaveBeenCalledWith({
       query: expect.anything(),
-      variables: { documentIDs: ["1", "2", "3"], partnerID: "partner1" },
+      variables: { artworkIDs: ["1", "2", "3"], partnerID: "partner1" },
       idsToValidate: ["1", "2", "3"],
       mapResponseToIDs: expect.anything(),
     })

@@ -1,39 +1,36 @@
 import { AlbumDocumentsQuery } from "__generated__/AlbumDocumentsQuery.graphql"
 import { DocumentList } from "components/Lists/DocumentList"
 import { TabsScrollView } from "components/Tabs/TabsContent"
-import { difference } from "lodash"
-import { useEffect } from "react"
 import { graphql } from "react-relay"
-import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
+import { useAlbum } from "screens/Albums/useAlbum"
+import { useValidateAlbumItems } from "screens/Albums/useValidateAlbumItems"
 import { GlobalStore } from "system/store/GlobalStore"
-import { SelectedItemDocument } from "system/store/Models/SelectModeModel"
 import { extractNodes } from "utils/extractNodes"
 
-export const AlbumDocuments = ({ documentIDs }: { documentIDs: string[] }) => {
+interface AlbumDocumentsProps {
+  albumId: string
+}
+
+export const AlbumDocuments: React.FC<AlbumDocumentsProps> = ({ albumId }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
+  const { documents } = useAlbum({ albumId })
+  const documentIDs = documents.map((document) => document.internalID)
 
-  const documentsData = useSystemQueryLoader<AlbumDocumentsQuery>(albumDocumentsQuery, {
-    partnerID,
-    documentIDs,
+  useValidateAlbumItems<AlbumDocumentsQuery>({
+    query: albumDocumentsQuery,
+    variables: {
+      documentIDs,
+      partnerID,
+    },
+    idsToValidate: documentIDs,
+    mapResponseToIDs: (data) => {
+      return extractNodes(data?.partner?.documentsConnection).map((document) => document.internalID)
+    },
   })
-
-  const documents =
-    documentIDs.length > 0 ? extractNodes(documentsData.partner?.documentsConnection) : []
-
-  // Clear out potentially deleted documents
-  useEffect(() => {
-    const fetchedDocumentIds = documents.map((d) => d.internalID)
-    const documentIdsToRemove = difference(documentIDs, fetchedDocumentIds)
-
-    documentIdsToRemove.forEach((documentId) => {
-      GlobalStore.actions.albums.removeItemFromAlbums(documentId)
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [documentIDs])
 
   return (
     <TabsScrollView>
-      <DocumentList documents={documents as SelectedItemDocument[]} />
+      <DocumentList documents={documents} />
     </TabsScrollView>
   )
 }
