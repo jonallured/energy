@@ -9,11 +9,15 @@
   <style name="LightTheme" parent="AppTheme">
     <item name="launchImage">@drawable/launch_screen_light</item>
     <item name="backgroundColor">@color/splashscreen_bg_light</item>
+    <item name="android:navigationBarColor">@color/splashscreen_bg_light</item>
+    <item name="android:windowLightNavigationBar">true</item>
   </style>
 
   <style name="DarkTheme" parent="AppTheme">
     <item name="launchImage">@drawable/launch_screen_dark</item>
     <item name="backgroundColor">@color/splashscreen_bg_dark</item>
+    <item name="android:navigationBarColor">@color/splashscreen_bg_dark</item>
+    <item name="android:windowLightNavigationBar">false</item>
   </style>
 
 </resources>

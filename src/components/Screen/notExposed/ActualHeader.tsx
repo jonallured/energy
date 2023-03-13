@@ -1,5 +1,4 @@
 import {
-  Button,
   DEFAULT_HIT_SLOP,
   Spacer,
   ArrowLeftIcon,
@@ -9,7 +8,9 @@ import {
 } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { useSetHandledTopSafeArea } from "components/Screen/atoms"
+import { isTablet } from "react-native-device-info"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
+import { GlobalStore } from "system/store/GlobalStore"
 
 export const NAVBAR_HEIGHT = 44
 
@@ -39,7 +40,11 @@ export const ActualHeader = ({
   titleShown = false,
 }: ActualHeaderProps) => {
   useSetHandledTopSafeArea(true)
+
   const navigation = useNavigation()
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
 
   const actualLeftElements = (() => {
     switch (true) {
@@ -89,24 +94,26 @@ export const ActualHeader = ({
         </Flex>
       )}
 
-      <Flex flex={1} flexDirection="row" alignItems="center">
-        {title !== undefined &&
-          (animatedTitle
-            ? titleShown && (
-                <Animated.View
-                  entering={FadeInLeft}
-                  exiting={FadeOutLeft}
-                  style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                    flex: 1,
-                  }}
-                >
-                  {actualTitle}
-                </Animated.View>
-              )
-            : actualTitle)}
-      </Flex>
+      {!isSelectModeActive && (
+        <Flex flex={1} flexDirection="row" alignItems="center">
+          {title !== undefined &&
+            (animatedTitle
+              ? titleShown && (
+                  <Animated.View
+                    entering={FadeInLeft}
+                    exiting={FadeOutLeft}
+                    style={{
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
+                      flex: 1,
+                    }}
+                  >
+                    <Flex width={isTablet() ? "100%" : "70%"}>{actualTitle}</Flex>
+                  </Animated.View>
+                )
+              : actualTitle)}
+        </Flex>
+      )}
 
       {!!actualRightElements && (
         <Flex flexDirection="row" alignItems="center">
