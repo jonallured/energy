@@ -1,4 +1,5 @@
 import { action, Action, State } from "easy-peasy"
+import { getSystemModel, SystemModel } from "system/store/Models/SystemModel"
 import { CURRENT_APP_VERSION } from "system/store/migrations"
 import { migrateState } from "system/store/persistence/migrateState"
 import { assignDeep } from "system/store/persistence/sanitize"
@@ -22,16 +23,14 @@ interface GlobalStoreStateModel {
   networkStatus: NetworkStatusModel
   presentationMode: PresentationModeModel
   selectMode: SelectModeModel
+  system: SystemModel
 
   // Meta state / actions
   version: number
-  performMigrations: Action<this>
 
-  system: {
-    sessionState: {
-      isDonePerformingMigrations: boolean
-    }
-  }
+  // Operates on the system model, but must remain here in order to gain access
+  // to all state.
+  performMigrations: Action<this>
 }
 
 export interface GlobalStoreModel extends GlobalStoreStateModel {
@@ -42,12 +41,6 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
-  system: {
-    sessionState: {
-      isDonePerformingMigrations: false,
-    },
-  },
-
   version: CURRENT_APP_VERSION,
 
   albums: getAlbumsModel(),
@@ -59,6 +52,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   networkStatus: getNetworkStatusModel(),
   presentationMode: getPresentationModeModel(),
   selectMode: getSelectModeModel(),
+  system: getSystemModel(),
 
   reset: action((state) => {
     state.auth.activePartnerID = null

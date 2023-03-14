@@ -7,7 +7,7 @@ import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
 import { Platform } from "react-native"
 import { useAlbum } from "screens/Albums/useAlbum"
-import { useNavigationSavedForKey } from "system/hooks/useNavigationSave"
+import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { object, string } from "yup"
@@ -28,7 +28,7 @@ export const CreateOrEditAlbum = () => {
       mode: "create",
     }
 
-  const [hasSavedNav, navigateToSaved] = useNavigationSavedForKey("before-adding-to-album")
+  const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
 
   const isSelectModeActive = GlobalStore.useAppState(
@@ -82,12 +82,7 @@ export const CreateOrEditAlbum = () => {
 
           GlobalStore.actions.selectMode.cancelSelectMode()
 
-          if (hasSavedNav) {
-            navigateToSaved()
-          } else {
-            navigation.goBack()
-          }
-
+          navigateToSavedHistory("before-adding-to-album")
           closeBottomSheetModal?.()
         } catch (error) {
           console.error(error)

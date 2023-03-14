@@ -2,7 +2,7 @@ import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ArtworkContent_artwork$key } from "__generated__/ArtworkContent_artwork.graphql"
 import { ArtworkImageModalQueryRenderer } from "components/ArtworkImageModal"
-import { getBottomSheetShadowStyle } from "components/BottomSheetModalView"
+import { getBottomSheetShadowStyle } from "components/BottomSheet/BottomSheetModalView"
 import { ImagePlaceholder } from "components/ImagePlaceholder"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { Markdown } from "components/Markdown"

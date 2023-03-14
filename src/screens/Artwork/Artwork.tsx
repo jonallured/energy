@@ -14,7 +14,7 @@ import {
   BottomSheetRef,
   BottomSheetModalView,
   BottomSheetModalRow,
-} from "components/BottomSheetModalView"
+} from "components/BottomSheet/BottomSheetModalView"
 import { PageableScreenView } from "components/PageableScreen/PageableScreenView"
 import { ScrollableScreenEntity } from "components/PageableScreen/PageableScreensContext"
 import { Screen } from "components/Screen"
@@ -24,7 +24,7 @@ import { Suspense, useMemo, useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useMailComposer } from "screens/Artwork/useMailComposer"
-import { useNavigationSave } from "system/hooks/useNavigationSave"
+import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
@@ -55,7 +55,7 @@ export const Artwork = () => {
 
 export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const saveNavBeforeAddingToAlbum = useNavigationSave("before-adding-to-album")
+  const { saveNavigationHistory } = useSaveNavigationHistory()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const artworkData = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
     slug,
@@ -72,6 +72,15 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   )
 
   const { sendMail } = useMailComposer()
+
+  const addToAlbumHandler = () => {
+    saveNavigationHistory("before-adding-to-album")
+
+    navigation.navigate("AddItemsToAlbum", {
+      artworkToAdd: artwork as SelectedItem,
+      closeBottomSheetModal: () => bottomSheetRef.current?.closeBottomSheetModal(),
+    })
+  }
 
   const sendByEmailHandler = async () => {
     if (artwork) {
@@ -124,14 +133,7 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
                   ? "Currently in 1 album"
                   : `Currently in ${numberOfAlbumsIncludingArtwork} albums`
               }
-              onPress={() => {
-                saveNavBeforeAddingToAlbum()
-
-                navigation.navigate("AddItemsToAlbum", {
-                  artworkToAdd: artwork as SelectedItem,
-                  closeBottomSheetModal: () => bottomSheetRef.current?.closeBottomSheetModal(),
-                })
-              }}
+              onPress={addToAlbumHandler}
               isLastRow={isEditArtworkHidden}
             />
           </>
