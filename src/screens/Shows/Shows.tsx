@@ -4,7 +4,7 @@ import { NavigationScreens } from "Navigation"
 import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
 import { ShowListItem } from "components/Items/ShowListItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { TabsFlatList } from "components/Tabs/TabsContent"
+import { TabsFlatList } from "components/Tabs/TabsFlatList"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -27,7 +27,7 @@ export const Shows = () => {
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
-      contentContainerStyle={getContentContainerStyle(shows)}
+      contentContainerStyle={getContentContainerStyle()}
       renderItem={({ item: show }) => {
         if (show.artworksCount && show.artworksCount > 0) {
           return (

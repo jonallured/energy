@@ -26,7 +26,7 @@ export const DarkModeSettings = () => {
 
   return (
     <Screen>
-      <Screen.AnimatedTitleHeader title="Dark Mode" />
+      <Screen.Header title="Dark Mode" />
       <Screen.Body scroll>
         <SettingsItem title="Dark mode always on">
           <SettingsItem.Toggle

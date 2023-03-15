@@ -1,27 +1,28 @@
-import { CheckCircleFillIcon, Flex, Touchable } from "@artsy/palette-mobile"
+import { CheckCircleFillIcon, Flex, FlexProps, Touchable } from "@artsy/palette-mobile"
 import { ArtworkImageModal } from "components/ArtworkImageModal"
 import { useState } from "react"
 import { GlobalStore } from "system/store/GlobalStore"
 import { CachedImage } from "system/wrappers/CachedImage"
 
-interface ArtworkImageGridItemProps {
+interface ArtworkImageGridItemProps extends FlexProps {
   url: string
   onPress?: () => void
   selectedToAdd?: boolean
 }
 
-export const ArtworkImageGridItem = ({
+export const ArtworkImageGridItem: React.FC<ArtworkImageGridItemProps> = ({
   url,
   onPress,
   selectedToAdd,
-}: ArtworkImageGridItemProps) => {
+  ...flexProps
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
 
   return (
-    <Flex mb={4} pl={2} testID={url}>
+    <Flex testID={url} {...flexProps}>
       <ArtworkImageModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
@@ -29,7 +30,6 @@ export const ArtworkImageGridItem = ({
       />
 
       <Touchable
-        style={{ width: "100%", height: "100%" }}
         onPress={
           isSelectModeActive
             ? onPress

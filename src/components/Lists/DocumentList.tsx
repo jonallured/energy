@@ -22,12 +22,12 @@ export const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
 
   return (
     <MasonryList
-      contentContainerStyle={{ ...getContentContainerStyle(), marginTop: 20 }}
+      contentContainerStyle={getContentContainerStyle()}
       numColumns={2}
       data={documents}
       renderItem={({ item, i }) => {
         return (
-          <ColumnItem index={i} numColumns={2}>
+          <ColumnItem index={i} numColumns={2} mt={2}>
             <DocumentGridItem
               document={{
                 url: item.publicURL,

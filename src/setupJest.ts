@@ -16,6 +16,17 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
+jest.mock("react-native-collapsible-tab-view", () => {
+  const React = require("react-native")
+  return {
+    useCurrentTabScrollY: jest.fn(),
+    Tabs: {
+      ScrollView: React.ScrollView,
+      FlatList: React.FlatList,
+    },
+  }
+})
+
 jest.mock("react-native-config", () => {
   const mockConfig = {
     // 👇 examples until we actually have some for energy
@@ -183,4 +194,28 @@ jest.mock("system/wrappers/CachedImage", () => ({
 
 jest.mock("system/hooks/useSystemIsDoneBooting", () => ({
   useSystemIsDoneBooting: () => true,
+}))
+
+jest.mock("components/Tabs/TabsScrollView", () => {
+  const React = require("react-native")
+  return {
+    TabsScrollView: React.ScrollView,
+  }
+})
+
+jest.mock("components/Tabs/TabsFlatList", () => {
+  const React = require("react-native")
+  return {
+    TabsFlatList: React.FlatList,
+  }
+})
+
+jest.mock("components/Toast/ToastContext", () => ({
+  ToastProvider: ({ children }: any) => children,
+  useToast: () => ({
+    toast: {
+      show: jest.fn(),
+      hide: jest.fn(),
+    },
+  }),
 }))

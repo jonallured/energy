@@ -66,7 +66,7 @@ export const PresentationModeSettings = () => {
 
   return (
     <Screen>
-      <Screen.AnimatedTitleHeader title="Presentation Mode" />
+      <Screen.Header title="Presentation Mode" />
       <Screen.Body scroll>
         <SettingsItem title="Enabled">
           <SettingsItem.Toggle

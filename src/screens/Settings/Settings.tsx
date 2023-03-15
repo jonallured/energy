@@ -19,8 +19,12 @@ export const Settings = () => {
 
   return (
     <Screen>
-      <Screen.AnimatedTitleHeader title="Settings" />
-      <Screen.Body scroll nosafe>
+      <Screen.Header />
+      <Screen.Body scroll safeArea={false}>
+        <Text variant="lg-display" my={2}>
+          Settings
+        </Text>
+
         <Screen.FullWidthDivider />
 
         <Join separator={<Screen.FullWidthDivider />}>

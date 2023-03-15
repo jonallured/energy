@@ -38,6 +38,7 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({ contentContainerStyle,
     <FlatList
       data={items}
       numColumns={numColumns}
+      initialNumToRender={30}
       contentContainerStyle={
         contentContainerStyle ?? {
           ...getContentContainerStyle(),

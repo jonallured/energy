@@ -3,19 +3,23 @@ import { Tabs, MaterialTabBar, CollapsibleProps } from "react-native-collapsible
 
 const TAB_BAR_HEIGHT = 50
 
-export type TabsContainerProps = {
-  header?: CollapsibleProps["renderHeader"]
+export interface TabsContainerProps {
+  renderHeader?: CollapsibleProps["renderHeader"]
   initialTabName?: CollapsibleProps["initialTabName"]
   children: CollapsibleProps["children"]
 }
 
-export const TabsContainer = ({ header, children, initialTabName }: TabsContainerProps) => {
+export const TabsContainer: React.FC<TabsContainerProps> = ({
+  renderHeader,
+  children,
+  initialTabName,
+}) => {
   const space = useSpace()
   const color = useColor()
 
   return (
     <Tabs.Container
-      renderHeader={header}
+      renderHeader={renderHeader}
       headerContainerStyle={{
         shadowOpacity: 0,
         shadowRadius: 0,

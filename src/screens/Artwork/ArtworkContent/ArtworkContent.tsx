@@ -6,7 +6,7 @@ import { getBottomSheetShadowStyle } from "components/BottomSheet/BottomSheetMod
 import { ImagePlaceholder } from "components/ImagePlaceholder"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { Markdown } from "components/Markdown"
-import { NAVBAR_HEIGHT } from "components/Screen/notExposed/ActualHeader"
+import { NAVBAR_HEIGHT, ZINDEX } from "components/Screen/constants"
 import { Suspense, useCallback, useMemo, useRef, useState } from "react"
 import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-generator"
@@ -208,7 +208,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
                 height={resizedImage.height}
                 aspectRatio={image?.aspectRatio}
                 style={{
-                  zIndex: 1000,
+                  zIndex: ZINDEX.artworkContent,
                   flex: 1,
                 }}
               />

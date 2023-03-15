@@ -18,7 +18,7 @@ import {
 import { PageableScreenView } from "components/PageableScreen/PageableScreenView"
 import { ScrollableScreenEntity } from "components/PageableScreen/PageableScreensContext"
 import { Screen } from "components/Screen"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/exposed/Body"
+import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { filter } from "lodash"
 import { Suspense, useMemo, useRef } from "react"
 import { ActivityIndicator } from "react-native"
@@ -106,14 +106,14 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
             </Touchable>
           }
         />
-        <Screen.Body fullwidth nosafe>
+        <Screen.Body fullwidth safeArea={false}>
           <ArtworkContent artwork={artwork!} />
         </Screen.Body>
       </Screen>
 
       <BottomSheetModalView
         ref={bottomSheetRef}
-        modalHeight={!isEditArtworkHidden ? 500 : 370}
+        modalHeight={isEditArtworkHidden ? 280 : 380}
         modalRows={
           <>
             <BottomSheetModalRow
@@ -205,7 +205,7 @@ export const SkeletonArtwork = () => {
             </Touchable>
           }
         />
-        <Screen.Body fullwidth nosafe>
+        <Screen.Body fullwidth safeArea={false}>
           <Flex
             backgroundColor="background"
             flex={1}

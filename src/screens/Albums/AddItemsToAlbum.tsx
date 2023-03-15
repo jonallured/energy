@@ -2,7 +2,7 @@ import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/p
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { Screen } from "components/Screen"
-import { useScreenBottomViewHeight } from "components/Screen/atoms"
+import { useToast } from "components/Toast/ToastContext"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
@@ -13,10 +13,10 @@ type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
   const { closeBottomSheetModal, artworkToAdd, artworksToAdd } = useRoute<HomeTabsRoute>().params
-  const bottomViewHeight = useScreenBottomViewHeight()
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
+  const { toast } = useToast()
 
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
 
@@ -51,7 +51,18 @@ export const AddItemsToAlbum = () => {
         })
       }
 
-      navigateToSavedHistory("before-adding-to-album")
+      navigateToSavedHistory({
+        lookupKey: "before-adding-to-album",
+        onComplete: () => {
+          toast.show({
+            title: "Successfully added to album.",
+            type: "success",
+            onPress: () => {
+              console.log("hiii")
+            },
+          })
+        },
+      })
       closeBottomSheetModal?.()
 
       if (isSelectModeActive) {
@@ -79,18 +90,16 @@ export const AddItemsToAlbum = () => {
   return (
     <Screen>
       <Screen.Header title="Add to Album" />
-      <Screen.Body fullwidth>
+      <Screen.Body>
         <FlatList
-          contentContainerStyle={{ paddingHorizontal: space(2) }}
           data={albums}
           keyExtractor={(item) => item?.id}
           renderItem={({ item: album }) => {
             return (
               <Flex key={album.id}>
                 <Touchable onPress={() => selectAlbumHandler(album.id)}>
-                  <Flex mb={4} mt={1}>
-                    <AlbumListItem album={album} />
-                  </Flex>
+                  <AlbumListItem album={album} />
+
                   {selectedAlbumIds.includes(album.id) && (
                     <Flex
                       position="absolute"
@@ -106,7 +115,7 @@ export const AddItemsToAlbum = () => {
               </Flex>
             )
           }}
-          style={{ top: space(2), marginBottom: bottomViewHeight }}
+          style={{ top: space(2) }}
         />
 
         <Screen.BottomView>

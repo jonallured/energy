@@ -3,7 +3,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ShowListItem } from "components/Items/ShowListItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { TabsFlatList } from "components/Tabs/TabsContent"
+import { TabsFlatList } from "components/Tabs/TabsFlatList"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -26,7 +26,7 @@ export const ShowsList: React.FC<ShowsListProps> = ({ shows }) => {
       columnWrapperStyle={
         isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
       }
-      contentContainerStyle={getContentContainerStyle(shows)}
+      contentContainerStyle={getContentContainerStyle()}
       data={shows}
       numColumns={isTablet() ? 2 : 1}
       renderItem={({ item }) => (

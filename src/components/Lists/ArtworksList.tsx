@@ -69,7 +69,6 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
     <MasonryList
       testID="ArtworksList"
       contentContainerStyle={{
-        marginTop: space(2),
         paddingHorizontal: space(2),
         ...(contentContainerStyle as object),
       }}
@@ -83,7 +82,7 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
         const GridItem = isStatic ? ArtworkGridItem : ArtworkGridItemFragmentContainer
 
         return (
-          <ColumnItem index={i} numColumns={numColumns}>
+          <ColumnItem index={i} numColumns={numColumns} mt={2}>
             <GridItem
               artwork={item}
               disable={isDisabled}

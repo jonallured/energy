@@ -10,6 +10,7 @@ import {
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { ZINDEX } from "components/Screen/constants"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
 import { GlobalStore } from "system/store/GlobalStore"
 
@@ -54,7 +55,7 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
       <BottomSheetModal
         style={{
           ...getBottomSheetShadowStyle(isDarkMode),
-          zIndex: 1,
+          zIndex: ZINDEX.bottomSheetModalView,
         }}
         backdropComponent={() => (
           <Touchable
@@ -161,7 +162,7 @@ export const BottomSheetModalRow = ({
 export const getBottomSheetShadowStyle = (isDarkMode: boolean) => ({
   backgroundColor: isDarkMode ? "black" : "white",
   shadowColor: "black",
-  zIndex: 1,
+  zIndex: ZINDEX.bottomSheetModalView,
   shadowOpacity: 0.2,
   shadowRadius: 5,
   shadowOffset: { width: 0, height: 0 },

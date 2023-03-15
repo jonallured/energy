@@ -11,7 +11,7 @@ However on Components that use
     <Screen1/>
   </Tabs.Tab>
   <Tabs.Tab>
-    <Screen2/>
+    <Screen/>
   </Tabs.Tab>
 </TabsContainer>
 ```
@@ -27,7 +27,7 @@ we need to explicitly wrap components in a <SuspenseWrapper withTabs> so it woul
   </Tabs.Tab>
   <Tabs.Tab>
     <SuspenseWrapper withTabs>
-      <Screen2/>
+      <Screen/>
     </SuspenseWrapper>
   </Tabs.Tab>
 </TabsContainer>

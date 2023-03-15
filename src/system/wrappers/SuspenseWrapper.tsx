@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { TabsScrollView } from "components/Tabs/TabsContent"
+import { TabsScrollView } from "components/Tabs/TabsScrollView"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 

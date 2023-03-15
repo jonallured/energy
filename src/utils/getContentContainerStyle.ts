@@ -1,6 +1,6 @@
-export function getContentContainerStyle(items: Array<any> = []) {
+export function getContentContainerStyle() {
   const contentContainerStyle = {
-    paddingHorizontal: items.length ? 0 : 20,
+    paddingHorizontal: 20,
   }
 
   return contentContainerStyle

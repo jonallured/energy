@@ -1,15 +1,12 @@
 import { Button, Flex, Input, Text, useColor, Spacer } from "@artsy/palette-mobile"
-import { MeasuredView } from "components/MeasuredView"
 import { Screen } from "components/Screen"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/exposed/Body"
+import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { useFormik } from "formik"
 import { useRef, useState } from "react"
 import { Linking, Platform, TouchableOpacity } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSetupRageShake } from "system/devTools/useSetupRageShake"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
-import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 import { object, string } from "yup"
 
 export interface LoginSchema {
@@ -31,7 +28,6 @@ const APP_SCHEME_URL = "artsy:///"
 
 export const LoginScreen = () => {
   const color = useColor()
-  const insets = useSafeAreaInsets()
 
   useSetupRageShake()
 
@@ -105,99 +101,105 @@ export const LoginScreen = () => {
 
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Text variant="lg" mx={SCREEN_HORIZONTAL_PADDING}>
-          Folio
-        </Text>
-      </Screen.RawHeader>
+      <Text variant="lg" mx={SCREEN_HORIZONTAL_PADDING}>
+        Folio
+      </Text>
       <Screen.Body scroll>
-        <Text variant="xl">Log In</Text>
-        <Text variant="md" mt={0.5}>
-          With Your Artsy Partner Account
-        </Text>
-        <Spacer y={4} />
-        <Input
-          ref={emailInputRef}
-          autoCapitalize="none"
-          autoComplete="email"
-          keyboardType="email-address"
-          onChangeText={(text) => {
-            handleChange("email")(text.trim())
-          }}
-          onSubmitEditing={() => {
-            validateForm()
-            passwordInputRef.current?.focus()
-          }}
-          onBlur={() => validateForm()}
-          blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-          placeholder="Email address"
-          title="Email"
-          value={values.email}
-          returnKeyType="next"
-          spellCheck={false}
-          autoCorrect={false}
-          // We need to to set textContentType to username (instead of emailAddress) here
-          // enable autofill of login details from the device keychain.
-          textContentType="username"
-          error={errors.email}
-        />
-        <Spacer y={2} />
-        <Input
-          autoCapitalize="none"
-          autoComplete="password"
-          autoCorrect={false}
-          onChangeText={(text) => {
-            // Hide error when the user starts to type again
-            if (errors.password) {
-              setErrors({ password: undefined })
+        <Flex>
+          <Text variant="xl">Log In</Text>
+          <Text variant="md" mt={0.5}>
+            With Your Artsy Partner Account
+          </Text>
+
+          <Spacer y={4} />
+
+          <Input
+            ref={emailInputRef}
+            autoCapitalize="none"
+            autoComplete="email"
+            keyboardType="email-address"
+            onChangeText={(text) => {
+              handleChange("email")(text.trim())
+            }}
+            onSubmitEditing={() => {
               validateForm()
-            }
-            handleChange("password")(text)
-          }}
-          onSubmitEditing={() => handleSubmit()}
-          onBlur={() => validateForm()}
-          placeholder="Password"
-          ref={passwordInputRef}
-          secureTextEntry
-          title="Password"
-          // We need to to set textContentType to password here
-          // enable autofill of login details from the device keychain.
-          textContentType="password"
-          value={values.password}
-          error={errors.password}
-        />
-        {showOtpInputField && (
-          <>
-            <Spacer y={2} />
-            <Input
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="numeric"
-              onChangeText={(text) => {
-                // Hide error when the user starts to type again
-                if (errors.otp) {
-                  setErrors({
-                    otp: undefined,
-                  })
-                  validateForm()
-                }
-                handleChange("otp")(text)
-                if (__DEV__ && text.length > 5) {
-                  handleSubmit()
-                }
-              }}
-              onSubmitEditing={() => handleSubmit()}
-              onBlur={() => validateForm()}
-              placeholder="Enter an authentication code"
-              placeholderTextColor={color("onBackgroundLow")}
-              ref={otpInputRef}
-              title="Authentication code"
-              value={values.otp}
-              error={errors.otp}
-            />
-          </>
-        )}
+              passwordInputRef.current?.focus()
+            }}
+            onBlur={() => validateForm()}
+            blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+            placeholder="Email address"
+            title="Email"
+            value={values.email}
+            returnKeyType="next"
+            spellCheck={false}
+            autoCorrect={false}
+            // We need to to set textContentType to username (instead of emailAddress) here
+            // enable autofill of login details from the device keychain.
+            textContentType="username"
+            error={errors.email}
+          />
+
+          <Spacer y={2} />
+
+          <Input
+            autoCapitalize="none"
+            autoComplete="password"
+            autoCorrect={false}
+            onChangeText={(text) => {
+              // Hide error when the user starts to type again
+              if (errors.password) {
+                setErrors({ password: undefined })
+                validateForm()
+              }
+              handleChange("password")(text)
+            }}
+            onSubmitEditing={() => handleSubmit()}
+            onBlur={() => validateForm()}
+            placeholder="Password"
+            ref={passwordInputRef}
+            secureTextEntry
+            title="Password"
+            // We need to to set textContentType to password here
+            // enable autofill of login details from the device keychain.
+            textContentType="password"
+            value={values.password}
+            error={errors.password}
+          />
+          {showOtpInputField && (
+            <>
+              <Spacer y={2} />
+              <Input
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  // Hide error when the user starts to type again
+                  if (errors.otp) {
+                    setErrors({
+                      otp: undefined,
+                    })
+                    validateForm()
+                  }
+                  handleChange("otp")(text)
+                  if (__DEV__ && text.length > 5) {
+                    handleSubmit()
+                  }
+                }}
+                onSubmitEditing={() => handleSubmit()}
+                onBlur={() => validateForm()}
+                placeholder="Enter an authentication code"
+                placeholderTextColor={color("onBackgroundLow")}
+                ref={otpInputRef}
+                title="Authentication code"
+                value={values.otp}
+                error={errors.otp}
+              />
+            </>
+          )}
+        </Flex>
+
         <Spacer y={4} />
+
         <Button
           onPress={() => handleSubmit()}
           block
@@ -209,47 +211,23 @@ export const LoginScreen = () => {
         >
           Log in
         </Button>
+
         <Spacer y={2} />
+
         <Text variant="xs" pb={1} textAlign="center" color="onBackgroundMedium">
           Once you log in, Artsy Folio will begin downloading your artworks. We recommend using a
           stable Wifi connection.
         </Text>
 
-        <CloseToTheBottomOfScrollView>
-          <Flex pb={insets.bottom > 0 ? `${insets.bottom}px` : 2} alignItems="center">
+        <Screen.BottomView>
+          <Flex alignItems="center">
             <Text>Looking for Artsy Mobile?</Text>
             <TouchableOpacity onPress={handleOpenArtsyMobile}>
               <Text underline>Tap here to open</Text>
             </TouchableOpacity>
           </Flex>
-        </CloseToTheBottomOfScrollView>
+        </Screen.BottomView>
       </Screen.Body>
     </Screen>
-  )
-}
-
-const CloseToTheBottomOfScrollView = ({ children }: { children: React.ReactNode }) => {
-  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
-  const saInsets = useSafeAreaInsets()
-  const [viewSize, setViewSize] = useState({ width: 0, height: 0 })
-
-  const inner = (
-    <>
-      {children}
-      <Spacer y={2} />
-    </>
-  )
-
-  return (
-    <>
-      <MeasuredView setMeasuredState={setViewSize}>{inner}</MeasuredView>
-      <Flex
-        position="absolute"
-        top={screenHeight - viewSize.height - saInsets.top - saInsets.bottom}
-        width={screenWidth}
-      >
-        {inner}
-      </Flex>
-    </>
   )
 }

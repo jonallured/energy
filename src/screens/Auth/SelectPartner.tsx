@@ -15,7 +15,7 @@ interface SelectPartnerHeaderProps {
 }
 export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartnerHeaderProps) => (
   <Flex mb={2} flexDirection="column" alignItems="center" backgroundColor="background">
-    <Text variant="md" textAlign="center">
+    <Text variant="md" textAlign="center" my={2}>
       Select a partner to continue
     </Text>
     <SearchInput

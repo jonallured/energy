@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette-mobile"
-import JotaiNexus from "jotai-nexus"
+import { ToastProvider } from "components/Toast/ToastContext"
 import { useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -23,8 +23,7 @@ export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment 
             <RelayProvider relayEnvironment={relayEnvironment}>
               <SafeAreaProvider>
                 <ProvideScreenDimensions>
-                  {children}
-                  <JotaiNexus />
+                  <ToastProvider>{children}</ToastProvider>
                 </ProvideScreenDimensions>
               </SafeAreaProvider>
             </RelayProvider>

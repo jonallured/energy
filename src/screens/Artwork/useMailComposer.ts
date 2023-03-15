@@ -1,3 +1,4 @@
+import { useToast } from "components/Toast/ToastContext"
 import { FilterActionTypes, StateMapper } from "easy-peasy"
 import * as MailComposer from "expo-mail-composer"
 import { uniq } from "lodash"
@@ -8,6 +9,7 @@ import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
+  const { toast } = useToast()
 
   /**
    * Send email with artwork info, using a passed artwork object or the selected
@@ -36,6 +38,11 @@ export const useMailComposer = () => {
           subject,
           body,
           ccRecipients,
+        })
+
+        toast.show({
+          title: "Email sent.",
+          type: "info",
         })
       } catch (error) {
         console.log("[useMailComposer] Error sending email:", error)
@@ -93,6 +100,11 @@ export const useMailComposer = () => {
           ccRecipients,
           subject,
           body,
+        })
+
+        toast.show({
+          title: "Email sent.",
+          type: "info",
         })
       } catch (error) {
         console.log("[useMailComposer] Error sending email:", error)

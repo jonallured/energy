@@ -84,7 +84,7 @@ describe("#useNavigationHistory", () => {
         wrapper: HookWrapper,
       })
 
-      result.current.navigateToSavedHistory(lookupKey)
+      result.current.navigateToSavedHistory({ lookupKey })
 
       expect(goBackSpy).not.toHaveBeenCalled()
       expect(navigateSpy).toHaveBeenCalledWith("HomeRoute", {
@@ -110,7 +110,7 @@ describe("#useNavigationHistory", () => {
         wrapper: HookWrapper,
       })
 
-      result.current.navigateToSavedHistory("someInvalidKey")
+      result.current.navigateToSavedHistory({ lookupKey: "someInvalidKey" })
 
       expect(goBackSpy).toHaveBeenCalled()
       expect(navigateSpy).not.toHaveBeenCalled()

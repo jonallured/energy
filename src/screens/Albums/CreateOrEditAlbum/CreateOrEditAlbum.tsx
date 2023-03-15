@@ -3,6 +3,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { NavigationScreens } from "Navigation"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { Screen } from "components/Screen"
+import { useToast } from "components/Toast/ToastContext"
 import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
 import { Platform } from "react-native"
@@ -30,6 +31,7 @@ export const CreateOrEditAlbum = () => {
 
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const { toast } = useToast()
 
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -82,7 +84,18 @@ export const CreateOrEditAlbum = () => {
 
           GlobalStore.actions.selectMode.cancelSelectMode()
 
-          navigateToSavedHistory("before-adding-to-album")
+          navigateToSavedHistory({
+            lookupKey: "before-adding-to-album",
+            onComplete: () => {
+              toast.show({
+                title: `Successfully ${mode === "edit" ? "edited" : "created"} album.`,
+                type: "success",
+                onPress: () => {
+                  console.log("hiii")
+                },
+              })
+            },
+          })
           closeBottomSheetModal?.()
         } catch (error) {
           console.error(error)
@@ -95,7 +108,7 @@ export const CreateOrEditAlbum = () => {
 
   const CreateOrEditButton = () => {
     return (
-      <Flex px={1} py={2}>
+      <Flex px={1}>
         <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
           {mode === "edit" ? "Save" : "Create"}
         </Button>

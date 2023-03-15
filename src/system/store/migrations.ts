@@ -26,44 +26,6 @@ export const energyAppMigrations: Migrations = {
     state.auth.activePartnerId = ""
     delete state.activePartnerId
   },
-  [Versions.MigrateRefactoredSelectModeStore]: (state) => {
-    delete state.sessionState
-
-    state.albums = {
-      albums: state.albums.albums?.map((album: any) => {
-        const artworks =
-          album.artworkIds?.map((slug: string) => ({
-            __typename: "Artwork",
-            internalID: slug,
-            slug,
-          })) ?? []
-        const documents =
-          album.documentIds?.map((slug: string) => ({
-            __typename: "Document",
-            internalID: slug,
-            slug,
-          })) ?? []
-        const installShots =
-          album.installShotUrls?.map((url: string) => ({
-            __typename: "Image",
-            internalID: null,
-            resized: {
-              height: null,
-              url,
-            },
-          })) ?? []
-
-        const migratedAlbum = {
-          createdAt: album?.createdAt,
-          id: album?.id,
-          name: album?.name,
-          items: [...artworks, ...documents, ...installShots],
-        }
-
-        return migratedAlbum
-      }),
-    }
-  },
   [Versions.MigrateEmailModelCCName]: (state) => {
     state.email.ccRecipients = state.email.emailsCC
     delete state.email.emailsCC

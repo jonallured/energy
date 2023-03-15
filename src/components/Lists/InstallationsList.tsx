@@ -1,5 +1,6 @@
 import { MasonryList } from "@react-native-seoul/masonry-list"
 import { ArtworkImageGridItem } from "components/Items/ArtworkImageGridItem"
+import { ColumnItem } from "components/Items/ColumnItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { isSelected } from "components/SelectMode"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -17,16 +18,17 @@ export const InstallationsList: React.FC<ShowInstallationsProps> = ({ images = [
 
   return (
     <MasonryList
-      contentContainerStyle={getContentContainerStyle(images)}
+      contentContainerStyle={getContentContainerStyle()}
       numColumns={2}
       data={images}
-      keyExtractor={(item, index) => item?.internalID ?? `${index}`}
-      renderItem={({ item }) => (
-        <ArtworkImageGridItem
-          url={item?.url ?? ""}
-          onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(item)}
-          selectedToAdd={isSelected(selectedItems, item)}
-        />
+      renderItem={({ item, i }) => (
+        <ColumnItem index={i} numColumns={2} mt={2}>
+          <ArtworkImageGridItem
+            url={item?.url ?? ""}
+            onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(item)}
+            selectedToAdd={isSelected(selectedItems, item)}
+          />
+        </ColumnItem>
       )}
       ListEmptyComponent={<ListEmptyComponent text="No show install shots to display" />}
     />

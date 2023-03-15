@@ -1,7 +1,7 @@
 import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql"
 import { DocumentList } from "components/Lists/DocumentList"
 import { SelectModePortal } from "components/SelectModePortal"
-import { TabsScrollView } from "components/Tabs/TabsContent"
+import { TabsScrollView } from "components/Tabs/TabsScrollView"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"

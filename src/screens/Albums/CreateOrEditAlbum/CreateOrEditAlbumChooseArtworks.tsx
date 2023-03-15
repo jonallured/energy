@@ -1,4 +1,4 @@
-import { Flex, Button, Text } from "@artsy/palette-mobile"
+import { Button, Text } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
@@ -68,7 +68,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         }
       />
 
-      <Screen.Body>
+      <Screen.Body fullwidth>
         <ArtworksList
           artworks={presentedArtworks}
           checkIfDisabled={(item) => {
@@ -79,15 +79,16 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           }}
         />
 
-        <Flex pt={1}>
+        <Screen.BottomView>
           <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
-            Selected artworks for {presentedArtworks[0].artistNames}: {selectedItems.length}
+            Selected artworks for {presentedArtworks[0]?.artistNames ?? "Artist"}:{" "}
+            {selectedItems.length}
           </Text>
 
           <Button block onPress={selectArtworksToAddToAnAlbum} disabled={selectedItems.length <= 0}>
             {mode === "edit" ? "Save" : "Add"}
           </Button>
-        </Flex>
+        </Screen.BottomView>
       </Screen.Body>
     </Screen>
   )

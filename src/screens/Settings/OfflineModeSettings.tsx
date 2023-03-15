@@ -83,7 +83,7 @@ export const OfflineModeSettings = () => {
 
   return (
     <Screen>
-      <Screen.AnimatedTitleHeader title="Offline Mode" />
+      <Screen.Header title="Offline Mode" />
       <Screen.Body scroll>
         <Text variant="xs" color="onBackgroundMedium">
           Folio can be used when you're not connected to the internet, but you will need to cache

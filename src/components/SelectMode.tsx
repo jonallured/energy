@@ -1,5 +1,5 @@
 import { Button, Flex } from "@artsy/palette-mobile"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/exposed/Body"
+import { SCREEN_HORIZONTAL_PADDING, ZINDEX } from "components/Screen/constants"
 import { isEqual } from "lodash"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -25,10 +25,10 @@ export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, 
       justifyContent={isActive ? "space-between" : "flex-end"}
       width="100%"
       px={SCREEN_HORIZONTAL_PADDING}
-      mt="8px"
+      mt={1}
       top={insets.top}
       position="absolute"
-      zIndex={1}
+      zIndex={ZINDEX.selectMode}
       pointerEvents="box-none"
     >
       {isActive && (

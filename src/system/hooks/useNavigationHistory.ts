@@ -16,15 +16,21 @@ export function useSaveNavigationHistory() {
   }
 }
 
+interface NavigateToSavedHistoryProps {
+  lookupKey: string
+  onComplete?: () => void
+}
+
 export function useNavigateToSavedHistory() {
   const navigation = useNavigation<NavigationProp<any>>()
   const navigationHistory = GlobalStore.useAppState(
     (state) => state.system.sessionState.navigationHistory
   )
 
-  const navigateToSavedHistory = (lookupKey: string) => {
+  const navigateToSavedHistory = ({ lookupKey, onComplete }: NavigateToSavedHistoryProps) => {
     if (!navigationHistory[lookupKey]) {
       navigation.goBack()
+      onComplete?.()
       return
     }
 
@@ -32,6 +38,7 @@ export function useNavigateToSavedHistory() {
 
     GlobalStore.actions.system.deleteNavigationHistory(lookupKey)
     navigation.navigate(name, params)
+    onComplete?.()
   }
 
   return {

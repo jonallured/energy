@@ -1,6 +1,6 @@
 import { AlbumArtworksQuery } from "__generated__/AlbumArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
-import { TabsScrollView } from "components/Tabs/TabsContent"
+import { TabsScrollView } from "components/Tabs/TabsScrollView"
 import { graphql } from "react-relay"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useValidateAlbumItems } from "screens/Albums/useValidateAlbumItems"

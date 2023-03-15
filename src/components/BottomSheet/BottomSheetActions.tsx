@@ -14,6 +14,7 @@ import {
   BottomSheetModalView,
   BottomSheetRef,
 } from "components/BottomSheet/BottomSheetModalView"
+import { useToast } from "components/Toast/ToastContext"
 import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -23,7 +24,7 @@ import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
-interface BottomSheetActionsProps {
+export interface BottomSheetActionsProps {
   albumId?: string
   onSetRef?: (bottomSheetRef: BottomSheetRef) => void
 }
@@ -38,6 +39,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
   )
   const { album } = useAlbum({ albumId: albumId ?? "" })
   const { sendMail } = useMailComposer()
+  const { toast } = useToast()
 
   // If we're in album mode, more actions are available to user
   const isAlbumMode = !!album
@@ -111,6 +113,11 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
           onPress: () => {
             GlobalStore.actions.albums.removeAlbum(album.id)
             navigation.goBack()
+
+            toast.show({
+              title: "Successfully deleted album.",
+              type: "info",
+            })
           },
         },
       ])
