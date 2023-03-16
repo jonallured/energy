@@ -37,7 +37,6 @@ export const Portal: React.FC<PortalProps> = ({ children, active }) => {
     if (active) {
       setPortalChildren(children)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children, setPortalChildren])
 
   return null

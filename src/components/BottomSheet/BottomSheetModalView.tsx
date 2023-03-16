@@ -31,7 +31,6 @@ export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalV
     const bottomSheetModalRef = useRef<BottomSheetModal>(null)
     const color = useColor()
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const snapPoints = useMemo(() => [props.modalHeight], [])
 
     useImperativeHandle(ref, () => ({

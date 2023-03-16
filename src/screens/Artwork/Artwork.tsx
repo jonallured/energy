@@ -28,6 +28,7 @@ import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
 import { EditArtworkInCms } from "./EditArtworkInCms"
 
@@ -78,7 +79,10 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
 
     navigation.navigate("AddItemsToAlbum", {
       artworkToAdd: artwork as SelectedItem,
-      closeBottomSheetModal: () => bottomSheetRef.current?.closeBottomSheetModal(),
+    })
+
+    waitForScreenTransition(() => {
+      bottomSheetRef.current?.closeBottomSheetModal()
     })
   }
 
@@ -117,11 +121,6 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
         modalRows={
           <>
             <BottomSheetModalRow
-              Icon={<EditIcon fill="onBackgroundHigh" />}
-              label="Send by Email"
-              onPress={sendByEmailHandler}
-            />
-            <BottomSheetModalRow
               Icon={<BriefcaseIcon fill="onBackgroundHigh" />}
               label="Add to Album"
               subtitle={
@@ -135,6 +134,11 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
               }
               onPress={addToAlbumHandler}
               isLastRow={isEditArtworkHidden}
+            />
+            <BottomSheetModalRow
+              Icon={<EditIcon fill="onBackgroundHigh" />}
+              label="Send by Email"
+              onPress={sendByEmailHandler}
             />
           </>
         }

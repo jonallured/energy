@@ -46,7 +46,6 @@ export const ToastProvider: React.FC = ({ children }) => {
         }),
       ]).start(resolve)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearStartedTimeout = useCallback(() => {
@@ -61,7 +60,6 @@ export const ToastProvider: React.FC = ({ children }) => {
     setToast(null)
     clearStartedTimeout()
     showingToast.current = false
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setToast])
 
   const show: ToastContextProps["show"] = useCallback(
@@ -89,7 +87,6 @@ export const ToastProvider: React.FC = ({ children }) => {
         lastStartedAt.current = null
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [clearStartedTimeout, hide, setToast]
   )
 
@@ -97,7 +94,6 @@ export const ToastProvider: React.FC = ({ children }) => {
     if (toast) {
       runAnimation("show")
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast])
 
   return (

@@ -1,8 +1,7 @@
-import { Avatar, Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Avatar, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { SearchResultQuery } from "__generated__/SearchResultQuery.graphql"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { intersectionBy, uniqBy } from "lodash"
 import { Suspense, useEffect } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
@@ -49,7 +48,6 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
     imageSize,
   })
   const variant = isTablet() ? "sm" : "xs"
-  const space = useSpace()
 
   const { currentFilter, disabledFilters } = SearchContext.useStoreState((state) => state)
   const { disableFilters } = SearchContext.useStoreActions((actions) => actions)
@@ -74,8 +72,6 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
         disableFilters(disabledFilters.filter((filter) => filter !== filterName))
       }
     })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [albums.length, artists.length, shows.length])
 
   const searchResults: SearchResult[] = (() => {
@@ -158,7 +154,6 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
   return (
     <FlatList
       data={searchResults}
-      contentContainerStyle={{ paddingHorizontal: space(SCREEN_HORIZONTAL_PADDING) }}
       renderItem={({ item }) => (
         <Touchable onPress={() => handleNavigation(item)}>
           <Flex py={1} backgroundColor="background" flexDirection="row">

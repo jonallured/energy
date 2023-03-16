@@ -13,11 +13,8 @@ export const SearchFilters = () => {
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{
-        paddingLeft: space(2),
-      }}
       data={["All" as Filters].concat(FILTERS)}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         const isDisabled = disabledFilters.includes(item)
 
         if (isDisabled) {
@@ -31,6 +28,7 @@ export const SearchFilters = () => {
             variant={currentFilter === item ? "fillSuccess" : "outlineGray"}
             onPress={() => selectFilter(item)}
             disabled={disabledFilters.includes(item)}
+            ml={index === 0 ? 2 : 0}
             mr={1}
           >
             {item}

@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native"
 import { NAVBAR_HEIGHT, ZINDEX } from "components/Screen/constants"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { isTablet } from "react-native-device-info"
-import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
+import Animated, { Easing, FadeInLeft, FadeOut, FadeOutLeft } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "system/store/GlobalStore"
 
@@ -95,8 +95,8 @@ export const Header: React.FC<HeaderProps> = ({
     return (
       <>
         <Animated.View
-          entering={FadeInLeft}
-          exiting={FadeOutLeft}
+          entering={FadeInLeft.duration(400).easing(Easing.out(Easing.exp))}
+          exiting={FadeOut.duration(400).easing(Easing.out(Easing.exp))}
           style={{
             flex: 1,
           }}

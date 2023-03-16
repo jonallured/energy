@@ -37,7 +37,7 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
           <Screen>
             <Screen.AnimatedHeader title={title} {...headerProps} />
 
-            <Flex mt={`${insets.top}px`} mb={`${insets.bottom}px`} flex={1}>
+            <Flex mt={`${insets.top}px`} flex={1}>
               <TabsContainer
                 renderHeader={() => {
                   if (!showHeader || !title) {

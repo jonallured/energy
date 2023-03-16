@@ -29,6 +29,5 @@ export const useNetworkStatusListener = () => {
     return () => {
       unsubscribeToNetworkInfo()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }

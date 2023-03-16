@@ -14,15 +14,17 @@ import {
   BottomSheetModalView,
   BottomSheetRef,
 } from "components/BottomSheet/BottomSheetModalView"
-import { useToast } from "components/Toast/ToastContext"
+import { SCREEN_TRANSITION_TIME } from "components/Screen/constants"
 import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
+import Animated from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useMailComposer } from "screens/Artwork/useMailComposer"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { useSlideUpFromBottomAnimation } from "utils/hooks/animations/useSlideUpFromBottomAnimation"
 
 export interface BottomSheetActionsProps {
   albumId?: string
@@ -39,7 +41,12 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
   )
   const { album } = useAlbum({ albumId: albumId ?? "" })
   const { sendMail } = useMailComposer()
-  const { toast } = useToast()
+
+  const showActionButtons = selectedItems.length > 0
+
+  const { slideUpFromBottomStyles } = useSlideUpFromBottomAnimation({
+    startAnimation: showActionButtons,
+  })
 
   // If we're in album mode, more actions are available to user
   const isAlbumMode = !!album
@@ -49,8 +56,13 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
     if (bottomSheetRef.current) {
       onSetRef?.(bottomSheetRef.current!)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Add a slight delay so that the screen has time to transition
+  const closeBottomSheet = (timeout = SCREEN_TRANSITION_TIME + 100) =>
+    setTimeout(() => {
+      bottomSheetRef.current?.closeBottomSheetModal()
+    }, timeout)
 
   const handlers = {
     /**
@@ -61,9 +73,10 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
       saveNavigationHistory("before-adding-to-album")
 
       navigation.navigate("AddItemsToAlbum", {
-        closeBottomSheetModal: handlers.closeBottomSheetModal,
         artworksToAdd: selectedItems,
       })
+
+      closeBottomSheet()
     },
 
     shareArtworksByEmail: async () => {
@@ -80,7 +93,8 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
       }
 
       navigation.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
-      bottomSheetRef.current?.closeBottomSheetModal()
+
+      closeBottomSheet()
     },
 
     emailAlbum: () => {
@@ -88,7 +102,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
         return
       }
 
-      bottomSheetRef.current?.closeBottomSheetModal()
+      closeBottomSheet(0)
 
       const artworks = album.items.filter(
         (item) => item?.__typename === "Artwork"
@@ -114,10 +128,13 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
             GlobalStore.actions.albums.removeAlbum(album.id)
             navigation.goBack()
 
-            toast.show({
-              title: "Successfully deleted album.",
-              type: "info",
-            })
+            // TODO: Pendbng design
+            // waitForScreenTransition(() => {
+            //   toast.show({
+            //     title: "Successfully deleted album.",
+            //     type: "info",
+            //   })
+            // })
           },
         },
       ])
@@ -146,22 +163,24 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
 
   return (
     <>
-      {!isAlbumMode && selectedItems.length > 0 && (
-        <Flex
-          position="absolute"
-          bottom={0}
-          px={2}
-          pt={1}
-          backgroundColor="background"
-          pb={safeAreaInsets.bottom > 0 ? `${safeAreaInsets.bottom}px` : 2}
-          width="100%"
-        >
-          <Text variant="xs" color="primary" mb={1} textAlign="center">
-            Selected items: {selectedItems.length}
-          </Text>
-          <Button block onPress={handlers.showBottomSheetModal}>
-            Add to Album or Email
-          </Button>
+      {!isAlbumMode && (
+        <Flex position="absolute" bottom={0} pointerEvents={showActionButtons ? "auto" : "none"}>
+          <Animated.View style={slideUpFromBottomStyles}>
+            <Flex
+              px={2}
+              pt={1}
+              backgroundColor="background"
+              pb={safeAreaInsets.bottom > 0 ? `${safeAreaInsets.bottom}px` : 2}
+              width="100%"
+            >
+              <Text variant="xs" color="primary" mb={1} textAlign="center">
+                Selected items: {selectedItems.length}
+              </Text>
+              <Button block onPress={handlers.showBottomSheetModal}>
+                Add to Album or Email
+              </Button>
+            </Flex>
+          </Animated.View>
         </Flex>
       )}
 

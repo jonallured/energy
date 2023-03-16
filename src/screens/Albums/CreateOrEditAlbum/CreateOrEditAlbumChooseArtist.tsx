@@ -24,7 +24,7 @@ export const CreateOrEditAlbumChooseArtist = () => {
   return (
     <Screen>
       <Screen.Header title={mode === "edit" ? "Save to Album" : "Add to Album"} />
-      <Screen.Body>
+      <Screen.Body safeArea={false}>
         <ArtistsList onItemPress={handleItemPress} contentContainerStyle={{}} />
       </Screen.Body>
     </Screen>

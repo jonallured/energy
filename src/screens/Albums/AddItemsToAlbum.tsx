@@ -1,8 +1,7 @@
-import { Button, CheckCircleFillIcon, Flex, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Button, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { Screen } from "components/Screen"
-import { useToast } from "components/Toast/ToastContext"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
@@ -12,11 +11,10 @@ import { GlobalStore } from "system/store/GlobalStore"
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
-  const { closeBottomSheetModal, artworkToAdd, artworksToAdd } = useRoute<HomeTabsRoute>().params
+  const { artworkToAdd, artworksToAdd } = useRoute<HomeTabsRoute>().params
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
-  const { toast } = useToast()
 
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
 
@@ -54,16 +52,15 @@ export const AddItemsToAlbum = () => {
       navigateToSavedHistory({
         lookupKey: "before-adding-to-album",
         onComplete: () => {
-          toast.show({
-            title: "Successfully added to album.",
-            type: "success",
-            onPress: () => {
-              console.log("hiii")
-            },
-          })
+          // TODO: Pending design feedback
+          // waitForScreenTransition(() => {
+          //   toast.show({
+          //     title: "Successfully added to album.",
+          //     type: "success",
+          //   })
+          // })
         },
       })
-      closeBottomSheetModal?.()
 
       if (isSelectModeActive) {
         GlobalStore.actions.selectMode.cancelSelectMode()
@@ -78,7 +75,6 @@ export const AddItemsToAlbum = () => {
       navigation.navigate("CreateOrEditAlbum", {
         mode: "create",
         artworksToAdd: artworksToAdd ?? [artworkToAdd],
-        closeBottomSheetModal,
       })
     }
 
@@ -95,24 +91,16 @@ export const AddItemsToAlbum = () => {
           data={albums}
           keyExtractor={(item) => item?.id}
           renderItem={({ item: album }) => {
-            return (
-              <Flex key={album.id}>
-                <Touchable onPress={() => selectAlbumHandler(album.id)}>
-                  <AlbumListItem album={album} />
+            const selectedToAdd = selectedAlbumIds.includes(album.id)
 
-                  {selectedAlbumIds.includes(album.id) && (
-                    <Flex
-                      position="absolute"
-                      top={2}
-                      right={1}
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <CheckCircleFillIcon height={30} width={30} fill="blue100" />
-                    </Flex>
-                  )}
-                </Touchable>
-              </Flex>
+            return (
+              <AlbumListItem
+                album={album}
+                selectedToAdd={selectedToAdd}
+                onPress={() => {
+                  selectAlbumHandler(album.id)
+                }}
+              />
             )
           }}
           style={{ top: space(2) }}

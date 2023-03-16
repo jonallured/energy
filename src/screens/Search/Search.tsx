@@ -39,7 +39,6 @@ export const Search = () => {
       selectFilter(null)
       disableFilters([])
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputText])
 
   useEffect(() => {
@@ -69,12 +68,12 @@ export const Search = () => {
 
   return (
     <Screen>
-      <Screen.Body fullwidth safeArea={false}>
-        <Flex mx={2}>
+      <Screen.Body safeArea={false}>
+        <Flex>
           <Flex flexDirection="row" alignItems="center">
             <Input
               ref={searchInputRef}
-              style={{ borderWidth: 0 }}
+              style={{ borderWidth: 0, left: -11 }}
               icon={<MagnifyingGlassIcon />}
               onChangeText={(text) => handleChangeText(text.trim())}
               value={inputText}
@@ -92,9 +91,11 @@ export const Search = () => {
         </Flex>
 
         {showSearchResults && (
-          <Flex mt={2} mb={1}>
-            <SearchFilters />
-          </Flex>
+          <Screen.FullWidthItem>
+            <Flex mt={2} mb={1}>
+              <SearchFilters />
+            </Flex>
+          </Screen.FullWidthItem>
         )}
 
         {showSearchResults && <SearchResult searchInput={search} />}

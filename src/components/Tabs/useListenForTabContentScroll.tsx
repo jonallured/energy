@@ -2,7 +2,7 @@ import { NAVBAR_HEIGHT } from "components/Screen/constants"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { useEffect, useState } from "react"
 import { useCurrentTabScrollY } from "react-native-collapsible-tab-view"
-import { SharedValue, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
+import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 
 export const useListenForTabContentScroll = () => {
   const scrollY = useAnimatedHeaderScrolling(useCurrentTabScrollY())
@@ -18,6 +18,11 @@ export const useListenForTabContentScroll = () => {
 const useAnimatedHeaderScrolling = (scrollY: SharedValue<number>) => {
   const listenForScroll = useSharedValue(true)
   const [currScrollY, setCurrScrollY] = useState(scrollY.value)
+
+  // Needed to run on JS thread
+  const update = (y: number) => {
+    setCurrScrollY(y)
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,7 +47,14 @@ const useAnimatedHeaderScrolling = (scrollY: SharedValue<number>) => {
         return
       }
 
-      setCurrScrollY(Math.floor(scrollY.value))
+      const prevTitleShown = prevScrollY >= NAVBAR_HEIGHT
+      const currTitleShown = animatedScrollY >= NAVBAR_HEIGHT
+
+      if (prevTitleShown === currTitleShown) {
+        return
+      }
+
+      runOnJS(update)(Math.floor(animatedScrollY))
     },
     [scrollY]
   )

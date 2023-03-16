@@ -55,7 +55,6 @@ export const OfflineModeSettings = () => {
         setSyncStatus(message)
       },
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSyncButtonPress = async () => {

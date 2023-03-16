@@ -219,14 +219,12 @@ export const LoginScreen = () => {
           stable Wifi connection.
         </Text>
 
-        <Screen.BottomView>
-          <Flex alignItems="center">
-            <Text>Looking for Artsy Mobile?</Text>
-            <TouchableOpacity onPress={handleOpenArtsyMobile}>
-              <Text underline>Tap here to open</Text>
-            </TouchableOpacity>
-          </Flex>
-        </Screen.BottomView>
+        <Flex alignItems="center">
+          <Text>Looking for Artsy Mobile?</Text>
+          <TouchableOpacity onPress={handleOpenArtsyMobile}>
+            <Text underline>Tap here to open</Text>
+          </TouchableOpacity>
+        </Flex>
       </Screen.Body>
     </Screen>
   )

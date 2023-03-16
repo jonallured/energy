@@ -65,7 +65,6 @@ export function useSystemFetchQuery<TQuery extends OperationType>({
     }
 
     fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(variables)])
 
   return { data, isLoading }

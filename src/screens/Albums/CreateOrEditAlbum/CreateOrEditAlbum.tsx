@@ -3,7 +3,6 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { NavigationScreens } from "Navigation"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { Screen } from "components/Screen"
-import { useToast } from "components/Toast/ToastContext"
 import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
 import { Platform } from "react-native"
@@ -24,14 +23,13 @@ const createAlbumSchema = object().shape({
 type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
-  const { mode, albumId, artworkToAdd, artworksToAdd, closeBottomSheetModal } =
-    useRoute<CreateOrEditAlbumRoute>().params || {
-      mode: "create",
-    }
+  const { mode, albumId, artworkToAdd, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>()
+    .params || {
+    mode: "create",
+  }
 
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const { toast } = useToast()
 
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -87,16 +85,18 @@ export const CreateOrEditAlbum = () => {
           navigateToSavedHistory({
             lookupKey: "before-adding-to-album",
             onComplete: () => {
-              toast.show({
-                title: `Successfully ${mode === "edit" ? "edited" : "created"} album.`,
-                type: "success",
-                onPress: () => {
-                  console.log("hiii")
-                },
-              })
+              // TODO: Pending design feedback
+              // waitForScreenTransition(() => {
+              //   toast.show({
+              //     title: `Successfully ${mode === "edit" ? "edited" : "created"} album.`,
+              //     type: "success",
+              //     onPress: () => {
+              //       console.log("hiii")
+              //     },
+              //   })
+              // })
             },
           })
-          closeBottomSheetModal?.()
         } catch (error) {
           console.error(error)
         }

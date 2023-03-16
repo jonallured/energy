@@ -1,5 +1,5 @@
 import { useSpace } from "@artsy/palette-mobile"
-import { MasonryList } from "@react-native-seoul/masonry-list"
+import MasonryList from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import {
@@ -75,7 +75,8 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
       numColumns={numColumns}
       data={presentedArtworks}
       renderItem={({ item, i }) => {
-        const isDisabled = checkIfDisabled ? checkIfDisabled(item) : false
+        const gridItem = item as SelectedItemArtwork
+        const isDisabled = checkIfDisabled ? checkIfDisabled(gridItem) : false
 
         // When static, we're not apart of relay query / fragment lifecycle and
         // render out out a static list of items
@@ -84,11 +85,11 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
         return (
           <ColumnItem index={i} numColumns={numColumns} mt={2}>
             <GridItem
-              artwork={item}
+              artwork={gridItem}
               disable={isDisabled}
-              onPress={() => handleArtworkItemPress(item)}
-              selectedToAdd={isSelected(selectedItems, item)}
-              selectedToRemove={checkIfSelectedToRemove ? checkIfSelectedToRemove(item) : false}
+              onPress={() => handleArtworkItemPress(gridItem)}
+              selectedToAdd={isSelected(selectedItems, gridItem)}
+              selectedToRemove={checkIfSelectedToRemove ? checkIfSelectedToRemove(gridItem) : false}
             />
           </ColumnItem>
         )

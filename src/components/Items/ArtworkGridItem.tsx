@@ -10,10 +10,12 @@ import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwo
 import { AvailabilityDot } from "components/StatusDot"
 import { ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
+import Animated from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { CachedImage } from "system/wrappers/CachedImage"
+import { useFadeInAnimation } from "utils/hooks/animations/useFadeInAnimation"
 
 export interface ArtworkGridItemProps extends FlexProps {
   artwork: SelectedItemArtwork
@@ -39,6 +41,10 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
     (state) => state.presentationMode.hiddenItems.worksAvailability
   )
 
+  const { fadeInStyles } = useFadeInAnimation({
+    startAnimation: selectedToAdd || selectedToRemove,
+  })
+
   return (
     <Touchable disabled={disable} onPress={onPress}>
       <Flex
@@ -62,23 +68,20 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
           )}
         </Text>
       </Flex>
-      {!disable && selectedToAdd && (
+      {!disable && !selectedToRemove && selectedToAdd && (
         <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
-          <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+          <Animated.View style={fadeInStyles}>
+            <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+          </Animated.View>
         </Flex>
       )}
       {selectedToRemove && (
-        <Flex
-          position="absolute"
-          top={1}
-          right={1}
-          alignItems="center"
-          p={0.5}
-          borderRadius="50px"
-          justifyContent="center"
-          backgroundColor="red100"
-        >
-          <TrashIcon height={20} width={20} fill="onBackgroundHigh" />
+        <Flex position="absolute" alignItems="center" top={1} right={1}>
+          <Animated.View style={fadeInStyles}>
+            <Flex p={0.5} borderRadius="50px" justifyContent="center" backgroundColor="red100">
+              <TrashIcon height={20} width={20} fill="onBackgroundHigh" />
+            </Flex>
+          </Animated.View>
         </Flex>
       )}
     </Touchable>

@@ -24,7 +24,7 @@ export const HomeTabs = () => {
         animated: false,
         leftElements: (
           <Touchable hitSlop={DEFAULT_HIT_SLOP} onPress={() => navigation.navigate("Settings")}>
-            <MenuIcon fill="onBackgroundHigh" />
+            <MenuIcon fill="onBackgroundHigh" top="1px" />
           </Touchable>
         ),
         rightElements: (

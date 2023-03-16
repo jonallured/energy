@@ -105,6 +105,7 @@ module.exports = {
     "no-undef": OFF,
     "no-useless-catch": OFF,
     "no-useless-escape": OFF,
+    "react-hooks/exhaustive-deps": OFF,
     "react-native/no-inline-styles": OFF,
     "react/react-in-jsx-scope": OFF,
   },

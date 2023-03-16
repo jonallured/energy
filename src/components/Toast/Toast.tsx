@@ -86,7 +86,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
     onUndoPress?.()
   }
 
-  const range = [-150, 0]
+  const range = [-50, 0]
   const outputRange = placement === "top" ? range : range.map((item) => item * -1)
   const translateY = translateYAnimation.interpolate({ inputRange: [0, 1], outputRange })
   const opacity = opacityAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })

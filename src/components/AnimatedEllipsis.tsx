@@ -24,7 +24,6 @@ export const AnimatedEllipsis = ({
   const timing = useSharedValue(0)
   useEffect(() => {
     timing.value = withRepeat(withTiming(1, { duration: 1000 }), -1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

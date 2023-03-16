@@ -1,4 +1,4 @@
-import { MasonryList } from "@react-native-seoul/masonry-list"
+import MasonryList from "@react-native-seoul/masonry-list"
 import { ColumnItem } from "components/Items/ColumnItem"
 import { DocumentGridItem } from "components/Items/DocumentGridItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
@@ -26,17 +26,19 @@ export const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
       numColumns={2}
       data={documents}
       renderItem={({ item, i }) => {
+        const documentItem = item as SelectedItemDocument
+
         return (
           <ColumnItem index={i} numColumns={2} mt={2}>
             <DocumentGridItem
               document={{
-                url: item.publicURL,
-                title: item.title,
-                id: item.internalID,
-                size: item.filesize,
+                url: documentItem.publicURL,
+                title: documentItem.title,
+                id: documentItem.internalID,
+                size: documentItem.filesize,
               }}
-              onPress={() => selectDocumentHandler(item)}
-              selectedToAdd={isSelected(selectedItems, item)}
+              onPress={() => selectDocumentHandler(documentItem)}
+              selectedToAdd={isSelected(selectedItems, documentItem)}
             />
           </ColumnItem>
         )
