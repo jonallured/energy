@@ -58,7 +58,8 @@ export const downloadFileToCache = async ({ url, type, accessToken }: DownloadFi
         try {
           await unlink(getFilePath({ filename: urlMap[url], type }))
         } catch (error) {
-          console.log("[fileCache] Error unlinking file:", error, urlMap[url], filename)
+          // If we're updating the url, test whether its been saved. If not, it's
+          // not an error, so consume it and don't report back to retry.
         }
       }
 
@@ -73,8 +74,10 @@ export const downloadFileToCache = async ({ url, type, accessToken }: DownloadFi
           `[fileCache] Error downloading file: ${error}. Retrying [${errorRetryAttempt}]: ${url}`
         )
 
+        // TODO: Investigate whether this might be causing problems. Comment
+        // out for now.
         // Retry download
-        await startDownload()
+        // await startDownload()
       }
     }
   }

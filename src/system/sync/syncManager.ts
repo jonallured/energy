@@ -42,7 +42,12 @@ import { showTabsQuery } from "screens/Shows/ShowTabs/ShowTabs"
 import { showsQuery } from "screens/Shows/Shows"
 import { RelayContextProps } from "system/relay/RelayProvider"
 import { GlobalStore } from "system/store/GlobalStore"
-import { downloadFileToCache, getFileFromCache, saveFileToCache } from "system/sync/fileCache"
+import {
+  clearFileCache,
+  downloadFileToCache,
+  getFileFromCache,
+  saveFileToCache,
+} from "system/sync/fileCache"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
 import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
@@ -133,6 +138,10 @@ export function initSyncManager({
 
   const startSync = async () => {
     updateStatus("Starting sync")
+
+    // Be sure we're starting from scratch
+    await clearFileCache()
+
     onStart()
 
     /**
@@ -159,9 +168,9 @@ export function initSyncManager({
 
       // Media sync. We collect all urls from the queries above and sync the
       // images, install shots, and documents last.
+      syncImages,
       syncInstallShots,
       syncDocuments,
-      syncImages,
     ]
 
     // Since some items depend on the next, fetch the above sequentially.
@@ -434,31 +443,16 @@ export function initSyncManager({
     let retryAttempt = 0
 
     const retry = async () => {
-      const errors = uniqBy(
-        syncResults.errors.map(({ error, ...rest }) => {
-          const QueryName = (error.req as RelayNetworkLayerRequest).id
-
-          return {
-            QueryName,
-            error,
-            ...rest,
-          }
-        }),
-        "QueryName"
-      )
+      const errors = syncResults.errors.map(({ query, variables }) => ({ query, variables }))
 
       // Reset errors for new fetch requests
       syncResults.errors = []
 
-      await PromisePool.for(errors).process(async ({ QueryName }) => {
-        try {
-          // Dynamically invoke sync functions based on the `syncSomeQuery`
-          // function naming idiom defined above (eg, `syncArtistShowsQuery()`)
-          await eval(`sync${QueryName}()`)
-        } catch (error) {
-          log("Error retrying sync", error)
-        }
-      })
+      await PromisePool.for(errors)
+        .onTaskStarted(reportProgress("Retrying failed syncs") as any)
+        .process(async ({ query, variables }) => {
+          return await fetchOrCatch(query, variables)
+        })
 
       // After the requests above execute, check if there are any new errors
       // that have been populated and if so, retry again
