@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native"
 import { NAVBAR_HEIGHT, ZINDEX } from "components/Screen/constants"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { isTablet } from "react-native-device-info"
-import Animated, { Easing, FadeInLeft, FadeOut, FadeOutLeft } from "react-native-reanimated"
+import Animated, { Easing, FadeInLeft, FadeOut } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "system/store/GlobalStore"
 

@@ -14,19 +14,20 @@ module.exports = {
   transformIgnorePatterns: [
     // the following are libs that *will* be transformed
     "node_modules/(?!(" +
-      "@react-native" + // no `|` on the first one
-      "|react-native" +
-      "|react-native-reanimated" +
-      "|expo-modules-core" +
-      "|expo-mail-composer" +
+      "|@artsy/palette-mobile" + // no `|` on the first one
       "|@babel" +
-      "|@artsy/palette-mobile" +
-      "|react-native-safe-area-context" +
-      "|react-native-linear-gradient" +
+      "|@react-native" +
       "|@react-native-seoul/masonry-list" +
+      "|expo-mail-composer" +
+      "|expo-modules-core" +
+      "|moti" +
       "|react-native-file-viewer" +
+      "|react-native-linear-gradient" +
       "|react-native-qrcode-generator" +
+      "|react-native-reanimated" +
+      "|react-native-safe-area-context" +
       "|react-native-webview" +
+      "|react-native" +
       ")/)",
   ],
 }

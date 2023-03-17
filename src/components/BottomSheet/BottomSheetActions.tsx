@@ -9,6 +9,7 @@ import {
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
+import { SlideUpFromBottom } from "components/Animations/SlideUpFromBottom"
 import {
   BottomSheetModalRow,
   BottomSheetModalView,
@@ -17,14 +18,12 @@ import {
 import { SCREEN_TRANSITION_TIME } from "components/Screen/constants"
 import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
-import Animated from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useMailComposer } from "screens/Artwork/useMailComposer"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
-import { useSlideUpFromBottomAnimation } from "utils/hooks/animations/useSlideUpFromBottomAnimation"
 
 export interface BottomSheetActionsProps {
   albumId?: string
@@ -43,10 +42,6 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
   const { sendMail } = useMailComposer()
 
   const showActionButtons = selectedItems.length > 0
-
-  const { slideUpFromBottomStyles } = useSlideUpFromBottomAnimation({
-    startAnimation: showActionButtons,
-  })
 
   // If we're in album mode, more actions are available to user
   const isAlbumMode = !!album
@@ -165,7 +160,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
     <>
       {!isAlbumMode && (
         <Flex position="absolute" bottom={0} pointerEvents={showActionButtons ? "auto" : "none"}>
-          <Animated.View style={slideUpFromBottomStyles}>
+          <SlideUpFromBottom visible={showActionButtons}>
             <Flex
               px={2}
               pt={1}
@@ -180,7 +175,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
                 Add to Album or Email
               </Button>
             </Flex>
-          </Animated.View>
+          </SlideUpFromBottom>
         </Flex>
       )}
 

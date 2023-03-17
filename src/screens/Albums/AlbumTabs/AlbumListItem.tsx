@@ -6,12 +6,11 @@ import {
   CheckCircleFillIcon,
   Touchable,
 } from "@artsy/palette-mobile"
+import { FadeIn } from "components/Animations/FadeIn"
 import { isTablet } from "react-native-device-info"
-import Animated from "react-native-reanimated"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { Album } from "system/store/Models/AlbumsModel"
 import { CachedImage } from "system/wrappers/CachedImage"
-import { useFadeInAnimation } from "utils/hooks/animations/useFadeInAnimation"
 import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 interface AlbumListItemProps {
@@ -26,7 +25,6 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({ album, selectedToA
   const first3Artworks = artworks.slice(0, 3)
   const variant = isTablet() ? "sm" : "xs"
   const overlapSize: SpacingUnitDSValue = 2
-  const { fadeInStyles } = useFadeInAnimation({ startAnimation: selectedToAdd })
 
   return (
     <Touchable
@@ -84,9 +82,9 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({ album, selectedToA
 
       {selectedToAdd && (
         <Flex position="absolute" top={2} right={1} alignItems="center" justifyContent="center">
-          <Animated.View style={fadeInStyles}>
+          <FadeIn>
             <CheckCircleFillIcon height={30} width={30} fill="blue100" />
-          </Animated.View>
+          </FadeIn>
         </Flex>
       )}
     </Touchable>

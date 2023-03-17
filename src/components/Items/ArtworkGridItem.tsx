@@ -7,15 +7,14 @@ import {
   TrashIcon,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$key } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { FadeIn } from "components/Animations/FadeIn"
 import { AvailabilityDot } from "components/StatusDot"
 import { ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
-import Animated from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { CachedImage } from "system/wrappers/CachedImage"
-import { useFadeInAnimation } from "utils/hooks/animations/useFadeInAnimation"
 
 export interface ArtworkGridItemProps extends FlexProps {
   artwork: SelectedItemArtwork
@@ -40,10 +39,6 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
   const isAvailabilityHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.worksAvailability
   )
-
-  const { fadeInStyles } = useFadeInAnimation({
-    startAnimation: selectedToAdd || selectedToRemove,
-  })
 
   return (
     <Touchable disabled={disable} onPress={onPress}>
@@ -70,18 +65,18 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
       </Flex>
       {!disable && !selectedToRemove && selectedToAdd && (
         <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
-          <Animated.View style={fadeInStyles}>
+          <FadeIn>
             <CheckCircleFillIcon height={30} width={30} fill="blue100" />
-          </Animated.View>
+          </FadeIn>
         </Flex>
       )}
       {selectedToRemove && (
         <Flex position="absolute" alignItems="center" top={1} right={1}>
-          <Animated.View style={fadeInStyles}>
+          <FadeIn>
             <Flex p={0.5} borderRadius="50px" justifyContent="center" backgroundColor="red100">
               <TrashIcon height={20} width={20} fill="onBackgroundHigh" />
             </Flex>
-          </Animated.View>
+          </FadeIn>
         </Flex>
       )}
     </Touchable>

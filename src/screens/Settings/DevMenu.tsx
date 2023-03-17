@@ -12,6 +12,9 @@ export const DevMenu = () => {
 
   return (
     <Join separator={<Spacer y={1} />}>
+      <Button block onPress={() => NativeModules.DevMenu.show()}>
+        Show Native Dev Menu
+      </Button>
       <Button
         block
         onPress={() => {
@@ -25,9 +28,7 @@ export const DevMenu = () => {
         Switch to {currentEnvironment == "staging" ? "production" : "staging"}
       </Button>
       {/* eslint-disable-next-line */}
-      <Button block onPress={() => NativeModules.DevMenu.show()}>
-        Show native dev menu
-      </Button>
+
       <Button block onPress={() => ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}>
         Add native test albums
       </Button>
