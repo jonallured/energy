@@ -8,7 +8,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
-import { useLocalUri } from "system/sync/fileCache"
+import { useLocalUri } from "system/sync/fileCache/useLocalUri"
 import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {

@@ -6,7 +6,7 @@ import {
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
-import { useLocalUri } from "system/sync/fileCache"
+import { useLocalUri } from "system/sync/fileCache/useLocalUri"
 
 export interface ArtistListItemProps extends FlexProps {
   artist: ArtistListItem_artist$key

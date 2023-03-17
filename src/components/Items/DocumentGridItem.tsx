@@ -5,7 +5,8 @@ import { useEffect, useState } from "react"
 import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
 import { GlobalStore } from "system/store/GlobalStore"
-import { downloadFileToCache, useLocalUri } from "system/sync/fileCache"
+import { downloadFileToCache } from "system/sync/fileCache"
+import { useLocalUri } from "system/sync/fileCache/useLocalUri"
 import { formatBytes } from "utils/formatBytes"
 
 export interface DocumentEntity {
@@ -39,11 +40,13 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
 
     if (!isFileCached) {
       setIsDownloading(true)
+
       await downloadFileToCache({
         url: document.url,
         type: "document",
         accessToken: userAccessToken,
       })
+
       setIsDownloading(false)
     }
   }

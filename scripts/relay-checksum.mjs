@@ -3,11 +3,11 @@
 // @ts-check
 
 import fs from "fs"
-import sha1sum from "sha1-sum"
 import sha1 from "sha1"
+import sha1sum from "sha1-sum"
 
 const QUERIES_FILE = "src/system/sync/syncManager.ts"
-const CHECKSUM_FILE = "src/system/sync/_generatedRelayChecksum.ts"
+const CHECKSUM_FILE = "src/system/sync/artifacts/__generatedRelayChecksum.ts"
 
 const mapAsyncLinear = async (items, callback) => {
   const data = []

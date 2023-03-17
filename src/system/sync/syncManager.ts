@@ -42,9 +42,9 @@ import { showTabsQuery } from "screens/Shows/ShowTabs/ShowTabs"
 import { showsQuery } from "screens/Shows/Shows"
 import { RelayContextProps } from "system/relay/RelayProvider"
 import { GlobalStore } from "system/store/GlobalStore"
+import { downloadFileToCache, getFileFromCache, saveFileToCache } from "system/sync/fileCache"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
-import { getFileFromCache, saveFileToCache, downloadFileToCache } from "./fileCache"
 import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 
 interface SyncResultsData {
@@ -564,6 +564,9 @@ const parsers = {
         artworkContent.artwork?.image?.resized?.url!,
         artworkContent.artwork?.artist?.imageUrl!,
       ]),
+      ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map((show) => {
+        return show.coverImage?.url
+      }),
       ...(syncResults.artworkImageModalQuery ?? []).map(({ artwork }) => {
         return artwork?.image?.resized?.url
       }),

@@ -16,7 +16,7 @@ import { useErrorReporting } from "system/hooks/useErrorReporting"
 import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
 import { useSystemIsDoneBooting } from "system/hooks/useSystemIsDoneBooting"
 import { GlobalStore } from "system/store/GlobalStore"
-import { loadUrlMap } from "system/sync/fileCache"
+import { loadUrlMap } from "system/sync/fileCache/urlMap"
 
 export type NavigationScreens = AuthNavigationScreens &
   AlbumNavigationScreens &

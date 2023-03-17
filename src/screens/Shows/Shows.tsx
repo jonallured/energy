@@ -62,6 +62,9 @@ export const showsQuery = graphql`
             internalID
             slug
             artworksCount
+            coverImage {
+              url
+            }
           }
         }
       }

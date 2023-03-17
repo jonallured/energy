@@ -67,8 +67,6 @@
     "html-entities": "^2.3.3",
     "jest-extended": "1.2.1",
     "jest-watch-typeahead": "0.6.1",
-    "jotai": "^1.13.0",
-    "jotai-nexus": "^1.0.7",
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
     "patch-package": "^6.5.1",
