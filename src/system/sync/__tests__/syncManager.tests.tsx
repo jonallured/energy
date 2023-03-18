@@ -5,24 +5,29 @@ import { ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
 import { ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
 import { ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { getFileFromCache, saveFileToCache } from "system/sync/fileCache"
+import { getFileFromCache, initDownloadFileToCache, saveFileToCache } from "system/sync/fileCache"
 import { initSyncManager, loadRelayDataFromOfflineCache, _tests } from "system/sync/syncManager"
 import { initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { flushPromiseQueue } from "utils/test/flushPromiseQueue"
 
 jest.mock("system/sync/utils/fetchOrCatch")
 jest.mock("system/sync/fileCache")
+jest.mock("system/sync/fileCache/downloadFileToCache")
 
 describe("syncManager", () => {
   console.log = jest.fn()
 
   const initFetchOrCatchMock = initFetchOrCatch as jest.Mock
+  const initDownloadFileToCacheMock = initDownloadFileToCache as jest.Mock
   const saveFileToCacheMock = saveFileToCache as jest.Mock
   const getFileFromCacheMock = getFileFromCache as jest.Mock
 
   beforeEach(() => {
     initFetchOrCatchMock.mockReturnValue({
       fetchOrCatch: jest.fn(),
+    })
+    initDownloadFileToCacheMock.mockReturnValue({
+      downloadFileToCache: jest.fn(),
     })
   })
 

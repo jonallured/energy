@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { RelayNetworkLayerRequest } from "react-relay-network-modern"
 import {
   createRequestError,
   formatGraphQLErrors,
@@ -63,13 +64,18 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
 const trackError = (
   queryName: string,
   queryKind: string,
-  handler: "optionalField" | "principalField" | "default"
+  handler: "optionalField" | "principalField" | "default",
+  req: RelayNetworkLayerRequest
 ) => {
-  console.log({
-    type: "increment",
-    name: "graphql-request-with-errors",
-    tags: [`query:${queryName}`, `kind:${queryKind}`, `handler: ${handler}`],
-  })
+  if (__DEV__) {
+    console.log("[errorMiddleware]: Request Error", req)
+  } else {
+    console.log({
+      type: "increment",
+      name: "graphql-request-with-errors",
+      tags: [`query:${queryName}`, `kind:${queryKind}`, `handler: ${handler}`],
+    })
+  }
 }
 
 // ts-prune-ignore-next
@@ -89,7 +95,7 @@ export const errorMiddleware = () => {
       // @ts-ignore RELAY 12 MIGRATION
       resJson.extensions?.optionalFields?.length === resJson.errors?.length
     if (allErrorsAreOptional) {
-      trackError(req.operation.name, req.operation.kind, "optionalField")
+      trackError(req.operation.name, req.operation.kind, "optionalField", req)
       return res
     }
 
@@ -98,7 +104,7 @@ export const errorMiddleware = () => {
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
-      trackError(req.operation.name, req.operation.kind, "default")
+      trackError(req.operation.name, req.operation.kind, "default", req)
       return throwError(req, res)
     }
 
@@ -112,7 +118,7 @@ export const errorMiddleware = () => {
     )
 
     if (principalFieldWasInvolvedInError) {
-      trackError(req.operation.name, req.operation.kind, "principalField")
+      trackError(req.operation.name, req.operation.kind, "principalField", req)
       return throwError(req, res)
     }
 

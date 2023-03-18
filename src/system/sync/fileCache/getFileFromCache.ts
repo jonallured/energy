@@ -13,7 +13,7 @@ export const getFileFromCache = async ({ filename, type }: FileProps) => {
       return
     }
 
-    const file = readFile(path)
+    const file = await readFile(path)
     return file
   } catch (error) {
     console.warn("[fileCache] Error retrieving file from cache:", error)

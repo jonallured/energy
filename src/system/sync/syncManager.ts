@@ -27,9 +27,8 @@ import { ShowTabsQuery, ShowTabsQuery$data } from "__generated__/ShowTabsQuery.g
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { artworkImageModalQuery } from "components/ArtworkImageModal"
 import { artistsListQuery } from "components/Lists/ArtistsList"
-import { compact, once, uniqBy } from "lodash"
+import { compact, once } from "lodash"
 import { Alert } from "react-native"
-import { RelayNetworkLayerRequest } from "react-relay-network-modern"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { artistArtworksQuery } from "screens/Artists/ArtistTabs/ArtistArtworks"
 import { artistDocumentsQuery } from "screens/Artists/ArtistTabs/ArtistDocuments"
@@ -44,13 +43,15 @@ import { RelayContextProps } from "system/relay/RelayProvider"
 import { GlobalStore } from "system/store/GlobalStore"
 import {
   clearFileCache,
-  downloadFileToCache,
+  initDownloadFileToCache,
   getFileFromCache,
   saveFileToCache,
+  DownloadFileToCacheProps,
 } from "system/sync/fileCache"
+import { retryOperation } from "system/sync/retryOperation"
+import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
-import { FetchError, initFetchOrCatch } from "./utils/fetchOrCatch"
 
 interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
@@ -65,7 +66,8 @@ interface SyncResultsData {
   showArtworksQuery?: ShowArtworksQuery$data[]
   showInstallsQuery?: ShowInstallsQuery$data[]
   showDocumentsQuery?: ShowDocumentsQuery$data[]
-  errors: FetchError[]
+  queryErrors: FetchError[]
+  fileDownloadErrors: DownloadFileToCacheProps[]
 }
 
 /**
@@ -84,7 +86,10 @@ const syncResults: SyncResultsData = {
   showArtworksQuery: [],
   showInstallsQuery: [],
   showDocumentsQuery: [],
-  errors: [],
+
+  // Error retries
+  queryErrors: [],
+  fileDownloadErrors: [],
 }
 
 // Safe timeout for fetches, so that the PromisePool doesn't clog
@@ -111,22 +116,23 @@ export function initSyncManager({
     throw new Error("[sync] Error initializing sync: `partnerID` is required")
   }
 
-  // Flag for when we enter retry loop. When retrying, don't log status updates.
-  let isRetryingFromFailed = false
-
   const { fetchOrCatch } = initFetchOrCatch({
     relayEnvironment,
     onError: (error) => {
-      syncResults.errors.push(error)
+      syncResults.queryErrors.push(error)
+    },
+  })
+
+  const { downloadFileToCache } = initDownloadFileToCache({
+    onFileDownloadError: (file) => {
+      syncResults.fileDownloadErrors.push(file)
     },
   })
 
   const updateStatus = (...messages: any[]) => {
     log(...messages)
 
-    if (!isRetryingFromFailed) {
-      onStatusChange(messages[0])
-    }
+    onStatusChange(messages[0])
   }
 
   // Noticed that sometimes the `Error.captureStackTrace` is not available when
@@ -164,13 +170,16 @@ export function initSyncManager({
       syncShowDocumentsQuery,
 
       // Retry errors caught above 3 times
-      retrySyncForErrors,
+      retryQueriesForErrors,
 
       // Media sync. We collect all urls from the queries above and sync the
       // images, install shots, and documents last.
       syncImages,
       syncInstallShots,
       syncDocuments,
+
+      // Retry download errors caught above 3 times
+      retryFileDownloadsForErrors,
     ]
 
     // Since some items depend on the next, fetch the above sequentially.
@@ -429,55 +438,47 @@ export function initSyncManager({
       })
   }
 
-  const retrySyncForErrors = async () => {
-    if (syncResults.errors.length === 0) {
-      return
-    }
+  /**
+   * Retry operations
+   */
 
-    updateStatus("Validating sync")
+  const retryQueriesForErrors = async () => {
+    await retryOperation<FetchError>({
+      errors: syncResults.queryErrors,
+      execute: async ({ query, variables }) => {
+        await fetchOrCatch(query, variables)
+      },
+      onStart: () => {
+        syncResults.queryErrors = []
+      },
+      shouldRetry: () => {
+        return syncResults.queryErrors.length > 0
+      },
+      updateStatus: () => updateStatus("Validating data."),
+      reportProgress: () => reportProgress("Retrying failed"),
+    })
+  }
 
-    isRetryingFromFailed = true
-
-    const MAX_RETRY_ATTEMPTS = 2
-
-    let retryAttempt = 0
-
-    const retry = async () => {
-      const errors = syncResults.errors.map(({ query, variables }) => ({ query, variables }))
-
-      // Reset errors for new fetch requests
-      syncResults.errors = []
-
-      await PromisePool.for(errors)
-        .onTaskStarted(reportProgress("Retrying failed syncs") as any)
-        .process(async ({ query, variables }) => {
-          return await fetchOrCatch(query, variables)
-        })
-
-      // After the requests above execute, check if there are any new errors
-      // that have been populated and if so, retry again
-      const shouldRetry = syncResults.errors.length > 0
-
-      if (shouldRetry) {
-        if (retryAttempt < MAX_RETRY_ATTEMPTS) {
-          retryAttempt++
-
-          await retry()
-        }
-      }
-    }
-
-    // Start retry loop
-    await retry()
-
-    isRetryingFromFailed = false
+  const retryFileDownloadsForErrors = async () => {
+    await retryOperation<DownloadFileToCacheProps>({
+      errors: syncResults.fileDownloadErrors,
+      execute: async (file) => {
+        await downloadFileToCache(file)
+      },
+      onStart: () => {
+        syncResults.fileDownloadErrors = []
+      },
+      shouldRetry: () => {
+        return syncResults.fileDownloadErrors.length > 0
+      },
+      updateStatus: () => updateStatus("Validating downloads."),
+      reportProgress: () => reportProgress("Retrying download"),
+    })
   }
 
   const reportProgress = (message: string) => {
     const onProgressCallback: OnProgressCallback<string> = (_, pool) => {
-      if (!isRetryingFromFailed) {
-        onStatusChange(`${message}: ${Math.floor(pool.processedPercentage())}%`)
-      }
+      onStatusChange(`${message}: ${Math.floor(pool.processedPercentage())}%`)
     }
     return onProgressCallback
   }

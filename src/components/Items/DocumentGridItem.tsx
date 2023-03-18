@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
 import { GlobalStore } from "system/store/GlobalStore"
-import { downloadFileToCache } from "system/sync/fileCache"
+import { initDownloadFileToCache } from "system/sync/fileCache"
 import { useLocalUri } from "system/sync/fileCache/useLocalUri"
 import { formatBytes } from "utils/formatBytes"
 
@@ -33,6 +33,12 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
   const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
 
   const localUri = useLocalUri(document.url, "document")
+
+  const { downloadFileToCache } = initDownloadFileToCache({
+    onFileDownloadError: (file) => {
+      console.error("[DocumentGridItem] Error downloading file", file)
+    },
+  })
 
   const openFile = async () => {
     setIsOpening(true)

@@ -1,28 +1,30 @@
 import { parse } from "qs"
 import { downloadFile, unlink } from "react-native-fs"
 import { getFilePath } from "system/sync/fileCache/getFilePath"
-import { warmFilesystem } from "system/sync/fileCache/initializeFS"
 import { getURLMap, updateUrlMap } from "system/sync/fileCache/urlMap"
+import { warmFilesystem } from "system/sync/fileCache/warmFilesystem"
 import { v4 as uuidv4 } from "uuid"
 
 type DownloadableType = "image" | "document"
 
-interface DownloadFileToCacheProps {
+export interface DownloadFileToCacheProps {
   url: string
   type: DownloadableType
   accessToken?: string
 }
 
-export const downloadFileToCache = async ({ url, type, accessToken }: DownloadFileToCacheProps) => {
-  if (!url) {
-    return null
-  }
+interface InitDownloadFileToCacheProps {
+  onFileDownloadError: (fileProps: DownloadFileToCacheProps) => void
+}
 
-  const MAX_ERROR_RETRY_ATTEMPTS = 3
+export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFileToCacheProps) => {
+  const downloadFileToCache = async (fileProps: DownloadFileToCacheProps) => {
+    const { url, type, accessToken } = fileProps
 
-  let errorRetryAttempt = 0
+    if (!url) {
+      return null
+    }
 
-  const startDownload = async () => {
     try {
       await warmFilesystem()
 
@@ -67,20 +69,13 @@ export const downloadFileToCache = async ({ url, type, accessToken }: DownloadFi
 
       // If there's an error, start the retry loop
     } catch (error) {
-      if (errorRetryAttempt <= MAX_ERROR_RETRY_ATTEMPTS) {
-        errorRetryAttempt++
+      console.error("[downloadFileToCache] Error:", error)
 
-        console.log(
-          `[fileCache] Error downloading file: ${error}. Retrying [${errorRetryAttempt}]: ${url}`
-        )
-
-        // TODO: Investigate whether this might be causing problems. Comment
-        // out for now.
-        // Retry download
-        // await startDownload()
-      }
+      onFileDownloadError(fileProps)
     }
   }
 
-  await startDownload()
+  return {
+    downloadFileToCache,
+  }
 }

@@ -1,9 +1,9 @@
 import { writeFile } from "react-native-fs"
 import { FileProps } from "system/sync/fileCache/constants"
 import { getFilePath } from "system/sync/fileCache/getFilePath"
-import { warmFilesystem } from "system/sync/fileCache/initializeFS"
+import { warmFilesystem } from "system/sync/fileCache/warmFilesystem"
 
-interface SaveFileProps extends FileProps {
+export interface SaveFileProps extends FileProps {
   data: string
 }
 
