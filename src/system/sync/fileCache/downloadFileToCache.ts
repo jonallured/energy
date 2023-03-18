@@ -66,11 +66,10 @@ export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFil
       }
 
       await updateUrlMap(url, filename)
-
-      // If there's an error, start the retry loop
     } catch (error) {
       console.error("[downloadFileToCache] Error:", error)
 
+      // If there's an error, queue up error to retry later
       onFileDownloadError(fileProps)
     }
   }

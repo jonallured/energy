@@ -178,8 +178,9 @@ export function initSyncManager({
       syncInstallShots,
       syncDocuments,
 
+      // TODO: Reenable
       // Retry download errors caught above 3 times
-      retryFileDownloadsForErrors,
+      // retryFileDownloadsForErrors,
     ]
 
     // Since some items depend on the next, fetch the above sequentially.
