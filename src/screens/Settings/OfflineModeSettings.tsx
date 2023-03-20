@@ -4,11 +4,12 @@ import { Screen } from "components/Screen"
 import { DateTime } from "luxon"
 import { useMemo, useState } from "react"
 import { Alert } from "react-native"
+import JSONTree from "react-native-json-tree"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
 import { clearFileCache } from "system/sync/fileCache/clearFileCache"
-import { initSyncManager } from "system/sync/syncManager"
+import { initSyncManager, SyncResultsData } from "system/sync/syncManager"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
 export const OfflineModeSettings = () => {
@@ -25,6 +26,7 @@ export const OfflineModeSettings = () => {
   const { setLastSync } = GlobalStore.actions.devicePrefs
   const isOnline = useIsOnline()
 
+  const [syncResultsData, setSyncResults] = useState<SyncResultsData | {}>({})
   const [syncProgress, setSyncProgress] = useState<string | number>(0)
   const [syncStatus, setSyncStatus] = useState("")
   const isSyncing = !!syncProgress
@@ -53,6 +55,9 @@ export const OfflineModeSettings = () => {
       },
       onStatusChange: (message) => {
         setSyncStatus(message)
+      },
+      onSyncResultsChange: (results) => {
+        setSyncResults(results)
       },
     })
   }, [])
@@ -142,6 +147,8 @@ export const OfflineModeSettings = () => {
           <Button block onPress={handleClearFileCache}>
             Clear cache
           </Button>
+
+          {__DEV__ && <JSONTree data={syncResultsData as Record<string, string>} />}
         </Join>
       </Screen.Body>
     </Screen>

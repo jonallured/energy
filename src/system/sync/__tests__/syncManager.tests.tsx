@@ -36,18 +36,24 @@ describe("syncManager", () => {
   })
 
   describe("public api", () => {
-    const setup = (partnerID: string | null = "partner-id") => {
+    const setup = (
+      partnerID: string | null = "partner-id",
+      mockRelayEnv: RelayModernEnvironment | null = null
+    ) => {
       const onStartSpy = jest.fn()
       const onProgressSpy = jest.fn()
       const onStatusChangeSpy = jest.fn()
       const onCompleteSpy = jest.fn()
-      const relayEnvironmentSpy = jest.fn() as unknown as RelayModernEnvironment
+      const onSyncResultsChangeSpy = jest.fn()
+
+      const relayEnvironmentSpy = mockRelayEnv ?? (jest.fn() as unknown as RelayModernEnvironment)
 
       const { startSync } = initSyncManager({
         onStart: onStartSpy,
         onProgress: onProgressSpy,
         onStatusChange: onStatusChangeSpy,
         onComplete: onCompleteSpy,
+        onSyncResultsChange: onSyncResultsChangeSpy,
         partnerID: partnerID as string,
         relayEnvironment: relayEnvironmentSpy,
       })
@@ -69,13 +75,30 @@ describe("syncManager", () => {
     })
 
     it("calls onStart", async () => {
-      const { startSync, onStartSpy } = setup()
+      const toJSONSpy = jest.fn().mockReturnValue({ data: "mock-json" })
+      const relayEnvironmentMock = {
+        getStore: () => ({
+          getSource: () => ({
+            toJSON: toJSONSpy,
+          }),
+        }),
+      } as unknown as RelayModernEnvironment
+      const { startSync, onStartSpy } = setup("partner-id", relayEnvironmentMock)
+
       await startSync()
       expect(onStartSpy).toBeCalled()
     })
 
     it("calls onProgress", async () => {
-      const { startSync, onProgressSpy } = setup()
+      const toJSONSpy = jest.fn().mockReturnValue({ data: "mock-json" })
+      const relayEnvironmentMock = {
+        getStore: () => ({
+          getSource: () => ({
+            toJSON: toJSONSpy,
+          }),
+        }),
+      } as unknown as RelayModernEnvironment
+      const { startSync, onProgressSpy } = setup("partner-id", relayEnvironmentMock)
       await startSync()
       expect(onProgressSpy).toBeCalledWith(
         expect.toBeOneOf([expect.toBeString(), expect.toBeNumber()])
@@ -83,13 +106,29 @@ describe("syncManager", () => {
     })
 
     it("calls onStatusChange", async () => {
-      const { startSync, onStatusChangeSpy } = setup()
+      const toJSONSpy = jest.fn().mockReturnValue({ data: "mock-json" })
+      const relayEnvironmentMock = {
+        getStore: () => ({
+          getSource: () => ({
+            toJSON: toJSONSpy,
+          }),
+        }),
+      } as unknown as RelayModernEnvironment
+      const { startSync, onStatusChangeSpy } = setup("partner-id", relayEnvironmentMock)
       await startSync()
       expect(onStatusChangeSpy).toBeCalledWith(expect.toBeString())
     })
 
     it("calls onComplete", async () => {
-      const { startSync, onCompleteSpy } = setup()
+      const toJSONSpy = jest.fn().mockReturnValue({ data: "mock-json" })
+      const relayEnvironmentMock = {
+        getStore: () => ({
+          getSource: () => ({
+            toJSON: toJSONSpy,
+          }),
+        }),
+      } as unknown as RelayModernEnvironment
+      const { startSync, onCompleteSpy } = setup("partner-id", relayEnvironmentMock)
       await startSync()
       expect(onCompleteSpy).toBeCalled()
     })

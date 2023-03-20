@@ -47,7 +47,7 @@ export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFil
       const { statusCode } = await downloadFile({
         fromUrl: url,
         toFile: filePath,
-        headers: accessToken !== undefined ? { "X-ACCESS-TOKEN": accessToken } : undefined,
+        headers: accessToken ? { "X-ACCESS-TOKEN": accessToken } : undefined,
       }).promise
 
       if (statusCode !== 200) {

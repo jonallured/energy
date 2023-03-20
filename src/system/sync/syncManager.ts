@@ -47,13 +47,14 @@ import {
   getFileFromCache,
   saveFileToCache,
   DownloadFileToCacheProps,
+  getURLMap,
 } from "system/sync/fileCache"
 import { retryOperation } from "system/sync/retryOperation"
 import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
 
-interface SyncResultsData {
+export interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
   showsQuery?: ShowsQuery$data
   artistArtworksQuery?: ArtistArtworksQuery$data[]
@@ -94,12 +95,17 @@ const syncResults: SyncResultsData = {
 
 // Safe timeout for fetches, so that the PromisePool doesn't clog
 const POOL_TIMEOUT = 10000
+const MAX_QUERY_CONCURRENCY = 50
+const MAX_FILE_DOWNLOAD_CONCURRENCY = 20
 
 interface SyncManagerOptions {
   onComplete: () => void
   onProgress: (currentProgress: string | number) => void
   onStart: () => void
   onStatusChange: (message: string) => void
+  onSyncResultsChange: (
+    results: SyncResultsData | { imagesDownloaded: Record<string, string> }
+  ) => void
   partnerID: string
   relayEnvironment: RelayModernEnvironment
 }
@@ -109,6 +115,7 @@ export function initSyncManager({
   onStart,
   onProgress,
   onStatusChange,
+  onSyncResultsChange,
   partnerID,
   relayEnvironment,
 }: SyncManagerOptions) {
@@ -178,9 +185,8 @@ export function initSyncManager({
       syncInstallShots,
       syncDocuments,
 
-      // TODO: Reenable
       // Retry download errors caught above 3 times
-      // retryFileDownloadsForErrors,
+      retryFileDownloadsForErrors,
     ]
 
     // Since some items depend on the next, fetch the above sequentially.
@@ -190,6 +196,11 @@ export function initSyncManager({
         onProgress(`${index}/${syncTargets.length}`)
 
         await fetchSyncTargetData()
+
+        // Persist the data incrementally after each step
+        await saveRelayDataToOfflineCache(relayEnvironment)
+
+        onSyncResultsChange(syncResults)
       } catch (error) {
         updateStatus(`Error while performing sync: ${error}`)
       }
@@ -197,7 +208,7 @@ export function initSyncManager({
 
     // Store the data in the cache. Later, if the user is offline they'll be
     // able to read from this store.
-    saveRelayDataToOfflineCache(relayEnvironment)
+    await saveRelayDataToOfflineCache(relayEnvironment)
 
     onComplete()
 
@@ -237,6 +248,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artistSlugs)
       .onTaskStarted(reportProgress("Syncing artist artworks"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ArtistArtworksQuery>(artistArtworksQuery, {
           partnerID,
@@ -254,7 +266,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artworkSlugs)
       .onTaskStarted(reportProgress("Syncing artist artwork content"))
-      .withConcurrency(20)
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ArtworkQuery>(artworkQuery, {
           slug,
@@ -271,7 +283,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artworkSlugs)
       .onTaskStarted(reportProgress("Syncing image content"))
-      .withConcurrency(20)
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ArtworkImageModalQuery>(artworkImageModalQuery, {
           slug,
@@ -289,6 +301,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artistSlugs)
       .onTaskStarted(reportProgress("Syncing artist shows"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return (await fetchOrCatch<ArtistShowsQuery>(artistShowsQuery, {
           partnerID,
@@ -306,6 +319,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artistShowSlugs)
       .onTaskStarted(reportProgress("Syncing show tabs"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
       })
@@ -320,6 +334,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(artistSlugs)
       .onTaskStarted(reportProgress("Syncing artist documents"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ArtistDocumentsQuery>(artistDocumentsQuery, {
           partnerID,
@@ -337,6 +352,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing partner shows"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
       })
@@ -351,6 +367,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing show artworks"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug })
       })
@@ -365,6 +382,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing show installs"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return await fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug })
       })
@@ -379,6 +397,7 @@ export function initSyncManager({
 
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing show documents"))
+      .withConcurrency(MAX_QUERY_CONCURRENCY)
       .process(async (slug) => {
         return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
       })
@@ -397,9 +416,16 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing images"))
-      .withConcurrency(20)
+      .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(POOL_TIMEOUT)
       .process(async (url) => {
+        if (__DEV__) {
+          // For logging results to help debugging
+          onSyncResultsChange({
+            imagesDownloaded: getURLMap(),
+            ...syncResults,
+          })
+        }
         return await downloadFileToCache({
           type: "image",
           url,
@@ -412,7 +438,7 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing install shots"))
-      .withConcurrency(20)
+      .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
@@ -428,7 +454,7 @@ export function initSyncManager({
 
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
-      .withConcurrency(20)
+      .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
@@ -557,11 +583,11 @@ const parsers = {
   getImageUrls: (): string[] => {
     const imageUrls = compact([
       ...(syncResults.artworkQuery ?? []).flatMap((artworkContent) => [
-        artworkContent.artwork?.image?.resized?.url!,
-        artworkContent.artwork?.artist?.imageUrl!,
+        artworkContent?.artwork?.image?.resized?.url!,
+        artworkContent?.artwork?.artist?.imageUrl!,
       ]),
       ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map((show) => {
-        return show.coverImage?.url
+        return show?.coverImage?.url
       }),
       ...(syncResults.artworkImageModalQuery ?? []).map(({ artwork }) => {
         return artwork?.image?.resized?.url
