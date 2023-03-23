@@ -1,5 +1,5 @@
 import { produce } from "immer"
-import { exists, readFile } from "react-native-fs"
+import { exists, readFile, unlink } from "react-native-fs"
 import { saveFileToCache } from "system/sync/fileCache"
 import { PATH_CACHE } from "system/sync/fileCache/constants"
 
@@ -24,6 +24,19 @@ export const saveUrlMap = async () => {
     })
   } catch (error) {
     console.log("[fileCache] Error saving urlMap:", error)
+  }
+}
+
+export const clearUrlMap = async () => {
+  try {
+    urlMap = {}
+    const path = PATH_CACHE + "/urlMap.json"
+    if (!(await exists(path))) {
+      return
+    }
+    await unlink(path)
+  } catch (error) {
+    console.log("[fileCache] Error deleting urlMap:", error)
   }
 }
 

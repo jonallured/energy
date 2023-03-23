@@ -1,13 +1,23 @@
+import { exists, unlink } from "react-native-fs"
 import { saveFileToCache } from "system/sync/fileCache/saveFileToCache"
-import { updateUrlMap, loadUrlMap, getURLMap, saveUrlMap } from "system/sync/fileCache/urlMap"
+import {
+  updateUrlMap,
+  loadUrlMap,
+  getURLMap,
+  saveUrlMap,
+  clearUrlMap,
+} from "system/sync/fileCache/urlMap"
 
 jest.mock("system/sync/fileCache/saveFileToCache")
 jest.mock("react-native-fs", () => ({
   DocumentDirectoryPath: "testPath",
+  exists: jest.fn(),
+  unlink: jest.fn(),
 }))
 
 describe("urlMap", () => {
   const saveFileToCacheMock = saveFileToCache as jest.Mock
+  const existsMock = exists as jest.Mock
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -58,5 +68,17 @@ describe("urlMap", () => {
       filename: "urlMap",
       path: "testPath/cache/urlMap.json",
     })
+  })
+
+  it("clears out the urlMap", async () => {
+    existsMock.mockReturnValueOnce(true)
+    await clearUrlMap()
+
+    expect(exists).toHaveBeenCalledTimes(1)
+    expect(unlink).toHaveBeenCalledTimes(1)
+
+    await loadUrlMap()
+    const urlMap = getURLMap()
+    expect(urlMap).toEqual({})
   })
 })

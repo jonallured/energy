@@ -53,6 +53,8 @@ import { retryOperation } from "system/sync/retryOperation"
 import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
+import oneHundredImageArray from "./100-image-urls.json"
+import bigImageArray from "./lotsa-image-urls.json"
 
 export interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
@@ -94,7 +96,7 @@ const syncResults: SyncResultsData = {
 }
 
 // Safe timeout for fetches, so that the PromisePool doesn't clog
-const POOL_TIMEOUT = 10000
+const FILE_DOWNLOAD_POOL_TIMEOUT = 10000
 const MAX_QUERY_CONCURRENCY = 50
 const MAX_FILE_DOWNLOAD_CONCURRENCY = 20
 
@@ -256,7 +258,7 @@ export function initSyncManager({
         })
       })
 
-    syncResults.artistArtworksQuery = results
+    syncResults.artistArtworksQuery = compact(results)
 
     updateStatus("Complete. `artistArtworksQuery`", syncResults.artistArtworksQuery)
   }
@@ -273,7 +275,7 @@ export function initSyncManager({
         })
       })
 
-    syncResults.artworkQuery = results
+    syncResults.artworkQuery = compact(results)
 
     updateStatus("Complete. `artistArtworksContentData`", syncResults.artworkQuery)
   }
@@ -291,7 +293,7 @@ export function initSyncManager({
         })
       })
 
-    syncResults.artworkImageModalQuery = results
+    syncResults.artworkImageModalQuery = compact(results)
 
     updateStatus("Complete. `artworkImageModalQuery`", syncResults.artworkImageModalQuery)
   }
@@ -309,7 +311,7 @@ export function initSyncManager({
         })) as ArtistShowsQuery$rawResponse
       })
 
-    syncResults.artistShowsQuery = results
+    syncResults.artistShowsQuery = compact(results)
 
     updateStatus("Complete. `artistShowsQuery`", syncResults.artistShowsQuery)
   }
@@ -324,7 +326,7 @@ export function initSyncManager({
         return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
       })
 
-    syncResults.showTabsQuery = results
+    syncResults.showTabsQuery = compact(results)
 
     updateStatus("Complete. `showTabsQuery`", syncResults.showTabsQuery)
   }
@@ -342,7 +344,7 @@ export function initSyncManager({
         })
       })
 
-    syncResults.artistDocumentsQuery = results
+    syncResults.artistDocumentsQuery = compact(results)
 
     updateStatus("Complete. `artistDocumentsQuery`", syncResults.artistDocumentsQuery)
   }
@@ -357,7 +359,7 @@ export function initSyncManager({
         return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
       })
 
-    syncResults.partnerShowTabsQuery = results
+    syncResults.partnerShowTabsQuery = compact(results)
 
     updateStatus("Complete. `partnerShowTabsQuery`", syncResults.partnerShowTabsQuery)
   }
@@ -372,7 +374,7 @@ export function initSyncManager({
         return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug })
       })
 
-    syncResults.showArtworksQuery = results
+    syncResults.showArtworksQuery = compact(results)
 
     updateStatus("Complete. `showArtworksQuery`", syncResults.showArtworksQuery)
   }
@@ -387,7 +389,7 @@ export function initSyncManager({
         return await fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug })
       })
 
-    syncResults.showInstallsQuery = results
+    syncResults.showInstallsQuery = compact(results)
 
     updateStatus("Complete. `showInstallsQuery`", syncResults.showInstallsQuery)
   }
@@ -402,7 +404,7 @@ export function initSyncManager({
         return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
       })
 
-    syncResults.showDocumentsQuery = results
+    syncResults.showDocumentsQuery = compact(results)
 
     updateStatus("Complete. `showDocumentsQuery`", syncResults.showDocumentsQuery)
   }
@@ -417,7 +419,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing images"))
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
-      .withTaskTimeout(POOL_TIMEOUT)
+      .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
       .process(async (url) => {
         if (__DEV__) {
           // For logging results to help debugging
@@ -439,7 +441,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing install shots"))
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
-      .withTaskTimeout(POOL_TIMEOUT)
+      .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "image",
@@ -455,7 +457,7 @@ export function initSyncManager({
     await PromisePool.for(urls)
       .onTaskStarted(reportProgress("Syncing documents"))
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
-      .withTaskTimeout(POOL_TIMEOUT)
+      .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
       .process(async (url) => {
         return await downloadFileToCache({
           type: "document",
@@ -581,19 +583,25 @@ const parsers = {
   },
 
   getImageUrls: (): string[] => {
-    const imageUrls = compact([
-      ...(syncResults.artworkQuery ?? []).flatMap((artworkContent) => [
-        artworkContent?.artwork?.image?.resized?.url!,
-        artworkContent?.artwork?.artist?.imageUrl!,
-      ]),
+    const rawImageUrls = [
+      ...(syncResults.artworkQuery ?? []).flatMap((artworkContent) => {
+        if (artworkContent?.artwork?.image?.resized?.url) {
+          return artworkContent.artwork.image.resized?.url
+        } else if (artworkContent?.artwork?.artist?.imageUrl) {
+          return artworkContent.artwork.artist.imageUrl
+        } else {
+          return null
+        }
+      }),
       ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map((show) => {
         return show?.coverImage?.url
       }),
       ...(syncResults.artworkImageModalQuery ?? []).map(({ artwork }) => {
         return artwork?.image?.resized?.url
       }),
-    ])
+    ]
 
+    const imageUrls = compact(rawImageUrls)
     return imageUrls
   },
 

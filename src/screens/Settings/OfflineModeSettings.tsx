@@ -8,6 +8,7 @@ import JSONTree from "react-native-json-tree"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
+import { getURLMap, loadUrlMap } from "system/sync/fileCache"
 import { clearFileCache } from "system/sync/fileCache/clearFileCache"
 import { initSyncManager, SyncResultsData } from "system/sync/syncManager"
 import { useIsOnline } from "utils/hooks/useIsOnline"
@@ -25,6 +26,8 @@ export const OfflineModeSettings = () => {
   const lastSync = GlobalStore.useAppState((state) => state.devicePrefs.lastSync)
   const { setLastSync } = GlobalStore.actions.devicePrefs
   const isOnline = useIsOnline()
+
+  const [urlMap, setURLMap] = useState<Record<string, string> | {}>({})
 
   const [syncResultsData, setSyncResults] = useState<SyncResultsData | {}>({})
   const [syncProgress, setSyncProgress] = useState<string | number>(0)
@@ -148,7 +151,20 @@ export const OfflineModeSettings = () => {
             Clear cache
           </Button>
 
+          <Button
+            block
+            onPress={async () => {
+              await loadUrlMap()
+              const updatedURLMap = getURLMap()
+              setURLMap(updatedURLMap)
+            }}
+          >
+            Show URL Map
+          </Button>
+
           {__DEV__ && <JSONTree data={syncResultsData as Record<string, string>} />}
+
+          {__DEV__ && urlMap && <JSONTree data={urlMap} />}
         </Join>
       </Screen.Body>
     </Screen>
