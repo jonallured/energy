@@ -214,11 +214,6 @@ export const LoginScreen = () => {
 
         <Spacer y={2} />
 
-        <Text variant="xs" pb={1} textAlign="center" color="onBackgroundMedium">
-          Once you log in, Artsy Folio will begin downloading your artworks. We recommend using a
-          stable Wifi connection.
-        </Text>
-
         <Flex alignItems="center">
           <Text>Looking for Artsy Mobile?</Text>
           <TouchableOpacity onPress={handleOpenArtsyMobile}>
