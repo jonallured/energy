@@ -583,25 +583,19 @@ const parsers = {
   },
 
   getImageUrls: (): string[] => {
-    const rawImageUrls = [
-      ...(syncResults.artworkQuery ?? []).flatMap((artworkContent) => {
-        if (artworkContent?.artwork?.image?.resized?.url) {
-          return artworkContent.artwork.image.resized?.url
-        } else if (artworkContent?.artwork?.artist?.imageUrl) {
-          return artworkContent.artwork.artist.imageUrl
-        } else {
-          return null
-        }
-      }),
+    const imageUrls = compact([
+      ...(syncResults.artworkQuery ?? []).flatMap((artworkContent) => [
+        artworkContent?.artwork?.image?.resized?.url!,
+        artworkContent?.artwork?.artist?.imageUrl!,
+      ]),
       ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map((show) => {
         return show?.coverImage?.url
       }),
       ...(syncResults.artworkImageModalQuery ?? []).map(({ artwork }) => {
         return artwork?.image?.resized?.url
       }),
-    ]
+    ])
 
-    const imageUrls = compact(rawImageUrls)
     return imageUrls
   },
 

@@ -151,20 +151,22 @@ export const OfflineModeSettings = () => {
             Clear cache
           </Button>
 
-          <Button
-            block
-            onPress={async () => {
-              await loadUrlMap()
-              const updatedURLMap = getURLMap()
-              setURLMap(updatedURLMap)
-            }}
-          >
-            Show URL Map
-          </Button>
+          {(isUserDev || __DEV__) && (
+            <Button
+              block
+              onPress={async () => {
+                await loadUrlMap()
+                const updatedURLMap = getURLMap()
+                setURLMap(updatedURLMap)
+              }}
+            >
+              Show URL Map
+            </Button>
+          )}
 
-          {__DEV__ && <JSONTree data={syncResultsData as Record<string, string>} />}
+          {(isUserDev || __DEV__) && <JSONTree data={syncResultsData as Record<string, string>} />}
 
-          {__DEV__ && urlMap && <JSONTree data={urlMap} />}
+          {(isUserDev || __DEV__) && urlMap && <JSONTree data={urlMap} />}
         </Join>
       </Screen.Body>
     </Screen>
