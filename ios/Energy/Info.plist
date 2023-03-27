@@ -34,7 +34,17 @@
 		<dict>
 			<key>localhost</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>webcredentials:artsy.net</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>webcredentials:www.artsy.net</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
 		</dict>
