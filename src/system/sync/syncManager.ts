@@ -53,8 +53,6 @@ import { retryOperation } from "system/sync/retryOperation"
 import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
-import oneHundredImageArray from "./100-image-urls.json"
-import bigImageArray from "./lotsa-image-urls.json"
 
 export interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
