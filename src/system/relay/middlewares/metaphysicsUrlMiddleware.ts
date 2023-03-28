@@ -2,10 +2,12 @@ import { urlMiddleware } from "react-relay-network-modern/node8"
 import { unsafe__getAuth, unsafe__getEnvironment } from "system/store/GlobalStore"
 import { getUserAgent } from "utils/getUserAgent"
 
-// ts-prune-ignore-next
 export const metaphysicsUrlMiddleware = () => {
   return urlMiddleware({
-    url: unsafe__getEnvironment().strings.metaphysicsURL,
+    url: () => {
+      const metaphysicsUrl = unsafe__getEnvironment().strings.metaphysicsURL
+      return metaphysicsUrl
+    },
     headers: () => {
       const userAgent = getUserAgent()
       const { userID } = unsafe__getAuth()
