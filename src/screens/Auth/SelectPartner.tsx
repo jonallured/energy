@@ -51,7 +51,7 @@ const SelectPartner = () => {
     graphql`
       query SelectPartnerQuery {
         me {
-          partners {
+          partners(size: 100) {
             name
             internalID
           }
