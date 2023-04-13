@@ -5,7 +5,6 @@ import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
 import { AlbumsNavigation, AlbumNavigationScreens } from "screens/Albums/navigation"
 import { ArtistNavigation, ArtistNavigationScreens } from "screens/Artists/navigation"
-import { useWebViewCookies } from "screens/Artwork/ArtworkWebView"
 import { ArtworkNavigation, ArtworkNavigationScreens } from "screens/Artwork/navigation"
 import { AuthNavigationScreens, AuthNavigation } from "screens/Auth/navigation"
 import { HomeTabs } from "screens/HomeTabs"
@@ -17,6 +16,7 @@ import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
 import { useSystemIsDoneBooting } from "system/hooks/useSystemIsDoneBooting"
 import { GlobalStore } from "system/store/GlobalStore"
 import { loadUrlMap } from "system/sync/fileCache/urlMap"
+import { useWebViewCookies } from "utils/hooks/useWebViewCookies"
 
 export type NavigationScreens = AuthNavigationScreens &
   AlbumNavigationScreens &
