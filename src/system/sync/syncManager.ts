@@ -637,7 +637,8 @@ const saveRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironm
 }
 
 export const loadRelayDataFromOfflineCache = (
-  resetRelayEnvironment: RelayContextProps["resetRelayEnvironment"]
+  resetRelayEnvironment: RelayContextProps["resetRelayEnvironment"],
+  onComplete?: () => void
 ) => {
   getFileFromCache({ filename: "relayData.json", type: "relayData" })
     .then((data) => {
@@ -651,6 +652,9 @@ export const loadRelayDataFromOfflineCache = (
     })
     .catch((error) => {
       log("Error loading offline relay data from sync", error)
+    })
+    .finally(() => {
+      onComplete?.()
     })
 }
 

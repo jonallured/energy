@@ -1,4 +1,5 @@
 import { Button, Flex, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
 import { AnimatedEllipsis } from "components/AnimatedEllipsis"
 import { Screen } from "components/Screen"
 import { DateTime } from "luxon"
@@ -39,13 +40,14 @@ export const OfflineModeSettings = () => {
       partnerID,
       relayEnvironment,
       onStart: () => {
+        activateKeepAwake()
         setSyncProgress(1)
       },
       onComplete: () => {
         setSyncProgress(0)
         setOfflineSyncedChecksum(relayChecksum)
         setLastSync(DateTime.now())
-
+        deactivateKeepAwake()
         Alert.alert("Sync complete.", "", [
           {
             text: "OK",

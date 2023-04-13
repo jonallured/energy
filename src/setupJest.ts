@@ -1,5 +1,6 @@
 import "@testing-library/jest-native/extend-expect"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import React from "react"
 
 // @ts-expect-error
@@ -15,6 +16,8 @@ global.clearImmediate = jest.fn()
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+
+jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 jest.mock("react-native-collapsible-tab-view", () => {
   const React = require("react-native")
