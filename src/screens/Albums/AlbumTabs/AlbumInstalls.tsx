@@ -14,7 +14,7 @@ interface AlbumInstallsProps {
 export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ albumId }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID as string)
   const { installs } = useAlbum({ albumId })
-  const installIDs = installs.map((install) => install.internalID as string)
+  const installIDs = installs?.map((install) => install.internalID as string)
 
   useValidateAlbumItems<AlbumInstallsQuery>({
     query: albumInstallsQuery,

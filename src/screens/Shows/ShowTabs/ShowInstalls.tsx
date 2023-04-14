@@ -11,7 +11,7 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
     slug,
   })
 
-  const installs = data.show?.images as SelectedItemInstall[]
+  const installs = (data?.show?.images as SelectedItemInstall[]) ?? []
 
   return (
     <>
