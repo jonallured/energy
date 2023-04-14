@@ -4,3 +4,4 @@ set -euxo pipefail
 ./scripts/download-fonts
 ./scripts/prepare-env-vars
 ./scripts/setup-sentry-properties
+./scripts/setup-android-files
