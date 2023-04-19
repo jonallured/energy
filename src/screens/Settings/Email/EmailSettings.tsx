@@ -20,8 +20,11 @@ export const EmailSettings = () => {
 
   return (
     <Screen>
-      <Screen.Header title="Email" />
+      <Screen.Header />
       <Screen.Body scroll>
+        <Text variant="lg-display" my={2}>
+          Email Settings
+        </Text>
         <Flex>
           <Input
             title="CC Email"

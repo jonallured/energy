@@ -66,8 +66,12 @@ export const PresentationModeSettings = () => {
 
   return (
     <Screen>
-      <Screen.Header title="Presentation Mode" />
+      <Screen.Header />
       <Screen.Body scroll>
+        <Text variant="lg-display" my={2}>
+          Presentation Mode
+        </Text>
+
         <SettingsItem title="Enabled">
           <SettingsItem.Toggle
             value={isPresentationModeEnabled}

@@ -51,6 +51,7 @@ import {
 } from "system/sync/fileCache"
 import { retryOperation } from "system/sync/retryOperation"
 import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
+import { delay } from "utils/delay"
 import { extractNodes } from "utils/extractNodes"
 import { imageSize } from "utils/imageSize"
 
@@ -98,11 +99,13 @@ const FILE_DOWNLOAD_POOL_TIMEOUT = 10000
 const MAX_QUERY_CONCURRENCY = 50
 const MAX_FILE_DOWNLOAD_CONCURRENCY = 20
 
-interface SyncManagerOptions {
+export interface SyncManagerOptions {
+  onAbort: (abortHandler: () => void) => void
   onComplete: () => void
-  onProgress: (currentProgress: string | number) => void
   onStart: () => void
+  onStepChange: (progress: { current: number; total: number }) => void
   onStatusChange: (message: string) => void
+  onProgressChange: (progress: number) => void
   onSyncResultsChange: (
     results: SyncResultsData | { imagesDownloaded: Record<string, string> }
   ) => void
@@ -111,10 +114,12 @@ interface SyncManagerOptions {
 }
 
 export function initSyncManager({
+  onAbort,
   onComplete,
+  onProgressChange,
   onStart,
-  onProgress,
   onStatusChange,
+  onStepChange,
   onSyncResultsChange,
   partnerID,
   relayEnvironment,
@@ -148,6 +153,16 @@ export function initSyncManager({
   if (!("captureStackTrace" in Error)) {
     ;(Error as any).captureStackTrace = log
   }
+
+  let syncAborted = false
+
+  const handleAbortSync = () => {
+    syncAborted = true
+    log("Aborting sync")
+  }
+
+  // Pass abort sync function back to parent
+  onAbort(() => handleAbortSync)
 
   const startSync = async () => {
     updateStatus("Starting sync")
@@ -193,7 +208,17 @@ export function initSyncManager({
     // Internally, for things like artist images, we fetch in parallel.
     for (const [index, fetchSyncTargetData] of syncTargets.entries()) {
       try {
-        onProgress(`${index}/${syncTargets.length}`)
+        if (syncAborted) {
+          return
+        }
+
+        // Reset progress
+        onProgressChange(0)
+
+        onStepChange({
+          current: index + 1,
+          total: syncTargets.length,
+        })
 
         await fetchSyncTargetData()
 
@@ -201,6 +226,12 @@ export function initSyncManager({
         await saveRelayDataToOfflineCache(relayEnvironment)
 
         onSyncResultsChange(syncResults)
+
+        // Ensure the bar completes
+        onProgressChange(100)
+
+        // Slight delay so that we have time to reset progress
+        await delay(300)
       } catch (error) {
         updateStatus(`Error while performing sync: ${error}`)
       }
@@ -222,21 +253,30 @@ export function initSyncManager({
   const syncArtistsQuery = async () => {
     updateStatus("Syncing artists")
 
+    // Manually setting progress since we're not using a PromisePool
+    onProgressChange(0)
+
     syncResults.artistsListQuery = await fetchOrCatch<ArtistsListQuery>(artistsListQuery, {
       partnerID,
     })
 
-    updateStatus("Complete. `artistsListQuery`", syncResults.artistsListQuery)
+    onProgressChange(100)
+
+    log("Complete. `artistsListQuery`", syncResults.artistsListQuery)
   }
 
   const syncShowsQuery = async () => {
     updateStatus("Syncing shows")
 
+    onProgressChange(0)
+
     syncResults.showsQuery = await fetchOrCatch<ShowsQuery>(showsQuery, {
       partnerID,
     })
 
-    updateStatus("Complete. `showsTabQuery`", syncResults.showsQuery)
+    onProgressChange(100)
+
+    log("Complete. `showsTabQuery`", syncResults.showsQuery)
   }
 
   /**
@@ -258,7 +298,7 @@ export function initSyncManager({
 
     syncResults.artistArtworksQuery = compact(results)
 
-    updateStatus("Complete. `artistArtworksQuery`", syncResults.artistArtworksQuery)
+    log("Complete. `artistArtworksQuery`", syncResults.artistArtworksQuery)
   }
 
   const syncArtworkQuery = async () => {
@@ -275,7 +315,7 @@ export function initSyncManager({
 
     syncResults.artworkQuery = compact(results)
 
-    updateStatus("Complete. `artistArtworksContentData`", syncResults.artworkQuery)
+    log("Complete. `artistArtworksContentData`", syncResults.artworkQuery)
   }
 
   const syncImageModalQuery = async () => {
@@ -293,7 +333,7 @@ export function initSyncManager({
 
     syncResults.artworkImageModalQuery = compact(results)
 
-    updateStatus("Complete. `artworkImageModalQuery`", syncResults.artworkImageModalQuery)
+    log("Complete. `artworkImageModalQuery`", syncResults.artworkImageModalQuery)
   }
 
   const syncArtistShowsQuery = async () => {
@@ -311,7 +351,7 @@ export function initSyncManager({
 
     syncResults.artistShowsQuery = compact(results)
 
-    updateStatus("Complete. `artistShowsQuery`", syncResults.artistShowsQuery)
+    log("Complete. `artistShowsQuery`", syncResults.artistShowsQuery)
   }
 
   const syncShowTabsQuery = async () => {
@@ -326,7 +366,7 @@ export function initSyncManager({
 
     syncResults.showTabsQuery = compact(results)
 
-    updateStatus("Complete. `showTabsQuery`", syncResults.showTabsQuery)
+    log("Complete. `showTabsQuery`", syncResults.showTabsQuery)
   }
 
   const syncArtistDocumentsQuery = async () => {
@@ -344,7 +384,7 @@ export function initSyncManager({
 
     syncResults.artistDocumentsQuery = compact(results)
 
-    updateStatus("Complete. `artistDocumentsQuery`", syncResults.artistDocumentsQuery)
+    log("Complete. `artistDocumentsQuery`", syncResults.artistDocumentsQuery)
   }
 
   const syncPartnerShowTabsQuery = async () => {
@@ -359,7 +399,7 @@ export function initSyncManager({
 
     syncResults.partnerShowTabsQuery = compact(results)
 
-    updateStatus("Complete. `partnerShowTabsQuery`", syncResults.partnerShowTabsQuery)
+    log("Complete. `partnerShowTabsQuery`", syncResults.partnerShowTabsQuery)
   }
 
   const syncShowArtworksQuery = async () => {
@@ -374,7 +414,7 @@ export function initSyncManager({
 
     syncResults.showArtworksQuery = compact(results)
 
-    updateStatus("Complete. `showArtworksQuery`", syncResults.showArtworksQuery)
+    log("Complete. `showArtworksQuery`", syncResults.showArtworksQuery)
   }
 
   const syncShowInstallsQuery = async () => {
@@ -389,7 +429,7 @@ export function initSyncManager({
 
     syncResults.showInstallsQuery = compact(results)
 
-    updateStatus("Complete. `showInstallsQuery`", syncResults.showInstallsQuery)
+    log("Complete. `showInstallsQuery`", syncResults.showInstallsQuery)
   }
 
   const syncShowDocumentsQuery = async () => {
@@ -404,7 +444,7 @@ export function initSyncManager({
 
     syncResults.showDocumentsQuery = compact(results)
 
-    updateStatus("Complete. `showDocumentsQuery`", syncResults.showDocumentsQuery)
+    log("Complete. `showDocumentsQuery`", syncResults.showDocumentsQuery)
   }
 
   /**
@@ -474,6 +514,9 @@ export function initSyncManager({
       errors: syncResults.queryErrors,
       execute: async ({ query, variables }) => {
         await fetchOrCatch(query, variables)
+
+        // Ensure that the progress bar is at 100% when we're done
+        onProgressChange(100)
       },
       onStart: () => {
         syncResults.queryErrors = []
@@ -491,6 +534,8 @@ export function initSyncManager({
       errors: syncResults.fileDownloadErrors,
       execute: async (file) => {
         await downloadFileToCache(file)
+
+        onProgressChange(100)
       },
       onStart: () => {
         syncResults.fileDownloadErrors = []
@@ -505,7 +550,8 @@ export function initSyncManager({
 
   const reportProgress = (message: string) => {
     const onProgressCallback: OnProgressCallback<string> = (_, pool) => {
-      onStatusChange(`${message}: ${Math.floor(pool.processedPercentage())}%`)
+      onStatusChange(message)
+      onProgressChange(Math.floor(pool.processedPercentage()))
     }
     return onProgressCallback
   }
@@ -671,8 +717,8 @@ const showOfflineAlert = once(() => {
   )
 })
 
-export const _tests = {
-  syncResults,
+export const tests = {
   parsers,
+  syncResults,
   saveRelayDataToOfflineCache,
 }

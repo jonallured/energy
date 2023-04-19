@@ -4,7 +4,8 @@ import { EmailSettings } from "screens/Settings/Email/EmailSettings"
 import { MultipleArtworksAndArtists } from "screens/Settings/Email/MultipleArtworksAndArtists"
 import { MultipleArtworksBySameArtist } from "screens/Settings/Email/MultipleArtworksBySameArtist"
 import { OneArtwork } from "screens/Settings/Email/OneArtwork"
-import { OfflineModeSettings } from "screens/Settings/OfflineModeSettings"
+import { OfflineModeSettings } from "screens/Settings/OfflineMode/OfflineModeSettings"
+// import { OfflineModeSync } from "screens/Settings/OfflineMode/OfflineModeSync"
 import { PresentationModeSettings } from "screens/Settings/PresentationModeSettings"
 import { Settings } from "screens/Settings/Settings"
 
@@ -13,6 +14,7 @@ export type SettingsNavigationScreens = {
   PresentationModeSettings: undefined
   Settings: undefined
   OfflineModeSettings: undefined
+  OfflineModeSync: undefined
   EmailSettings: undefined
   MultipleArtworksAndArtists: undefined
   MultipleArtworksBySameArtist: undefined

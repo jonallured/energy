@@ -35,7 +35,7 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
       <BottomSheetModalProvider>
         <PortalProvider>
           <Screen>
-            <Screen.AnimatedHeader title={title} {...headerProps} />
+            <Screen.AnimatedTabsHeader title={title} {...headerProps} />
 
             <Flex mt={`${insets.top}px`} flex={1}>
               <TabsContainer

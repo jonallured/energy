@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { Screen } from "components/Screen"
 import { SettingsItem } from "components/SettingsItem"
 import { useEffect } from "react"
@@ -26,8 +27,12 @@ export const DarkModeSettings = () => {
 
   return (
     <Screen>
-      <Screen.Header title="Dark Mode" />
+      <Screen.Header />
       <Screen.Body scroll>
+        <Text variant="lg-display" my={2}>
+          Dark Mode
+        </Text>
+
         <SettingsItem title="Dark mode always on">
           <SettingsItem.Toggle
             value={forcedColorScheme === "dark"}

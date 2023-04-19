@@ -26,7 +26,7 @@ export interface HeaderProps {
   titleShown?: boolean
 }
 
-export const AnimatedHeader: React.FC<HeaderProps> = (props) => {
+export const AnimatedTabsHeader: React.FC<HeaderProps> = (props) => {
   const scrollY = TabsContext.useStoreState((state) => state.currentScrollY)
 
   return <Header scrollY={scrollY} animated={true} {...props} />
