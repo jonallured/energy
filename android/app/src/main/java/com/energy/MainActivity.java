@@ -33,7 +33,7 @@ public class MainActivity extends ReactActivity {
                 setTheme(R.style.LightTheme);
         }
 
-        SplashScreen.show(this);
+        SplashScreen.show(this, R.style.SplashScreenTheme, true);
         super.onCreate(null);
   }
 
