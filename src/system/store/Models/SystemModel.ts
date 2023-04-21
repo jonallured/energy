@@ -2,7 +2,6 @@ import { action, Action } from "easy-peasy"
 
 export interface SystemModel {
   sessionState: {
-    isDonePerformingMigrations: boolean
     navigationHistory: { [key: string]: [string, object | undefined] }
   }
 
@@ -15,7 +14,6 @@ export interface SystemModel {
 
 export const getSystemModel = (): SystemModel => ({
   sessionState: {
-    isDonePerformingMigrations: false,
     navigationHistory: {},
   },
 

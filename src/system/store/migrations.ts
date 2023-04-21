@@ -1,6 +1,3 @@
-import { Store } from "easy-peasy"
-import { GlobalStoreModel } from "system/store/Models/GlobalStoreModel"
-
 /**
  * IMPORTANT
  * Before you modify this file please read
@@ -12,9 +9,10 @@ export const Versions = {
   MigrateActivePartnerIdToAuthModel: 2,
   MigrateRefactoredSelectModeStore: 3,
   MigrateEmailModelCCName: 4,
+  MigrateToUpstreamPesistedStateMigrations: 5,
 }
 
-export const CURRENT_APP_VERSION = Versions.MigrateEmailModelCCName
+export const CURRENT_APP_VERSION = Versions.MigrateToUpstreamPesistedStateMigrations
 
 export type Migrations = Record<number, (oldState: any) => any>
 
@@ -30,10 +28,7 @@ export const energyAppMigrations: Migrations = {
     state.email.ccRecipients = state.email.emailsCC
     delete state.email.emailsCC
   },
-}
-
-export function performMigrations(store: Store<GlobalStoreModel>) {
-  store.persist.resolveRehydration().then(() => {
-    store.getActions().performMigrations()
-  })
+  [Versions.MigrateToUpstreamPesistedStateMigrations]: (state) => {
+    state._migrationVersion = CURRENT_APP_VERSION
+  },
 }

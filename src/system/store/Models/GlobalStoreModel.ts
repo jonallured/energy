@@ -1,7 +1,6 @@
 import { action, Action, State } from "easy-peasy"
 import { getSystemModel, SystemModel } from "system/store/Models/SystemModel"
 import { CURRENT_APP_VERSION } from "system/store/migrations"
-import { migrateState } from "system/store/persistence/migrateState"
 import { assignDeep } from "system/store/persistence/sanitize"
 import { AlbumsModel, getAlbumsModel } from "./AlbumsModel"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
@@ -26,11 +25,8 @@ interface GlobalStoreStateModel {
   system: SystemModel
 
   // Meta state / actions
+  _migrationVersion: number
   version: number
-
-  // Operates on the system model, but must remain here in order to gain access
-  // to all state.
-  performMigrations: Action<this>
 }
 
 export interface GlobalStoreModel extends GlobalStoreStateModel {
@@ -41,6 +37,7 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
+  _migrationVersion: 4, // We migrated to easy-peasy persisted state migrations in v6
   version: CURRENT_APP_VERSION,
 
   albums: getAlbumsModel(),
@@ -56,13 +53,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
 
   reset: action((state) => {
     state.auth.activePartnerID = null
-  }),
-
-  // Migrates the locally persisted state to the latest version
-  performMigrations: action((state) => {
-    migrateState({ state })
-
-    state.system.sessionState.isDonePerformingMigrations = true
   }),
 
   // For testing only. noop otherwise.

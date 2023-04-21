@@ -1,12 +1,12 @@
 import { StoreProvider, createStore, createTypedHooks, persist } from "easy-peasy"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
-import { performMigrations } from "system/store/migrations"
+import { CURRENT_APP_VERSION, energyAppMigrations } from "system/store/migrations"
 import { sanitize } from "system/store/persistence/sanitize"
 import { storageAdapter } from "system/store/persistence/storageAdapter"
 import { GlobalStoreModel, getGlobalStoreModel, GlobalStoreState } from "./Models/GlobalStoreModel"
 
-const STORE_VERSION = 0
+const STORE_VERSION = 1
 
 if (Platform.OS === "ios") {
   // @ts-ignore
@@ -28,6 +28,10 @@ function createGlobalStore() {
     persist(getGlobalStoreModel(), {
       storage: storageAdapter,
       transformers: [{ in: (data) => sanitize(data), out: (data) => sanitize(data) }],
+      migrations: {
+        migrationVersion: CURRENT_APP_VERSION,
+        ...energyAppMigrations,
+      },
     }),
     {
       name: "GlobalStore",
@@ -36,8 +40,6 @@ function createGlobalStore() {
       middleware,
     }
   )
-
-  performMigrations(store)
 
   return store
 }

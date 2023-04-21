@@ -60,7 +60,7 @@
     "@styled-system/theme-get": "^5.1.2",
     "@supercharge/promise-pool": "^2.4.0",
     "babel-plugin-import-graphql": "^2.8.1",
-    "easy-peasy": "^5.2.0",
+    "easy-peasy": "^6.0.0",
     "events": "^3.3.0",
     "expect": "^28.1.0",
     "expo": "^46.0.16",
