@@ -201,23 +201,6 @@ jobs:
           name: Danger
           command: yarn danger ci --verbose
 
-  check-if-app-has-been-approved-for-release:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    macos:
-      xcode: 14.3.0
-      resource_class: macos.x86.medium.gen2
-
-    steps:
-      - checkout
-      - generate-checksums
-      - install-bundler
-      - install-gems
-      - run:
-          name: Check if app has been approved for release
-          command: ./scripts/check-if-app-has-been-approved-for-release.sh
-
   build-test-js:
     executor:
       name: node/default
@@ -439,17 +422,6 @@ workflows:
                 - main
     jobs:
       - deploy-nightly-beta
-
-  check-if-app-has-been-approved-for-release-workflow:
-    triggers:
-      - schedule:
-          cron: "0 4 * * 1-5"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - check-if-app-has-been-approved-for-release
 
   release-ios-app-workflow:
     jobs:
