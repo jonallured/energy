@@ -69,11 +69,16 @@ commands:
       - run:
           name: Run Relay compiler
           command: yarn relay
+  install-bundler:
+    steps:
+      - run:
+          name: install bundler
+          command: sudo gem install bundler
   install-gems:
     steps:
       - restore_cache:
           keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v2-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -81,19 +86,19 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v4-pods-{{ checksum ".manifests/cocoapods" }}
+            - v5-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v4-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v5-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -174,7 +179,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.0.1
+      xcode: 14.3.0
       resource_class: macos.x86.medium.gen2
     steps:
       - checkout
@@ -201,12 +206,13 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.3.0
       resource_class: macos.x86.medium.gen2
 
     steps:
       - checkout
       - generate-checksums
+      - install-bundler
       - install-gems
       - run:
           name: Check if app has been approved for release
@@ -283,7 +289,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.3.0
       resource_class: macos.x86.medium.gen2
     steps:
       - attach_workspace:
@@ -318,6 +324,7 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
+      - install-bundler
       - install-gems
       - install-cocoapods
       - run-relay-compiler
@@ -378,6 +385,7 @@ jobs:
       resource_class: macos.x86.medium.gen2
     steps:
       - checkout
+      - install-bundler
       - install-gems
       - await-previous-builds:
           branch: app_store_submission
@@ -394,6 +402,7 @@ jobs:
 
     steps:
       - checkout
+      - install-bundler
       - install-gems
       - await-previous-builds:
           branch: play_store_submission
@@ -412,6 +421,7 @@ jobs:
       resource_class: macos.x86.medium.gen2
     steps:
       - checkout
+      - install-bundler
       - install-gems
       - run:
           name: Release app version
