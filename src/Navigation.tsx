@@ -16,6 +16,7 @@ import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
 import { useSystemIsDoneBooting } from "system/hooks/useSystemIsDoneBooting"
 import { GlobalStore } from "system/store/GlobalStore"
 import { loadUrlMap } from "system/sync/fileCache/urlMap"
+import { useAndroidNavigationBarThemeListener } from "utils/hooks/useAndroidNavigationBarThemeListener"
 import { useWebViewCookies } from "utils/hooks/useWebViewCookies"
 
 export type NavigationScreens = AuthNavigationScreens &
@@ -38,7 +39,7 @@ export const Main = () => {
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
-
+  useAndroidNavigationBarThemeListener()
   useErrorReporting()
   useNetworkStatusListener()
   useWebViewCookies()

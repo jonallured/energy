@@ -1,29 +1,15 @@
 import { Text } from "@artsy/palette-mobile"
 import { Screen } from "components/Screen"
 import { SettingsItem } from "components/SettingsItem"
-import { useEffect } from "react"
-import { Platform } from "react-native"
-import changeNavigationBarColor from "react-native-navigation-bar-color"
+import { useState } from "react"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const DarkModeSettings = () => {
+  const [overrideDarkMode, setOverrideDarkMode] = useState(false)
   const isUsingSystemColorScheme = GlobalStore.useAppState(
     (state) => state.devicePrefs.usingSystemColorScheme
   )
   const forcedColorScheme = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
-
-  useEffect(() => {
-    const update = async () => {
-      if (Platform.OS === "android") {
-        if (forcedColorScheme === "dark") {
-          await changeNavigationBarColor("black", false, false)
-        } else {
-          await changeNavigationBarColor("white", true, false)
-        }
-      }
-    }
-    update()
-  }, [isUsingSystemColorScheme, forcedColorScheme])
 
   return (
     <Screen>
@@ -35,8 +21,9 @@ export const DarkModeSettings = () => {
 
         <SettingsItem title="Dark mode always on">
           <SettingsItem.Toggle
-            value={forcedColorScheme === "dark"}
+            value={forcedColorScheme === "dark" && overrideDarkMode}
             onValueChange={(value) => {
+              setOverrideDarkMode(value)
               GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(false)
               GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
             }}
@@ -49,8 +36,9 @@ export const DarkModeSettings = () => {
           <SettingsItem.Toggle
             value={isUsingSystemColorScheme}
             onValueChange={(value) => {
-              GlobalStore.actions.devicePrefs.setForcedColorScheme("light")
+              setOverrideDarkMode(false)
               GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(value)
+              GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
             }}
           />
         </SettingsItem>
