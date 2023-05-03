@@ -42,7 +42,7 @@
     "react-native-pager-view": "Peer dep of react-native-collapsible-tab-view@5"
   },
   "dependencies": {
-    "@artsy/palette-mobile": "^11.0.16",
+    "@artsy/palette-mobile": "^11.0.21",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@openspacelabs/react-native-zoomable-view": "^2.1.1",
     "@react-native-async-storage/async-storage": "^1.17.11",

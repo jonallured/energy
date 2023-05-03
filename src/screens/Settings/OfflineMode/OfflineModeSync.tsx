@@ -100,7 +100,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
 
   return (
     <>
-      {isSyncing && (
+      {!!isSyncing && (
         <Join separator={<Spacer y={2} />}>
           <Text>Sync in progress...</Text>
 
@@ -121,38 +121,28 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
         </Join>
       )}
 
-      {!showDeveloperOptions && (
+      {!!showDeveloperOptions && (
         <>
           <Screen.FullWidthDivider />
 
-          <Button block onPress={handleStartSync}>
-            Start sync
+          <Button
+            block
+            onPress={async () => {
+              await loadUrlMap()
+              const updatedURLMap = getURLMap()
+              setURLMap(updatedURLMap)
+            }}
+          >
+            Show URL Map
           </Button>
 
-          <Spacer y={1} />
+          <Spacer y={2} />
 
-          {showDeveloperOptions && (
-            <Button
-              block
-              onPress={async () => {
-                await loadUrlMap()
-                const updatedURLMap = getURLMap()
-                setURLMap(updatedURLMap)
-              }}
-            >
-              Show URL Map
-            </Button>
-          )}
+          <Text color="onBackgroundLow">Last sync: {offlineSyncedChecksum}</Text>
+          <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
 
-          {showDeveloperOptions && (
-            <>
-              <Text color="onBackgroundLow">Last sync: {offlineSyncedChecksum}</Text>
-              <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
-            </>
-          )}
-
-          {showDeveloperOptions && <JSONTree data={syncResultsData as Record<string, string>} />}
-          {showDeveloperOptions && urlMap && <JSONTree data={urlMap} />}
+          <JSONTree data={syncResultsData as Record<string, string>} />
+          {!!urlMap && <JSONTree data={urlMap} />}
         </>
       )}
     </>

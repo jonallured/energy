@@ -26,6 +26,7 @@ module.exports = {
       "|react-native-qrcode-generator" +
       "|react-native-reanimated" +
       "|react-native-safe-area-context" +
+      "|react-spring" +
       "|react-native-webview" +
       "|react-native" +
       ")/)",

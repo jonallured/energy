@@ -25,7 +25,6 @@ export const OfflineModeSettings = () => {
   const [isSyncing, setIsSyncing] = useState(false)
 
   const handleSyncButtonPress = () => {
-    // navigation.navigate("OfflineModeSync")
     setIsSyncing(true)
   }
 
@@ -43,12 +42,12 @@ export const OfflineModeSettings = () => {
   }
 
   const handleCancelSync = () => {
-    navigation.navigate("Settings")
+    setIsSyncing(false)
   }
 
   return (
     <Screen>
-      <Screen.Header onBack={handleCancelSync} />
+      <Screen.Header onBack={() => navigation.navigate("Settings")} />
       <Screen.Body scroll>
         <Text variant="lg-display" my={2}>
           Offline Mode
@@ -75,31 +74,33 @@ export const OfflineModeSettings = () => {
 
             {!isSyncing && (
               <>
-                {lastSync && (
-                  <Text color="onBackgroundMedium" mt={2}>
-                    Last sync: {DateTime.fromISO(lastSync).toLocaleString(DateTime.DATETIME_MED)}
-                  </Text>
-                )}
+                <Button mt={1} block onPress={handleClearFileCache}>
+                  Clear cache
+                </Button>
 
-                {lastSync && offlineSyncedChecksum !== relayChecksum && (
+                {!!lastSync && (
                   <>
-                    <Text color="red100">
-                      Your synced data needs to be refreshed. Please tap the "Start sync" button
-                      above.
+                    <Text color="onBackgroundMedium" mt={2}>
+                      Last sync: {DateTime.fromISO(lastSync).toLocaleString(DateTime.DATETIME_MED)}
                     </Text>
+
+                    {offlineSyncedChecksum !== relayChecksum && (
+                      <>
+                        <Text color="red100">
+                          Your synced data needs to be refreshed. Please tap the "Start sync" button
+                          above.
+                        </Text>
+                      </>
+                    )}
                   </>
                 )}
 
-                {!showDeveloperOptions && (
+                {!!showDeveloperOptions && (
                   <>
                     <Text color="onBackgroundLow">Last sync: {offlineSyncedChecksum}</Text>
                     <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
                   </>
                 )}
-
-                <Button mt={1} block onPress={handleClearFileCache}>
-                  Clear cache
-                </Button>
               </>
             )}
           </>
