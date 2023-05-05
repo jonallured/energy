@@ -1,8 +1,8 @@
+import { Screen } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsList } from "components/Lists/ArtistsList"
-import { Screen } from "components/Screen"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
   NavigationScreens,
@@ -23,7 +23,10 @@ export const CreateOrEditAlbumChooseArtist = () => {
 
   return (
     <Screen>
-      <Screen.Header title={mode === "edit" ? "Save to Album" : "Add to Album"} />
+      <Screen.Header
+        title={mode === "edit" ? "Save to Album" : "Add to Album"}
+        onBack={navigation.goBack}
+      />
       <Screen.Body safeArea={false}>
         <ArtistsList onItemPress={handleItemPress} contentContainerStyle={{}} />
       </Screen.Body>

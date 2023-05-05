@@ -1,7 +1,15 @@
-import { Spacer, Button, Text, Touchable, Flex, ArrowRightIcon, Join } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Screen,
+  Button,
+  Text,
+  Touchable,
+  Flex,
+  ArrowRightIcon,
+  Join,
+} from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { Screen } from "components/Screen"
 import { useState } from "react"
 import { getVersion } from "react-native-device-info"
 import { DevMenu } from "screens/Settings/DevMenu"
@@ -19,7 +27,7 @@ export const Settings = () => {
 
   return (
     <Screen>
-      <Screen.Header />
+      <Screen.Header onBack={navigation.goBack} />
       <Screen.Body scroll safeArea={false}>
         <Text variant="lg-display" my={2}>
           Settings
@@ -74,7 +82,7 @@ export const Settings = () => {
           </Button>
         </Join>
 
-        {isUserDev && (
+        {!!isUserDev && (
           <Join separator={<Spacer y={1} />}>
             <Spacer y={2} />
             <Button
@@ -88,7 +96,7 @@ export const Settings = () => {
               Toggle Developer Menu
             </Button>
 
-            {showDevMenuButtonInternalToggle && <DevMenu />}
+            {!!showDevMenuButtonInternalToggle && <DevMenu />}
           </Join>
         )}
 
@@ -110,7 +118,7 @@ export const Settings = () => {
                 App version: {appVersion}
               </Text>
               <Text variant="xs" color="onBackgroundMedium">
-                {isUserDev && "on Developer mode"}
+                {!!isUserDev && "on Developer mode"}
               </Text>
             </Flex>
           </Touchable>

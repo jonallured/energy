@@ -4,12 +4,12 @@ import {
   Flex,
   Input,
   Separator,
+  Screen,
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { Screen } from "components/Screen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const EmailSettings = () => {
@@ -20,7 +20,7 @@ export const EmailSettings = () => {
 
   return (
     <Screen>
-      <Screen.Header />
+      <Screen.Header onBack={navigation.goBack} />
       <Screen.Body scroll>
         <Text variant="lg-display" my={2}>
           Email Settings

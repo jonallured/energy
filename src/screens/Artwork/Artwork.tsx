@@ -4,6 +4,7 @@ import {
   Touchable,
   MoreIcon,
   Flex,
+  Screen,
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
@@ -17,7 +18,6 @@ import {
 } from "components/BottomSheet/BottomSheetModalView"
 import { PageableScreenView } from "components/PageableScreen/PageableScreenView"
 import { ScrollableScreenEntity } from "components/PageableScreen/PageableScreensContext"
-import { Screen } from "components/Screen"
 import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { filter } from "lodash"
 import { Suspense, useMemo, useRef } from "react"
@@ -100,6 +100,7 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
     <BottomSheetModalProvider>
       <Screen>
         <Screen.FloatingHeader
+          onBack={navigation.goBack}
           rightElements={
             <Touchable
               onPress={addToButtonHandler}

@@ -15,6 +15,7 @@ import { graphql, useFragment } from "react-relay"
 import { ArtworkDetail, ArtworkDetailLineItem } from "screens/Artwork/ArtworkContent/ArtworkDetail"
 import { GlobalStore } from "system/store/GlobalStore"
 import { CachedImage } from "system/wrappers/CachedImage"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 import { defaultRules } from "utils/renderMarkdown"
 
@@ -25,7 +26,7 @@ interface ArtworkContentProps {
 }
 
 export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
-  const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
+  const isDarkMode = useIsDarkMode()
   const [isScrollEnabled, setIsScrollEnabled] = useState(false)
   const { color, space } = useTheme()
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -251,7 +252,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
         >
           <Join separator={<Spacer y={1} />}>
             <Flex flexDirection="row">
-              {showQRCode && (
+              {!!showQRCode && (
                 <Flex mr={2}>
                   <QRCode
                     value={`https://artsy.net/artwork/${artworkData.slug}`}
@@ -279,11 +280,11 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
 
                 <ArtworkDetailLineItem value={medium} />
 
-                {!hasEditionSets && (dimensions?.in || dimensions?.cm) && (
+                {!hasEditionSets && !!(dimensions?.in || dimensions?.cm) && (
                   <ArtworkDetailLineItem value={`${dimensions?.in} - ${dimensions?.cm}`} />
                 )}
 
-                {hasEditionSets && (
+                {!!hasEditionSets && (
                   <>
                     <Text mt={2} weight="medium">
                       Editions

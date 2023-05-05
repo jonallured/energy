@@ -4,12 +4,12 @@ import {
   Input,
   MagnifyingGlassIcon,
   Separator,
+  Screen,
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { Screen } from "components/Screen"
 import { throttle } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { SearchContext } from "screens/Search/SearchContext"
@@ -90,7 +90,7 @@ export const Search = () => {
           <Separator />
         </Flex>
 
-        {showSearchResults && (
+        {!!showSearchResults && (
           <Screen.FullWidthItem>
             <Flex mt={2} mb={1}>
               <SearchFilters />
@@ -98,7 +98,7 @@ export const Search = () => {
           </Screen.FullWidthItem>
         )}
 
-        {showSearchResults && <SearchResult searchInput={search} />}
+        {!!showSearchResults && <SearchResult searchInput={search} />}
       </Screen.Body>
     </Screen>
   )

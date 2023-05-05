@@ -1,7 +1,6 @@
-import { Flex, Button, SearchInput, Separator, Text, Spacer } from "@artsy/palette-mobile"
+import { Flex, Button, SearchInput, Separator, Text, Spacer, Screen } from "@artsy/palette-mobile"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { Screen } from "components/Screen"
 import { useState, useEffect, useRef, Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { graphql } from "react-relay"

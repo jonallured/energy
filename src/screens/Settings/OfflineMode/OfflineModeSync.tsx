@@ -1,7 +1,6 @@
-import { Button, Flex, Join, ProgressBar, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Join, ProgressBar, Spacer, Text, Screen } from "@artsy/palette-mobile"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
-import { Screen } from "components/Screen"
 import { DateTime } from "luxon"
 import { useEffect, useMemo, useState } from "react"
 import { Alert } from "react-native"

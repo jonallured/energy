@@ -1,5 +1,4 @@
-import { FlexProps, Separator } from "@artsy/palette-mobile"
-import { Screen } from "components/Screen"
+import { FlexProps, Separator, Screen } from "@artsy/palette-mobile"
 
 export const FullWidthDivider: React.FC<FlexProps> = (flexProps) => {
   return (

@@ -17,6 +17,7 @@ import { useSystemIsDoneBooting } from "system/hooks/useSystemIsDoneBooting"
 import { GlobalStore } from "system/store/GlobalStore"
 import { loadUrlMap } from "system/sync/fileCache/urlMap"
 import { useAndroidNavigationBarThemeListener } from "utils/hooks/useAndroidNavigationBarThemeListener"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useWebViewCookies } from "utils/hooks/useWebViewCookies"
 
 export type NavigationScreens = AuthNavigationScreens &
@@ -38,7 +39,8 @@ export const Main = () => {
   const isDoneBooting = useSystemIsDoneBooting()
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
-  const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
+  const isDarkMode = useIsDarkMode()
+
   useAndroidNavigationBarThemeListener()
   useErrorReporting()
   useNetworkStatusListener()
@@ -65,7 +67,7 @@ export const Main = () => {
         <StackNav.Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
           {AuthNavigation({ isLoggedIn, selectedPartner })}
 
-          {isLoggedIn && selectedPartner && (
+          {!!isLoggedIn && !!selectedPartner && (
             <>
               <StackNav.Screen name="HomeTabs" component={HomeTabs} />
 

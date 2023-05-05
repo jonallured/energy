@@ -2,7 +2,7 @@ import { BoxProps, Flex, ReloadIcon, Text, Touchable, useColor } from "@artsy/pa
 import { debounce } from "lodash"
 import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
-import { GlobalStore } from "system/store/GlobalStore"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface LoadFailureErrorViewProps {
   error?: Error
@@ -15,7 +15,7 @@ export const LoadFailureErrorView: React.FC<LoadFailureErrorViewProps & BoxProps
   ...restProps
 }) => {
   const color = useColor()
-  const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
+  const isDarkMode = useIsDarkMode()
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
 

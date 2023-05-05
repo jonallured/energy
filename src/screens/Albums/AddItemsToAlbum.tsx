@@ -1,12 +1,12 @@
-import { Button, useSpace } from "@artsy/palette-mobile"
+import { Button, useSpace, Screen } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { Screen } from "components/Screen"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
@@ -17,6 +17,7 @@ export const AddItemsToAlbum = () => {
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
 
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
+  const isDarkMode = useIsDarkMode()
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const isSelectModeActive = GlobalStore.useAppState(
@@ -85,7 +86,7 @@ export const AddItemsToAlbum = () => {
 
   return (
     <Screen>
-      <Screen.Header title="Add to Album" />
+      <Screen.Header title="Add to Album" onBack={navigation.goBack} />
       <Screen.Body>
         <FlatList
           data={albums}
@@ -106,7 +107,7 @@ export const AddItemsToAlbum = () => {
           style={{ top: space(2) }}
         />
 
-        <Screen.BottomView>
+        <Screen.BottomView darkMode={isDarkMode}>
           {selectedAlbumIds.length <= 0 ? (
             <Button block onPress={createNewAlbumHandler}>
               Create New Album

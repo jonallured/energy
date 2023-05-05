@@ -1,14 +1,14 @@
-import { Button, Text } from "@artsy/palette-mobile"
+import { Screen, Button, Text } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
-import { Screen } from "components/Screen"
 import { isAllSelected } from "components/SelectMode"
 import { artistArtworksQuery } from "screens/Artists/ArtistTabs/ArtistArtworks"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { usePresentationFilteredArtworks } from "utils/hooks/usePresentationFilteredArtworks"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
@@ -19,6 +19,7 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 export const CreateOrEditAlbumChooseArtworks = () => {
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const isDarkMode = useIsDarkMode()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
@@ -52,6 +53,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
     <Screen>
       <Screen.Header
         title={mode === "edit" ? "Save to Album" : "Add to Album"}
+        onBack={navigation.goBack}
         rightElements={
           <Button
             size="small"
@@ -79,7 +81,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           }}
         />
 
-        <Screen.BottomView>
+        <Screen.BottomView darkMode={isDarkMode}>
           <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
             Selected artworks for {presentedArtworks[0]?.artistNames ?? "Artist"}:{" "}
             {selectedItems.length}

@@ -1,5 +1,4 @@
-import { Spacer, Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
-import { Screen } from "components/Screen"
+import { Screen, Spacer, Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
 import { Switch, SwitchProps } from "react-native"
 
 interface SettingsItemProps {

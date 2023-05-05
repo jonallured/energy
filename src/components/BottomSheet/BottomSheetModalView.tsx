@@ -12,7 +12,7 @@ import {
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ZINDEX } from "components/Screen/constants"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
-import { GlobalStore } from "system/store/GlobalStore"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface BottomSheetModalViewProps {
   modalHeight: string | number
@@ -27,7 +27,7 @@ export interface BottomSheetRef {
 
 export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalViewProps>(
   (props, ref) => {
-    const isDarkMode = GlobalStore.useAppState((s) => s.devicePrefs.colorScheme === "dark")
+    const isDarkMode = useIsDarkMode()
     const bottomSheetModalRef = useRef<BottomSheetModal>(null)
     const color = useColor()
 
@@ -141,7 +141,7 @@ export const BottomSheetModalRow = ({
         </Flex>
         <Flex justifyContent="center" flex={1} ml={1}>
           <Text>{label}</Text>
-          {subtitle && (
+          {!!subtitle && (
             <Flex flexDirection="row" alignItems="center">
               <Text variant="xs" color="onSurfaceMedium">
                 {subtitle}

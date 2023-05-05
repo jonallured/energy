@@ -1,5 +1,4 @@
-import { Button, Flex, Input, Text, useColor, Spacer } from "@artsy/palette-mobile"
-import { Screen } from "components/Screen"
+import { Button, Flex, Input, Text, useColor, Spacer, Screen } from "@artsy/palette-mobile"
 import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { useFormik } from "formik"
 import { useRef, useState } from "react"
@@ -165,7 +164,7 @@ export const LoginScreen = () => {
             value={values.password}
             error={errors.password}
           />
-          {showOtpInputField && (
+          {!!showOtpInputField && (
             <>
               <Spacer y={2} />
               <Input

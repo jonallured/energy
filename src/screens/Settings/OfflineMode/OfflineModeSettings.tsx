@@ -1,7 +1,6 @@
-import { Button, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { Screen } from "components/Screen"
 import { DateTime } from "luxon"
 import { useState } from "react"
 import { Alert } from "react-native"

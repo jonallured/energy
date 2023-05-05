@@ -1,7 +1,6 @@
-import { Flex, ProgressBar } from "@artsy/palette-mobile"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { Flex, ProgressBar, Screen } from "@artsy/palette-mobile"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { Screen } from "components/Screen"
 import { useState } from "react"
 import { WebView } from "react-native-webview"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -9,6 +8,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 type ArtworkWebViewRoute = RouteProp<NavigationScreens, "ArtworkWebView">
 
 export const ArtworkWebView = () => {
+  const navigation = useNavigation()
   const { params } = useRoute<ArtworkWebViewRoute>()
   const { webURL } = GlobalStore.useAppState((store) => store.config.environment.strings)
   const [loadProgress, setLoadProgress] = useState<number>(0)
@@ -17,7 +17,7 @@ export const ArtworkWebView = () => {
 
   return (
     <Screen>
-      <Screen.Header />
+      <Screen.Header onBack={navigation.goBack} />
       <Screen.Body fullwidth>
         <WebView
           source={{ uri }}

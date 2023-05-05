@@ -1,13 +1,14 @@
-import { Input, Text } from "@artsy/palette-mobile"
-import { Screen } from "components/Screen"
+import { Input, Text, Screen } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const OneArtwork = () => {
+  const navigation = useNavigation()
   const value = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)
 
   return (
     <Screen>
-      <Screen.Header title="Subject lines" />
+      <Screen.Header title="Subject lines" onBack={navigation.goBack} />
       <Screen.Body scroll>
         <Text my={1}>One Artwork</Text>
         <Input

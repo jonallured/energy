@@ -1,13 +1,14 @@
-import { Input, Text } from "@artsy/palette-mobile"
-import { Screen } from "components/Screen"
+import { Input, Screen, Text } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const MultipleArtworksAndArtists = () => {
+  const navigation = useNavigation()
   const value = GlobalStore.useAppState((state) => state.email.multipleArtworksAndArtistsSubject)
 
   return (
     <Screen>
-      <Screen.Header title="Subject lines" />
+      <Screen.Header title="Subject lines" onBack={navigation.goBack} />
       <Screen.Body>
         <Text my={1}>Multiple artworks and artists</Text>
         <Input

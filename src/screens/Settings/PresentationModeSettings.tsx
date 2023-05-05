@@ -1,9 +1,10 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { Screen } from "components/Screen"
+import { Flex, Spacer, Screen, Text } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { SettingsItem } from "components/SettingsItem"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const PresentationModeSettings = () => {
+  const navigation = useNavigation()
   const isPresentationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )
@@ -66,7 +67,7 @@ export const PresentationModeSettings = () => {
 
   return (
     <Screen>
-      <Screen.Header />
+      <Screen.Header onBack={navigation.goBack} />
       <Screen.Body scroll>
         <Text variant="lg-display" my={2}>
           Presentation Mode

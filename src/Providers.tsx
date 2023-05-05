@@ -8,6 +8,7 @@ import { RelayProvider } from "system/relay/RelayProvider"
 import { GlobalStoreProvider, GlobalStore } from "system/store/GlobalStore"
 import { GlobalRetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 import { SuspenseWrapper } from "system/wrappers/SuspenseWrapper"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { ProvideScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 interface ProviderProps {
@@ -43,7 +44,7 @@ const ThemeProvider: React.FC = ({ children }) => {
     return () => subscription.remove()
   }, [])
 
-  const isDarkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme) === "dark"
+  const isDarkMode = useIsDarkMode()
   const theme = isDarkMode ? "v3dark" : "v3light"
 
   return (

@@ -1,8 +1,16 @@
-import { Spacer, ArrowRightIcon, Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Screen,
+  ArrowRightIcon,
+  Button,
+  Flex,
+  Input,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtworksList } from "components/Lists/ArtworksList"
-import { Screen } from "components/Screen"
 import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
 import { Platform } from "react-native"
@@ -10,6 +18,7 @@ import { useAlbum } from "screens/Albums/useAlbum"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { object, string } from "yup"
 
 interface CreateAlbumValuesSchema {
@@ -30,6 +39,7 @@ export const CreateOrEditAlbum = () => {
 
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const isDarkMode = useIsDarkMode()
 
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -121,7 +131,10 @@ export const CreateOrEditAlbum = () => {
 
   return (
     <Screen>
-      <Screen.Header title={mode === "edit" ? "Edit Album" : "Create Album"} />
+      <Screen.Header
+        title={mode === "edit" ? "Edit Album" : "Create Album"}
+        onBack={navigation.goBack}
+      />
 
       <Screen.Body>
         <Flex>
@@ -135,7 +148,7 @@ export const CreateOrEditAlbum = () => {
         </Flex>
         <Spacer y={2} />
 
-        {showAddMessage && (
+        {!!showAddMessage && (
           <Touchable
             onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
           >
@@ -146,7 +159,7 @@ export const CreateOrEditAlbum = () => {
           </Touchable>
         )}
 
-        {showRemoveMessage && (
+        {!!showRemoveMessage && (
           <Text mt={2} variant="xs" color="onBackgroundMedium">
             Select artworks to remove from album
           </Text>
@@ -170,7 +183,7 @@ export const CreateOrEditAlbum = () => {
         />
 
         {Platform.OS === "ios" ? (
-          <Screen.BottomView>
+          <Screen.BottomView darkMode={isDarkMode}>
             <CreateOrEditButton />
           </Screen.BottomView>
         ) : (

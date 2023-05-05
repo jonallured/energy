@@ -1,11 +1,11 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import LinearGradient from "react-native-linear-gradient"
-import { GlobalStore } from "system/store/GlobalStore"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const BottomView: React.FC = ({ children }) => {
   const color = useColor()
-  const isDarkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme) === "dark"
+  const isDarkMode = useIsDarkMode()
 
   return (
     <>
