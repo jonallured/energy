@@ -1,9 +1,13 @@
-import { DEFAULT_HIT_SLOP, MoreIcon, Touchable } from "@artsy/palette-mobile"
+import {
+  DEFAULT_HIT_SLOP,
+  MoreIcon,
+  SCREEN_HORIZONTAL_PADDING,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { BottomSheetRef } from "components/BottomSheet/BottomSheetModalView"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { TabScreen } from "components/Tabs/TabScreen"
 import { TabsWithHeader } from "components/Tabs/TabsWithHeader"
 import { useState } from "react"

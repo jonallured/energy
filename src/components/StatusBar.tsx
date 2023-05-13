@@ -6,7 +6,7 @@ interface StatusBarProps {
   backgroundColor?: string
 }
 
-export const StatusBar = ({ backgroundColor }: StatusBarProps) => {
+export const StatusBar: React.FC<StatusBarProps> = ({ backgroundColor }) => {
   const isStaging =
     GlobalStore.useAppState((state) => state.config.environment.activeEnvironment) === "staging"
   const saInsets = useSafeAreaInsets()
@@ -21,7 +21,7 @@ export const StatusBar = ({ backgroundColor }: StatusBarProps) => {
       top={0}
       height={saInsets.top}
     >
-      {isStaging && (
+      {!!isStaging && (
         <Flex top={saInsets.top}>
           <Separator border={colors("devpurple")} />
         </Flex>

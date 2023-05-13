@@ -1,13 +1,15 @@
 import {
   ArrowLeftIcon,
   DEFAULT_HIT_SLOP,
+  NAVBAR_HEIGHT,
+  ZINDEX,
   Flex,
   Spacer,
   Text,
   Touchable,
+  LARGE_TITLE_HEIGHT,
 } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { NAVBAR_HEIGHT, ZINDEX } from "components/Screen/constants"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { isTablet } from "react-native-device-info"
 import Animated, { Easing, FadeInLeft, FadeOut } from "react-native-reanimated"
@@ -43,7 +45,6 @@ export const Header: React.FC<HeaderProps> = ({
   title,
 }) => {
   const navigation = useNavigation()
-  const insets = useSafeAreaInsets()
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
@@ -64,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
             underlayColor="transparent"
             hitSlop={DEFAULT_HIT_SLOP}
           >
-            <ArrowLeftIcon fill="onBackgroundHigh" marginLeft="-4px" top="1px" />
+            <ArrowLeftIcon fill="onBackgroundHigh" top="2px" />
           </Touchable>
         )}
 
@@ -130,7 +131,7 @@ export const Header: React.FC<HeaderProps> = ({
       height={NAVBAR_HEIGHT}
       flexDirection="row"
       px={2}
-      top={insets.top}
+      py={1}
       zIndex={ZINDEX.header}
       backgroundColor="background"
       alignItems="center"

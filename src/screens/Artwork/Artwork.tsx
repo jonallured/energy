@@ -6,6 +6,7 @@ import {
   Flex,
   Screen,
   DEFAULT_HIT_SLOP,
+  SCREEN_HORIZONTAL_PADDING,
 } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
@@ -18,7 +19,6 @@ import {
 } from "components/BottomSheet/BottomSheetModalView"
 import { PageableScreenView } from "components/PageableScreen/PageableScreenView"
 import { ScrollableScreenEntity } from "components/PageableScreen/PageableScreensContext"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
 import { filter } from "lodash"
 import { Suspense, useMemo, useRef } from "react"
 import { ActivityIndicator } from "react-native"
@@ -98,7 +98,7 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
 
   return (
     <BottomSheetModalProvider>
-      <Screen>
+      <Screen safeArea={false}>
         <Screen.FloatingHeader
           onBack={navigation.goBack}
           rightElements={
@@ -111,7 +111,7 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
             </Touchable>
           }
         />
-        <Screen.Body fullwidth safeArea={false}>
+        <Screen.Body fullwidth>
           <ArtworkContent artwork={artwork!} />
         </Screen.Body>
       </Screen>
@@ -199,7 +199,7 @@ export const Artwork_artworkProps = graphql`
 export const SkeletonArtwork = () => {
   return (
     <BottomSheetModalProvider>
-      <Screen>
+      <Screen safeArea={false}>
         <Screen.FloatingHeader
           rightElements={
             <Touchable
@@ -210,7 +210,7 @@ export const SkeletonArtwork = () => {
             </Touchable>
           }
         />
-        <Screen.Body fullwidth safeArea={false}>
+        <Screen.Body fullwidth>
           <Flex
             backgroundColor="background"
             flex={1}

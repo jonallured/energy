@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { StatusBar } from "components/StatusBar"
@@ -62,7 +63,7 @@ export const Main = () => {
   }
 
   return (
-    <>
+    <Flex backgroundColor="background" flex={1}>
       <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
         <StackNav.Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
           {AuthNavigation({ isLoggedIn, selectedPartner })}
@@ -82,7 +83,7 @@ export const Main = () => {
         </StackNav.Navigator>
       </NavigationContainer>
 
-      <StatusBar backgroundColor="transparent" />
-    </>
+      <StatusBar backgroundColor="background" />
+    </Flex>
   )
 }

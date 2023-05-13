@@ -68,8 +68,8 @@ export const Search = () => {
 
   return (
     <Screen>
-      <Screen.Body safeArea={false}>
-        <Flex>
+      <Screen.Body>
+        <Flex mt={0.5}>
           <Flex flexDirection="row" alignItems="center">
             <Input
               ref={searchInputRef}

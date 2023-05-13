@@ -1,5 +1,13 @@
-import { Button, Flex, Input, Text, useColor, Spacer, Screen } from "@artsy/palette-mobile"
-import { SCREEN_HORIZONTAL_PADDING } from "components/Screen/constants"
+import {
+  Button,
+  Flex,
+  Input,
+  Text,
+  useColor,
+  Spacer,
+  Screen,
+  SCREEN_HORIZONTAL_PADDING,
+} from "@artsy/palette-mobile"
 import { useFormik } from "formik"
 import { useRef, useState } from "react"
 import { Linking, Platform, TouchableOpacity } from "react-native"

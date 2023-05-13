@@ -29,7 +29,7 @@ export const HomeTabs = () => {
         ),
         rightElements: (
           <>
-            {isOnline && (
+            {!!isOnline && (
               <Touchable onPress={() => navigation.navigate("Search")} hitSlop={DEFAULT_HIT_SLOP}>
                 <MagnifyingGlassIcon fill="onBackgroundHigh" />
               </Touchable>

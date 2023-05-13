@@ -8,9 +8,9 @@ import {
   Touchable,
   useColor,
   DEFAULT_HIT_SLOP,
+  ZINDEX,
 } from "@artsy/palette-mobile"
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { ZINDEX } from "components/Screen/constants"
 import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 

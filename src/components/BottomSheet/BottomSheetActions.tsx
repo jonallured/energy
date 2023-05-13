@@ -6,6 +6,7 @@ import {
   Flex,
   Text,
   TrashIcon,
+  SCREEN_TRANSITION_TIME,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
@@ -15,7 +16,6 @@ import {
   BottomSheetModalView,
   BottomSheetRef,
 } from "components/BottomSheet/BottomSheetModalView"
-import { SCREEN_TRANSITION_TIME } from "components/Screen/constants"
 import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"

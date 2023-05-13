@@ -9,7 +9,7 @@ export const ListEmptyComponent: React.FC<ListEmptyComponentProps> = ({
   ...rest
 }) => {
   return (
-    <Flex my={1} {...rest}>
+    <Flex my={2} {...rest}>
       <Text variant="xs" color="onBackgroundMedium">
         {text}
       </Text>

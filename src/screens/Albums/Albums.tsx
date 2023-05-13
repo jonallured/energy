@@ -2,7 +2,7 @@ import { Button, Screen } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { Tabs } from "react-native-collapsible-tab-view"
+import { TabsFlatList } from "components/Tabs/TabsFlatList"
 import { isTablet } from "react-native-device-info"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -15,9 +15,9 @@ export const Albums = () => {
   const isDarkMode = useIsDarkMode()
 
   return (
-    <Screen>
+    <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <Tabs.FlatList
+        <TabsFlatList
           data={albums}
           numColumns={isTablet() ? 2 : 1}
           contentContainerStyle={getContentContainerStyle()}

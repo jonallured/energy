@@ -53,7 +53,7 @@ const ThemeProvider: React.FC = ({ children }) => {
 
       <StatusBar
         barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={isDarkMode ? "black" : "white"}
+        backgroundColor={isDarkMode ? "black" : "background"}
       />
     </Theme>
   )

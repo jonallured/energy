@@ -55,7 +55,7 @@ export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
           />
         </ReactNativeZoomableView>
 
-        <Flex position="absolute" pt={`${insets.top + 8}px`} left={-8} px={2}>
+        <Flex position="absolute" top={insets.top} px={2} py={2}>
           <BackButton showX onPress={() => setIsModalVisible(false)} hitSlop={DEFAULT_HIT_SLOP} />
         </Flex>
       </Flex>

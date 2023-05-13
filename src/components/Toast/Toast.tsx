@@ -1,5 +1,4 @@
-import { Flex, Box, useColor, Text, Touchable } from "@artsy/palette-mobile"
-import { NAVBAR_HEIGHT } from "components/Screen/constants"
+import { Flex, Box, useColor, Text, Touchable, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
 import { useToast } from "components/Toast/ToastContext"
 import { Animated, StyleProp, ViewStyle } from "react-native"
 import { useScreenDimensions } from "utils/hooks/useScreenDimensions"

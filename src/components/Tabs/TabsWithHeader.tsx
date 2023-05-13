@@ -1,13 +1,11 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Screen, LARGE_TITLE_HEIGHT, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import {
   BottomSheetActions,
   BottomSheetActionsProps,
 } from "components/BottomSheet/BottomSheetActions"
+import { AnimatedTabsHeader, HeaderProps } from "components/Header"
 import { PortalProvider } from "components/Portal"
-import { Screen } from "components/Screen"
-import { HeaderProps } from "components/Screen/Header"
-import { LARGE_TITLE_HEIGHT } from "components/Screen/constants"
 import { TabsContainer } from "components/Tabs/TabsContainer"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { CollapsibleProps } from "react-native-collapsible-tab-view"
@@ -28,16 +26,14 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
   showHeader = true,
   title,
 }) => {
-  const insets = useSafeAreaInsets()
-
   return (
     <TabsContext.Provider>
       <BottomSheetModalProvider>
         <PortalProvider>
           <Screen>
-            <Screen.AnimatedTabsHeader title={title} {...headerProps} />
+            <AnimatedTabsHeader title={title} {...headerProps} />
 
-            <Flex mt={`${insets.top}px`} flex={1}>
+            <Screen.Body fullwidth>
               <TabsContainer
                 renderHeader={() => {
                   if (!showHeader || !title) {
@@ -46,7 +42,7 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
 
                   return (
                     <Flex
-                      height={LARGE_TITLE_HEIGHT}
+                      height={NAVBAR_HEIGHT}
                       pl={2}
                       justifyContent="center"
                       alignSelf="flex-start"
@@ -60,7 +56,7 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
               >
                 {children}
               </TabsContainer>
-            </Flex>
+            </Screen.Body>
           </Screen>
 
           <BottomSheetActions {...bottomSheetActionsProps} />

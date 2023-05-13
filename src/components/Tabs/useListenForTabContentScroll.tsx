@@ -1,4 +1,4 @@
-import { NAVBAR_HEIGHT } from "components/Screen/constants"
+import { NAVBAR_HEIGHT } from "@artsy/palette-mobile"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { useEffect, useState } from "react"
 import { useCurrentTabScrollY } from "react-native-collapsible-tab-view"

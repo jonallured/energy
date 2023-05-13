@@ -1,4 +1,4 @@
-import { SCREEN_TRANSITION_TIME } from "components/Screen/constants"
+import { SCREEN_TRANSITION_TIME } from "@artsy/palette-mobile"
 
 export const waitForScreenTransition = (callback: () => void) => {
   setTimeout(callback, SCREEN_TRANSITION_TIME)

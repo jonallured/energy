@@ -27,7 +27,7 @@ export const CreateOrEditAlbumChooseArtist = () => {
         title={mode === "edit" ? "Save to Album" : "Add to Album"}
         onBack={navigation.goBack}
       />
-      <Screen.Body safeArea={false}>
+      <Screen.Body>
         <ArtistsList onItemPress={handleItemPress} contentContainerStyle={{}} />
       </Screen.Body>
     </Screen>

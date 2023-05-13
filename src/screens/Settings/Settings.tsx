@@ -28,7 +28,7 @@ export const Settings = () => {
   return (
     <Screen>
       <Screen.Header onBack={navigation.goBack} />
-      <Screen.Body scroll safeArea={false}>
+      <Screen.Body scroll>
         <Text variant="lg-display" my={2}>
           Settings
         </Text>

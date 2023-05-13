@@ -1,4 +1,14 @@
-import { Spacer, Flex, Separator, Text, Touchable, Join, useTheme } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  Separator,
+  Text,
+  Touchable,
+  Join,
+  useTheme,
+  NAVBAR_HEIGHT,
+  ZINDEX,
+} from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ArtworkContent_artwork$key } from "__generated__/ArtworkContent_artwork.graphql"
 import { ArtworkImageModalQueryRenderer } from "components/ArtworkImageModal"
@@ -6,7 +16,6 @@ import { getBottomSheetShadowStyle } from "components/BottomSheet/BottomSheetMod
 import { ImagePlaceholder } from "components/ImagePlaceholder"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { Markdown } from "components/Markdown"
-import { NAVBAR_HEIGHT, ZINDEX } from "components/Screen/constants"
 import { Suspense, useCallback, useMemo, useRef, useState } from "react"
 import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-generator"
@@ -192,7 +201,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
         />
       </Suspense>
 
-      <Flex height="78%" justifyContent="center">
+      <Flex height="90%" justifyContent="center">
         <Flex px={2} py={4}>
           {image?.resized?.url ? (
             <Touchable
