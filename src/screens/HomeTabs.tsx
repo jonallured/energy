@@ -31,7 +31,7 @@ export const HomeTabs = () => {
           <>
             {!!isOnline && (
               <Touchable onPress={() => navigation.navigate("Search")} hitSlop={DEFAULT_HIT_SLOP}>
-                <MagnifyingGlassIcon fill="onBackgroundHigh" />
+                <MagnifyingGlassIcon fill="onBackgroundHigh" top="4px" />
               </Touchable>
             )}
           </>
