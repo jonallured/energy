@@ -42,7 +42,6 @@ import { showsQuery } from "screens/Shows/Shows"
 import { RelayContextProps } from "system/relay/RelayProvider"
 import { GlobalStore } from "system/store/GlobalStore"
 import {
-  clearFileCache,
   initDownloadFileToCache,
   getFileFromCache,
   saveFileToCache,
@@ -167,8 +166,9 @@ export function initSyncManager({
   const startSync = async () => {
     updateStatus("Starting sync")
 
+    // TODO: Do we actually need this?
     // Be sure we're starting from scratch
-    await clearFileCache()
+    // await clearFileCache()
 
     onStart()
 

@@ -1,4 +1,4 @@
-import { Flex, Text, Screen, LARGE_TITLE_HEIGHT, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
+import { Flex, Text, Screen, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import {
   BottomSheetActions,
@@ -9,7 +9,6 @@ import { PortalProvider } from "components/Portal"
 import { TabsContainer } from "components/Tabs/TabsContainer"
 import { TabsContext } from "components/Tabs/TabsContext"
 import { CollapsibleProps } from "react-native-collapsible-tab-view"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface TabsWithHeaderProps {
   title: string

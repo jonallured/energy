@@ -1,9 +1,8 @@
 import { parse } from "qs"
-import { downloadFile, unlink } from "react-native-fs"
+import { downloadFile, exists, unlink } from "react-native-fs"
 import { getFilePath } from "system/sync/fileCache/getFilePath"
 import { getURLMap, updateUrlMap } from "system/sync/fileCache/urlMap"
 import { warmFilesystem } from "system/sync/fileCache/warmFilesystem"
-import { v4 as uuidv4 } from "uuid"
 
 type DownloadableType = "image" | "document"
 
@@ -28,21 +27,33 @@ export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFil
     try {
       await warmFilesystem()
 
-      const id = uuidv4()
-
       const filename = (() => {
         switch (type) {
           case "image": {
             const src = (parse(url).src as string | undefined) ?? url
+            const urlParts = src.split("/")
+
+            // Matches the form `http://foo.cloudfront.com/<imageID>/tall.jpg`
+            const imageID = urlParts[urlParts.length - 2]
             const imageExtension = src?.substring(src.lastIndexOf("."))
-            return id + imageExtension
+            return imageID + imageExtension
           }
           case "document":
             return url.split("/").pop()!
         }
       })()
 
+      const urlMap = getURLMap()
+
       const filePath = getFilePath({ type, filename })
+
+      const alreadyExists = (await exists(filePath)) && urlMap[url]
+
+      // If we've already downloaded the images to the users device, resolve
+      // and skip downloading the file again.
+      if (alreadyExists) {
+        return Promise.resolve()
+      }
 
       const { statusCode } = await downloadFile({
         fromUrl: url,
@@ -53,8 +64,6 @@ export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFil
       if (statusCode !== 200) {
         throw new Error("download failed with status code " + statusCode + " - " + url)
       }
-
-      const urlMap = getURLMap()
 
       if (urlMap[url] !== undefined && urlMap[url] !== filename) {
         try {

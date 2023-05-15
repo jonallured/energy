@@ -1,9 +1,11 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityIndicator } from "react-native"
-import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
+import { GlobalStore } from "system/store/GlobalStore"
 
 export const OfflineLoadingWrapper: React.FC = ({ children }) => {
-  const { isLoadingFromOfflineCache } = useNetworkStatusListener()
+  const { isLoadingFromOfflineCache } = GlobalStore.useAppState(
+    (state) => state.networkStatus.sessionState
+  )
 
   if (isLoadingFromOfflineCache) {
     return (

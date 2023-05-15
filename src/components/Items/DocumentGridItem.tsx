@@ -78,7 +78,7 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
           >
             <FileTypeIcon fileType={fileExtension} />
           </Flex>
-          {isDownloading && (
+          {!!isDownloading && (
             <Flex
               width="100%"
               height="100%"
@@ -98,7 +98,7 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
           {formattedSize}
         </Text>
       </Flex>
-      {selectedToAdd && (
+      {!!selectedToAdd && (
         <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
           <CheckCircleFillIcon height={30} width={30} fill="blue100" />
         </Flex>

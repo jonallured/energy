@@ -1,11 +1,15 @@
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { loadRelayDataFromOfflineCache } from "system/sync/syncManager"
 
+/**
+ * Attention! This hook should only be used once, right in Navigation.tsx, on
+ * app boot. Any further usages will re-register multiple listeners.
+ */
+
 export const useNetworkStatusListener = () => {
-  const [isLoadingFromOfflineCache, setIsLoadingFromOfflineCache] = useState(false)
   const { resetRelayEnvironment } = useSystemRelayEnvironment()
 
   const handleStatusChange = (state: NetInfoState) => {
@@ -18,11 +22,11 @@ export const useNetworkStatusListener = () => {
       resetRelayEnvironment()
     } else {
       console.log("[network-status]: Offline.")
-      setIsLoadingFromOfflineCache(true)
+      GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(true)
 
       // If a user has synced data before, load it from disk
       loadRelayDataFromOfflineCache(resetRelayEnvironment, () => {
-        setIsLoadingFromOfflineCache(false)
+        GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(false)
       })
     }
   }
@@ -34,6 +38,4 @@ export const useNetworkStatusListener = () => {
       unsubscribeToNetworkInfo()
     }
   }, [])
-
-  return { isLoadingFromOfflineCache }
 }
