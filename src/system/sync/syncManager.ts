@@ -454,12 +454,27 @@ export function initSyncManager({
   const syncImages = async () => {
     const urls = parsers.getImageUrls()
 
+    // The current index of the image being downloaded
+    let currentIndex = 0
+
+    const getCurrentIndex = () => {
+      return currentIndex
+    }
+
     await PromisePool.for(urls)
-      .onTaskStarted(reportProgress("Syncing images"))
+      .onTaskStarted(
+        reportProgress("Syncing images", {
+          showMeta: true,
+          getCurrentIndex,
+          totalCount: urls.length - 1,
+        })
+      )
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
-      .process(async (url) => {
+      .process(async (url, index) => {
         if (__DEV__) {
+          currentIndex = index
+
           // For logging results to help debugging
           onSyncResultsChange({
             imagesDownloaded: getURLMap(),
@@ -548,9 +563,18 @@ export function initSyncManager({
     })
   }
 
-  const reportProgress = (message: string) => {
+  const reportProgress = (
+    message: string,
+    options: { showMeta?: boolean; getCurrentIndex?: () => number; totalCount?: number } = {}
+  ) => {
     const onProgressCallback: OnProgressCallback<string> = (_, pool) => {
-      onStatusChange(message)
+      if (__DEV__ && options.showMeta) {
+        // Output the total count and current index for debugging
+        onStatusChange(`${message} (${options.getCurrentIndex?.()} - ${options.totalCount})`)
+      } else {
+        onStatusChange(message)
+      }
+
       onProgressChange(Math.floor(pool.processedPercentage()))
     }
     return onProgressCallback
