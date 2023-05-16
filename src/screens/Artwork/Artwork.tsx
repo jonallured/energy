@@ -78,7 +78,7 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
     saveNavigationHistory("before-adding-to-album")
 
     navigation.navigate("AddItemsToAlbum", {
-      artworkToAdd: artwork as SelectedItem,
+      artworksToAdd: [artwork] as SelectedItem[],
     })
 
     waitForScreenTransition(() => {

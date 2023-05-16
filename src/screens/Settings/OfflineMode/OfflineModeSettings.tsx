@@ -48,7 +48,7 @@ export const OfflineModeSettings = () => {
     <Screen>
       <Screen.Header onBack={() => navigation.navigate("Settings")} />
       <Screen.Body scroll>
-        <Text variant="lg-display" my={2}>
+        <Text variant="lg-display" my={1}>
           Offline Mode
         </Text>
 

@@ -160,7 +160,7 @@ export const CreateOrEditAlbum = () => {
         )}
 
         {!!showRemoveMessage && (
-          <Text mt={2} variant="xs" color="onBackgroundMedium">
+          <Text my={2} variant="xs" color="onBackgroundMedium">
             Select artworks to remove from album
           </Text>
         )}

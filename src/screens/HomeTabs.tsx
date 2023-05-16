@@ -19,7 +19,7 @@ export const HomeTabs = () => {
   return (
     <TabsWithHeader
       title="Folio"
-      showHeader={false}
+      showLargeHeaderText={false}
       headerProps={{
         animated: false,
         leftElements: (

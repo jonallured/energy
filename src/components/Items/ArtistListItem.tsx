@@ -34,10 +34,11 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = ({ artist, count, o
 
   return (
     <Touchable onPress={handlePress} style={{ width }}>
-      <Flex py={1} flexDirection="row" width="100%">
+      <Flex mb={2} flexDirection="row" width="100%">
         <Avatar src={src} size={variant} initials={src ? "" : data.initials!} />
         <Flex mx={1} justifyContent="center">
           <Text variant={variant}>{data.name}</Text>
+
           {!isPresentationModeEnabled && (
             <Text variant={variant} color="onBackgroundMedium">
               {count} Artworks

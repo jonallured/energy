@@ -29,7 +29,7 @@ export const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
         const documentItem = item as SelectedItemDocument
 
         return (
-          <ColumnItem index={i} numColumns={2} mt={2}>
+          <ColumnItem index={i} numColumns={2}>
             <DocumentGridItem
               document={{
                 url: documentItem.publicURL,

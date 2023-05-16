@@ -76,7 +76,7 @@ export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFil
 
       await updateUrlMap(url, filename)
     } catch (error) {
-      console.error("[downloadFileToCache] Error:", error)
+      console.error("[downloadFileToCache]", error)
 
       // If there's an error, queue up error to retry later
       onFileDownloadError(fileProps)

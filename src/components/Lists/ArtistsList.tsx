@@ -1,8 +1,8 @@
-import { useSpace } from "@artsy/palette-mobile"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsListQuery } from "__generated__/ArtistsListQuery.graphql"
 import { ArtistListItem } from "components/Items/ArtistListItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
+import { TabsFlatList } from "components/Tabs/TabsFlatList"
 import { zip } from "lodash"
 import { StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -16,10 +16,14 @@ import { getContentContainerStyle } from "utils/getContentContainerStyle"
 interface ArtistsListProps {
   contentContainerStyle?: StyleProp<ViewStyle>
   onItemPress: (item: ArtistListItem_artist$data) => void
+  isInTabs?: boolean
 }
 
-export const ArtistsList: React.FC<ArtistsListProps> = ({ contentContainerStyle, onItemPress }) => {
-  const space = useSpace()
+export const ArtistsList: React.FC<ArtistsListProps> = ({
+  contentContainerStyle,
+  onItemPress,
+  isInTabs,
+}) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const data = useSystemQueryLoader<ArtistsListQuery>(artistsListQuery, { partnerID })
   const artists = extractNodes(data.partner?.allArtistsConnection)
@@ -34,16 +38,16 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({ contentContainerStyle,
 
   const items = zip(artists, counts)
 
+  const ArtistsFlatList = isInTabs ? TabsFlatList : FlatList
+
   return (
-    <FlatList
+    <ArtistsFlatList
       data={items}
       numColumns={numColumns}
       initialNumToRender={30}
       contentContainerStyle={
         contentContainerStyle ?? {
           ...getContentContainerStyle(),
-          paddingTop: space(6),
-          paddingBottom: space(2),
         }
       }
       renderItem={({ item }) => {

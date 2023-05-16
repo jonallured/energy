@@ -1,4 +1,4 @@
-import { Screen } from "@artsy/palette-mobile"
+import { Screen, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
@@ -12,6 +12,7 @@ type CreateOrEditAlbumChooseArtistRoute = RouteProp<
 export const CreateOrEditAlbumChooseArtist = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { mode, albumId } = useRoute<CreateOrEditAlbumChooseArtistRoute>().params
+  const space = useSpace()
 
   const handleItemPress = (item: ArtistListItem_artist$data) => {
     navigation.navigate("CreateOrEditAlbumChooseArtworks", {
@@ -28,7 +29,11 @@ export const CreateOrEditAlbumChooseArtist = () => {
         onBack={navigation.goBack}
       />
       <Screen.Body>
-        <ArtistsList onItemPress={handleItemPress} contentContainerStyle={{}} />
+        <ArtistsList
+          onItemPress={handleItemPress}
+          contentContainerStyle={{ marginVertical: space(1) }}
+          isInTabs={false}
+        />
       </Screen.Body>
     </Screen>
   )

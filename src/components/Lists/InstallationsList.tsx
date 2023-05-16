@@ -25,7 +25,7 @@ export const InstallationsList: React.FC<ShowInstallationsProps> = ({ images = [
         const gridItem = item as SelectedItemInstall
 
         return (
-          <ColumnItem index={i} numColumns={2} mt={2}>
+          <ColumnItem index={i} numColumns={2}>
             <ArtworkImageGridItem
               url={gridItem?.url ?? ""}
               onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(gridItem)}

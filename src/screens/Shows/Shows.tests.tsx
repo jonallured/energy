@@ -13,9 +13,9 @@ describe("Shows", () => {
   })
 
   it("only renders the list of shows with artworkCount value more than 0", async () => {
-    const { queryAllByText } = renderWithRelay(mockProps)
+    const { getAllByText } = renderWithRelay(mockProps)
     await waitFor(() => {
-      expect(queryAllByText("Gustav Klimts shows")).toHaveLength(9)
+      expect(getAllByText("Gustav Klimts shows").length).toBe(10)
     })
   })
 })

@@ -14,7 +14,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const fontSize = isTablet() ? "sm" : "xs"
 
   return (
-    <Flex my={2} opacity={props.disabled ? 0.4 : 1}>
+    <Flex mb={2} opacity={props.disabled ? 0.4 : 1}>
       <CachedImage
         uri={show?.coverImage?.url as string}
         resizeMode="cover"
@@ -24,7 +24,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
         aspectRatio={null}
       />
       <Flex width="100%">
-        {show?.name && (
+        {!!show?.name && (
           <Text variant={fontSize} mt={1}>
             {show.name}
           </Text>

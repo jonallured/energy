@@ -13,5 +13,5 @@ export const Artists: React.FC = () => {
     })
   }
 
-  return <ArtistsList onItemPress={handleItemPress} />
+  return <ArtistsList onItemPress={handleItemPress} isInTabs />
 }

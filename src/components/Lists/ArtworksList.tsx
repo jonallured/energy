@@ -83,7 +83,7 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
         const GridItem = isStatic ? ArtworkGridItem : ArtworkGridItemFragmentContainer
 
         return (
-          <ColumnItem index={i} numColumns={numColumns} mt={2}>
+          <ColumnItem index={i} numColumns={numColumns}>
             <GridItem
               artwork={gridItem}
               disable={isDisabled}

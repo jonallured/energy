@@ -1,4 +1,4 @@
-import { Screen, Button, Text } from "@artsy/palette-mobile"
+import { Screen, Button, Text, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
@@ -56,6 +56,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         onBack={navigation.goBack}
         rightElements={
           <Button
+            mt={0.5}
             size="small"
             onPress={() => {
               if (allSelected) {
@@ -69,6 +70,8 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           </Button>
         }
       />
+
+      <Spacer y={1} />
 
       <Screen.Body fullwidth>
         <ArtworksList

@@ -1,4 +1,4 @@
-import { Flex, Text, Screen, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
+import { Flex, Text, Screen } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import {
   BottomSheetActions,
@@ -14,7 +14,7 @@ interface TabsWithHeaderProps {
   title: string
   bottomSheetActionsProps?: BottomSheetActionsProps
   headerProps?: HeaderProps
-  showHeader?: boolean
+  showLargeHeaderText?: boolean
   children: CollapsibleProps["children"]
 }
 
@@ -22,7 +22,7 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
   children,
   bottomSheetActionsProps = {},
   headerProps = {},
-  showHeader = true,
+  showLargeHeaderText = true,
   title,
 }) => {
   return (
@@ -35,17 +35,12 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
             <Screen.Body fullwidth>
               <TabsContainer
                 renderHeader={() => {
-                  if (!showHeader || !title) {
+                  if (!showLargeHeaderText || !title) {
                     return null
                   }
 
                   return (
-                    <Flex
-                      height={NAVBAR_HEIGHT}
-                      pl={2}
-                      justifyContent="center"
-                      alignSelf="flex-start"
-                    >
+                    <Flex my={1} pl={2} justifyContent="center" alignSelf="flex-start">
                       <Text variant="lg-display" numberOfLines={2}>
                         {title}
                       </Text>

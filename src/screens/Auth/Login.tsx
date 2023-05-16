@@ -108,7 +108,7 @@ export const LoginScreen = () => {
 
   return (
     <Screen>
-      <Text variant="lg" mx={SCREEN_HORIZONTAL_PADDING}>
+      <Text variant="lg" mx={SCREEN_HORIZONTAL_PADDING} my={1}>
         Folio
       </Text>
       <Screen.Body scroll>

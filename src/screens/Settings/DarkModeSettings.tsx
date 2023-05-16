@@ -16,7 +16,7 @@ export const DarkModeSettings = () => {
     <Screen>
       <Screen.Header onBack={navigation.goBack} />
       <Screen.Body scroll>
-        <Text variant="lg-display" my={2}>
+        <Text variant="lg-display" my={1}>
           Dark Mode
         </Text>
 

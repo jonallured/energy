@@ -34,6 +34,7 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
           {...props}
           style={{
             paddingHorizontal: space(1),
+            marginBottom: space(2),
             height: TAB_BAR_HEIGHT,
           }}
           activeColor={color("onBackground")}
