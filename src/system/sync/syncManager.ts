@@ -96,7 +96,7 @@ const syncResults: SyncResultsData = {
 // Safe timeout for fetches, so that the PromisePool doesn't clog
 const FILE_DOWNLOAD_POOL_TIMEOUT = 10000
 const MAX_QUERY_CONCURRENCY = 50
-const MAX_FILE_DOWNLOAD_CONCURRENCY = 20
+const MAX_FILE_DOWNLOAD_CONCURRENCY = 10
 
 export interface SyncManagerOptions {
   onAbort: (abortHandler: () => void) => void
