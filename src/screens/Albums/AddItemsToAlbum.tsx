@@ -11,7 +11,7 @@ import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
-  const { artworkToAdd, artworksToAdd } = useRoute<HomeTabsRoute>().params
+  const { artworksToAdd } = useRoute<HomeTabsRoute>().params
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
@@ -43,10 +43,10 @@ export const AddItemsToAlbum = () => {
           albumIds: selectedAlbumIds,
           items: selectedItems,
         })
-      } else if (artworkToAdd !== undefined) {
+      } else if (artworksToAdd) {
         GlobalStore.actions.albums.addItemsToAlbums({
           albumIds: selectedAlbumIds,
-          items: [artworkToAdd],
+          items: artworksToAdd,
         })
       }
 
@@ -75,7 +75,7 @@ export const AddItemsToAlbum = () => {
     if (artworksToAdd) {
       navigation.navigate("CreateOrEditAlbum", {
         mode: "create",
-        artworksToAdd: artworksToAdd ?? [artworkToAdd],
+        artworksToAdd,
       })
     }
 
@@ -87,9 +87,10 @@ export const AddItemsToAlbum = () => {
   return (
     <Screen>
       <Screen.Header title="Add to Album" onBack={navigation.goBack} />
-      <Screen.Body>
+      <Screen.Body fullwidth>
         <FlatList
           data={albums}
+          contentContainerStyle={{ paddingHorizontal: space(2) }}
           keyExtractor={(item) => item?.id}
           renderItem={({ item: album }) => {
             const selectedToAdd = selectedAlbumIds.includes(album.id)

@@ -1,4 +1,4 @@
-import { Screen, Button, Text, Spacer } from "@artsy/palette-mobile"
+import { Screen, Button, Text, Spacer, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
@@ -18,6 +18,7 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 
 export const CreateOrEditAlbumChooseArtworks = () => {
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
+  const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
@@ -75,6 +76,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
 
       <Screen.Body fullwidth>
         <ArtworksList
+          contentContainerStyle={{ paddingHorizontal: space(2) }}
           artworks={presentedArtworks}
           checkIfDisabled={(item) => {
             return !!album?.items?.find((albumItem) => albumItem?.internalID === item.internalID)

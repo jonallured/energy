@@ -25,11 +25,12 @@ export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, 
       justifyContent={isActive ? "space-between" : "flex-end"}
       width="100%"
       px={SCREEN_HORIZONTAL_PADDING}
-      my="12px"
+      my="13px"
       top={insets.top}
       position="absolute"
       zIndex={ZINDEX.selectMode}
       pointerEvents="box-none"
+      backgroundColor={isActive ? "white100" : "transparent"}
     >
       {!!isActive && (
         <Button

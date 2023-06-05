@@ -32,8 +32,7 @@ const createAlbumSchema = object().shape({
 type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
-  const { mode, albumId, artworkToAdd, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>()
-    .params || {
+  const { mode, albumId, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>().params || {
     mode: "create",
   }
 
@@ -55,10 +54,7 @@ export const CreateOrEditAlbum = () => {
 
   // Assigning selected artworks
   let artworksToSave: SelectedItem[] = []
-  if (artworkToAdd) {
-    // Case when single artwork selected from Artwork screen
-    artworksToSave = [artworkToAdd]
-  } else if (artworksToAdd) {
+  if (artworksToAdd) {
     // Selecting multiple artworks from choose artworks screen
     artworksToSave = uniqBy([...artworksToAdd, ...albumItems], "internalID")
   } else {
@@ -118,7 +114,7 @@ export const CreateOrEditAlbum = () => {
 
   const CreateOrEditButton = () => {
     return (
-      <Flex px={1}>
+      <Flex>
         <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
           {mode === "edit" ? "Save" : "Create"}
         </Button>
@@ -126,7 +122,7 @@ export const CreateOrEditAlbum = () => {
     )
   }
 
-  const showAddMessage = isSelectModeActive || !artworkToAdd
+  const showAddMessage = isSelectModeActive || !artworksToAdd?.length
   const showRemoveMessage = mode === "edit" && artworks.length > 0
 
   return (
@@ -136,51 +132,55 @@ export const CreateOrEditAlbum = () => {
         onBack={navigation.goBack}
       />
 
-      <Screen.Body>
-        <Flex>
-          <Input
-            title="Album Name"
-            onChangeText={handleChange("albumName")}
-            onBlur={() => validateForm()}
-            defaultValue={values.albumName}
-            error={errors.albumName}
+      <Screen.Body fullwidth>
+        <Flex flex={1} px={2}>
+          <Flex>
+            <Input
+              title="Album Name"
+              onChangeText={handleChange("albumName")}
+              onBlur={() => validateForm()}
+              defaultValue={values.albumName}
+              error={errors.albumName}
+            />
+          </Flex>
+          <Spacer y={2} />
+
+          {!!showAddMessage && (
+            <Touchable
+              onPress={() =>
+                navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })
+              }
+            >
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text>Add Items to Album</Text>
+                <ArrowRightIcon fill="onBackgroundHigh" />
+              </Flex>
+            </Touchable>
+          )}
+
+          {!!showRemoveMessage && (
+            <Text my={2} variant="xs" color="onBackgroundMedium">
+              Select artworks to remove from album
+            </Text>
+          )}
+
+          <ArtworksList
+            artworks={artworksToSave as SelectedItemArtwork[]}
+            onItemPress={(item) => {
+              GlobalStore.actions.selectMode.toggleSelectedItem(item)
+            }}
+            checkIfSelectedToRemove={(item) => {
+              return (
+                mode === "edit" &&
+                !!selectedItems.find((selectedItem) => selectedItem?.internalID === item.internalID)
+              )
+            }}
+            contentContainerStyle={{
+              paddingHorizontal: 0,
+            }}
+            isStatic
           />
         </Flex>
-        <Spacer y={2} />
-
-        {!!showAddMessage && (
-          <Touchable
-            onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
-          >
-            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-              <Text>Add Items to Album</Text>
-              <ArrowRightIcon fill="onBackgroundHigh" />
-            </Flex>
-          </Touchable>
-        )}
-
-        {!!showRemoveMessage && (
-          <Text my={2} variant="xs" color="onBackgroundMedium">
-            Select artworks to remove from album
-          </Text>
-        )}
-
-        <ArtworksList
-          artworks={artworksToSave as SelectedItemArtwork[]}
-          onItemPress={(item) => {
-            GlobalStore.actions.selectMode.toggleSelectedItem(item)
-          }}
-          checkIfSelectedToRemove={(item) => {
-            return (
-              mode === "edit" &&
-              !!selectedItems.find((selectedItem) => selectedItem?.internalID === item.internalID)
-            )
-          }}
-          contentContainerStyle={{
-            paddingHorizontal: 0,
-          }}
-          isStatic
-        />
 
         {Platform.OS === "ios" ? (
           <Screen.BottomView darkMode={isDarkMode}>

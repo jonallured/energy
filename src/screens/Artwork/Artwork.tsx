@@ -19,8 +19,7 @@ import {
 } from "components/BottomSheet/BottomSheetModalView"
 import { PageableScreenView } from "components/PageableScreen/PageableScreenView"
 import { ScrollableScreenEntity } from "components/PageableScreen/PageableScreensContext"
-import { filter } from "lodash"
-import { Suspense, useMemo, useRef } from "react"
+import { Suspense, useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useMailComposer } from "screens/Artwork/useMailComposer"
@@ -64,9 +63,11 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const { artwork } = artworkData
 
-  const numberOfAlbumsIncludingArtwork = useMemo(() => {
-    return filter(albums, { __typename: "Artwork", internalID: artwork?.internalID }).length
-  }, [albums, artwork?.internalID])
+  const numberOfAlbumsIncludingArtwork = albums
+    .flatMap((album) => album.items)
+    .filter((item) => {
+      return item?.internalID === artwork?.internalID
+    }).length
 
   const isEditArtworkHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.editArtwork

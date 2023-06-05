@@ -1,5 +1,4 @@
 import { StackNav } from "Navigation"
-import { Suspense } from "react"
 import { AddItemsToAlbum } from "screens/Albums/AddItemsToAlbum"
 import { AlbumTabs } from "screens/Albums/AlbumTabs/AlbumTabs"
 import { CreateOrEditAlbum } from "screens/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
@@ -10,7 +9,6 @@ import { SuspenseWrapper } from "system/wrappers/SuspenseWrapper"
 
 export type AlbumNavigationScreens = {
   AddItemsToAlbum: {
-    artworkToAdd?: SelectedItem
     artworksToAdd?: SelectedItem[]
     closeBottomSheetModal?: () => void
   }
@@ -18,7 +16,6 @@ export type AlbumNavigationScreens = {
   CreateOrEditAlbum: {
     mode: "create" | "edit"
     albumId?: string
-    artworkToAdd?: SelectedItem
     artworksToAdd?: SelectedItem[]
     closeBottomSheetModal?: () => void
   }

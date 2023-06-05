@@ -1,7 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { InstallationsList } from "components/Lists/InstallationsList"
 import { SelectModePortal } from "components/SelectModePortal"
-import { TabsScrollView } from "components/Tabs/TabsScrollView"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
@@ -17,9 +17,9 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
     <>
       <SelectModePortal tabName="ShowInstalls" items={installs} />
 
-      <TabsScrollView>
+      <Tabs.ScrollView>
         <InstallationsList images={installs} />
-      </TabsScrollView>
+      </Tabs.ScrollView>
     </>
   )
 }

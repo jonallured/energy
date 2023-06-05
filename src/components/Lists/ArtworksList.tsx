@@ -1,4 +1,3 @@
-import { useSpace } from "@artsy/palette-mobile"
 import MasonryList from "@react-native-seoul/masonry-list"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
@@ -46,7 +45,6 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
   const artworkSlugs = presentedArtworks.map((artwork) => artwork.slug)
 
-  const space = useSpace()
   const numColumns = isTablet() ? 3 : 2
 
   const handleArtworkItemPress = (item: SelectedItemArtwork) => {
@@ -68,10 +66,7 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
   return (
     <MasonryList
       testID="ArtworksList"
-      contentContainerStyle={{
-        paddingHorizontal: space(2),
-        ...(contentContainerStyle as object),
-      }}
+      contentContainerStyle={contentContainerStyle as object}
       numColumns={numColumns}
       data={presentedArtworks}
       renderItem={({ item, i }) => {

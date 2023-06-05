@@ -1,7 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { SelectModePortal } from "components/SelectModePortal"
-import { TabsScrollView } from "components/Tabs/TabsScrollView"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { extractNodes } from "utils/extractNodes"
@@ -22,9 +22,9 @@ export const ShowArtworks: React.FC<ShowArtworksProps> = ({ slug }) => {
     <>
       <SelectModePortal tabName="ShowArtworks" items={presentedArtworks} />
 
-      <TabsScrollView>
+      <Tabs.ScrollView>
         <ArtworksList artworks={presentedArtworks} />
-      </TabsScrollView>
+      </Tabs.ScrollView>
     </>
   )
 }

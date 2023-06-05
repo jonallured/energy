@@ -5,7 +5,6 @@ import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { isSelected } from "components/SelectMode"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemDocument } from "system/store/Models/SelectModeModel"
-import { getContentContainerStyle } from "utils/getContentContainerStyle"
 
 interface DocumentListProps {
   documents: SelectedItemDocument[]
@@ -22,7 +21,6 @@ export const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
 
   return (
     <MasonryList
-      contentContainerStyle={getContentContainerStyle()}
       numColumns={2}
       data={documents}
       renderItem={({ item, i }) => {

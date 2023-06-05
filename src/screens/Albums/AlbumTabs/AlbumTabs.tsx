@@ -2,17 +2,18 @@ import {
   DEFAULT_HIT_SLOP,
   MoreIcon,
   SCREEN_HORIZONTAL_PADDING,
+  Tabs,
   Touchable,
 } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { BottomSheetRef } from "components/BottomSheet/BottomSheetModalView"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { TabScreen } from "components/Tabs/TabScreen"
-import { TabsWithHeader } from "components/Tabs/TabsWithHeader"
+import { TabsView } from "components/TabsView"
 import { useState } from "react"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { useAlbum } from "screens/Albums/useAlbum"
+import { TabScreen } from "system/wrappers/TabScreen"
 import { AlbumArtworks } from "./AlbumArtworks"
 import { AlbumDocuments } from "./AlbumDocuments"
 import { AlbumInstalls } from "./AlbumInstalls"
@@ -37,7 +38,7 @@ export const AlbumTabs = () => {
   }
 
   return (
-    <TabsWithHeader
+    <TabsView
       title={album.name}
       bottomSheetActionsProps={{
         albumId,
@@ -61,13 +62,15 @@ export const AlbumTabs = () => {
         </TabScreen>
       </Tabs.Tab>
       <Tabs.Tab name="AlbumInstalls" label="Installs">
-        <AlbumInstalls albumId={albumId} />
+        <TabScreen>
+          <AlbumInstalls albumId={albumId} />
+        </TabScreen>
       </Tabs.Tab>
       <Tabs.Tab name="AlbumDocuments" label="Documents">
         <TabScreen>
           <AlbumDocuments albumId={albumId} />
         </TabScreen>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </TabsView>
   )
 }

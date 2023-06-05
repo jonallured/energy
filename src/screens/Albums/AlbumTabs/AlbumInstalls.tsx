@@ -1,6 +1,6 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { AlbumInstallsQuery } from "__generated__/AlbumInstallsQuery.graphql"
 import { InstallationsList } from "components/Lists/InstallationsList"
-import { TabsScrollView } from "components/Tabs/TabsScrollView"
 import { graphql } from "relay-runtime"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useValidateAlbumItems } from "screens/Albums/useValidateAlbumItems"
@@ -30,9 +30,9 @@ export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ albumId }) => {
   })
 
   return (
-    <TabsScrollView>
+    <Tabs.ScrollView>
       <InstallationsList images={installs} />
-    </TabsScrollView>
+    </Tabs.ScrollView>
   )
 }
 

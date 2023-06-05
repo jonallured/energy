@@ -1,5 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
-import { TabsScrollView } from "components/Tabs/TabsScrollView"
+import { Flex, Tabs } from "@artsy/palette-mobile"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 
@@ -12,11 +11,11 @@ export const SuspenseWrapper: React.FC<ArtsySuspenseProps> = ({ withTabs, childr
     <Suspense
       fallback={
         withTabs ? (
-          <TabsScrollView>
+          <Tabs.ScrollView>
             <Flex my={2}>
               <ActivityIndicator />
             </Flex>
-          </TabsScrollView>
+          </Tabs.ScrollView>
         ) : (
           <Flex backgroundColor="background" flex={1} justifyContent="center" alignItems="center">
             <ActivityIndicator />

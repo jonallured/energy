@@ -1,11 +1,12 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
-import { TabScreen } from "components/Tabs/TabScreen"
-import { TabsWithHeader } from "components/Tabs/TabsWithHeader"
-import { Tabs } from "react-native-collapsible-tab-view"
+
+import { TabsView } from "components/TabsView"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
+import { TabScreen } from "system/wrappers/TabScreen"
 import { ShowArtworks } from "./ShowArtworks"
 import { ShowDocuments } from "./ShowDocuments"
 import { ShowInstalls } from "./ShowInstalls"
@@ -17,7 +18,7 @@ export const ShowTabs = () => {
   const data = useSystemQueryLoader<ShowTabsQuery>(showTabsQuery, { slug })
 
   return (
-    <TabsWithHeader title={data.show?.name!}>
+    <TabsView title={data.show?.name!}>
       <Tabs.Tab name="ShowArtworks" label="Works">
         <TabScreen>
           <ShowArtworks slug={slug} />
@@ -33,7 +34,7 @@ export const ShowTabs = () => {
           <ShowDocuments slug={slug} />
         </TabScreen>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </TabsView>
   )
 }
 
@@ -55,7 +56,7 @@ export const showTabsQuery = graphql`
 
 export const SkeletonShowTabs = () => {
   return (
-    <TabsWithHeader title="">
+    <TabsView title="">
       <Tabs.Tab name="ShowArtworks" label="Works">
         <></>
       </Tabs.Tab>
@@ -65,6 +66,6 @@ export const SkeletonShowTabs = () => {
       <Tabs.Tab name="ShowDocuments" label="Documents">
         <></>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </TabsView>
   )
 }

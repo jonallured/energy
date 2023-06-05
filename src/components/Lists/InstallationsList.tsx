@@ -5,7 +5,6 @@ import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { isSelected } from "components/SelectMode"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
-import { getContentContainerStyle } from "utils/getContentContainerStyle"
 
 interface ShowInstallationsProps {
   images: SelectedItemInstall[]
@@ -18,7 +17,6 @@ export const InstallationsList: React.FC<ShowInstallationsProps> = ({ images = [
 
   return (
     <MasonryList
-      contentContainerStyle={getContentContainerStyle()}
       numColumns={2}
       data={images}
       renderItem={({ item, i }) => {

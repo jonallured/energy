@@ -1,10 +1,15 @@
-import { MenuIcon, Touchable, MagnifyingGlassIcon, DEFAULT_HIT_SLOP } from "@artsy/palette-mobile"
+import {
+  MenuIcon,
+  Touchable,
+  MagnifyingGlassIcon,
+  DEFAULT_HIT_SLOP,
+  Tabs,
+} from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
-import { TabScreen } from "components/Tabs/TabScreen"
-import { TabsWithHeader } from "components/Tabs/TabsWithHeader"
-import { Tabs } from "react-native-collapsible-tab-view"
+import { TabsView } from "components/TabsView"
 import { useSetupRageShake } from "system/devTools/useSetupRageShake"
+import { TabScreen } from "system/wrappers/TabScreen"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 import { Albums } from "./Albums/Albums"
 import { Artists } from "./Artists/Artists"
@@ -17,7 +22,7 @@ export const HomeTabs = () => {
   useSetupRageShake()
 
   return (
-    <TabsWithHeader
+    <TabsView
       title="Folio"
       showLargeHeaderText={false}
       headerProps={{
@@ -53,6 +58,6 @@ export const HomeTabs = () => {
           <Albums />
         </TabScreen>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </TabsView>
   )
 }

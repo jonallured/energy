@@ -1,8 +1,8 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsListQuery } from "__generated__/ArtistsListQuery.graphql"
 import { ArtistListItem } from "components/Items/ArtistListItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { TabsFlatList } from "components/Tabs/TabsFlatList"
 import { zip } from "lodash"
 import { StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -11,7 +11,6 @@ import { graphql } from "relay-runtime"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
-import { getContentContainerStyle } from "utils/getContentContainerStyle"
 
 interface ArtistsListProps {
   contentContainerStyle?: StyleProp<ViewStyle>
@@ -38,18 +37,14 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
 
   const items = zip(artists, counts)
 
-  const ArtistsFlatList = isInTabs ? TabsFlatList : FlatList
+  const ArtistsFlatList = isInTabs ? Tabs.FlatList : FlatList
 
   return (
     <ArtistsFlatList
       data={items}
       numColumns={numColumns}
       initialNumToRender={30}
-      contentContainerStyle={
-        contentContainerStyle ?? {
-          ...getContentContainerStyle(),
-        }
-      }
+      contentContainerStyle={isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle}
       renderItem={({ item }) => {
         const artist = item[0]
         const count = item[1]

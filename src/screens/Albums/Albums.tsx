@@ -1,13 +1,11 @@
-import { Button, Screen } from "@artsy/palette-mobile"
+import { Button, Screen, Tabs } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { TabsFlatList } from "components/Tabs/TabsFlatList"
 import { isTablet } from "react-native-device-info"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
 import { GlobalStore } from "system/store/GlobalStore"
 import { Album } from "system/store/Models/AlbumsModel"
-import { getContentContainerStyle } from "utils/getContentContainerStyle"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const Albums = () => {
@@ -18,10 +16,9 @@ export const Albums = () => {
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <TabsFlatList
+        <Tabs.FlatList
           data={albums}
           numColumns={isTablet() ? 2 : 1}
-          contentContainerStyle={getContentContainerStyle()}
           renderItem={({ item: album }: { item: Album }) => {
             return (
               <AlbumListItem

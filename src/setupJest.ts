@@ -199,17 +199,17 @@ jest.mock("system/hooks/useSystemIsDoneBooting", () => ({
   useSystemIsDoneBooting: () => true,
 }))
 
-jest.mock("components/Tabs/TabsScrollView", () => {
+jest.mock("@artsy/palette-mobile", () => {
   const React = require("react-native")
-  return {
-    TabsScrollView: React.ScrollView,
-  }
-})
+  const palette = jest.requireActual("@artsy/palette-mobile")
 
-jest.mock("components/Tabs/TabsFlatList", () => {
-  const React = require("react-native")
   return {
-    TabsFlatList: React.FlatList,
+    ...palette,
+    Tabs: {
+      ...palette.Tabs,
+      ScrollView: React.ScrollView,
+      FlatList: React.FlatList,
+    },
   }
 })
 
