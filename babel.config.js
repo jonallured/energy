@@ -12,7 +12,6 @@ const plugins = [
   // to ensure the graphql template literals are correctly transformed
   "relay",
   "import-graphql", // to enabling import syntax for .graphql and .gql files.
-  "react-native-reanimated/plugin", // This has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
   [
     "module-resolver",
     {
@@ -20,6 +19,7 @@ const plugins = [
       root: ["./src"],
     },
   ],
+  "react-native-reanimated/plugin", // This has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
 ]
 
 if (process.env.CI) {
