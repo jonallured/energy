@@ -1,12 +1,10 @@
 import { Text, Screen } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SettingsItem } from "components/SettingsItem"
-import { useState } from "react"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const DarkModeSettings = () => {
   const navigation = useNavigation()
-  const [overrideDarkMode, setOverrideDarkMode] = useState(false)
   const isUsingSystemColorScheme = GlobalStore.useAppState(
     (state) => state.devicePrefs.usingSystemColorScheme
   )
@@ -22,9 +20,11 @@ export const DarkModeSettings = () => {
 
         <SettingsItem title="Dark mode always on">
           <SettingsItem.Toggle
-            value={forcedColorScheme === "dark" && overrideDarkMode}
+            accessibilityRole="switch"
+            accessibilityLabel="Dark mode always on switch"
+            accessibilityValue={{ text: forcedColorScheme === "dark" ? "on" : "off" }}
+            value={forcedColorScheme === "dark"}
             onValueChange={(value) => {
-              setOverrideDarkMode(value)
               GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(false)
               GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
             }}
@@ -35,11 +35,15 @@ export const DarkModeSettings = () => {
           subtitle="Automatically turn Dark Mode on or off based on the system's Dark Mode settings"
         >
           <SettingsItem.Toggle
+            accessibilityRole="switch"
+            accessibilityLabel="Follow System Settings switch"
+            accessibilityValue={{ text: isUsingSystemColorScheme ? "on" : "off" }}
             value={isUsingSystemColorScheme}
             onValueChange={(value) => {
-              setOverrideDarkMode(false)
               GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(value)
-              GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
+              if (value) {
+                GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "light" : "dark")
+              }
             }}
           />
         </SettingsItem>

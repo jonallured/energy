@@ -54,37 +54,46 @@ export const __globalStoreTestUtils__ = __TEST__
       injectState: (state: DeepPartial<GlobalStoreState>) => {
         GlobalStore.actions.__inject(state)
       },
-      getCurrentState: () => globalStoreInstance.getState(),
+      getCurrentState: () => globalStoreInstance().getState(),
       dispatchedActions: [] as Action[],
+      reset: () => {
+        _globalStoreInstance = undefined
+      },
     }
   : undefined
 
-const globalStoreInstance = createGlobalStore()
+let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
+const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
+  if (_globalStoreInstance === undefined) {
+    _globalStoreInstance = createGlobalStore()
+  }
+  return _globalStoreInstance
+}
 
 const hooks = createTypedHooks<GlobalStoreModel>()
 
 export const GlobalStore = {
   useAppState: hooks.useStoreState,
-  getState: globalStoreInstance.getState,
+  getState: globalStoreInstance().getState,
   get actions() {
-    return globalStoreInstance.getActions()
+    return globalStoreInstance().getActions()
   },
 }
 
 export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
-  return <StoreProvider store={globalStoreInstance}>{children}</StoreProvider>
+  return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
 }
 
 /**
  * This is marked as unsafe because it will not cause a re-render
  */
 export function unsafe__getEnvironment() {
-  return { ...globalStoreInstance.getState().config.environment }
+  return { ...globalStoreInstance().getState().config.environment }
 }
 
 /**
  * This is marked as unsafe because it will not cause a re-render
  */
 export function unsafe__getAuth() {
-  return { ...globalStoreInstance.getState().auth }
+  return { ...globalStoreInstance().getState().auth }
 }
