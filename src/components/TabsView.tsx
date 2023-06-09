@@ -1,4 +1,4 @@
-import { Tabs } from "@artsy/palette-mobile"
+import { Screen, Tabs } from "@artsy/palette-mobile"
 import { HeaderProps } from "@artsy/palette-mobile/dist/elements/Screen/Header"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useNavigation } from "@react-navigation/native"
@@ -37,7 +37,7 @@ export const TabsView: React.FC<TabsViewProps> = ({
   }
 
   return (
-    <Tabs.Provider>
+    <Screen.ScreenScrollContextProvider>
       <BottomSheetModalProvider>
         <PortalProvider>
           <Tabs.TabsWithHeader
@@ -50,6 +50,6 @@ export const TabsView: React.FC<TabsViewProps> = ({
           <BottomSheetActions {...bottomSheetActionsProps} />
         </PortalProvider>
       </BottomSheetModalProvider>
-    </Tabs.Provider>
+    </Screen.ScreenScrollContextProvider>
   )
 }

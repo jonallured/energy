@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/palette-mobile@^11.0.32":
-  version "11.0.32"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.32.tgz#163ab0812fae27d4c675879a23b8a7f24e59433f"
-  integrity sha512-8nw0pyXCKnpwxF9/RiNTpeovqmbMjm+PANzYgHChfX2N7bRaww2gf7t4N9B2o+oN9p6yjOcESNI2dOhPwNqw7Q==
+"@artsy/palette-mobile@^11.0.40":
+  version "11.0.40"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.40.tgz#e0dc4b0b12c0c4522a20e615f56e287d76099dc6"
+  integrity sha512-dRwTJjMyo16Y8VmLsR8Fswhs0Xdpy+tY3i4LlGiG2W8ni5rt8yNm19k8HW0sF2MQW74sz97ArNnmMQbMJdZB/Q==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -23,6 +23,7 @@
     moti "^0.25.3"
     react-nanny "^2.15.0"
     react-native-collapsible-tab-view "^6.1.4"
+    react-native-pager-view "^6.2.0"
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
@@ -10310,6 +10311,11 @@ react-native-pager-view@^6.1.4:
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.1.4.tgz#3a63ebd1b72f81991157ea552bb9c887e529bc8c"
   integrity sha512-fmTwgGwPxGCBusKAq7gHzm+s1Yp0qh5rKPoQszaCuxrb+76KgK4Qe82jJNPUp2xTZOKSw+FbJU2QahF8ncTl+w==
+
+react-native-pager-view@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.0.tgz#51380d93fbe47f6380dc71d613a787bf27a4ca37"
+  integrity sha512-pf9OnL/Tkr+5s4Gjmsn7xh91PtJLDa6qxYa/bmtUhd/+s4cQdWQ8DIFoOFghwZIHHHwVdWtoXkp6HtpjN+r20g==
 
 react-native-qrcode-generator@^1.2.2:
   version "1.2.2"
