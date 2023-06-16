@@ -63,6 +63,31 @@ yarn android
 WIP
 </details>
 
+### Running on a real iOS device
+
+1. Install dependencies
+
+```sh
+yarn setup:artsy
+yarn install:all
+```
+
+2. Open xcode
+
+```sh
+yarn open-xcode
+```
+
+3. On the left side of `XCode` select Energy and then select the Energy target. On the right side select your device from the dropdown menu. (check screenshot below)
+
+4. Select Signing & Capabilities and check Automatically manage signing and select your team `Art.sy Inc.` from the dropdown menu. (check screenshot below)
+
+<img src="./screenshots/run-ios-locally.png" width="600" />
+
+5. Run the app pressing the play button
+
+> :warning: This will generate a diff on `project.pbxproj` file that you should **not** commit with your changes.
+
 ## Contribute
 
 We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle) [Pavlos Vinieratos](https://github.com/pvinis) [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/energy#meta).
