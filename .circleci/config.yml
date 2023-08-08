@@ -437,6 +437,7 @@ workflows:
             branches:
               only:
                 - app_store_submission
+
       - promote-beta-to-play-store:
           filters:
             branches:
@@ -470,6 +471,7 @@ workflows:
                 - update-changelog
 
       - check-pr:
+          context: danger-github-oss
           filters:
             branches:
               ignore:
@@ -479,6 +481,7 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
+
       - build-test-js:
           filters:
             branches:
@@ -486,6 +489,7 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
+
       - horizon/block:
           context: horizon
           project_id: 43
@@ -494,6 +498,7 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+
       - build-test-app-ios:
           filters:
             branches:
@@ -507,6 +512,7 @@ workflows:
             - type-check
             - build-test-js
             - horizon/block
+
       - build-test-app-android:
           filters:
             branches:
