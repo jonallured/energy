@@ -297,7 +297,6 @@ DEPENDENCIES
   fastlane
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
-  json
   psych
   sentry-ruby
 

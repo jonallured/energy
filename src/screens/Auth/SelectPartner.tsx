@@ -3,6 +3,7 @@ import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { useState, useEffect, useRef, Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -57,12 +58,15 @@ const SelectPartner = () => {
         }
       }
     `,
-    {}
+    {},
+    { fetchPolicy: "network-only", networkCacheConfig: { force: true } }
   )
 
   const [search, setSearch] = useState("")
   const partners = useRef(data.me?.partners).current
   const [filteredData, setFilteredData] = useState(partners)
+
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     if (!partners) return
@@ -96,7 +100,12 @@ const SelectPartner = () => {
         }
         ListEmptyComponent={<ListEmptyComponent text="No partners found" />}
       />
-      <Button variant="outlineGray" block onPress={() => void GlobalStore.actions.auth.signOut()}>
+      <Button
+        bottom={insets.bottom}
+        variant="outlineGray"
+        block
+        onPress={() => void GlobalStore.actions.auth.signOut()}
+      >
         Log out
       </Button>
     </>
