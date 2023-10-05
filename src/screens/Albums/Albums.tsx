@@ -2,7 +2,6 @@ import { Button, Screen, Tabs } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { isTablet } from "react-native-device-info"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
 import { GlobalStore } from "system/store/GlobalStore"
 import { Album } from "system/store/Models/AlbumsModel"
@@ -18,7 +17,7 @@ export const Albums = () => {
       <Screen.Body fullwidth>
         <Tabs.FlatList
           data={albums}
-          numColumns={isTablet() ? 2 : 1}
+          numColumns={1}
           renderItem={({ item: album }: { item: Album }) => {
             return (
               <AlbumListItem

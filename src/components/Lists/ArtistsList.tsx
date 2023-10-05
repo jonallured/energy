@@ -5,7 +5,6 @@ import { ArtistListItem } from "components/Items/ArtistListItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { zip } from "lodash"
 import { StyleProp, ViewStyle } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql } from "relay-runtime"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
@@ -29,7 +28,6 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
   const counts = data.partner?.allArtistsConnection?.edges?.map(
     (edge) => edge?.counts?.managedArtworks as string
   )
-  const numColumns = isTablet() ? 2 : 1
 
   if (!counts || !artists) {
     return null
@@ -42,7 +40,7 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
   return (
     <ArtistsFlatList
       data={items}
-      numColumns={numColumns}
+      numColumns={1}
       initialNumToRender={30}
       contentContainerStyle={isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle}
       renderItem={({ item }) => {

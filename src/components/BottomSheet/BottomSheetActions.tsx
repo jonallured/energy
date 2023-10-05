@@ -16,6 +16,7 @@ import {
   BottomSheetModalView,
   BottomSheetRef,
 } from "components/BottomSheet/BottomSheetModalView"
+import { useToast } from "components/Toast/ToastContext"
 import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -24,6 +25,7 @@ import { useMailComposer } from "screens/Artwork/useMailComposer"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { waitForScreenTransition } from "utils/waitForScreenTransition"
 
 export interface BottomSheetActionsProps {
   albumId?: string
@@ -40,6 +42,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
   )
   const { album } = useAlbum({ albumId: albumId ?? "" })
   const { sendMail } = useMailComposer()
+  const { toast } = useToast()
 
   const showActionButtons = selectedItems.length > 0
 
@@ -123,13 +126,12 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
             GlobalStore.actions.albums.removeAlbum(album.id)
             navigation.goBack()
 
-            // TODO: Pendbng design
-            // waitForScreenTransition(() => {
-            //   toast.show({
-            //     title: "Successfully deleted album.",
-            //     type: "info",
-            //   })
-            // })
+            waitForScreenTransition(() => {
+              toast.show({
+                title: "Successfully deleted album.",
+                type: "info",
+              })
+            })
           },
         },
       ])

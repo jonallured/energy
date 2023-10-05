@@ -11,6 +11,7 @@ import {
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtworksList } from "components/Lists/ArtworksList"
+import { useToast } from "components/Toast/ToastContext"
 import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
 import { Platform } from "react-native"
@@ -19,6 +20,7 @@ import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
+import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { object, string } from "yup"
 
 interface CreateAlbumValuesSchema {
@@ -39,6 +41,7 @@ export const CreateOrEditAlbum = () => {
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()
+  const { toast } = useToast()
 
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
@@ -91,16 +94,15 @@ export const CreateOrEditAlbum = () => {
           navigateToSavedHistory({
             lookupKey: "before-adding-to-album",
             onComplete: () => {
-              // TODO: Pending design feedback
-              // waitForScreenTransition(() => {
-              //   toast.show({
-              //     title: `Successfully ${mode === "edit" ? "edited" : "created"} album.`,
-              //     type: "success",
-              //     onPress: () => {
-              //       console.log("hiii")
-              //     },
-              //   })
-              // })
+              waitForScreenTransition(() => {
+                toast.show({
+                  title: `Successfully ${mode === "edit" ? "edited" : "created"} album.`,
+                  type: "success",
+                  onPress: () => {
+                    console.log("hiii")
+                  },
+                })
+              })
             },
           })
         } catch (error) {

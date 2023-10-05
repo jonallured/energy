@@ -1,17 +1,20 @@
 import { Button, useSpace, Screen } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
+import { useToast } from "components/Toast/ToastContext"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
+import { waitForScreenTransition } from "utils/waitForScreenTransition"
 
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
   const { artworksToAdd } = useRoute<HomeTabsRoute>().params
+  const { toast } = useToast()
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
@@ -53,13 +56,12 @@ export const AddItemsToAlbum = () => {
       navigateToSavedHistory({
         lookupKey: "before-adding-to-album",
         onComplete: () => {
-          // TODO: Pending design feedback
-          // waitForScreenTransition(() => {
-          //   toast.show({
-          //     title: "Successfully added to album.",
-          //     type: "success",
-          //   })
-          // })
+          waitForScreenTransition(() => {
+            toast.show({
+              title: "Successfully added to album.",
+              type: "success",
+            })
+          })
         },
       })
 
