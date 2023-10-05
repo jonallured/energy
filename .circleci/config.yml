@@ -56,12 +56,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v3-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v2-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -78,7 +78,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v2-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -86,19 +86,19 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v3-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          key: v2-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v6-pods-{{ checksum ".manifests/cocoapods" }}
+            - v5-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v6-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v5-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -108,7 +108,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v3-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-fonts
@@ -116,7 +116,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v4-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v3-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -136,7 +136,7 @@ commands:
       - setup-env-file
       - restore_cache:
           keys:
-            - v2-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v1-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - run:
           name: Quit early if possible
           command: |
@@ -151,7 +151,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v2-app_build_android-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-fonts
@@ -159,7 +159,7 @@ commands:
           name: Build App
           command: ./scripts/ci-android
       - save_cache:
-          key: v3-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v2-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -279,7 +279,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v2-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v1-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -317,7 +317,7 @@ jobs:
           no_output_timeout: 20m
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v2-test-success-{{ checksum ".manifests/native_code" }}
+          key: v1-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
       - store_artifacts:
@@ -353,7 +353,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v2-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v1-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
