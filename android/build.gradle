@@ -6,8 +6,8 @@ buildscript {
     ext {
         buildToolsVersion = "31.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 31
-        targetSdkVersion = 31
+        compileSdkVersion = 33
+        targetSdkVersion = 33
         reactNativeVersion = "0.69.6" // https://github.com/expo/expo/issues/18129
 
         if (System.properties['os.arch'] == "aarch64") {
