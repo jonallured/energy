@@ -73,7 +73,7 @@ commands:
     steps:
       - run:
           name: install bundler
-          command: sudo gem install bundler
+          command: sudo gem install bundler:2.4.3
   install-gems:
     steps:
       - restore_cache:
@@ -179,7 +179,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.3.0
+      xcode: 14.3.1
       resource_class: macos.x86.medium.gen2
     steps:
       - checkout
@@ -272,7 +272,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.3.0
+      xcode: 14.3.1
       resource_class: macos.x86.medium.gen2
     steps:
       - attach_workspace:
@@ -364,7 +364,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.0.1
+      xcode: 14.3.1
       resource_class: macos.x86.medium.gen2
     steps:
       - checkout
@@ -400,7 +400,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.0.1
+      xcode: 14.3.1
       resource_class: macos.x86.medium.gen2
     steps:
       - checkout
