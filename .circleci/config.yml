@@ -180,7 +180,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 14.3.1
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
     steps:
       - checkout
       - install-node
@@ -273,7 +273,7 @@ jobs:
 
     macos:
       xcode: 14.3.1
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
     steps:
       - attach_workspace:
           at: ../workspace
@@ -365,7 +365,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 14.3.1
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
     steps:
       - checkout
       - install-bundler
@@ -401,7 +401,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 14.3.1
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
     steps:
       - checkout
       - install-bundler
