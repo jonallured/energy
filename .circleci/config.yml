@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.2
+  node: circleci/node@5.1.0
   queue: eddiewebb/queue@1.7.0
   horizon: artsy/release@0.0.1
 
@@ -17,19 +17,9 @@ commands:
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
-      - run:
-          name: Install Node 16 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v16.10.0' >> $BASH_ENV
-            echo 'nvm alias default v16.10.0' >> $BASH_ENV
-            sudo mkdir ~/.config
-            sudo chown -R $USER:$GROUP ~/.config
+      - node/install:
+          install-yarn: true
+          node-version: "20.9.0"
   generate-checksums:
     steps:
       - run:
@@ -93,12 +83,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-pods-{{ checksum ".manifests/cocoapods" }}
+            - v6-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v5-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v6-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -136,7 +126,7 @@ commands:
       - setup-env-file
       - restore_cache:
           keys:
-            - v1-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v2-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - run:
           name: Quit early if possible
           command: |
@@ -146,12 +136,13 @@ commands:
             fi
       - install-node-modules
       - run-relay-compiler
+      - install-bundler
       - install-gems
   build-app-android:
     steps:
       - restore_cache:
           keys:
-            - v2-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v3-app_build_android-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-fonts
@@ -159,7 +150,7 @@ commands:
           name: Build App
           command: ./scripts/ci-android
       - save_cache:
-          key: v2-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v3-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -191,7 +182,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "16.10.0"
+      tag: "20.9.0"
     steps:
       - checkout
       - generate-checksums
@@ -204,7 +195,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "16.10.0"
+      tag: "20.9.0"
     resource_class: large
     steps:
       - checkout
@@ -337,7 +328,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2023.10.2-node
     resource_class: large
     steps:
       - prep-android-env
@@ -353,7 +344,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v1-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v2-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
@@ -381,7 +372,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     docker:
-      - image: circleci/android:api-29-node
+      - image: cimg/android:2023.10.2-node
 
     steps:
       - checkout

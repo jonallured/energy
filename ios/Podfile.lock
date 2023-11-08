@@ -335,7 +335,7 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-shake (5.1.1):
+  - react-native-shake (5.5.2):
     - React
   - react-native-splash-screen (3.3.0):
     - React-Core
@@ -409,7 +409,7 @@ PODS:
     - React-perflogger (= 0.69.12)
   - RNCAsyncStorage (1.17.11):
     - React-Core
-  - RNCClipboard (1.11.1):
+  - RNCClipboard (1.12.1):
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
@@ -452,7 +452,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.20.0):
+  - RNScreens (3.26.0):
     - React-Core
     - React-RCTImage
   - RNSentry (4.12.0):
@@ -768,7 +768,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-pager-view: b58cb9e9f42f64e50cab3040815772c1d119a2e2
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
-  react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
+  react-native-shake: 0e90da57c823b43975d1cd01249ff6ca2f9ebe00
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-webview: 994b9f8fbb504d6314dc40d83f94f27c6831b3bf
   React-perflogger: 5ade0a1627352f1647d283e78331819bb46cceae
@@ -784,7 +784,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: ea78653fbc68bd6f2d3f5e7e311bc5a9dc8bfeca
   ReactCommon: f4bb9e5209ea5c3c6ab25e100895119e58d6e50a
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
-  RNCClipboard: 2834e1c4af68697089cdd455ee4a4cdd198fa7dd
+  RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
@@ -792,7 +792,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
   RNReanimated: ba021107f1dd90cb04c35c5d639392d5da27d065
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNScreens: e145ee71415e19fdcbcd98d85247f5baf4feafad
   RNSentry: 4c09f4dd9740cb9b33e94303de5b6d0dbeb0737d
   RNSVG: 6adc5c52d2488a476248413064b7f2832e639057
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
