@@ -9,11 +9,21 @@ platform :ios, '12.4'
 
 install! 'cocoapods', :deterministic_uuids => false
 
-production = ENV["PRODUCTION"] == "1"
+ENVFILES = {
+  'Debug' => '$(PODS_ROOT)/../../.env',
+  'Release' => '$(PODS_ROOT)/../../.env',
+}
 
 target 'Energy' do
   # Flags change depending on the env values.
   flags = get_default_flags()
+
+  if ENV['CI']
+    config = use_native_modules!(packages_to_skip: ['react-native-flipper'])
+  else
+    config = use_native_modules!
+  end
+
   use_expo_modules!
   post_integrate do |installer|
     begin
@@ -22,27 +32,25 @@ target 'Energy' do
       Pod::UI.warn e
     end
   end
-
-  # Workaround for flipper being linked to release builds https://github.com/facebook/flipper/issues/976#issuecomment-632697702
-  pod 'react-native-flipper', :path => '../node_modules/react-native-flipper', :configuration => 'Debug'
-  config = use_native_modules!
-
-  ENVFILES = {
-    'Debug' => '$(PODS_ROOT)/../../.env',
-    'Release' => '$(PODS_ROOT)/../../.env',
-  }
+  
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # to enable hermes on iOS, change `false` to `true` and then install pods
-    :production => production,
-    :hermes_enabled => flags[:hermes_enabled],
+    
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    # Upcoming versions of React Native may rely on get_default_flags(), but
+    # we make it explicit here to aid in the React Native upgrade process.
+    :hermes_enabled => false,
+    :production => ENV['CIRCLE_BUILD_NUM'],
     :fabric_enabled => flags[:fabric_enabled],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    :flipper_configuration => FlipperConfiguration.enabled(["Debug"], { 'Flipper' => '0.189.0' }),
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  use_flipper!({'Flipper' => '0.166.0'}) # should match the version of your Flipper client app
 
   target 'EnergyTests' do
     inherit! :complete
@@ -50,10 +58,17 @@ target 'Energy' do
   end
 
   post_install do |installer|
-    flipper_post_install(installer)
-
-    react_native_post_install(installer)
+    react_native_post_install(
+      installer,
+      # Set `mac_catalyst_enabled` to `true` in order to apply patches
+      # necessary for Mac Catalyst builds
+      :mac_catalyst_enabled => false
+    )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    if !ENV['CI']
+      flipper_post_install(installer)
+    end
 
     # Setup Env Vars For Build Schemas
     installer.pods_project.targets.each do |target|
