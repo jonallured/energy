@@ -14097,6 +14097,9 @@ type PreviewSavedSearch {
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel]!
+
+  # Suggested filters for the user to use based on their search criteria
+  suggestedFilters: [SearchCriteriaLabel!]!
 }
 
 input PreviewSavedSearchAttributes {
