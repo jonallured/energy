@@ -1,7 +1,4 @@
 package net.artsy.energy;
-import android.content.res.Configuration;
-import expo.modules.ApplicationLifecycleDispatcher;
-import expo.modules.ReactNativeHostWrapper;
 
 import android.app.Application;
 import android.content.Context;
@@ -23,7 +20,7 @@ public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mNewArchitectureNativeHost = new MainApplicationReactNativeHost(this);
 
   private final ReactNativeHost mReactNativeHost =
-      new ReactNativeHostWrapper(this, new ReactNativeHost(this) {
+      new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
@@ -47,7 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected JSIModulePackage getJSIModulePackage() {
           return new ReanimatedJSIModulePackage();
         }
-      });
+      };
 
   @Override
   public ReactNativeHost getReactNativeHost() {
@@ -65,7 +62,6 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     // If you opted-in for the New Architecture, we enable the TurboModule system
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
-    ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 
   /**
@@ -97,11 +93,5 @@ public class MainApplication extends Application implements ReactApplication {
         e.printStackTrace();
       }
     }
-  }
-
-  @Override
-  public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
 }

@@ -1,8 +1,8 @@
 import { useToast } from "components/Toast/ToastContext"
 import { FilterActionTypes, StateMapper } from "easy-peasy"
-import * as MailComposer from "expo-mail-composer"
 import { uniq } from "lodash"
 import { Alert } from "react-native"
+import Mailer from "react-native-mail"
 import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
@@ -34,12 +34,17 @@ export const useMailComposer = () => {
 
         log(subject, body, ccRecipients)
 
-        await MailComposer.composeAsync({
-          isHtml: true,
-          subject,
-          body,
-          ccRecipients,
-        })
+        Mailer.mail(
+          {
+            subject,
+            recipients: [emailSettings.ccRecipients],
+            body: body,
+            isHTML: true,
+          },
+          (error, event) => {
+            console.log("[useMailComposer] Error sending email:", error, "event", event)
+          }
+        )
 
         toast.show({
           title: "Email sent.",
@@ -96,12 +101,17 @@ export const useMailComposer = () => {
       try {
         log(subject, body, ccRecipients)
 
-        await MailComposer.composeAsync({
-          isHtml: true,
-          ccRecipients,
-          subject,
-          body,
-        })
+        Mailer.mail(
+          {
+            subject,
+            recipients: [emailSettings.ccRecipients],
+            body: body,
+            isHTML: true,
+          },
+          (error, event) => {
+            console.log("[useMailComposer] Error sending email:", error, "event", event)
+          }
+        )
 
         toast.show({
           title: "Email sent.",

@@ -6,7 +6,6 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 33
         targetSdkVersion = 33
-        reactNativeVersion = "0.69.6" // https://github.com/expo/expo/issues/18129
 
         if (System.properties['os.arch'] == "aarch64") {
             // For M1 Users we need to use the NDK 24 which added support for aarch64

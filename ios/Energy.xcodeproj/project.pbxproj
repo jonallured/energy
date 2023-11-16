@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01193FB0356831C8AFDAF78F /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C913A6202936AA78146A5A /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1A9C04A92908402B00842B2F /* App.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1A9C04A22908402B00842B2F /* App.xcconfig */; };
@@ -23,7 +22,6 @@
 		CB12A98928902264003DAEA7 /* EnergyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CB12A98828902264003DAEA7 /* EnergyTest.m */; };
 		CB78CC672954CB9A00BC24E0 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB78CC662954CB9A00BC24E0 /* AppDelegate.mm */; };
 		CB8D21C028E5CF7B00128845 /* ARTAlbumMigrationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8D21BF28E5CF7B00128845 /* ARTAlbumMigrationModule.m */; };
-		CFE6354CD5991974DD3DFD64 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FE93B919E65DA0D98F7D1 /* ExpoModulesProvider.swift */; };
 		E141DB5F277603D800A0BBAD /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E141DB5C277603CE00A0BBAD /* Unica77LL-Italic.otf */; };
 		E141DB60277603D800A0BBAD /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E141DB5E277603CE00A0BBAD /* Unica77LL-Medium.otf */; };
 		E141DB61277603D800A0BBAD /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E141DB5D277603CE00A0BBAD /* Unica77LL-MediumItalic.otf */; };
@@ -56,12 +54,10 @@
 		1A9C04A72908402B00842B2F /* Tests-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Store.xcconfig"; sourceTree = "<group>"; };
 		1A9C04A82908402B00842B2F /* Tests.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Tests.xcconfig; sourceTree = "<group>"; };
 		1D0AE47A65C8663E3B452821 /* Pods-Energy-EnergyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Energy-EnergyTests.release.xcconfig"; path = "Target Support Files/Pods-Energy-EnergyTests/Pods-Energy-EnergyTests.release.xcconfig"; sourceTree = "<group>"; };
-		26C913A6202936AA78146A5A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Energy-EnergyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		31A529FB0CC63272A4DFDE02 /* Pods-Energy-EnergyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Energy-EnergyTests.store.xcconfig"; path = "Target Support Files/Pods-Energy-EnergyTests/Pods-Energy-EnergyTests.store.xcconfig"; sourceTree = "<group>"; };
 		6423831EA8574132BED9D8CC /* libPods-Energy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Energy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C97AB639B58BBB4B15BBE30 /* Pods-Energy-EnergyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Energy-EnergyTests.debug.xcconfig"; path = "Target Support Files/Pods-Energy-EnergyTests/Pods-Energy-EnergyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Energy/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		918FE93B919E65DA0D98F7D1 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Energy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		A3F500AD298C55CD00DF5DB0 /* Energy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Energy.entitlements; path = Energy/Energy.entitlements; sourceTree = "<group>"; };
 		ABFE59519B596E51CEFDCCC0 /* libPods-Energy-EnergyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Energy-EnergyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A881CF5CF3F2B244570E2A /* Pods-Energy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Energy.debug.xcconfig"; path = "Target Support Files/Pods-Energy/Pods-Energy.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,31 +150,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3BE915077637E0FD66DFBE7E /* EnergyTests */ = {
-			isa = PBXGroup;
-			children = (
-				26C913A6202936AA78146A5A /* ExpoModulesProvider.swift */,
-			);
-			name = EnergyTests;
-			sourceTree = "<group>";
-		};
-		3C4D79EDFC2288EF2A2140E3 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				4FDD32A3C070236594BDE9C5 /* Energy */,
-				3BE915077637E0FD66DFBE7E /* EnergyTests */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
-		4FDD32A3C070236594BDE9C5 /* Energy */ = {
-			isa = PBXGroup;
-			children = (
-				918FE93B919E65DA0D98F7D1 /* ExpoModulesProvider.swift */,
-			);
-			name = Energy;
-			sourceTree = "<group>";
-		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,7 +169,6 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				E233CBF5F47BEE60B243DCF8 /* Pods */,
 				EAD3A01E07274B10BC1396AD /* Resources */,
-				3C4D79EDFC2288EF2A2140E3 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -539,7 +509,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB12A98928902264003DAEA7 /* EnergyTest.m in Sources */,
-				01193FB0356831C8AFDAF78F /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,7 +519,6 @@
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				CB8D21C028E5CF7B00128845 /* ARTAlbumMigrationModule.m in Sources */,
 				CB78CC672954CB9A00BC24E0 /* AppDelegate.mm in Sources */,
-				CFE6354CD5991974DD3DFD64 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,9 +554,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Energy.app/Energy";
 			};
 			name = Debug;
@@ -617,11 +583,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_NAME = Energy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore sy.art.folio";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -773,10 +737,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_NAME = Energy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore sy.art.folio";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -800,9 +762,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Energy.app/Energy";
 			};
 			name = Store;

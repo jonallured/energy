@@ -18,8 +18,6 @@ module.exports = {
       "|@babel" +
       "|@react-native" +
       "|@react-native-seoul/masonry-list" +
-      "|expo-mail-composer" +
-      "|expo-modules-core" +
       "|moti" +
       "|react-native-file-viewer" +
       "|react-native-linear-gradient" +

@@ -4,7 +4,6 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js
 import React from "react"
 
 // @ts-expect-error
-// eslint-disable-next-line import/order
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import { ScreenDimensionsWithSafeAreas } from "utils/hooks/useScreenDimensions"
 
@@ -39,8 +38,6 @@ jest.mock("react-native-config", () => {
   // support both default and named export
   return { ...mockConfig, Config: mockConfig }
 })
-
-jest.mock("pretty-bytes", () => jest.fn())
 
 jest.mock("react-native-fs", () => ({
   mkdir: jest.fn(),
@@ -90,8 +87,6 @@ jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
   useRoute: jest.fn(),
 }))
-
-jest.mock("expo-mail-composer", () => ({ composeAsync: jest.fn() }))
 
 jest.mock("@gorhom/bottom-sheet", () => {
   const react = require("react-native")
@@ -221,4 +216,10 @@ jest.mock("components/Toast/ToastContext", () => ({
       hide: jest.fn(),
     },
   }),
+}))
+
+jest.mock("react-native-mail", () => ({
+  Mailer: {
+    mail: jest.fn(),
+  },
 }))

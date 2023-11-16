@@ -1,5 +1,4 @@
 package net.artsy.energy;
-import expo.modules.ReactActivityDelegateWrapper;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
