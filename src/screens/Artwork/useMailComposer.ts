@@ -9,7 +9,6 @@ import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
-
   const { toast } = useToast()
 
   /**
@@ -25,36 +24,39 @@ export const useMailComposer = () => {
     if (artworksToMail.length === 1) {
       const { title, artistNames } = firstSelectedItem
 
-      try {
-        const subject = emailSettings.oneArtworkSubject
-          .replace("$title", title ?? "")
-          .replace("$artist", artistNames ?? "")
+      const subject = emailSettings.oneArtworkSubject
+        .replace("$title", title ?? "")
+        .replace("$artist", artistNames ?? "")
 
-        const body = getArtworkEmailTemplate({ artwork: firstSelectedItem, emailSettings })
+      const body = getArtworkEmailTemplate({ artwork: firstSelectedItem, emailSettings })
 
-        log(subject, body, ccRecipients)
+      log(subject, body, ccRecipients)
 
-        Mailer.mail(
-          {
-            subject,
-            recipients: [emailSettings.ccRecipients],
-            body: body,
-            isHTML: true,
-          },
-          (error, event) => {
-            console.log("[useMailComposer] Error sending email:", error, "event", event)
-          }
-        )
+      let mailError = ""
 
+      Mailer.mail(
+        {
+          subject,
+          recipients: ccRecipients,
+          body: body,
+          isHTML: true,
+        },
+        (error) => {
+          mailError = error
+          console.log("[useMailComposer] Error sending email:", error)
+          alertOnEmailFailure(error)
+        }
+      )
+
+      if (!mailError) {
         toast.show({
           title: "Email sent.",
           type: "info",
         })
-      } catch (error) {
-        console.log("[useMailComposer] Error sending email:", error)
-
-        alertOnEmailFailure(error)
       }
+
+      mailError = ""
+
       // Sending multiple items
     } else if (artworksToMail.length > 1) {
       let aggregatedArtworks = ""
@@ -98,30 +100,31 @@ export const useMailComposer = () => {
         .replace(/\s+/g, " ")
         .trim()
 
-      try {
-        log(subject, body, ccRecipients)
+      log(subject, body, ccRecipients)
+      let mailError = ""
 
-        Mailer.mail(
-          {
-            subject,
-            recipients: [emailSettings.ccRecipients],
-            body: body,
-            isHTML: true,
-          },
-          (error, event) => {
-            console.log("[useMailComposer] Error sending email:", error, "event", event)
-          }
-        )
+      Mailer.mail(
+        {
+          subject,
+          recipients: ccRecipients,
+          body: body,
+          isHTML: true,
+        },
+        (error, event) => {
+          mailError = error
+          console.log("[useMailComposer] Error sending email:", error, "event", event)
+          alertOnEmailFailure(error)
+        }
+      )
 
+      if (!mailError) {
         toast.show({
           title: "Email sent.",
           type: "info",
         })
-      } catch (error) {
-        console.log("[useMailComposer] Error sending email:", error)
-
-        alertOnEmailFailure(error)
       }
+
+      mailError = ""
     }
   }
 
