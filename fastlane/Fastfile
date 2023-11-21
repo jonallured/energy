@@ -12,7 +12,7 @@ before_all do
 end
 
 require 'dotenv'
-Dotenv.load('../.env')
+Dotenv.load('../.env.releases')
 
 lane :ship_beta do
   ship_beta_ios
@@ -65,6 +65,7 @@ lane :ship_beta_ios do
   # in Energy in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
+  sh("yarn bundle:ios")
   build_ios_app(
     workspace: "ios/Energy.xcworkspace",
     scheme: "Energy",
@@ -208,15 +209,15 @@ lane :upload_sentry_artifacts do |options|
   outfile = ''
   if platform == "ios"
     sh("yarn bundle:ios")
-    source_map_path = 'dist/index.ios.bundle.map'
-    bundle_path = 'dist/index.ios.bundle'
-    outfile = '~/index.ios.bundle'
+    source_map_path = 'dist/main.jsbundle.map'
+    bundle_path = 'dist/main.jsbundle'
+    outfile = '~/main.jsbundle'
   else
     sh("yarn bundle:android")
     # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
-    source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
-    bundle_path = 'android/app/src/main/assets/index.android.bundle'
-    outfile = '~/index.android.bundle'
+    source_map_path = 'android/app/src/main/assets/main.jsbundle'
+    bundle_path = 'android/app/src/main/assets/main.jsbundle.map'
+    outfile = '~/main.jsbundle.map'
   end
 
   begin

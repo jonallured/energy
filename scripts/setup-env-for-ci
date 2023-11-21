@@ -2,5 +2,7 @@
 set -euxo pipefail
 
 touch .env
+touch .env.releases
 
-aws s3 cp s3://artsy-citadel/energy/.env.energy .env
+aws s3 cp s3://artsy-citadel/energy/.env .env
+aws s3 cp s3://artsy-citadel/energy/.env.releases .env.releases
