@@ -204,21 +204,10 @@ lane :upload_sentry_artifacts do |options|
     UI.user_error!("Sentry distribution version not specified")
   end
 
-  source_map_path = ''
-  bundle_path = ''
-  outfile = ''
-  if platform == "ios"
-    sh("yarn bundle:ios")
-    source_map_path = 'dist/main.jsbundle.map'
-    bundle_path = 'dist/main.jsbundle'
-    outfile = '~/main.jsbundle'
-  else
-    sh("yarn bundle:android")
-    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
-    source_map_path = 'android/app/src/main/assets/main.jsbundle'
-    bundle_path = 'android/app/src/main/assets/main.jsbundle.map'
-    outfile = '~/main.jsbundle.map'
-  end
+  settings = platform_settings(options[:platform])
+  sourcemap_path = settings[:sourcemap_path]
+  bundle_path = settings[:bundle_path]
+  outfile = settings[:outfile]
 
   begin
     sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
@@ -264,24 +253,16 @@ lane :upload_sentry_artifacts do |options|
   end
 
   begin
-    sentry_upload_file(auth_token: ENV['SentryUploadAuthKey'],
-                         sentry_cli_path: sentry_cli_path,
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         version: sentry_release_name,
-                         dist: dist_version,
-                         file: bundle_path,
-                         file_url: outfile)
-    puts "Uploaded source js for #{project_slug}"
-
-    sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
-                            sentry_cli_path: sentry_cli_path,
-                            org_slug: org_slug,
-                            project_slug: project_slug,
-                            version: sentry_release_name,
-                            dist: dist_version,
-                            sourcemap: source_map_path,
-                            rewrite: true)
+    sentry_upload_sourcemap(
+        auth_token: ENV['SentryUploadAuthKey'],
+        sentry_cli_path: sentry_cli_path,
+        org_slug: org_slug,
+        project_slug: project_slug,
+        version: sentry_release_name,
+        dist: dist_version,
+        sourcemap: [bundle_path, sourcemap_path],
+        rewrite: true
+      )
     puts "Uploaded js.map for #{project_slug}"
   rescue StandardError => e
       message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
@@ -532,4 +513,18 @@ error do |lane, exception|
       notify_beta_failed(exception: exception)
     end
   end
+end
+
+def platform_settings(platform)
+  settings = {
+    ios: {
+      sourcemap_path: 'dist/main.jsbundle.map',
+      bundle_path: 'dist/main.jsbundle'
+    },
+    android: {
+      sourcemap_path: 'android/app/src/main/assets/index.android.bundle.map',
+      bundle_path: 'android/app/src/main/assets/index.android.bundle'
+    }
+  }
+  settings[platform.to_sym]
 end

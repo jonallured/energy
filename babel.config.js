@@ -11,6 +11,7 @@ const plugins = [
   // The relay plugin should run before other plugins or presets
   // to ensure the graphql template literals are correctly transformed
   "relay",
+  "@babel/plugin-transform-named-capturing-groups-regex",
   "import-graphql", // to enabling import syntax for .graphql and .gql files.
   [
     "module-resolver",
