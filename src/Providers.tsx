@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette-mobile"
+import { ScreenDimensionsProvider, Theme } from "@artsy/palette-mobile"
 import { ToastProvider } from "components/Toast/ToastContext"
 import { useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
@@ -23,9 +23,11 @@ export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment 
           <SuspenseWrapper>
             <RelayProvider relayEnvironment={relayEnvironment}>
               <SafeAreaProvider>
-                <ProvideScreenDimensions>
-                  <ToastProvider>{children}</ToastProvider>
-                </ProvideScreenDimensions>
+                <ScreenDimensionsProvider>
+                  <ProvideScreenDimensions>
+                    <ToastProvider>{children}</ToastProvider>
+                  </ProvideScreenDimensions>
+                </ScreenDimensionsProvider>
               </SafeAreaProvider>
             </RelayProvider>
           </SuspenseWrapper>

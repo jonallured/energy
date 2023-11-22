@@ -194,6 +194,9 @@ jest.mock("system/hooks/useSystemIsDoneBooting", () => ({
   useSystemIsDoneBooting: () => true,
 }))
 
+// TODO: remove this and mock open a followup to fix this. We SHOULDN'T mock ALL the packages that go into energy
+jest.mock("react-native-popover-view", () => ({}))
+
 jest.mock("@artsy/palette-mobile", () => {
   const React = require("react-native")
   const palette = jest.requireActual("@artsy/palette-mobile")
