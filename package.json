@@ -61,7 +61,7 @@
     "@react-navigation/native-stack": "6.9.17",
     "@react-navigation/stack": "6.3.20",
     "@sayem314/react-native-keep-awake": "1.2.2",
-    "@sentry/react-native": "^4.12.0",
+    "@sentry/react-native": "^5.14.1",
     "@styled-system/theme-get": "^5.1.2",
     "@supercharge/promise-pool": "^2.4.0",
     "babel-plugin-import-graphql": "^2.8.1",

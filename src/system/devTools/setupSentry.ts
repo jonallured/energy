@@ -30,7 +30,7 @@ export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
     dist: getBuildNumber(),
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
-    enableOutOfMemoryTracking: false,
+    enableWatchdogTerminationTracking: false,
     ...props,
   })
 }
