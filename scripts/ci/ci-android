@@ -2,10 +2,10 @@
 set -euxo pipefail
 
 
-source ./scripts/source-for-bash-env
+source ./scripts/ci/ci-setup-export-vars
 
 if [ "${LOCAL_BRANCH}" != "beta-android" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
-	./scripts/build-for-tests-android
+	./scripts/ci/build-for-tests-android
 else
 	echo "Skipping test build on beta deploy."
 fi

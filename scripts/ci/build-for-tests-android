@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-./scripts/setup-distribute
-
 yarn jetifier
 
-cd android
+pushd android
 mkdir -p android/app/src/main/assets
 touch android/app/src/main/assets/index.android.bundle && yarn bundle:android
 ./gradlew clean
 ./gradlew bundleRelease --no-daemon -x bundleReleaseJsAndAssets
-cd -
+popd

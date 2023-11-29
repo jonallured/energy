@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@1.7.0
   horizon: artsy/release@0.0.1
+  macos: circleci/macos@2.4.0
 
 commands:
   await-previous-builds:
@@ -26,27 +27,27 @@ commands:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
-            scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
-            scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^dist/' '^Artsy' '^patches/react-native' '^\.env\.example'
-            scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
+            scripts/ci/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
+            scripts/ci/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
+            scripts/ci/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
+            scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^dist/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
       - run:
           name: "Set up .env file"
-          command: scripts/setup-env-for-ci
+          command: scripts/setup/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
           name: "Set up aws cli not installed"
-          command: scripts/setup-awscli
+          command: scripts/setup/setup-awscli
   install-node-modules:
     steps:
       - node/install-packages:
           pkg-manager: yarn
-          cache-version: "2"
+          cache-version: v2
   run-relay-compiler:
     steps:
       - run:
@@ -94,10 +95,13 @@ commands:
             - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-fonts
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - run:
           name: Build App
-          command: ./scripts/ci-ios
+          command: ./scripts/ci/ci-ios
       - save_cache:
           key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
@@ -107,16 +111,6 @@ commands:
     steps:
       - attach_workspace:
           at: ../workspace
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf /Users/distiller/project
-      - checkout
-      - attach_workspace:
-          at: .
-      - install-node
-      - setup-awscli
-      - setup-env-file
       - restore_cache:
           keys:
             - v3-test-success-{{ checksum "../workspace/.manifests/android_native" }}
@@ -127,6 +121,14 @@ commands:
             then
               circleci step halt
             fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /Users/distiller/project
+      - checkout
+      - install-node
+      - setup-awscli
+      - setup-env-file
       - install-node-modules
       - run-relay-compiler
       - install-bundler
@@ -135,15 +137,18 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v4-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-fonts
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
-          command: ./scripts/ci-android
+          command: ./scripts/ci/ci-android
       - save_cache:
-          key: v4-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v4-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -157,30 +162,38 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: ./scripts/secrets-check-all
+      - run: ./scripts/detect-secrets/secrets-check-all
 
   deploy-nightly-beta:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 14.3.1
-      resource_class: macos.m1.medium.gen1
-    steps:
-      - checkout
-      - install-node
-      - run:
-          name: Deploy beta
-          command: ./scripts/deploy-both
-
-  check-pr:
     executor:
       name: node/default
       tag: "20.9.0"
+    resource_class: small
+
     steps:
       - checkout
-      - generate-checksums
+      - run:
+          name: Deploy betas
+          command: ./scripts/deploys/deploy-beta-both
+
+  check-code:
+    executor:
+      name: node/default
+      tag: "20.9.0"
+    resource_class: small
+    steps:
+      - checkout
       - install-node-modules
       - run-relay-compiler
+      - run:
+          command: yarn type-check
+      - run:
+          name: Check Branch and Exit Early if Ignored
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "main" || "$CIRCLE_BRANCH" == "beta-ios" || "$CIRCLE_BRANCH" == "beta-android" ]]; then
+              echo "On ignored branch ($CIRCLE_BRANCH). Exiting early."
+              circleci-agent step halt
+            fi
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -207,7 +220,7 @@ jobs:
             fi
       - run:
           name: Generate app_build manifest
-          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
+          command: ./scripts/ci/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
       - store_test_results:
@@ -256,7 +269,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.3.1
+      xcode: 15.1
       resource_class: macos.m1.medium.gen1
     steps:
       - attach_workspace:
@@ -291,15 +304,19 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
+      - run-relay-compiler
       - install-bundler
       - install-gems
       - install-cocoapods
-      - run-relay-compiler
+      - macos/preboot-simulator:
+          version: "17.2"
+          platform: "iOS"
+          device: "iPhone 15 Pro"
       - build-app-ios
       - run:
           name: Run tests if native code has changed
           no_output_timeout: 20m
-          command: ls xcode_test_raw.log || ./scripts/ci-test-ios
+          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
           key: v1-test-success-{{ checksum ".manifests/native_code" }}
           paths:
@@ -315,13 +332,11 @@ jobs:
       - run:
           name: Deploy if beta
           no_output_timeout: 20m
-          command: ./scripts/deploy-if-beta-branch-ios
+          command: ./scripts/deploys/deploy-if-beta-branch-ios
 
   build-test-app-android:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
     docker:
-      - image: cimg/android:2023.10.2-node
+      - image: cimg/android:2023.11.1-node
     resource_class: large
     steps:
       - prep-android-env
@@ -342,57 +357,7 @@ jobs:
             - build-success.log
       - run:
           name: Deploy if beta - play store and firebase
-          command: ./scripts/deploy-if-beta-branch-android BOTH
-
-  promote-beta-to-app-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 14.3.1
-      resource_class: macos.m1.medium.gen1
-    steps:
-      - checkout
-      - install-bundler
-      - install-gems
-      - await-previous-builds:
-          branch: app_store_submission
-      - run:
-          name: Promote if app_store_submission
-          command: ./scripts/promote-if-appstore-submission-branch
-
-  promote-beta-to-play-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    docker:
-      - image: cimg/android:2023.10.2-node
-
-    steps:
-      - checkout
-      - install-bundler
-      - install-gems
-      - await-previous-builds:
-          branch: play_store_submission
-      - run:
-          name: Setup
-          command: ./scripts/setup-distribute
-      - run:
-          name: Promote if play_store_submission
-          command: ./scripts/promote-if-playstore-submission-branch
-
-  release-ios-app:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 14.3.1
-      resource_class: macos.m1.medium.gen1
-    steps:
-      - checkout
-      - install-bundler
-      - install-gems
-      - run:
-          name: Release app version
-          command: ./scripts/release-ios-app-branch
+          command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
 workflows:
   version: 2
@@ -407,27 +372,6 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
-  release-ios-app-workflow:
-    jobs:
-      - release-ios-app:
-          filters:
-            branches:
-              only:
-                - release-ios-app
-  promote:
-    jobs:
-      - promote-beta-to-app-store:
-          filters:
-            branches:
-              only:
-                - app_store_submission
-
-      - promote-beta-to-play-store:
-          filters:
-            branches:
-              only:
-                - play_store_submission
-
   test-build-deploy:
     jobs:
       - detect-secrets:
@@ -435,44 +379,13 @@ workflows:
             branches:
               ignore:
                 - main
-                - release
-                - staging
 
-      - test-js:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
-                - update-changelog
-
-      - type-check:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
-                - update-changelog
-
-      - check-pr:
+      - check-code:
           context: danger-github-oss
-          filters:
-            branches:
-              ignore:
-                - main
-                - beta-ios
-                - beta-android
-                - app_store_submission
-                - play_store_submission
-                - update-changelog
 
-      - build-test-js:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
-                - update-changelog
+      - test-js
+
+      - build-test-js
 
       - horizon/block:
           context: horizon
@@ -487,13 +400,10 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
                 - beta-android
-                - update-changelog
           requires:
             - test-js
-            - type-check
+            - check-code
             - build-test-js
             - horizon/block
 
@@ -501,12 +411,9 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
                 - beta-ios
-                - update-changelog
           requires:
             - test-js
-            - type-check
+            - check-code
             - build-test-js
             - horizon/block

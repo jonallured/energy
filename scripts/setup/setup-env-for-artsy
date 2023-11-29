@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+./scripts/setup/download-assets
+./scripts/setup/prepare-env-vars
+./scripts/setup/setup-sentry-properties
+
