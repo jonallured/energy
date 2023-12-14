@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Folio</string>
+     <string moduleConfig="true" name="CodePushDeploymentKey">fake_deployment_key</string>
 </resources>

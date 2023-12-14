@@ -24,6 +24,7 @@ import net.artsy.energy.newarchitecture.components.MainComponentsRegistry;
 import net.artsy.energy.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
+import com.microsoft.codepush.react.CodePush;
 
 /**
  * A {@link ReactNativeHost} that helps you load everything needed for the New Architecture, both
@@ -56,7 +57,7 @@ public class MainApplicationReactNativeHost extends ReactNativeHost {
 
   @Override
   protected String getJSMainModuleName() {
-    return "index";
+    return CodePush.getJSBundleFile();
   }
 
   @NonNull

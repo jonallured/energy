@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# TODO: Are these needed?
-# aws s3 cp s3://artsy-citadel/energy/GoogleService-Info.plist ios/Artsy/GoogleService-Info.plist
-# aws s3 cp s3://artsy-citadel/energy/AppCenter-Config.plist ios/Artsy/AppCenter-Config.plist
+aws s3 cp s3://artsy-citadel/energy/AppCenter-Config.plist ios/Artsy/AppCenter-Config.plist

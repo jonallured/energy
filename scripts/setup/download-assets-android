@@ -5,3 +5,4 @@ aws s3 cp s3://artsy-citadel/energy/energy-release.keystore android/app/release.
 aws s3 cp s3://artsy-citadel/energy/energy-android-secret.json android-secret.json
 aws s3 cp s3://artsy-citadel/energy/energy-firebase-app-distribution.json energy-firebase-app-distribution.json
 aws s3 cp s3://artsy-citadel/energy/energy-google-services.json android/app/google-services.json
+aws s3 cp s3://artsy-citadel/energy/appcenter-config.json android/app/src/main/assets/appcenter-config.json

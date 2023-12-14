@@ -111,6 +111,10 @@ ios/.xcode.env.local
 ios/sentry.properties
 android/sentry.properties
 
+# App center files
+AppCenter-Config.plist
+appcenter-config.json
+
 # ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep

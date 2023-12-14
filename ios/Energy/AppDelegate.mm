@@ -4,6 +4,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
+#import <CodePush/CodePush.h>
+#import <AppCenterReactNative.h>
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -34,7 +36,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 {
   RCTAppSetupPrepareApp(application);
 
- RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  [AppCenterReactNative register];
+
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Energy"
                                             initialProperties:nil];
@@ -92,7 +96,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  return [CodePush bundleURL];
 #endif
 }
 
