@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { ARTNativeModules } from "native_modules/ARTNativeModules"
 import { NativeModules } from "react-native"
+import { CodePushOptions } from "screens/Settings/DevMenu/CodePushOptions"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
@@ -12,6 +13,8 @@ export const DevMenu = () => {
 
   return (
     <Join separator={<Spacer y={1} />}>
+      <CodePushOptions />
+
       <Button block onPress={() => NativeModules.DevMenu.show()}>
         Show Native Dev Menu
       </Button>

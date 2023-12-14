@@ -12,7 +12,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { useState } from "react"
 import { getVersion } from "react-native-device-info"
-import { DevMenu } from "screens/Settings/DevMenu"
+import { DevMenu } from "screens/Settings/DevMenu/DevMenu"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const Settings = () => {
