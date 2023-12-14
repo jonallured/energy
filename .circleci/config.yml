@@ -176,6 +176,43 @@ jobs:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
 
+  check-and-deploy:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - checkout
+      - install-node
+      - install-gems
+      - setup-awscli
+      - run:
+          name: Determine Deployment Type
+          command: |
+            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - run:
+          name: Handle Deployment for beta
+          command: |
+            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+              echo "Native code changed, new beta needed!"
+              ./scripts/codepush/maybe_notify_beta_needed.sh
+              circleci-agent step halt
+            fi
+      - install-node-modules
+      - run:
+          name: Install CodePush CLI
+          command: yarn global add appcenter-cli
+      - run-relay-compiler
+      - run:
+          name: Handle Deployment for codepush
+          command: |
+            echo "Triggering CodePush deployment..."
+            ./scripts/codepush/deploy-to-codepush.sh Staging
+
   check-code:
     executor:
       name: node/default
@@ -382,6 +419,12 @@ workflows:
 
       - check-code:
           context: danger-github-oss
+
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - main
 
       - test-js
 
