@@ -115,6 +115,9 @@ android/sentry.properties
 AppCenter-Config.plist
 appcenter-config.json
 
+# file hashes from codepush
+file_hashes.txt
+
 # ################## Keep this rule last. ##################
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep

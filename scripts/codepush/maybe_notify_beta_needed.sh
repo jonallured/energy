@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-S3_TIMESTAMP_PATH="s3://artsy-citadel/eigen/last-notified.txt"
+S3_TIMESTAMP_PATH="s3://artsy-citadel/energy/last-notified.txt"
 
 # Attempt to fetch the last notification timestamp
 aws s3 cp $S3_TIMESTAMP_PATH ./last-notified.txt > /dev/null || echo "No previous timestamp found." >&2

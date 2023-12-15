@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-S3_BUCKET_PATH="s3://artsy-citadel/eigen/native-hash.txt"
+S3_BUCKET_PATH="s3://artsy-citadel/energy/native-hash.txt"
 
 # Calculate the current native hash
 current_native_hash=$(./scripts/codepush/calculate-native-hash.sh)

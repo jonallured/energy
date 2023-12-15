@@ -2,14 +2,29 @@ import * as Sentry from "@sentry/react-native"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { getBuildNumber, getVersion } from "react-native-device-info"
+import { appJson } from "utils/jsonFiles"
 
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const energySentryReleaseName = () => {
-  const prefix = Platform.OS === "ios" ? "ios" : "android"
-  const buildNumber = getBuildNumber()
-  const version = getVersion()
-  return prefix + "-" + version + "-" + buildNumber
+  const codePushReleaseName = appJson().codePushReleaseName
+  if (codePushReleaseName && codePushReleaseName !== "none") {
+    return codePushReleaseName
+  } else {
+    const prefix = Platform.OS === "ios" ? "ios" : "android"
+    const buildNumber = getBuildNumber()
+    const version = getVersion()
+    return prefix + "-" + version + "-" + buildNumber
+  }
+}
+
+const energySentryDist = () => {
+  const codePushDist = appJson().codePushDist
+  if (codePushDist && codePushDist !== "none") {
+    return codePushDist
+  } else {
+    return getBuildNumber()
+  }
 }
 
 export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
@@ -27,7 +42,7 @@ export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   Sentry.init({
     dsn: Config.SENTRY_DSN,
     release: energySentryReleaseName(),
-    dist: getBuildNumber(),
+    dist: energySentryDist(),
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,

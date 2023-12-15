@@ -189,6 +189,7 @@ jobs:
       - install-node
       - install-gems
       - setup-awscli
+      - setup-env-file
       - run:
           name: Determine Deployment Type
           command: |

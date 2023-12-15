@@ -2,5 +2,7 @@
   "name": "Energy",
   "displayName": "Folio",
   "version": "3.0.0",
-  "isAndroidBeta": false
+  "isAndroidBeta": false,
+  "codePushReleaseName": "none",
+  "codePushDist": "none"
 }

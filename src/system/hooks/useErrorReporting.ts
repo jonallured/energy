@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { setupSentry } from "system/devTools/setupSentry"
+import { setupSentry } from "system/devTools/sentrySetup"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export function useErrorReporting() {
