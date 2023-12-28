@@ -1,6 +1,6 @@
 import { ScreenDimensionsProvider, Theme } from "@artsy/palette-mobile"
 import { ToastProvider } from "components/Toast/ToastContext"
-import { useEffect } from "react"
+import { Component, useEffect } from "react"
 import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -10,6 +10,7 @@ import { GlobalRetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 import { SuspenseWrapper } from "system/wrappers/SuspenseWrapper"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { ProvideScreenDimensions } from "utils/hooks/useScreenDimensions"
+import { track } from "utils/track"
 
 interface ProviderProps {
   relayEnvironment?: RelayModernEnvironment
@@ -17,24 +18,36 @@ interface ProviderProps {
 
 export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment }) => {
   return (
-    <GlobalRetryErrorBoundary>
-      <GlobalStoreProvider>
-        <ThemeProvider>
-          <SuspenseWrapper>
-            <RelayProvider relayEnvironment={relayEnvironment}>
-              <SafeAreaProvider>
-                <ScreenDimensionsProvider>
-                  <ProvideScreenDimensions>
-                    <ToastProvider>{children}</ToastProvider>
-                  </ProvideScreenDimensions>
-                </ScreenDimensionsProvider>
-              </SafeAreaProvider>
-            </RelayProvider>
-          </SuspenseWrapper>
-        </ThemeProvider>
-      </GlobalStoreProvider>
-    </GlobalRetryErrorBoundary>
+    <TrackingProvider>
+      <GlobalRetryErrorBoundary>
+        <GlobalStoreProvider>
+          <ThemeProvider>
+            <SuspenseWrapper>
+              <RelayProvider relayEnvironment={relayEnvironment}>
+                <SafeAreaProvider>
+                  <ScreenDimensionsProvider>
+                    <ProvideScreenDimensions>
+                      <ToastProvider>{children}</ToastProvider>
+                    </ProvideScreenDimensions>
+                  </ScreenDimensionsProvider>
+                </SafeAreaProvider>
+              </RelayProvider>
+            </SuspenseWrapper>
+          </ThemeProvider>
+        </GlobalStoreProvider>
+      </GlobalRetryErrorBoundary>
+    </TrackingProvider>
   )
+}
+
+// react-track has no provider, we make one using the decorator and a class wrapper
+const TrackingProvider = (props: { children?: React.ReactNode }) => <PureWrapper {...props} />
+
+@track()
+class PureWrapper extends Component {
+  render() {
+    return this.props.children
+  }
 }
 
 // Theme with dark mode support

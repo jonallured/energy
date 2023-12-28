@@ -12,6 +12,7 @@ const plugins = [
   // to ensure the graphql template literals are correctly transformed
   "relay",
   "@babel/plugin-transform-named-capturing-groups-regex",
+  ["@babel/plugin-proposal-decorators", { version: "legacy" }],
   "import-graphql", // to enabling import syntax for .graphql and .gql files.
   [
     "module-resolver",

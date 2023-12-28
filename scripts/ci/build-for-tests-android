@@ -6,6 +6,6 @@ yarn jetifier
 pushd android
 mkdir -p android/app/src/main/assets
 touch android/app/src/main/assets/index.android.bundle && yarn bundle:android
-./gradlew clean
-./gradlew bundleRelease --no-daemon -x bundleReleaseJsAndAssets
+./gradlew clean --no-daemon --max-workers 2
+./gradlew bundleRelease --no-daemon --max-workers 2 -x bundleReleaseJsAndAssets
 popd

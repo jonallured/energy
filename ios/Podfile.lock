@@ -337,7 +337,7 @@ PODS:
     - React-Core
   - react-native-flipper (0.207.0):
     - React-Core
-  - react-native-get-random-values (1.8.0):
+  - react-native-get-random-values (1.10.0):
     - React-Core
   - react-native-keep-awake (1.2.2):
     - React-Core
@@ -488,10 +488,15 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - segment-analytics-react-native (2.16.1):
+    - React-Core
+    - sovran-react-native
   - Sentry/HybridSDK (8.15.2):
     - SentryPrivate (= 8.15.2)
   - SentryPrivate (8.15.2)
   - SocketRocket (0.6.1)
+  - sovran-react-native (1.0.4):
+    - React-Core
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -583,6 +588,8 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
+  - "segment-analytics-react-native (from `../node_modules/@segment/analytics-react-native`)"
+  - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -734,6 +741,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  segment-analytics-react-native:
+    :path: "../node_modules/@segment/analytics-react-native"
+  sovran-react-native:
+    :path: "../node_modules/@segment/sovran-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -783,7 +794,7 @@ SPEC CHECKSUMS:
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-flipper: 457f5d70546cdd4281e748ff3726385ffa06ba41
-  react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
+  react-native-get-random-values: 384787fd76976f5aec9465aff6fa9e9129af1e74
   react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
@@ -818,13 +829,15 @@ SPEC CHECKSUMS:
   RNSVG: 6adc5c52d2488a476248413064b7f2832e639057
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  segment-analytics-react-native: 13d4ba325add2b2ed796ee58531e3b4cacfe692f
   Sentry: 6f5742b4c47c17c9adcf265f6f328cf4a0ed1923
   SentryPrivate: b2f7996f37781080f04a946eb4e377ff63c64195
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  sovran-react-native: 791f2f726b4d57ece59676eda58d6da9dc95ad4e
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 445485143df46a9d5d4ef61cbbc629fec40fb9a0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 34e4eb343329e331cb55add23a507a529319a7e1
+PODFILE CHECKSUM: 86175e383b190f0554b4b6be4828b783d6c2db6d
 
 COCOAPODS: 1.12.1
