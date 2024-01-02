@@ -1,4 +1,6 @@
-import { Alert } from "react-native"
+import { SpyInstance } from "jest-mock"
+import { Alert, Platform } from "react-native"
+import RNHTMLtoPDF, { Pdf } from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
 import { getArtworkEmailTemplate, useMailComposer } from "screens/Artwork/useMailComposer"
 import { GlobalStore, __globalStoreTestUtils__ } from "system/store/GlobalStore"
@@ -22,10 +24,12 @@ describe("useMailComposer", () => {
   }
 
   beforeEach(() => {
+    Platform.OS = "ios"
     mockUseAppState.mockImplementation(() => emailSettings)
   })
 
   afterEach(() => {
+    Platform.OS = "ios"
     jest.resetAllMocks()
   })
 
@@ -147,6 +151,72 @@ describe("useMailComposer", () => {
         "Email not sent.",
         "Failed to send email",
         [{ style: "cancel", text: "OK" }]
+      )
+    })
+  })
+
+  describe("sendMail on Android", () => {
+    let convertMock: any
+
+    beforeEach(() => {
+      Platform.OS = "android"
+
+      convertMock = jest.spyOn(RNHTMLtoPDF, "convert")
+      convertMock.mockImplementation(() => Promise.resolve({ filePath: "path/to/test.pdf" }))
+    })
+
+    afterEach(() => {
+      Platform.OS = "ios"
+      convertMock.mockRestore()
+      jest.clearAllMocks()
+    })
+
+    it("should call MailComposer with correct params for a single artwork as a PDF", async () => {
+      const recipients = ["cc@example.com"]
+      const subject = "More information about Artwork Title by Artist Name."
+      const artworks = [{ title: "Artwork Title", artistNames: "Artist Name" }]
+
+      const mail = jest.fn()
+      jest.spyOn(Mailer, "mail").mockImplementation(mail)
+
+      await useMailComposer().sendMail({ artworks } as any)
+
+      expect(convertMock).toHaveBeenCalled()
+      expect(mail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          isHTML: true,
+          body: "Please see attached artworks.",
+          attachments: [{ path: "path/to/test.pdf", type: "pdf" }],
+          recipients,
+          subject,
+        }),
+        expect.any(Function)
+      )
+    })
+
+    it("should call MailComposer with correct params for multiple artworks as a PDF", async () => {
+      const recipients = ["cc@example.com"]
+      const subject = "More information about Artist A's artworks."
+      const artworks = [
+        { title: "Artwork Title 1", artistNames: "Artist A" },
+        { title: "Artwork Title 2", artistNames: "Artist A" },
+      ]
+
+      const mail = jest.fn()
+      jest.spyOn(Mailer, "mail").mockImplementation(mail)
+
+      await useMailComposer().sendMail({ artworks } as any)
+
+      expect(RNHTMLtoPDF.convert).toHaveBeenCalled()
+      expect(mail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          isHTML: true,
+          body: "Please see attached artworks.",
+          attachments: [{ path: "path/to/test.pdf", type: "pdf" }],
+          recipients,
+          subject,
+        }),
+        expect.any(Function)
       )
     })
   })

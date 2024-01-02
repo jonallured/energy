@@ -224,3 +224,9 @@ jest.mock("components/Toast/ToastContext", () => ({
 jest.mock("react-native-mail", () => ({
   mail: jest.fn(),
 }))
+
+jest.mock("react-native-html-to-pdf", () => {
+  return {
+    convert: jest.fn(),
+  }
+})

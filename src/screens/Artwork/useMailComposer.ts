@@ -1,7 +1,8 @@
 import { useToast } from "components/Toast/ToastContext"
 import { FilterActionTypes, StateMapper } from "easy-peasy"
 import { uniq } from "lodash"
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
+import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
 import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
@@ -28,7 +29,12 @@ export const useMailComposer = () => {
         .replace("$title", title ?? "")
         .replace("$artist", artistNames ?? "")
 
-      const body = getArtworkEmailTemplate({ artwork: firstSelectedItem, emailSettings })
+      const htmlContent = getArtworkEmailTemplate({ artwork: firstSelectedItem, emailSettings })
+
+      const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
+
+      const attachments =
+        Platform.OS === "ios" ? undefined : await getHTMLPDFAttachment(htmlContent)
 
       log(subject, body, ccRecipients)
 
@@ -40,6 +46,7 @@ export const useMailComposer = () => {
           recipients: ccRecipients,
           body: body,
           isHTML: true,
+          attachments: attachments,
         },
         (error) => {
           mailError = error
@@ -88,7 +95,7 @@ export const useMailComposer = () => {
         }
       })()
 
-      const body = `
+      const htmlContent = `
         <html>
           <body>
             ${emailSettings.greetings ? `<p>${emailSettings.greetings}</p><br/>` : ""}
@@ -100,6 +107,10 @@ export const useMailComposer = () => {
         .replace(/\s+/g, " ")
         .trim()
 
+      const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
+      const attachments =
+        Platform.OS === "ios" ? undefined : await getHTMLPDFAttachment(htmlContent)
+
       log(subject, body, ccRecipients)
       let mailError = ""
 
@@ -109,6 +120,7 @@ export const useMailComposer = () => {
           recipients: ccRecipients,
           body: body,
           isHTML: true,
+          attachments: attachments,
         },
         (error, event) => {
           mailError = error
@@ -131,6 +143,23 @@ export const useMailComposer = () => {
   return {
     sendMail,
   }
+}
+
+const getHTMLPDFAttachment = async (htmlContent: string) => {
+  const options = {
+    html: htmlContent,
+    fileName: "artworks",
+    directory: "Documents",
+  }
+
+  const file = await RNHTMLtoPDF.convert(options)
+
+  return [
+    {
+      path: file.filePath,
+      type: "pdf",
+    },
+  ]
 }
 
 export const getArtworkEmailTemplate = ({
@@ -159,15 +188,13 @@ export const getArtworkEmailTemplate = ({
     href,
   } = artwork
 
+  // Android images need different constraints to not be cut off in PDF
+  const imageSrc = image?.resized?.url
+  const imageAttributes = Platform.OS === "ios" ? 'height="60%"' : 'style="max-width: 100%;"'
+  const imageTag = imageSrc ? `<img ${imageAttributes} src="${imageSrc}" />` : ""
+
   const snippet = `
-    ${
-      image?.resized?.url
-        ? `<img
-            height="60%"
-            src="${image?.resized?.url}"
-          />`
-        : ""
-    }
+    ${imageTag}
 
     ${artistNames ? `<h1>${artistNames}</h1>` : ""}
 
