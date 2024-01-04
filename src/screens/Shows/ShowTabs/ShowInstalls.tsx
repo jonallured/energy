@@ -26,8 +26,8 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
 
 export const showInstallsQuery = graphql`
   query ShowInstallsQuery($slug: String!) {
-    show(id: $slug) {
-      images(default: true) {
+    show(id: $slug, includeAllShows: true) {
+      images {
         __typename
         internalID
         width

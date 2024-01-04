@@ -31,7 +31,7 @@ export const ShowArtworks: React.FC<ShowArtworksProps> = ({ slug }) => {
 
 export const showArtworksQuery = graphql`
   query ShowArtworksQuery($slug: String!) {
-    show(id: $slug) {
+    show(id: $slug, includeAllShows: true) {
       artworksConnection(first: 100) {
         edges {
           node {

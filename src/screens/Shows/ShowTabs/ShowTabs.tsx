@@ -40,9 +40,8 @@ export const ShowTabs = () => {
 
 export const showTabsQuery = graphql`
   query ShowTabsQuery($slug: String!) {
-    show(id: $slug) {
+    show(id: $slug, includeAllShows: true) {
       name
-
       artworksConnection(first: 99) {
         edges {
           node {
