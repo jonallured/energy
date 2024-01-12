@@ -8,6 +8,68 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
+interface EmailComposerProps {
+  subject: string
+  ccRecipients?: string[]
+  body: string
+  isHTML: boolean
+  attachments?: any[]
+  toast: ReturnType<typeof useToast>["toast"]
+}
+
+const emailComposer = ({
+  subject,
+  ccRecipients,
+  body,
+  isHTML,
+  attachments,
+  toast,
+}: EmailComposerProps) => {
+  Mailer.mail(
+    {
+      subject,
+      recipients: ccRecipients,
+      body,
+      isHTML,
+      attachments,
+    },
+    // event is either `sent`, `saved`, `cancelled`, `failed` or `error`
+    (error, event) => {
+      if (!!error) {
+        console.log("[useMailComposer] Error sending email:", error, "event", event)
+        alertOnEmailFailure(error)
+      }
+
+      switch (event) {
+        case "sent":
+          toast.show({
+            title: "Email sent.",
+            type: "info",
+          })
+          break
+        case "saved":
+          toast.show({
+            title: "Email saved for later.",
+            type: "info",
+          })
+          break
+        case "cancelled":
+          toast.show({
+            title: "Email cancelled",
+            type: "error",
+          })
+          break
+        case "failed":
+          console.log("[useMailComposer] Error sending email:", error, "event", event)
+          alertOnEmailFailure(error)
+          break
+        default:
+          break
+      }
+    }
+  )
+}
+
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
   const { toast } = useToast()
@@ -38,31 +100,14 @@ export const useMailComposer = () => {
 
       log(subject, body, ccRecipients)
 
-      let mailError = ""
-
-      Mailer.mail(
-        {
-          subject,
-          recipients: ccRecipients,
-          body: body,
-          isHTML: true,
-          attachments: attachments,
-        },
-        (error) => {
-          mailError = error
-          console.log("[useMailComposer] Error sending email:", error)
-          alertOnEmailFailure(error)
-        }
-      )
-
-      if (!mailError) {
-        toast.show({
-          title: "Email sent.",
-          type: "info",
-        })
-      }
-
-      mailError = ""
+      emailComposer({
+        subject,
+        ccRecipients,
+        body,
+        isHTML: true,
+        attachments,
+        toast,
+      })
 
       // Sending multiple items
     } else if (artworksToMail.length > 1) {
@@ -112,31 +157,15 @@ export const useMailComposer = () => {
         Platform.OS === "ios" ? undefined : await getHTMLPDFAttachment(htmlContent)
 
       log(subject, body, ccRecipients)
-      let mailError = ""
 
-      Mailer.mail(
-        {
-          subject,
-          recipients: ccRecipients,
-          body: body,
-          isHTML: true,
-          attachments: attachments,
-        },
-        (error, event) => {
-          mailError = error
-          console.log("[useMailComposer] Error sending email:", error, "event", event)
-          alertOnEmailFailure(error)
-        }
-      )
-
-      if (!mailError) {
-        toast.show({
-          title: "Email sent.",
-          type: "info",
-        })
-      }
-
-      mailError = ""
+      emailComposer({
+        subject,
+        ccRecipients,
+        body,
+        isHTML: true,
+        attachments,
+        toast,
+      })
     }
   }
 
