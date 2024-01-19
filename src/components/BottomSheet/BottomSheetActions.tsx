@@ -21,10 +21,10 @@ import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAlbum } from "screens/Albums/useAlbum"
-import { useMailComposer } from "screens/Artwork/useMailComposer"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { useMailComposer } from "utils/hooks/useMailComposer"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 
 export interface BottomSheetActionsProps {

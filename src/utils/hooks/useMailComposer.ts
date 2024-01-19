@@ -268,7 +268,20 @@ export const getArtworkEmailTemplate = ({
 }
 
 const alertOnEmailFailure = (error: any) => {
-  Alert.alert("Email not sent.", error.message, [
+  const errorMessage = (() => {
+    switch (error) {
+      case "not_available": {
+        return `Set up your ${
+          Platform.OS === "ios" ? "Apple Mail" : "Gmail"
+        } app to send artworks by email.`
+      }
+      default: {
+        return `Error sending email: ${error}`
+      }
+    }
+  })()
+
+  Alert.alert(errorMessage, ``, [
     {
       text: "OK",
       style: "cancel",

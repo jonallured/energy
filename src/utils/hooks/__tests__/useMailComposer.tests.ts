@@ -1,10 +1,9 @@
-import { SpyInstance } from "jest-mock"
 import { Alert, Platform } from "react-native"
-import RNHTMLtoPDF, { Pdf } from "react-native-html-to-pdf"
+import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
-import { getArtworkEmailTemplate, useMailComposer } from "screens/Artwork/useMailComposer"
 import { GlobalStore, __globalStoreTestUtils__ } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { getArtworkEmailTemplate, useMailComposer } from "utils/hooks/useMailComposer"
 
 jest.mock("system/store/GlobalStore")
 
@@ -128,7 +127,35 @@ describe("useMailComposer", () => {
       )
     })
 
-    it("should call alertOnEmailFailure when there is an error sending the email", async () => {
+    describe("errors", () => {
+      it("should call alertOnEmailFailure when there is an error sending the email", async () => {
+        const artworks = [
+          {
+            title: "Artwork Title",
+            artistNames: "Artist",
+          },
+        ]
+
+        const mockError = new Error("Unknown error")
+
+        jest.spyOn(Mailer, "mail").mockImplementation((options, callback) => {
+          callback(mockError as any)
+        })
+
+        const alertOnEmailFailureMock = jest.fn()
+        jest.spyOn(Alert, "alert").mockImplementation(alertOnEmailFailureMock)
+
+        await useMailComposer().sendMail({ artworks } as any)
+
+        expect(alertOnEmailFailureMock).toHaveBeenCalledWith(
+          "Error sending email: Error: Unknown error",
+          "",
+          [{ style: "cancel", text: "OK" }]
+        )
+      })
+    })
+
+    it("sends specific message if users default email client isnt set up", async () => {
       const artworks = [
         {
           title: "Artwork Title",
@@ -136,7 +163,7 @@ describe("useMailComposer", () => {
         },
       ]
 
-      const mockError = new Error("Failed to send email")
+      const mockError = "not_available"
 
       jest.spyOn(Mailer, "mail").mockImplementation((options, callback) => {
         callback(mockError as any)
@@ -148,8 +175,8 @@ describe("useMailComposer", () => {
       await useMailComposer().sendMail({ artworks } as any)
 
       expect(alertOnEmailFailureMock).toHaveBeenCalledWith(
-        "Email not sent.",
-        "Failed to send email",
+        "Set up your Apple Mail app to send artworks by email.",
+        "",
         [{ style: "cancel", text: "OK" }]
       )
     })
