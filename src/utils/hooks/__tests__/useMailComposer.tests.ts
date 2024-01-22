@@ -3,7 +3,11 @@ import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
 import { GlobalStore, __globalStoreTestUtils__ } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
-import { getArtworkEmailTemplate, useMailComposer } from "utils/hooks/useMailComposer"
+import {
+  getArtworkEmailTemplate,
+  replaceWhitespace,
+  useMailComposer,
+} from "utils/hooks/useMailComposer"
 
 jest.mock("system/store/GlobalStore")
 
@@ -11,7 +15,6 @@ describe("useMailComposer", () => {
   const mockUseAppState = GlobalStore.useAppState as jest.MockedFunction<
     typeof GlobalStore.useAppState
   >
-  const replaceWhitespace = (str: string) => str.replace(/\s+/g, " ").trim()
 
   const emailSettings = {
     ccRecipients: "cc@example.com",
@@ -36,8 +39,9 @@ describe("useMailComposer", () => {
     it("should call MailComposer with correct params when sending a single artwork", () => {
       const recipients = ["cc@example.com"]
       const subject = "More information about Artwork Title by Artist Name."
-      const body =
+      const body = replaceWhitespace(
         "<html> <body> <p>Here is more information about the artwork(s) we discussed.</p><br /> <h1>Artist Name</h1> <p>Artwork Title</p> <br/><p>Some signature</p> </body> </html>"
+      )
       const artworks = [
         {
           title: "Artwork Title",
@@ -65,8 +69,9 @@ describe("useMailComposer", () => {
     it("should call MailComposer with correct params when sending multiple artworks", async () => {
       const recipients = ["cc@example.com"]
       const subject = "More information about Artist A's artworks."
-      const body =
+      const body = replaceWhitespace(
         "<html> <body> <p>Here is more information about the artwork(s) we discussed.</p><br/> <h1>Artist A</h1> <p>Artwork Title 1</p><h1>Artist A</h1> <p>Artwork Title 2</p> <br/><p>Some signature</p> </body> </html>"
+      )
       const artworks = [
         {
           title: "Artwork Title 1",
@@ -102,8 +107,9 @@ describe("useMailComposer", () => {
       }))
 
       const subject = "More information about Artwork Title by Artist Name."
-      const body =
+      const body = replaceWhitespace(
         "<html> <body> <p>Here is more information about the artwork(s) we discussed.</p><br /> <h1>Artist Name</h1> <p>Artwork Title</p> <br/><p>Some signature</p> </body> </html>"
+      )
       const artworks = [
         {
           title: "Artwork Title",
@@ -271,10 +277,7 @@ describe("useMailComposer", () => {
         <html>
           <body>
             <p>${emailSettings?.greetings}</p><br />
-            <img
-              height="60%"
-              src="https://example.com/starry_night.jpg"
-            />
+            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
             <h1>Vincent van Gogh</h1>
             <p>The Starry Night, 1889</p>
             <p>$10,000</p>
@@ -294,10 +297,7 @@ describe("useMailComposer", () => {
 
     it("returns a snippet of HTML when fullHtml is false", () => {
       const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night, 1889</p>
         <p>$10,000</p>
@@ -317,10 +317,7 @@ describe("useMailComposer", () => {
         const expectedHtml = replaceWhitespace(`
         <html>
           <body>
-            <img
-              height="60%"
-              src="https://example.com/starry_night.jpg"
-            />
+            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
             <h1>Vincent van Gogh</h1>
             <p>The Starry Night, 1889</p>
             <p>$10,000</p>
@@ -349,10 +346,7 @@ describe("useMailComposer", () => {
         const expectedHtml = replaceWhitespace(`
         <html>
           <body>
-            <img
-              height="60%"
-              src="https://example.com/starry_night.jpg"
-            />
+            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
             <h1>Vincent van Gogh</h1>
             <p>The Starry Night, 1889</p>
             <p>$10,000</p>
@@ -402,10 +396,7 @@ describe("useMailComposer", () => {
 
       it("title", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>1889</p>
         <p>$10,000</p>
@@ -429,10 +420,7 @@ describe("useMailComposer", () => {
 
       it("date", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night</p>
         <p>$10,000</p>
@@ -456,10 +444,7 @@ describe("useMailComposer", () => {
 
       it("artistNames", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <p>The Starry Night, 1889</p>
         <p>$10,000</p>
         <p>Painting</p>
@@ -482,10 +467,7 @@ describe("useMailComposer", () => {
 
       it("price", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night, 1889</p>
         <p>Painting</p>
@@ -508,10 +490,7 @@ describe("useMailComposer", () => {
 
       it("mediumType", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night, 1889</p>
         <p>$10,000</p>
@@ -534,10 +513,7 @@ describe("useMailComposer", () => {
 
       it("medium", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night, 1889</p>
         <p>$10,000</p>
@@ -560,10 +536,7 @@ describe("useMailComposer", () => {
 
       it("dimensions", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night, 1889</p>
         <p>$10,000</p>
@@ -586,10 +559,7 @@ describe("useMailComposer", () => {
 
       it("published", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img
-          height="60%"
-          src="https://example.com/starry_night.jpg"
-        />
+        <img height="60%" src="https://example.com/starry_night.jpg" />
         <h1>Vincent van Gogh</h1>
         <p>The Starry Night, 1889</p>
         <p>$10,000</p>

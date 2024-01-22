@@ -16,14 +16,16 @@ ignoreLogs()
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 
 // ts-prune-ignore-next
-const InnerApp = () => (
-  <>
-    <AsyncStorageDevtools />
+const InnerApp = () => {
+  return (
+    <>
+      <AsyncStorageDevtools />
 
-    <Providers>
-      <Main />
-    </Providers>
-  </>
-)
+      <Providers>
+        <Main />
+      </Providers>
+    </>
+  )
+}
 
 export const App = __DEV__ ? InnerApp : codePush(codePushOptions)(InnerApp)

@@ -8,68 +8,6 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
-interface EmailComposerProps {
-  subject: string
-  ccRecipients?: string[]
-  body: string
-  isHTML: boolean
-  attachments?: any[]
-  toast: ReturnType<typeof useToast>["toast"]
-}
-
-const emailComposer = ({
-  subject,
-  ccRecipients,
-  body,
-  isHTML,
-  attachments,
-  toast,
-}: EmailComposerProps) => {
-  Mailer.mail(
-    {
-      subject,
-      recipients: ccRecipients,
-      body,
-      isHTML,
-      attachments,
-    },
-    // event is either `sent`, `saved`, `cancelled`, `failed` or `error`
-    (error, event) => {
-      if (!!error) {
-        console.log("[useMailComposer] Error sending email:", error, "event", event)
-        alertOnEmailFailure(error)
-      }
-
-      switch (event) {
-        case "sent":
-          toast.show({
-            title: "Email sent.",
-            type: "info",
-          })
-          break
-        case "saved":
-          toast.show({
-            title: "Email saved for later.",
-            type: "info",
-          })
-          break
-        case "cancelled":
-          toast.show({
-            title: "Email cancelled",
-            type: "error",
-          })
-          break
-        case "failed":
-          console.log("[useMailComposer] Error sending email:", error, "event", event)
-          alertOnEmailFailure(error)
-          break
-        default:
-          break
-      }
-    }
-  )
-}
-
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
   const { toast } = useToast()
@@ -140,7 +78,8 @@ export const useMailComposer = () => {
         }
       })()
 
-      const htmlContent = `
+      const htmlContent = replaceWhitespace(
+        `
         <html>
           <body>
             ${emailSettings.greetings ? `<p>${emailSettings.greetings}</p><br/>` : ""}
@@ -149,8 +88,9 @@ export const useMailComposer = () => {
           </body>
         </html>
       ` // Remove tagged template whitespace
-        .replace(/\s+/g, " ")
-        .trim()
+          .replace(/\s+/g, " ")
+          .trim()
+      )
 
       const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
       const attachments =
@@ -172,6 +112,68 @@ export const useMailComposer = () => {
   return {
     sendMail,
   }
+}
+
+interface EmailComposerProps {
+  subject: string
+  ccRecipients?: string[]
+  body: string
+  isHTML: boolean
+  attachments?: any[]
+  toast: ReturnType<typeof useToast>["toast"]
+}
+
+const emailComposer = ({
+  subject,
+  ccRecipients,
+  body,
+  isHTML,
+  attachments,
+  toast,
+}: EmailComposerProps) => {
+  Mailer.mail(
+    {
+      subject,
+      recipients: ccRecipients,
+      body,
+      isHTML,
+      attachments,
+    },
+    // event is either `sent`, `saved`, `cancelled`, `failed` or `error`
+    (error, event) => {
+      if (!!error) {
+        console.log("[useMailComposer] Error sending email:", error, "event", event)
+        alertOnEmailFailure(error)
+      }
+
+      switch (event) {
+        case "sent":
+          toast.show({
+            title: "Email sent.",
+            type: "info",
+          })
+          break
+        case "saved":
+          toast.show({
+            title: "Email saved for later.",
+            type: "info",
+          })
+          break
+        case "cancelled":
+          toast.show({
+            title: "Email cancelled",
+            type: "error",
+          })
+          break
+        case "failed":
+          console.log("[useMailComposer] Error sending email:", error, "event", event)
+          alertOnEmailFailure(error)
+          break
+        default:
+          break
+      }
+    }
+  )
 }
 
 const getHTMLPDFAttachment = async (htmlContent: string) => {
@@ -220,7 +222,16 @@ export const getArtworkEmailTemplate = ({
   // Android images need different constraints to not be cut off in PDF
   const imageSrc = image?.resized?.url
   const imageAttributes = Platform.OS === "ios" ? 'height="60%"' : 'style="max-width: 100%;"'
-  const imageTag = imageSrc ? `<img ${imageAttributes} src="${imageSrc}" />` : ""
+
+  let imageTag = ""
+
+  if (imageSrc) {
+    imageTag = `<img ${imageAttributes} src="${imageSrc}" />`
+
+    if (published) {
+      imageTag = `<a href="https://www.artsy.net${href}">${imageTag}</a>`
+    }
+  }
 
   const snippet = `
     ${imageTag}
@@ -264,7 +275,7 @@ export const getArtworkEmailTemplate = ({
     .replace(/\s+/g, " ")
     .trim()
 
-  return htmlWrapper
+  return replaceWhitespace(htmlWrapper)
 }
 
 const alertOnEmailFailure = (error: any) => {
@@ -301,3 +312,5 @@ const log = (subject: string, body: string, ccRecipients: string[] | undefined) 
     )
   }
 }
+
+export const replaceWhitespace = (str: string) => str.replace(/>\s+</g, "><").trim()

@@ -18,7 +18,7 @@ import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { Markdown } from "components/Markdown"
 import { Suspense, useCallback, useMemo, useRef, useState } from "react"
 import { Linking, Platform } from "react-native"
-import QRCode from "react-native-qrcode-generator"
+import QRCode from "react-native-qrcode-svg"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkDetail, ArtworkDetailLineItem } from "screens/Artwork/ArtworkContent/ArtworkDetail"
@@ -75,7 +75,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   })
 
   const screenDimensions = useScreenDimensions()
-  const extraAndroidMargin = Platform.OS === "android" ? 40 : 0
+  const extraAndroidMargin = Platform.OS === "android" ? 40 : 10
 
   const snapPoints = useMemo(
     () => [
@@ -262,19 +262,13 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
           <Join separator={<Spacer y={1} />}>
             <Flex flexDirection="row">
               {!!showQRCode && (
-                <Flex mr={2}>
-                  <QRCode
-                    value={`https://artsy.net/artwork/${artworkData.slug}`}
-                    size={100}
-                    bgColor="black"
-                    fgColor="white"
-                  />
+                <Flex mr={2} pt={0.5}>
+                  <QRCode value={`https://artsy.net/artwork/${artworkData.slug}`} size={75} />
                 </Flex>
               )}
 
               <Flex>
                 <Text>{artistNames}</Text>
-
                 <Text italic color="onBackgroundMedium">
                   {title}
                   {!!date && (
@@ -283,16 +277,12 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
                     </>
                   )}
                 </Text>
-
                 {!hasEditionSets &&
                   (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
-
                 <ArtworkDetailLineItem value={medium} />
-
                 {!hasEditionSets && !!(dimensions?.in || dimensions?.cm) && (
                   <ArtworkDetailLineItem value={`${dimensions?.in} - ${dimensions?.cm}`} />
                 )}
-
                 {!!hasEditionSets && (
                   <>
                     <Text mt={2} weight="medium">

@@ -21,7 +21,7 @@ module.exports = {
       "|moti" +
       "|react-native-file-viewer" +
       "|react-native-linear-gradient" +
-      "|react-native-qrcode-generator" +
+      "|react-native-qrcode-svg" +
       "|react-native-reanimated" +
       "|react-native-safe-area-context" +
       "|react-spring" +
