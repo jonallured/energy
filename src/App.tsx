@@ -26,4 +26,4 @@ const InnerApp = () => (
   </>
 )
 
-export const App = codePush(codePushOptions)(InnerApp)
+export const App = __DEV__ ? InnerApp : codePush(codePushOptions)(InnerApp)
