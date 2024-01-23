@@ -14,6 +14,7 @@ import { Linking, Platform, TouchableOpacity } from "react-native"
 import { useSetupRageShake } from "system/devTools/useSetupRageShake"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
+import { useFolioTracking } from "utils/hooks/useFolioTracking"
 import { object, string } from "yup"
 
 export interface LoginSchema {
@@ -37,6 +38,8 @@ export const LoginScreen = () => {
   const color = useColor()
 
   useSetupRageShake()
+
+  const { trackLoginSuccess } = useFolioTracking()
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
@@ -75,6 +78,9 @@ export const LoginScreen = () => {
       }
 
       if (success) {
+        // where can i get userId?
+        const userId = "abc123"
+        trackLoginSuccess(userId)
         attemptAlbumMigration()
         return
       }
