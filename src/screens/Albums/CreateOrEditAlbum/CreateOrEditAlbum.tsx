@@ -124,7 +124,6 @@ export const CreateOrEditAlbum = () => {
     )
   }
 
-  const showAddMessage = isSelectModeActive || !artworksToAdd?.length
   const showRemoveMessage = mode === "edit" && artworks.length > 0
 
   return (
@@ -145,20 +144,19 @@ export const CreateOrEditAlbum = () => {
               error={errors.albumName}
             />
           </Flex>
+
           <Spacer y={2} />
 
-          {!!showAddMessage && (
-            <Touchable
-              onPress={() =>
-                navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })
-              }
-            >
-              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Text>Add Items to Album</Text>
-                <ArrowRightIcon fill="onBackgroundHigh" />
-              </Flex>
-            </Touchable>
-          )}
+          <Touchable
+            onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
+          >
+            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Text>Add Items to Album</Text>
+              <ArrowRightIcon fill="onBackgroundHigh" />
+            </Flex>
+          </Touchable>
+
+          <Spacer y={1} />
 
           {!!showRemoveMessage && (
             <Text my={2} variant="xs" color="onBackgroundMedium">
