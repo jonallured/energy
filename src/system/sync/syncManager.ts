@@ -47,7 +47,9 @@ import {
   saveFileToCache,
   DownloadFileToCacheProps,
   getURLMap,
+  clearSyncProgressFileCache,
 } from "system/sync/fileCache"
+import { getCurrentSyncProgress } from "system/sync/fileCache/getCurrentSyncProgress"
 import { retryOperation } from "system/sync/retryOperation"
 import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { delay } from "utils/delay"
@@ -166,6 +168,8 @@ export function initSyncManager({
   const startSync = async () => {
     updateStatus("Starting sync")
 
+    const currentSyncProgress = await getCurrentSyncProgress()
+
     // TODO: Do we actually need this?
     // Be sure we're starting from scratch
     // await clearFileCache()
@@ -212,18 +216,26 @@ export function initSyncManager({
           return
         }
 
+        // If we've already started a sync and cancelled or errored out, skip
+        // initial steps and jump to where we left off.
+        if (index < currentSyncProgress.currentStep) {
+          continue
+        }
+
+        const currentStep = index + 1
+
         // Reset progress
         onProgressChange(0)
 
         onStepChange({
-          current: index + 1,
+          current: currentStep,
           total: syncTargets.length,
         })
 
         await fetchSyncTargetData()
 
         // Persist the data incrementally after each step
-        await saveRelayDataToOfflineCache(relayEnvironment)
+        await saveRelayDataToOfflineCache(relayEnvironment, currentStep)
 
         onSyncResultsChange(syncResults)
 
@@ -240,6 +252,9 @@ export function initSyncManager({
     // Store the data in the cache. Later, if the user is offline they'll be
     // able to read from this store.
     await saveRelayDataToOfflineCache(relayEnvironment)
+
+    // Reset sync progress so fresh syncs can occur
+    await clearSyncProgressFileCache()
 
     onComplete()
 
@@ -694,8 +709,11 @@ const log = (...messages: any[]) => console.log("\n[sync]:", ...messages)
  * Create and save the Relay store to disk
  */
 
-const saveRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironment) => {
-  log("Persisting data to offline cache")
+const saveRelayDataToOfflineCache = async (
+  relayEnvironment: RelayModernEnvironment,
+  currentStep?: number
+) => {
+  log("Persisting data to offline cache. Step: ", currentStep)
 
   const relayData = relayEnvironment.getStore().getSource().toJSON()
 
@@ -704,6 +722,15 @@ const saveRelayDataToOfflineCache = async (relayEnvironment: RelayModernEnvironm
     filename: "relayData.json",
     type: "relayData",
   })
+
+  // Store metadata about current sync progress
+  if (currentStep) {
+    await saveFileToCache({
+      data: `{ "currentStep": ${currentStep} }`,
+      filename: "syncProgress.json",
+      type: "relayData",
+    })
+  }
 }
 
 export const loadRelayDataFromOfflineCache = (

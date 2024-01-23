@@ -33,9 +33,8 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({ album, selectedToA
             const imageWidth = artwork?.image?.resized?.width! / 3
 
             return (
-              <Box width={imageWidth} pr={1}>
+              <Box width={imageWidth} pr={1} key={artwork.internalID}>
                 <CachedImage
-                  key={artwork.internalID}
                   uri={artwork.image?.resized?.url as string}
                   aspectRatio={artwork.image?.aspectRatio}
                   placeholderHeight={placeholderHeight}
