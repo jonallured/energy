@@ -1,71 +1,92 @@
-import { useEffect, useState } from "react"
-import { GraphQLTaggedNode, VariablesOf, fetchQuery, useRelayEnvironment } from "react-relay"
-import { CacheConfig, FetchQueryFetchPolicy, OperationType, RenderPolicy } from "relay-runtime"
+import { useEffect, useRef, useState } from "react"
+import { Environment, GraphQLTaggedNode, fetchQuery, useRelayEnvironment } from "react-relay"
+import { CacheConfig, FetchQueryFetchPolicy, OperationType } from "relay-runtime"
 import { GlobalStore } from "system/store/GlobalStore"
+import { useUpdateEffect } from "utils/hooks/useUpdateEffect"
 
-/**
- * In order to handle more fine-grained errors we need to use `useSystemFetchQuery`
- * instead of `useLazyLoadQuery`. This is because `useLazyLoadQuery` will throw at
- * the suspense level which makes derived errors more difficult to catch and
- * respond to.
- *
- * @example
- *
- * const response = useSystemFetchQuery({
- *   query: MyQuery,
- *   variables: { id: "123" }
- *   onError: (error) => doSomethingWithError(error)
- * })
- */
-
-export interface UseSystemFetchQueryProps<TQuery extends OperationType> {
+export interface UseSystemFetchQueryProps<T extends OperationType> {
+  environment?: Environment
   query: GraphQLTaggedNode
-  variables: VariablesOf<TQuery>
+  variables?: T["variables"]
   cacheConfig?: {
-    fetchKey?: string | number | undefined
-    fetchPolicy?: FetchQueryFetchPolicy | undefined
-    networkCacheConfig?: CacheConfig | undefined
-    UNSTABLE_renderPolicy?: RenderPolicy | undefined
-  }
-  onError?: (error: any) => void
+    networkCacheConfig?: CacheConfig | null | undefined
+    fetchPolicy?: FetchQueryFetchPolicy | null | undefined
+  } | null
+  // Skip initial fetch
+  refetchOnly?: boolean
 }
 
-export function useSystemFetchQuery<TQuery extends OperationType>({
+export const useSystemFetchQuery = <T extends OperationType>({
+  environment,
   query,
-  variables,
-  cacheConfig,
-  onError,
-}: UseSystemFetchQueryProps<TQuery>) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [data, setData] = useState<TQuery["response"] | null>(null)
-  const environment = useRelayEnvironment()
+  variables = {},
+  cacheConfig = {},
+  refetchOnly = false,
+}: UseSystemFetchQueryProps<T>) => {
   const fetchPolicy = GlobalStore.useAppState(
     (state) => state.networkStatus.relayFetchPolicy
   )! as FetchQueryFetchPolicy
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true)
-        const response = await fetchQuery<TQuery>(environment, query, variables, {
-          ...cacheConfig,
+  const relayEnvironment = useRelayEnvironment()
+
+  const [data, setData] = useState<T["response"] | null>(null)
+  const [error, setError] = useState<Error | null>(null)
+  const [loading, setLoading] = useState(refetchOnly ? false : true)
+
+  const key = useRef(JSON.stringify(variables))
+  const prevKey = useRef(key.current)
+
+  useUpdateEffect(() => {
+    key.current = JSON.stringify(variables)
+  }, [variables])
+
+  const refetch = async (updateVariables = {}) => {
+    setLoading(true)
+
+    try {
+      const res = await fetchQuery<T>(
+        (environment || relayEnvironment) as unknown as Environment,
+        query,
+        {
+          ...variables,
+          ...updateVariables,
+        },
+        {
           fetchPolicy,
-        }).toPromise()
-
-        setData(response)
-      } catch (error: any) {
-        console.log("[useSystemFetchQuery] Error:", error)
-
-        if (onError) {
-          onError(error)
+          ...cacheConfig,
         }
-      } finally {
-        setIsLoading(false)
-      }
+      ).toPromise()
+
+      setData(res)
+      setLoading(false)
+    } catch (err: any) {
+      setError(err)
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (key.current !== prevKey.current) {
+      setData(null)
+      setError(null)
+      setLoading(true)
+
+      prevKey.current = key.current
     }
 
-    fetchData()
-  }, [JSON.stringify(variables)])
+    if (refetchOnly || data || error) {
+      return
+    }
 
-  return { data, isLoading }
+    refetch()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cacheConfig, data, environment, error, query, relayEnvironment, refetchOnly, variables])
+
+  return {
+    data,
+    error,
+    loading,
+    refetch,
+  }
 }

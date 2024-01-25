@@ -9,8 +9,8 @@ import { GlobalStore } from "system/store/GlobalStore"
 export const EditArtworkInCms = ({ slug }: { slug: string }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const artworkData = useSystemQueryLoader<EditArtworkInCmsQuery>(editArtworkInCmsQuery, { slug })
-  const internalID = artworkData.artwork?.internalID
+  const { data } = useSystemQueryLoader<EditArtworkInCmsQuery>(editArtworkInCmsQuery, { slug })
+  const internalID = data.artwork?.internalID
 
   return (
     <Button

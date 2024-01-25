@@ -22,7 +22,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
+  const { data } = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,
   })
@@ -35,7 +35,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   )
 
   const presentedArtworks = usePresentationFilteredArtworks(
-    extractNodes(artworksData.partner?.artworksConnection)
+    extractNodes(data.partner?.artworksConnection)
   )
 
   const selectArtworksToAddToAnAlbum = () => {

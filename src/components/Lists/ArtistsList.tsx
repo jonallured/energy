@@ -23,7 +23,9 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
   isInTabs,
 }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const data = useSystemQueryLoader<ArtistsListQuery>(artistsListQuery, { partnerID })
+  const { data, refreshControl } = useSystemQueryLoader<ArtistsListQuery>(artistsListQuery, {
+    partnerID,
+  })
   const artists = extractNodes(data.partner?.allArtistsConnection)
   const counts = data.partner?.allArtistsConnection?.edges?.map(
     (edge) => edge?.counts?.managedArtworks as string
@@ -57,6 +59,7 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
       }}
       keyExtractor={(item) => item[0]?.internalID as string}
       ListEmptyComponent={<ListEmptyComponent text="No artists" />}
+      refreshControl={refreshControl}
     />
   )
 }

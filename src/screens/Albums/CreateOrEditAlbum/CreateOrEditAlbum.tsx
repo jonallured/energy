@@ -43,9 +43,6 @@ export const CreateOrEditAlbum = () => {
   const isDarkMode = useIsDarkMode()
   const { toast } = useToast()
 
-  const isSelectModeActive = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.isActive
-  )
   const selectedItems = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.selectedItems
   )

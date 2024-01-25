@@ -13,18 +13,18 @@ interface ShowDocumentsProps {
 
 export const ShowDocuments: React.FC<ShowDocumentsProps> = ({ slug }) => {
   const activePartnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const showDocumentsData = useSystemQueryLoader<ShowDocumentsQuery>(showDocumentsQuery, {
+  const { data, refreshControl } = useSystemQueryLoader<ShowDocumentsQuery>(showDocumentsQuery, {
     slug,
     partnerID: activePartnerID,
   })
 
-  const documents = extractNodes(showDocumentsData.partner?.documentsConnection)
+  const documents = extractNodes(data.partner?.documentsConnection)
 
   return (
     <>
       <SelectModePortal tabName="ShowDocuments" items={documents} />
 
-      <Tabs.ScrollView>
+      <Tabs.ScrollView refreshControl={refreshControl}>
         <DocumentList documents={documents} />
       </Tabs.ScrollView>
     </>

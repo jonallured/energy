@@ -12,17 +12,17 @@ interface ShowArtworksProps {
 }
 
 export const ShowArtworks: React.FC<ShowArtworksProps> = ({ slug }) => {
-  const artworksData = useSystemQueryLoader<ShowArtworksQuery>(showArtworksQuery, {
+  const { data, refreshControl } = useSystemQueryLoader<ShowArtworksQuery>(showArtworksQuery, {
     slug,
   })
-  const artworks = extractNodes(artworksData.show?.artworksConnection)
+  const artworks = extractNodes(data.show?.artworksConnection)
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   return (
     <>
       <SelectModePortal tabName="ShowArtworks" items={presentedArtworks} />
 
-      <Tabs.ScrollView>
+      <Tabs.ScrollView refreshControl={refreshControl}>
         <ArtworksList artworks={presentedArtworks} />
       </Tabs.ScrollView>
     </>

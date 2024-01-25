@@ -47,7 +47,7 @@ export const SelectPartnerScreen = () => (
 )
 
 const SelectPartner = () => {
-  const data = useSystemQueryLoader<SelectPartnerQuery>(
+  const { data } = useSystemQueryLoader<SelectPartnerQuery>(
     graphql`
       query SelectPartnerQuery {
         me {

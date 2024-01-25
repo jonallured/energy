@@ -15,7 +15,7 @@ type ShowTabsRoute = RouteProp<NavigationScreens, "ArtistTabs">
 
 export const ShowTabs = () => {
   const { slug } = useRoute<ShowTabsRoute>().params
-  const data = useSystemQueryLoader<ShowTabsQuery>(showTabsQuery, { slug })
+  const { data } = useSystemQueryLoader<ShowTabsQuery>(showTabsQuery, { slug })
 
   return (
     <TabsView title={data.show?.name!}>

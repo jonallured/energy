@@ -9,9 +9,10 @@ import { GlobalStore } from "system/store/GlobalStore"
 
 interface ShowsListProps {
   shows: any[]
+  refreshControl?: JSX.Element
 }
 
-export const ShowsList: React.FC<ShowsListProps> = ({ shows }) => {
+export const ShowsList: React.FC<ShowsListProps> = ({ shows, refreshControl }) => {
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
@@ -41,6 +42,7 @@ export const ShowsList: React.FC<ShowsListProps> = ({ shows }) => {
       )}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<ListEmptyComponent text="No shows" />}
+      refreshControl={refreshControl}
     />
   )
 }

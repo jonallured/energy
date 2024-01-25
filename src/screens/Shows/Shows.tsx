@@ -7,12 +7,14 @@ import { extractNodes } from "utils/extractNodes"
 
 export const Shows = () => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
-  const data = useSystemQueryLoader<ShowsQuery>(showsQuery, { partnerID: partnerID! })
+  const { data, refreshControl } = useSystemQueryLoader<ShowsQuery>(showsQuery, {
+    partnerID: partnerID!,
+  })
   const shows = extractNodes(data.partner?.showsConnection)
 
   return (
     <>
-      <ShowsList shows={shows} />
+      <ShowsList shows={shows} refreshControl={refreshControl} />
     </>
   )
 }

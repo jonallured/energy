@@ -13,18 +13,21 @@ interface ArtistDocumentsProps {
 
 export const ArtistDocuments: React.FC<ArtistDocumentsProps> = ({ slug }) => {
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const artistDocumentsData = useSystemQueryLoader<ArtistDocumentsQuery>(artistDocumentsQuery, {
-    slug,
-    partnerID: selectedPartner,
-  })
+  const { data, refreshControl } = useSystemQueryLoader<ArtistDocumentsQuery>(
+    artistDocumentsQuery,
+    {
+      slug,
+      partnerID: selectedPartner,
+    }
+  )
 
-  const documents = extractNodes(artistDocumentsData.partner?.documentsConnection)
+  const documents = extractNodes(data.partner?.documentsConnection)
 
   return (
     <>
       <SelectModePortal tabName="ArtistDocuments" items={documents} />
 
-      <Tabs.ScrollView>
+      <Tabs.ScrollView refreshControl={refreshControl}>
         <DocumentList documents={documents} />
       </Tabs.ScrollView>
     </>

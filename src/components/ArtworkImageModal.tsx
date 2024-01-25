@@ -19,7 +19,7 @@ export const ArtworkImageModalQueryRenderer: React.FC<ArtworkImageModalProps> = 
   slug,
   ...props
 }) => {
-  const data = useSystemQueryLoader<ArtworkImageModalQuery>(artworkImageModalQuery, {
+  const { data } = useSystemQueryLoader<ArtworkImageModalQuery>(artworkImageModalQuery, {
     slug: slug as string,
     imageSize,
   })

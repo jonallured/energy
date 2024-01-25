@@ -7,7 +7,7 @@ import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
 
 export const ShowInstalls = ({ slug }: { slug: string }) => {
-  const data = useSystemQueryLoader<ShowInstallsQuery>(showInstallsQuery, {
+  const { data, refreshControl } = useSystemQueryLoader<ShowInstallsQuery>(showInstallsQuery, {
     slug,
   })
 
@@ -17,7 +17,7 @@ export const ShowInstalls = ({ slug }: { slug: string }) => {
     <>
       <SelectModePortal tabName="ShowInstalls" items={installs} />
 
-      <Tabs.ScrollView>
+      <Tabs.ScrollView refreshControl={refreshControl}>
         <InstallationsList images={installs} />
       </Tabs.ScrollView>
     </>

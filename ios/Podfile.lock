@@ -347,7 +347,7 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.9):
     - React-Core
-  - react-native-pager-view (6.2.0):
+  - react-native-pager-view (6.2.3):
     - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
@@ -441,11 +441,11 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.8.0):
+  - RNGestureHandler (2.9.0):
     - React-Core
   - RNReactNativeHapticFeedback (1.14.0):
     - React-Core
-  - RNReanimated (3.3.0):
+  - RNReanimated (3.4.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -482,7 +482,7 @@ PODS:
     - React-Core
     - React-hermes
     - Sentry/HybridSDK (= 8.15.2)
-  - RNSVG (12.5.0):
+  - RNSVG (14.1.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -804,7 +804,7 @@ SPEC CHECKSUMS:
   react-native-keep-awake: ad1d67f617756b139536977a0bf06b27cec0714a
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
-  react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
+  react-native-pager-view: c29d484f19c49ff19525a94105e4ab2c4d4ae273
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-shake: 0e90da57c823b43975d1cd01249ff6ca2f9ebe00
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
@@ -827,12 +827,12 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
-  RNReanimated: 38e8c4a0232f4596ba46b547ae8b9a8192322dea
+  RNReanimated: aa8bda648be0174b2b83246ab9cd2644b46ca3c1
   RNScreens: e145ee71415e19fdcbcd98d85247f5baf4feafad
   RNSentry: ee1a9a80996414205d84ce9180c31bd855fd4641
-  RNSVG: 6adc5c52d2488a476248413064b7f2832e639057
+  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   segment-analytics-react-native: 13d4ba325add2b2ed796ee58531e3b4cacfe692f

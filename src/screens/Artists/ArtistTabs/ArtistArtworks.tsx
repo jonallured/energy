@@ -14,19 +14,19 @@ interface ArtistArtworkProps {
 
 export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const artworksData = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
+  const { data, refreshControl } = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,
     slug,
   })
 
-  const artworks = extractNodes(artworksData.partner?.artworksConnection)
+  const artworks = extractNodes(data.partner?.artworksConnection)
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   return (
     <>
       <SelectModePortal tabName="ArtistArtworks" items={presentedArtworks} />
 
-      <Tabs.ScrollView>
+      <Tabs.ScrollView refreshControl={refreshControl}>
         <ArtworksList artworks={presentedArtworks} />
       </Tabs.ScrollView>
     </>

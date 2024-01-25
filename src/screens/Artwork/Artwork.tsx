@@ -57,11 +57,11 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { saveNavigationHistory } = useSaveNavigationHistory()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
-  const artworkData = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
+  const { data } = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
     slug,
   })
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
-  const { artwork } = artworkData
+  const { artwork } = data
 
   const numberOfAlbumsIncludingArtwork = albums
     .flatMap((album) => album.items)
