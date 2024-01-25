@@ -58,7 +58,7 @@ desc "Notifies in slack if a new beta is needed"
 lane :notify_beta_needed do
   message = <<~MSG
               :warning: :iphone:
-              Native code has changed, new testflight needed!
+              [Energy](https://github.com/artsy/energy) Native code has changed, new testflight needed!
               Deploy new betas from main to keep testing.
             MSG
   slack(
