@@ -64,6 +64,17 @@ function preventDefaultLazyQueryLoaderImport() {
   }
 }
 
+function preventDefaultRelayEnvironmentImport() {
+  const importChecks = getFileNames(danger.git.created_files).filter((filename) => {
+    const content = fs.readFileSync(filename).toString()
+    return content.includes("useRelayEnvironment")
+  })
+  if (importChecks.length > 0) {
+    fail(`Please use \`useSystemRelayEnvironment\` instead of \`useRelayEnvironment\`. This guards against queries being executed when offline. See:
+> ${importChecks.map((filename) => `\`${filename}\``).join("\n")}`)
+  }
+}
+
 function preventDefaultImageImport() {
   const newQueryLoaderImports = getFileNames(danger.git.created_files).filter((filename) => {
     const content = fs.readFileSync(filename).toString()
@@ -143,9 +154,12 @@ export const useWebPs = (fileNames: string[]) => {
 
   preventUsingMoment()
   preventUsingTestRenderer()
-  preventDefaultLazyQueryLoaderImport()
   preventDefaultImageImport()
   verifyRemainingDevWork()
   useWebPs(newCreatedFileNames)
   warnAboutMigrationsIfChangingModels()
+
+  // Offline-support checks
+  preventDefaultLazyQueryLoaderImport()
+  preventDefaultRelayEnvironmentImport()
 })()
