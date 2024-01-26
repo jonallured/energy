@@ -16,7 +16,7 @@ export const PresentationModeSettings = () => {
   )
 
   const trackToggle = (props: { label: string; value: boolean; toggleHandler: () => void }) => {
-    trackToggledPresentationViewSetting(props.label, props.value)
+    trackToggledPresentationViewSetting(props.label, !props.value)
     props.toggleHandler()
   }
 
