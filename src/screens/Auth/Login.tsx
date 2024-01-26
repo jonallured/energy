@@ -14,6 +14,7 @@ import { Linking, Platform, TouchableOpacity } from "react-native"
 import { useSetupRageShake } from "system/devTools/useSetupRageShake"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
+import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
 import { object, string } from "yup"
@@ -36,6 +37,8 @@ const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art
 const APP_SCHEME_URL = "artsy:///"
 
 export const LoginScreen = () => {
+  const { relayEnvironment } = useSystemRelayEnvironment()
+
   useTrackScreen("Login")
   useSetupRageShake()
 
@@ -80,7 +83,7 @@ export const LoginScreen = () => {
 
       if (success) {
         trackLoginSuccess()
-        attemptAlbumMigration()
+        attemptAlbumMigration(relayEnvironment)
         return
       }
 

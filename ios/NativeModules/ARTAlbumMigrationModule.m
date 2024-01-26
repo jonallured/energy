@@ -52,15 +52,41 @@ RCT_EXPORT_METHOD(resetAlbumReadAttempts)
 {
   NSDictionary *testAlbums = @{
     @"albums": @[
-      @{ @"name": @"test album 1",
-         @"artworkIDs": @[@"56ea2be6cb4c27658a00108f", @"57277ed2139b2112710039fd", @"55d7907772616953f7000106", @"51815fd95a9dc26e68000179"],
+      @{ @"name": @"test album 3",
+         @"artworkIDs": @[
+           @"51815fd95a9dc26e68000179",
+           @"56ea2be6cb4c27658a00108f",
+           @"57277ed2139b2112710039fd",
+           @"55d7907772616953f7000106"
+         ],
       },
       @{ @"name": @"test album 2",
-         @"artworkIDs": @[@"56ea2be6cb4c27658a00108f", @"57277ed2139b2112710039fd", @"55d7907772616953f7000106", @"51815fd95a9dc26e68000179"],
+         @"artworkIDs": @[
+           @"51815fd95a9dc26e68000179",
+           @"56ea2be6cb4c27658a00108f",
+           @"57277ed2139b2112710039fd",
+           @"55d7907772616953f7000106"
+         ],
       },
-      @{ @"name": @"test album 3",
-         @"artworkIDs": @[@"56ea2be6cb4c27658a00108f", @"57277ed2139b2112710039fd", @"55d7907772616953f7000106", @"51815fd95a9dc26e68000179"],
+      @{ @"name": @"test album 1",
+         @"artworkIDs": @[
+           @"51815fd95a9dc26e68000179",
+           @"56ea2be6cb4c27658a00108f",
+           @"57277ed2139b2112710039fd",
+           @"55d7907772616953f7000106"
+         ],
       },
+      @{ @"name": @"Test Album 11",
+         @"artworkIDs": @[
+           @"5176b83271e36606b5000019",
+           @"test-test",
+           @"517ea63a7f6107c380000162",
+           @"51816268250db946400002b8",
+           @"51648886f573c10a6e000100",
+           @"518162687b979f1025000176",
+           @"luther-blissett-thumbs-up"
+         ],
+      }
     ]
   };
 

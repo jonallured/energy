@@ -4,12 +4,15 @@ import * as Sentry from "@sentry/react-native"
 import { ARTNativeModules } from "native_modules/ARTNativeModules"
 import { NativeModules } from "react-native"
 import { CodePushOptions } from "screens/Settings/DevMenu/CodePushOptions"
+import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
 
 export const DevMenu = () => {
   const navigation = useNavigation()
   const currentEnvironment = GlobalStore.useAppState((s) => s.config.environment.activeEnvironment)
+  const { relayEnvironment } = useSystemRelayEnvironment()
 
   return (
     <Join separator={<Spacer y={1} />}>
@@ -44,24 +47,7 @@ export const DevMenu = () => {
       <Button
         block
         onPress={() => {
-          const albums = ARTNativeModules.ARTAlbumMigrationModule.readAlbums()
-          if (albums) {
-            albums.forEach((nativeAlbum) => {
-              const album = {
-                name: nativeAlbum.name,
-                items: nativeAlbum.artworkIDs.map((internalID) => ({
-                  __typename: "Artwork",
-                  internalID,
-                  slug: internalID,
-                })) as SelectedItemArtwork[],
-              }
-              console.log("Got album name", album.name)
-              console.log("Got album items", album.items)
-              console.log("Got album", album)
-
-              GlobalStore.actions.albums.addAlbum(album)
-            })
-          }
+          attemptAlbumMigration(relayEnvironment)
         }}
       >
         Read albums
