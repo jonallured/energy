@@ -3,11 +3,14 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { useState } from "react"
 import { WebView } from "react-native-webview"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 type ArtworkWebViewRoute = RouteProp<NavigationScreens, "ArtworkWebView">
 
 export const ArtworkWebView = () => {
+  useTrackScreen("ArtworkWebView")
+
   const navigation = useNavigation()
   const { params } = useRoute<ArtworkWebViewRoute>()
   const { webURL } = GlobalStore.useAppState((store) => store.config.environment.strings)

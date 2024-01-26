@@ -12,6 +12,8 @@ import { useFormik } from "formik"
 import { useRef, useState } from "react"
 import { Linking, Platform, TouchableOpacity } from "react-native"
 import { useSetupRageShake } from "system/devTools/useSetupRageShake"
+import { useAppTracking } from "system/hooks/useAppTracking"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
 import { object, string } from "yup"
@@ -34,10 +36,12 @@ const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art
 const APP_SCHEME_URL = "artsy:///"
 
 export const LoginScreen = () => {
-  const color = useColor()
-
+  useTrackScreen("Login")
   useSetupRageShake()
 
+  const color = useColor()
+
+  const { trackLoginSuccess } = useAppTracking()
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
   const otpInputRef = useRef<Input>(null)
@@ -75,6 +79,7 @@ export const LoginScreen = () => {
       }
 
       if (success) {
+        trackLoginSuccess()
         attemptAlbumMigration()
         return
       }

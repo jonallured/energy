@@ -3,11 +3,14 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { Album } from "system/store/Models/AlbumsModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const Albums = () => {
+  useTrackScreen("Albums")
+
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()

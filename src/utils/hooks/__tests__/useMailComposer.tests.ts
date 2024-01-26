@@ -32,7 +32,7 @@ describe("useMailComposer", () => {
 
   afterEach(() => {
     Platform.OS = "ios"
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   describe("sendMail", () => {

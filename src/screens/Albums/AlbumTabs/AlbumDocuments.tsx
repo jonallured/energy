@@ -4,6 +4,7 @@ import { DocumentList } from "components/Lists/DocumentList"
 import { graphql } from "react-relay"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useValidateAlbumItems } from "screens/Albums/useValidateAlbumItems"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
 
@@ -12,6 +13,8 @@ interface AlbumDocumentsProps {
 }
 
 export const AlbumDocuments: React.FC<AlbumDocumentsProps> = ({ albumId }) => {
+  useTrackScreen("AlbumDocuments")
+
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const { documents } = useAlbum({ albumId })
   const documentIDs = documents.map((document) => document.internalID)

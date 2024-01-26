@@ -20,7 +20,7 @@ describe("urlMap", () => {
   const existsMock = exists as jest.Mock
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("should be able to update the urlMap with a key-value pair", async () => {

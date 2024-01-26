@@ -5,12 +5,15 @@ import { DateTime } from "luxon"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { OfflineModeSync } from "screens/Settings/OfflineMode/OfflineModeSync"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
 import { clearFileCache } from "system/sync/fileCache/clearFileCache"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
 export const OfflineModeSettings = () => {
+  useTrackScreen("OfflineModeSettings")
+
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
   const offlineSyncedChecksum = GlobalStore.useAppState(

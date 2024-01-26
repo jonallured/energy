@@ -26,7 +26,7 @@ describe("useAlbum", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   const HookWrapper: React.FC = ({ children }) => {

@@ -16,7 +16,9 @@ import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
 import { Platform } from "react-native"
 import { useAlbum } from "screens/Albums/useAlbum"
+import { useAppTracking } from "system/hooks/useAppTracking"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
@@ -34,10 +36,13 @@ const createAlbumSchema = object().shape({
 type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
+  useTrackScreen("CreateOrEditAlbum")
+
   const { mode, albumId, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>().params || {
     mode: "create",
   }
 
+  const { trackCreatedAlbum } = useAppTracking()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()
@@ -84,6 +89,8 @@ export const CreateOrEditAlbum = () => {
               name: values.albumName.trim(),
               items,
             })
+
+            trackCreatedAlbum()
           }
 
           GlobalStore.actions.selectMode.cancelSelectMode()

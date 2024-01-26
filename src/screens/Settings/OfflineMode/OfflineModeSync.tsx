@@ -5,6 +5,8 @@ import { DateTime } from "luxon"
 import { useEffect, useMemo, useState } from "react"
 import { Alert } from "react-native"
 import JSONTree from "react-native-json-tree"
+import { useAppTracking } from "system/hooks/useAppTracking"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
@@ -16,6 +18,10 @@ interface OfflineModeSyncProps {
 }
 
 export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }) => {
+  useTrackScreen("OfflineModeSync")
+
+  const { trackCompletedOfflineSync } = useAppTracking()
+
   const navigation = useNavigation()
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
@@ -48,6 +54,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
         setOfflineSyncedChecksum(relayChecksum)
         setLastSync(DateTime.now())
         deactivateKeepAwake()
+        trackCompletedOfflineSync()
 
         Alert.alert("Sync complete.", "", [
           {

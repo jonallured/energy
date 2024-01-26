@@ -3,6 +3,7 @@ import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql
 import { DocumentList } from "components/Lists/DocumentList"
 import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
@@ -12,6 +13,8 @@ interface ArtistDocumentsProps {
 }
 
 export const ArtistDocuments: React.FC<ArtistDocumentsProps> = ({ slug }) => {
+  useTrackScreen("ArtistDocuments")
+
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const { data, refreshControl } = useSystemQueryLoader<ArtistDocumentsQuery>(
     artistDocumentsQuery,

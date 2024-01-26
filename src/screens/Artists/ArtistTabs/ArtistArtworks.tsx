@@ -3,6 +3,7 @@ import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
@@ -13,6 +14,8 @@ interface ArtistArtworkProps {
 }
 
 export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
+  useTrackScreen("ArtistArtworks")
+
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const { data, refreshControl } = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
     partnerID,

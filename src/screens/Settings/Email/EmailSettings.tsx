@@ -10,9 +10,12 @@ import {
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const EmailSettings = () => {
+  useTrackScreen("EmailSettings")
+
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const emailCC = GlobalStore.useAppState((state) => state.email.ccRecipients)
   const greeting = GlobalStore.useAppState((state) => state.email.greetings)
@@ -53,15 +56,15 @@ export const EmailSettings = () => {
           <Separator my={1} />
           <SubjectLineRow
             label="One Artwork"
-            navigateTo={() => navigation.navigate("OneArtwork")}
+            navigateTo={() => navigation.navigate("EmailSettingsOneArtwork")}
           />
           <SubjectLineRow
             label="Multiple artworks by the same artist"
-            navigateTo={() => navigation.navigate("MultipleArtworksBySameArtist")}
+            navigateTo={() => navigation.navigate("EmailSettingsMultipleArtworksBySameArtist")}
           />
           <SubjectLineRow
             label="Multiple artworks and artists"
-            navigateTo={() => navigation.navigate("MultipleArtworksAndArtists")}
+            navigateTo={() => navigation.navigate("EmailSettingsMultipleArtworksAndArtists")}
           />
         </Flex>
         <Spacer y={6} />

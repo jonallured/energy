@@ -33,7 +33,7 @@ describe("AlbumArtworks", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("renders a list of artworks", async () => {

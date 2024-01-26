@@ -41,7 +41,7 @@ describe("AlbumListItem", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("renders album name and item count", () => {

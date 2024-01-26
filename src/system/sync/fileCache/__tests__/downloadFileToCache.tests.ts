@@ -13,7 +13,7 @@ describe("initDownloadFileToCache", () => {
   const warmFilesystemMock = warmFilesystem as jest.Mock
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("calls warmFilesystem", async () => {

@@ -1,8 +1,11 @@
 import { Input, Screen, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const MultipleArtworksAndArtists = () => {
+  useTrackScreen("EmailSettingsMultipleArtworksAndArtists")
+
   const navigation = useNavigation()
   const value = GlobalStore.useAppState((state) => state.email.multipleArtworksAndArtistsSubject)
 

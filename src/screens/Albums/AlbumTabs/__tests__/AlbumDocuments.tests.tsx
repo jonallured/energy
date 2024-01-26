@@ -33,7 +33,7 @@ describe("AlbumDocuments", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("renders a list of documents", async () => {

@@ -30,7 +30,7 @@ describe("useValidateAlbumItems", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("should remove items from albums and show an alert message if they have been deleted from CMS", async () => {

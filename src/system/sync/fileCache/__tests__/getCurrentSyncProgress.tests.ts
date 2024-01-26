@@ -7,7 +7,7 @@ describe("getCurrentSyncProgress", () => {
   const mockGetFileFromCache = getFileFromCache as jest.Mock
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("should return metadata with currentStep -1 if no sync progress is present", async () => {

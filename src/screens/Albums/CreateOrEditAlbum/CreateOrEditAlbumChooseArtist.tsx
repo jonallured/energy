@@ -3,6 +3,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { NavigationScreens } from "Navigation"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsList } from "components/Lists/ArtistsList"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 
 type CreateOrEditAlbumChooseArtistRoute = RouteProp<
   NavigationScreens,
@@ -10,6 +11,8 @@ type CreateOrEditAlbumChooseArtistRoute = RouteProp<
 >
 
 export const CreateOrEditAlbumChooseArtist = () => {
+  useTrackScreen("CreateOrEditAlbumChooseArtist")
+
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { mode, albumId } = useRoute<CreateOrEditAlbumChooseArtistRoute>().params
   const space = useSpace()

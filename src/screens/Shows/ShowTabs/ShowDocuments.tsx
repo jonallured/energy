@@ -3,6 +3,7 @@ import { ShowDocumentsQuery } from "__generated__/ShowDocumentsQuery.graphql"
 import { DocumentList } from "components/Lists/DocumentList"
 import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
@@ -12,6 +13,8 @@ interface ShowDocumentsProps {
 }
 
 export const ShowDocuments: React.FC<ShowDocumentsProps> = ({ slug }) => {
+  useTrackScreen("ShowDocuments")
+
   const activePartnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const { data, refreshControl } = useSystemQueryLoader<ShowDocumentsQuery>(showDocumentsQuery, {
     slug,

@@ -4,6 +4,7 @@ import { uniq } from "lodash"
 import { Alert, Platform } from "react-native"
 import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
+import { useAppTracking } from "system/hooks/useAppTracking"
 import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
@@ -11,6 +12,7 @@ import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
   const { toast } = useToast()
+  const { trackSentContent } = useAppTracking()
 
   /**
    * Send email with artwork info, using a passed artwork object or the selected
@@ -45,6 +47,7 @@ export const useMailComposer = () => {
         isHTML: true,
         attachments,
         toast,
+        trackSentContent,
       })
 
       // Sending multiple items
@@ -105,6 +108,7 @@ export const useMailComposer = () => {
         isHTML: true,
         attachments,
         toast,
+        trackSentContent,
       })
     }
   }
@@ -121,6 +125,7 @@ interface EmailComposerProps {
   isHTML: boolean
   attachments?: any[]
   toast: ReturnType<typeof useToast>["toast"]
+  trackSentContent: () => void
 }
 
 const emailComposer = ({
@@ -130,6 +135,7 @@ const emailComposer = ({
   isHTML,
   attachments,
   toast,
+  trackSentContent,
 }: EmailComposerProps) => {
   Mailer.mail(
     {
@@ -152,6 +158,8 @@ const emailComposer = ({
             title: "Email sent.",
             type: "info",
           })
+
+          trackSentContent()
           break
         case "saved":
           toast.show({

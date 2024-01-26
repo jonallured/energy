@@ -5,6 +5,7 @@ import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { isAllSelected } from "components/SelectMode"
 import { artistArtworksQuery } from "screens/Artists/ArtistTabs/ArtistArtworks"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
@@ -17,6 +18,8 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 >
 
 export const CreateOrEditAlbumChooseArtworks = () => {
+  useTrackScreen("CreateOrEditAlbumChooseArtworks")
+
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()

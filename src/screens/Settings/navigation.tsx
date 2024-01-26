@@ -16,9 +16,9 @@ export type SettingsNavigationScreens = {
   OfflineModeSettings: undefined
   OfflineModeSync: undefined
   EmailSettings: undefined
-  MultipleArtworksAndArtists: undefined
-  MultipleArtworksBySameArtist: undefined
-  OneArtwork: undefined
+  EmailSettingsMultipleArtworksAndArtists: undefined
+  EmailSettingsMultipleArtworksBySameArtist: undefined
+  EmailSettingsOneArtwork: undefined
 }
 
 export const SettingsNavigation = () => {
@@ -30,12 +30,15 @@ export const SettingsNavigation = () => {
       <StackNav.Screen name="OfflineModeSettings" component={OfflineModeSettings} />
 
       <StackNav.Screen name="EmailSettings" component={EmailSettings} />
-      <StackNav.Screen name="MultipleArtworksAndArtists" component={MultipleArtworksAndArtists} />
       <StackNav.Screen
-        name="MultipleArtworksBySameArtist"
+        name="EmailSettingsMultipleArtworksAndArtists"
+        component={MultipleArtworksAndArtists}
+      />
+      <StackNav.Screen
+        name="EmailSettingsMultipleArtworksBySameArtist"
         component={MultipleArtworksBySameArtist}
       />
-      <StackNav.Screen name="OneArtwork" component={OneArtwork} />
+      <StackNav.Screen name="EmailSettingsOneArtwork" component={OneArtwork} />
     </StackNav.Group>
   )
 }

@@ -23,6 +23,7 @@ import { Suspense, useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
@@ -33,7 +34,9 @@ import { EditArtworkInCms } from "./EditArtworkInCms"
 
 type ArtworkRoute = RouteProp<NavigationScreens, "Artwork">
 
-export const Artwork = () => {
+export const Artwork: React.FC = () => {
+  useTrackScreen("Artwork")
+
   const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
   const artworkSlugs = contextArtworkSlugs ?? [slug]
 

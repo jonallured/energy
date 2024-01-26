@@ -13,6 +13,7 @@ import { NavigationScreens } from "Navigation"
 import { throttle } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { SearchContext } from "screens/Search/SearchContext"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { SearchFilters } from "./SearchFilters"
 import { SearchResult } from "./SearchResult"
 
@@ -20,6 +21,8 @@ const SEARCH_THROTTLE_INTERVAL = 1000
 const MINIMUM_SEARCH_INPUT_LENGTH = 2
 
 export const SearchScreen = () => {
+  useTrackScreen("Search")
+
   return (
     <SearchContext.Provider>
       <Search />

@@ -31,7 +31,7 @@ describe("Artists", () => {
   const mockUseNavigation = useNavigation as jest.Mock
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("renders", () => {

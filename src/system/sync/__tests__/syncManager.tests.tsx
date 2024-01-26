@@ -38,7 +38,7 @@ describe("syncManager", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   describe("public api", () => {

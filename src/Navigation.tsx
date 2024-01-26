@@ -12,6 +12,7 @@ import { HomeTabs } from "screens/HomeTabs"
 import { SearchNavigation, SearchNavigationScreens } from "screens/Search/navigation"
 import { SettingsNavigation, SettingsNavigationScreens } from "screens/Settings/navigation"
 import { ShowsNavigation, ShowsNavigationScreens } from "screens/Shows/navigation"
+import { useAppTracking } from "system/hooks/useAppTracking"
 import { useErrorReporting } from "system/hooks/useErrorReporting"
 import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
 import { useSystemIsDoneBooting } from "system/hooks/useSystemIsDoneBooting"
@@ -37,7 +38,9 @@ type Screens = {
 export const StackNav = createStackNavigator<NavigationScreens>()
 
 export const Main = () => {
+  const { maybeTrackFirstInstall } = useAppTracking()
   const isDoneBooting = useSystemIsDoneBooting()
+  const { incrementLaunchCount } = GlobalStore.actions.system
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
   const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const isDarkMode = useIsDarkMode()
@@ -48,9 +51,14 @@ export const Main = () => {
   useWebViewCookies()
 
   useEffect(() => {
+    incrementLaunchCount()
+  }, [])
+
+  useEffect(() => {
     const workAfterRehydrate = async () => {
       await loadUrlMap()
       SplashScreen.hide()
+      maybeTrackFirstInstall()
     }
 
     if (isDoneBooting) {

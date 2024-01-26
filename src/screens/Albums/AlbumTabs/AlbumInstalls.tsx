@@ -4,6 +4,7 @@ import { InstallationsList } from "components/Lists/InstallationsList"
 import { graphql } from "relay-runtime"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useValidateAlbumItems } from "screens/Albums/useValidateAlbumItems"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
 
@@ -12,6 +13,8 @@ interface AlbumInstallsProps {
 }
 
 export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ albumId }) => {
+  useTrackScreen("AlbumInstalls")
+
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID as string)
   const { installs } = useAlbum({ albumId })
   const installIDs = installs?.map((install) => install.internalID as string)

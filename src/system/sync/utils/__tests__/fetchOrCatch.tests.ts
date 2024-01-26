@@ -10,7 +10,7 @@ describe("fetchOrCatch", () => {
   const fetchQueryMock = fetchQuery as jest.Mock
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("triggers onError callback on error", () => {

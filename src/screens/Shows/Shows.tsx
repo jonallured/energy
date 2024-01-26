@@ -1,11 +1,14 @@
 import { ShowsQuery } from "__generated__/ShowsQuery.graphql"
 import { ShowsList } from "components/Lists/ShowsList"
 import { graphql } from "react-relay"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
 
-export const Shows = () => {
+export const Shows: React.FC = () => {
+  useTrackScreen("Shows")
+
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const { data, refreshControl } = useSystemQueryLoader<ShowsQuery>(showsQuery, {
     partnerID: partnerID!,

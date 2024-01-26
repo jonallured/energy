@@ -1,4 +1,4 @@
-import { NativeModules as AllNativeModules, Platform } from "react-native"
+import { NativeModules, Platform } from "react-native"
 
 const noop: any = (name: string) => () =>
   console.warn(`method ${name} doesn't exist on android yet`)
@@ -12,7 +12,7 @@ interface ARTNativeModules {
 }
 
 const NativeModulesIOS: ARTNativeModules = {
-  ARTAlbumMigrationModule: AllNativeModules.ARTAlbumMigrationModule,
+  ARTAlbumMigrationModule: NativeModules.ARTAlbumMigrationModule,
 }
 
 const NativeModulesAndroid: ARTNativeModules = {

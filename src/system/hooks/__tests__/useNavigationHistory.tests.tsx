@@ -39,7 +39,7 @@ describe("#useNavigationHistory", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   describe("#useSaveNavigationHistory", () => {

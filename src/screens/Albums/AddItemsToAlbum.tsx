@@ -5,7 +5,9 @@ import { useToast } from "components/Toast/ToastContext"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { AlbumListItem } from "screens/Albums/AlbumTabs/AlbumListItem"
+import { useAppTracking } from "system/hooks/useAppTracking"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
@@ -13,6 +15,9 @@ import { waitForScreenTransition } from "utils/waitForScreenTransition"
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
+  useTrackScreen("AddItemsToAlbum")
+
+  const { trackAddedToAlbum } = useAppTracking()
   const { artworksToAdd } = useRoute<HomeTabsRoute>().params
   const { toast } = useToast()
   const space = useSpace()
@@ -52,6 +57,14 @@ export const AddItemsToAlbum = () => {
           items: artworksToAdd,
         })
       }
+
+      selectedAlbumIds.forEach((albumId) => {
+        const album = albums.find((album) => album.id === albumId)
+
+        if (album) {
+          trackAddedToAlbum(album.name)
+        }
+      })
 
       navigateToSavedHistory({
         lookupKey: "before-adding-to-album",

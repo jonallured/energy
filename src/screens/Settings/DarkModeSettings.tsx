@@ -1,9 +1,12 @@
 import { Text, Screen } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SettingsItem } from "components/SettingsItem"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const DarkModeSettings = () => {
+  useTrackScreen("DarkModeSettings")
+
   const navigation = useNavigation()
   const isUsingSystemColorScheme = GlobalStore.useAppState(
     (state) => state.devicePrefs.usingSystemColorScheme

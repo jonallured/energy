@@ -1,67 +1,86 @@
 import { Flex, Spacer, Screen, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SettingsItem } from "components/SettingsItem"
+import { useAppTracking } from "system/hooks/useAppTracking"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const PresentationModeSettings = () => {
+  useTrackScreen("PresentationModeSettings")
+
+  const { trackToggledPresentationViewSetting } = useAppTracking()
   const navigation = useNavigation()
+
   const isPresentationModeEnabled = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )
 
+  const trackToggle = (props: { label: string; value: boolean; toggleHandler: () => void }) => {
+    trackToggledPresentationViewSetting(props.label, props.value)
+    props.toggleHandler()
+  }
+
   const presentationConfigs = [
     {
       label: "Hide Prices",
-      state: GlobalStore.useAppState((state) => state.presentationMode.isHidePriceEnabled),
-      toggleHandler: () => GlobalStore.actions.presentationMode.toggleIsHidePriceEnabled(),
+      value: GlobalStore.useAppState((state) => state.presentationMode.isHidePriceEnabled),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHidePriceEnabled()
+      },
     },
     {
       label: "Hide Price For Sold Works",
-      state: GlobalStore.useAppState(
+      value: GlobalStore.useAppState(
         (state) => state.presentationMode.isHidePriceForSoldWorksEnabled
       ),
-      toggleHandler: () =>
-        GlobalStore.actions.presentationMode.toggleIsHidePriceForSoldWorksEnabled(),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHidePriceForSoldWorksEnabled()
+      },
     },
     {
       label: "Hide Unpublished Works",
-      state: GlobalStore.useAppState(
+      value: GlobalStore.useAppState(
         (state) => state.presentationMode.isHideUnpublishedWorksEnabled
       ),
-      toggleHandler: () =>
-        GlobalStore.actions.presentationMode.toggleIsHideUnpublishedWorksEnabled(),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHideUnpublishedWorksEnabled()
+      },
     },
     {
       label: "Hide Works Not For Sale",
-      state: GlobalStore.useAppState(
+      value: GlobalStore.useAppState(
         (state) => state.presentationMode.isHideWorksNotForSaleEnabled
       ),
-      toggleHandler: () =>
-        GlobalStore.actions.presentationMode.toggleIsHideWorksNotForSaleEnabled(),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHideWorksNotForSaleEnabled()
+      },
     },
     {
       label: "Hide Works Availability",
-      state: GlobalStore.useAppState(
+      value: GlobalStore.useAppState(
         (state) => state.presentationMode.isHideWorksAvailabilityEnabled
       ),
-      toggleHandler: () =>
-        GlobalStore.actions.presentationMode.toggleIsHideWorksAvailabilityEnabled(),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHideWorksAvailabilityEnabled()
+      },
     },
     {
       label: "Hide Confidential Notes",
-      state: GlobalStore.useAppState(
+      value: GlobalStore.useAppState(
         (state) => state.presentationMode.isHideConfidentialNotesEnabled
       ),
-      toggleHandler: () =>
-        GlobalStore.actions.presentationMode.toggleIsHideConfidentialNotesEnabled(),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHideConfidentialNotesEnabled()
+      },
     },
     {
       label: "Hide Artwork Edit Button",
-      state: GlobalStore.useAppState(
+      value: GlobalStore.useAppState(
         (state) => state.presentationMode.isHideArtworkEditButtonEnabled
       ),
-      toggleHandler: () =>
-        GlobalStore.actions.presentationMode.toggleIsHideArtworkEditButtonEnabled(),
+      toggleHandler: () => {
+        GlobalStore.actions.presentationMode.toggleIsHideArtworkEditButtonEnabled()
+      },
     },
   ]
 
@@ -86,8 +105,14 @@ export const PresentationModeSettings = () => {
           <Flex key={index}>
             <SettingsItem title={presentationConfig.label}>
               <SettingsItem.Toggle
-                value={presentationConfig.state}
-                onValueChange={presentationConfig.toggleHandler}
+                value={presentationConfig.value}
+                onValueChange={() => {
+                  trackToggle({
+                    label: presentationConfig.label,
+                    value: presentationConfig.value,
+                    toggleHandler: presentationConfig.toggleHandler,
+                  })
+                }}
               />
             </SettingsItem>
           </Flex>

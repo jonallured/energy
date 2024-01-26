@@ -5,6 +5,10 @@ export interface SystemModel {
     navigationHistory: { [key: string]: [string, object | undefined] }
   }
 
+  launchCount: number
+
+  incrementLaunchCount: Action<this>
+
   saveNavigationHistory: Action<
     this,
     { lookupKey: string; navigationState: [string, object | undefined] }
@@ -16,6 +20,12 @@ export const getSystemModel = (): SystemModel => ({
   sessionState: {
     navigationHistory: {},
   },
+
+  launchCount: 0,
+
+  incrementLaunchCount: action((state) => {
+    state.launchCount += 1
+  }),
 
   saveNavigationHistory: action((state, { lookupKey, navigationState }) => {
     state.sessionState.navigationHistory[lookupKey] = navigationState

@@ -13,9 +13,12 @@ import { NavigationScreens } from "Navigation"
 import { useState } from "react"
 import { getVersion } from "react-native-device-info"
 import { DevMenu } from "screens/Settings/DevMenu/DevMenu"
+import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const Settings = () => {
+  useTrackScreen("Settings")
+
   const appVersion = getVersion()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
 

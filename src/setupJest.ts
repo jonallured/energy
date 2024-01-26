@@ -12,6 +12,18 @@ import { ScreenDimensionsWithSafeAreas } from "utils/hooks/useScreenDimensions"
 global.setImmediate = (fn) => global.setTimeout(fn, 0)
 global.clearImmediate = jest.fn()
 
+jest.mock("@segment/analytics-react-native")
+
+jest.mock("react-tracking", () => ({
+  useTracking: jest.fn().mockReturnValue({
+    trackEvent: jest.fn(),
+  }),
+}))
+
+jest.mock("system/analytics/AnalyticsProvider", () => ({
+  AnalyticsProvider: ({ children }: any) => children,
+}))
+
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))

@@ -33,7 +33,7 @@ describe("AlbumInstalls", () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it("renders a list of installs", async () => {
