@@ -29,11 +29,30 @@ export type NavigationScreens = AuthNavigationScreens &
   SettingsNavigationScreens &
   SearchNavigationScreens &
   ShowsNavigationScreens &
-  Screens
+  MiscScreens
 
-type Screens = {
-  HomeTabs: { tabName: string } | undefined
+type MiscScreens = {
+  Albums: {}
+  AlbumArtworks: {}
+  AlbumDocuments: {}
+  AlbumInstalls: {}
+  Artists: {}
+  ArtistArtworks: {}
+  ArtistDocuments: {}
+  ArtistShows: {}
+  EditArtworkInCms: {}
+  HomeTabs:
+    | {
+        tabName: string
+      }
+    | undefined
+  Shows: {}
+  ShowArtworks: {}
+  ShowDocuments: {}
+  ShowInstalls: {}
 }
+
+export type ScreenNames = keyof NavigationScreens
 
 export const StackNav = createStackNavigator<NavigationScreens>()
 

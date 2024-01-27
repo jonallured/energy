@@ -11,15 +11,24 @@ export interface FetchError {
 
 interface FetchOrCatchProps {
   relayEnvironment: RelayModernEnvironment
+  checkIfAborted: () => boolean
   onError: (props: FetchError) => void
 }
 
-export const initFetchOrCatch = ({ relayEnvironment, onError }: FetchOrCatchProps) => {
+export const initFetchOrCatch = ({
+  relayEnvironment,
+  onError,
+  checkIfAborted,
+}: FetchOrCatchProps) => {
   const fetchOrCatch = async <TQuery extends OperationType>(
     query: GraphQLTaggedNode,
     variables: VariablesOf<TQuery>
   ): Promise<TQuery["response"]> => {
     try {
+      if (checkIfAborted()) {
+        return false
+      }
+
       const data = await fetch(query, variables)
 
       // Ensure that data is not garbage collected by Relay

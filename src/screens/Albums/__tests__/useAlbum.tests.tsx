@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { Providers } from "Providers"
+import { Boot } from "Boot"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { useAlbum } from "screens/Albums/useAlbum"
@@ -33,9 +33,7 @@ describe("useAlbum", () => {
     const environment = createMockEnvironment()
 
     return (
-      <Providers relayEnvironment={environment as unknown as RelayModernEnvironment}>
-        {children}
-      </Providers>
+      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>{children}</Boot>
     )
   }
 

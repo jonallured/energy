@@ -1,11 +1,16 @@
 import { MotiView } from "moti"
 
-export const FadeIn: React.FC = ({ children }) => {
+interface FadeInProps {
+  initialScale?: number
+}
+
+export const FadeIn: React.FC<FadeInProps> = ({ children, initialScale = 0.9 }) => {
   return (
     <MotiView
-      from={{ opacity: 0, scale: 0.9 }}
+      from={{ opacity: 0, scale: initialScale }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "timing", duration: 200 }}
+      exit={{ opacity: 0, scale: initialScale }}
     >
       {children}
     </MotiView>

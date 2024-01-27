@@ -2,13 +2,14 @@ import { Button, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { DateTime } from "luxon"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Alert } from "react-native"
 import { OfflineModeSync } from "screens/Settings/OfflineMode/OfflineModeSync"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
 import { clearFileCache } from "system/sync/fileCache/clearFileCache"
+import { getCurrentSyncProgress } from "system/sync/fileCache/getCurrentSyncProgress"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
 export const OfflineModeSettings = () => {
@@ -24,7 +25,9 @@ export const OfflineModeSettings = () => {
   const { setLastSync } = GlobalStore.actions.devicePrefs
   const isOnline = useIsOnline()
   const showDeveloperOptions = isUserDev || __DEV__
+
   const [isSyncing, setIsSyncing] = useState(false)
+  const [showResumeSyncText, setShowResumeSyncText] = useState(false)
 
   const handleSyncButtonPress = () => {
     setIsSyncing(true)
@@ -45,7 +48,20 @@ export const OfflineModeSettings = () => {
 
   const handleCancelSync = () => {
     setIsSyncing(false)
+    setShowResumeSyncText(true)
   }
+
+  useEffect(() => {
+    const checkIfAlreadyStartedSync = async () => {
+      const currentSyncProgress = await getCurrentSyncProgress()
+
+      if (currentSyncProgress.currentStep > 1) {
+        setShowResumeSyncText(true)
+      }
+    }
+
+    checkIfAlreadyStartedSync()
+  }, [])
 
   return (
     <Screen>
@@ -60,6 +76,13 @@ export const OfflineModeSettings = () => {
           all the data before you go offline.
         </Text>
 
+        <Spacer y={1} />
+
+        <Text variant="xs" color="onBackgroundMedium">
+          If you have over 1,000 artworks uploaded to your CMS, the sync may take several minutes.
+          You can resume the sync later at any time.
+        </Text>
+
         <Screen.FullWidthDivider />
 
         <Join separator={<Screen.FullWidthDivider />}>
@@ -68,7 +91,7 @@ export const OfflineModeSettings = () => {
               <OfflineModeSync onCancelSync={handleCancelSync} />
             ) : (
               <Button mt={1} block onPress={handleSyncButtonPress} disabled={!isOnline}>
-                Start sync {isOnline ? "" : " (Offline)"}
+                {showResumeSyncText ? "Resume sync" : "Start sync"} {isOnline ? "" : " (Offline)"}
               </Button>
             )}
 
@@ -99,7 +122,9 @@ export const OfflineModeSettings = () => {
 
                 {!!showDeveloperOptions && (
                   <>
-                    <Text color="onBackgroundLow">Last sync: {offlineSyncedChecksum}</Text>
+                    <Text color="onBackgroundLow" mt={2}>
+                      Last sync: {offlineSyncedChecksum}
+                    </Text>
                     <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
                   </>
                 )}

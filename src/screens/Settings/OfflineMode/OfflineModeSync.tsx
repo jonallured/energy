@@ -1,12 +1,12 @@
-import { Button, Flex, Join, ProgressBar, Spacer, Text, Screen } from "@artsy/palette-mobile"
+import { Button, Flex, Join, Spacer, Text, Screen } from "@artsy/palette-mobile"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
+import { ProgressBar } from "components/ProgressBar"
 import { DateTime } from "luxon"
 import { useEffect, useMemo, useState } from "react"
 import { Alert } from "react-native"
 import JSONTree from "react-native-json-tree"
 import { useAppTracking } from "system/hooks/useAppTracking"
-import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
@@ -18,8 +18,6 @@ interface OfflineModeSyncProps {
 }
 
 export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }) => {
-  useTrackScreen("OfflineModeSync")
-
   const { trackCompletedOfflineSync } = useAppTracking()
 
   const navigation = useNavigation()
@@ -29,7 +27,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
     (state) => state.devicePrefs.offlineSyncedChecksum
   )!
   const { setOfflineSyncedChecksum, setLastSync } = GlobalStore.actions.devicePrefs
-  const { relayEnvironment } = useSystemRelayEnvironment()
+  const { relayEnvironment, resetRelayEnvironment } = useSystemRelayEnvironment()
 
   const [syncResultsData, setSyncResultsChange] = useState<SyncResultsData | {}>({})
   const [urlMap, setURLMap] = useState<Record<string, string> | {}>({})
@@ -55,6 +53,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
         setLastSync(DateTime.now())
         deactivateKeepAwake()
         trackCompletedOfflineSync()
+        resetRelayEnvironment()
 
         Alert.alert("Sync complete.", "", [
           {
@@ -117,8 +116,8 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
           </Flex>
 
           <ProgressBar
-            progress={progressChange}
-            animationDuration={progressChange === 0 ? 0 : 200}
+            progress={Number(progressChange)}
+            duration={progressChange === 0 ? 0 : 200}
           />
 
           <Button block onPress={handleCancelSync}>

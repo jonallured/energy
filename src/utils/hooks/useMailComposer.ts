@@ -264,7 +264,7 @@ export const getArtworkEmailTemplate = ({
     ${mediumType?.name ? `<p>${mediumType?.name}</p>` : ""}
     ${medium ? `<p>${medium}</p>` : ""}
     ${dimensions?.in ? `<p>${dimensions?.in}</p>` : ""}
-    ${published ? `<a href="https://www.artsy.net${href}">View on Artsy</a>` : ""}
+    ${published ? `<p><a href="https://www.artsy.net${href}">View on Artsy</a></p>` : ""}
 `
 
   const htmlWrapper = (

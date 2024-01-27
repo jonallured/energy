@@ -37,7 +37,7 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = ({ artist, count, o
       <Flex mb={2} flexDirection="row" width="100%">
         <Avatar src={src} size={variant} initials={src ? "" : data.initials!} />
         <Flex mx={1} justifyContent="center">
-          <Text variant={variant}>{data.name}</Text>
+          <Text variant="sm">{data.name}</Text>
 
           {!isPresentationModeEnabled && (
             <Text variant={variant} color="onBackgroundMedium">

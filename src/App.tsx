@@ -1,5 +1,5 @@
+import { Boot } from "Boot"
 import { Main } from "Navigation"
-import { Providers } from "Providers"
 import codePush from "react-native-code-push"
 import { codePushOptions } from "system/codepush"
 import { AsyncStorageDevtools } from "system/devTools/AsyncStorageDevtools"
@@ -15,9 +15,9 @@ const InnerApp = () => {
     <>
       <AsyncStorageDevtools />
 
-      <Providers>
+      <Boot>
         <Main />
-      </Providers>
+      </Boot>
     </>
   )
 }

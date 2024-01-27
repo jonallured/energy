@@ -1,22 +1,20 @@
-import { ScreenDimensionsProvider, Theme } from "@artsy/palette-mobile"
+import { ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ToastProvider } from "components/Toast/ToastContext"
-import { useEffect } from "react"
-import { Appearance, StatusBar } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { AnalyticsProvider } from "system/analytics/AnalyticsProvider"
 import { RelayProvider } from "system/relay/RelayProvider"
-import { GlobalStoreProvider, GlobalStore } from "system/store/GlobalStore"
+import { GlobalStoreProvider } from "system/store/GlobalStore"
 import { GlobalRetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 import { SuspenseWrapper } from "system/wrappers/SuspenseWrapper"
-import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
+import { ThemeProvider } from "system/wrappers/ThemeProvider"
 import { ProvideScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 interface ProviderProps {
   relayEnvironment?: RelayModernEnvironment
 }
 
-export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment }) => {
+export const Boot: React.FC<ProviderProps> = ({ children, relayEnvironment }) => {
   return (
     <AnalyticsProvider>
       <GlobalRetryErrorBoundary>
@@ -37,29 +35,5 @@ export const Providers: React.FC<ProviderProps> = ({ children, relayEnvironment 
         </GlobalStoreProvider>
       </GlobalRetryErrorBoundary>
     </AnalyticsProvider>
-  )
-}
-
-// Theme with dark mode support
-const ThemeProvider: React.FC = ({ children }) => {
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      GlobalStore.actions.devicePrefs.setSystemColorScheme(colorScheme ?? "light")
-    })
-    return () => subscription.remove()
-  }, [])
-
-  const isDarkMode = useIsDarkMode()
-  const theme = isDarkMode ? "v3dark" : "v3light"
-
-  return (
-    <Theme theme={theme}>
-      {children}
-
-      <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={isDarkMode ? "black" : "background"}
-      />
-    </Theme>
   )
 }

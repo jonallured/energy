@@ -23,6 +23,7 @@ describe("fetchOrCatch", () => {
     const { fetchOrCatch } = initFetchOrCatch({
       relayEnvironment: jest.fn() as unknown as RelayModernEnvironment,
       onError: onErrorSpy,
+      checkIfAborted: jest.fn().mockReturnValue(false),
     })
 
     const query = "query" as unknown as GraphQLTaggedNode

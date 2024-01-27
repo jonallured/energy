@@ -284,7 +284,7 @@ describe("useMailComposer", () => {
             <p>Painting</p>
             <p>Oil on canvas</p>
             <p>28 x 36 in</p>
-            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+            <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
             <br/><p>${emailSettings?.signature}</p>
           </body>
         </html>
@@ -304,7 +304,7 @@ describe("useMailComposer", () => {
         <p>Painting</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
       expect(getArtworkEmailTemplate({ artwork, fullHtml: false, emailSettings } as any)).toBe(
@@ -324,7 +324,7 @@ describe("useMailComposer", () => {
             <p>Painting</p>
             <p>Oil on canvas</p>
             <p>28 x 36 in</p>
-            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+            <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
             <br/><p>${emailSettings?.signature}</p>
           </body>
         </html>
@@ -353,7 +353,7 @@ describe("useMailComposer", () => {
             <p>Painting</p>
             <p>Oil on canvas</p>
             <p>28 x 36 in</p>
-            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+            <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
           </body>
         </html>
       `)
@@ -379,7 +379,7 @@ describe("useMailComposer", () => {
         <p>Painting</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -403,7 +403,7 @@ describe("useMailComposer", () => {
         <p>Painting</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -427,7 +427,7 @@ describe("useMailComposer", () => {
         <p>Painting</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -450,7 +450,7 @@ describe("useMailComposer", () => {
         <p>Painting</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -473,7 +473,7 @@ describe("useMailComposer", () => {
         <p>Painting</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -496,7 +496,7 @@ describe("useMailComposer", () => {
         <p>$10,000</p>
         <p>Oil on canvas</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -519,7 +519,7 @@ describe("useMailComposer", () => {
         <p>$10,000</p>
         <p>Painting</p>
         <p>28 x 36 in</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(
@@ -542,7 +542,7 @@ describe("useMailComposer", () => {
         <p>$10,000</p>
         <p>Painting</p>
         <p>Oil on canvas</p>
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a>
+        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
       `)
 
         expect(

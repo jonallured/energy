@@ -1,5 +1,5 @@
 import { omit } from "lodash"
-import { initializeSegment } from "system/analytics/initializeSegment"
+const { initializeSegment } = require("system/analytics/initializeSegment")
 
 const segmentClient = initializeSegment()
 

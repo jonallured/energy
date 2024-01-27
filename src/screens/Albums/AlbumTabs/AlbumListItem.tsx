@@ -45,7 +45,7 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({ album, selectedToA
           })}
         </Flex>
         <Flex mt={1}>
-          <Text variant={variant}>{album.name}</Text>
+          <Text variant="sm">{album.name}</Text>
           <Text variant={variant} color="onBackgroundMedium">
             {artworks.length} {artworks.length === 1 ? "Item" : "Items"}
           </Text>

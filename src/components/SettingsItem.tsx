@@ -4,9 +4,15 @@ import { Switch, SwitchProps } from "react-native"
 interface SettingsItemProps {
   title: string
   subtitle?: string
+  showBottomSeparator?: boolean
 }
 
-const SettingsItemRoot: React.FC<SettingsItemProps> = ({ title, subtitle, children }) => (
+const SettingsItemRoot: React.FC<SettingsItemProps> = ({
+  title,
+  subtitle,
+  children,
+  showBottomSeparator = true,
+}) => (
   <>
     <Spacer y={2} />
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -22,9 +28,11 @@ const SettingsItemRoot: React.FC<SettingsItemProps> = ({ title, subtitle, childr
 
     <Spacer y={2} />
 
-    <Screen.FullWidthItem>
-      <Separator />
-    </Screen.FullWidthItem>
+    {!!showBottomSeparator && (
+      <Screen.FullWidthItem>
+        <Separator />
+      </Screen.FullWidthItem>
+    )}
   </>
 )
 

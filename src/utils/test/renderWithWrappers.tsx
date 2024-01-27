@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react-native"
-import { Providers } from "Providers"
+import { Boot } from "Boot"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockEnvironment } from "relay-test-utils"
 
@@ -11,9 +11,7 @@ export const renderWithWrappers = (
 
   try {
     return render(
-      <Providers relayEnvironment={environment as unknown as RelayModernEnvironment}>
-        {component}
-      </Providers>
+      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>{component}</Boot>
     )
   } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {

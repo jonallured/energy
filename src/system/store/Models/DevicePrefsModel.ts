@@ -1,7 +1,7 @@
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { DateTime } from "luxon"
 import { Appearance } from "react-native"
-import { clearFileCache } from "system/sync/fileCache/clearFileCache"
+import { clearFileCache, clearSyncProgressFileCache } from "system/sync/fileCache/clearFileCache"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
 export interface DevicePrefsModel {
@@ -33,7 +33,9 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   clearCacheOnSignOut: thunkOn(
     (_actions, storeActions) => storeActions.auth.signOut,
     async (actions) => {
+      await clearSyncProgressFileCache()
       await clearFileCache()
+
       actions.setOfflineSyncedChecksum(null)
       actions.setLastSync(null)
     }

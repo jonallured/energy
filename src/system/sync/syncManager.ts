@@ -129,8 +129,11 @@ export function initSyncManager({
     throw new Error("[sync] Error initializing sync: `partnerID` is required")
   }
 
+  let syncAborted = false
+
   const { fetchOrCatch } = initFetchOrCatch({
     relayEnvironment,
+    checkIfAborted: () => syncAborted,
     onError: (error) => {
       syncResults.queryErrors.push(error)
     },
@@ -154,8 +157,6 @@ export function initSyncManager({
   if (!("captureStackTrace" in Error)) {
     ;(Error as any).captureStackTrace = log
   }
-
-  let syncAborted = false
 
   const handleAbortSync = () => {
     syncAborted = true
@@ -235,7 +236,7 @@ export function initSyncManager({
         await fetchSyncTargetData()
 
         // Persist the data incrementally after each step
-        await saveRelayDataToOfflineCache(relayEnvironment, currentStep)
+        await saveRelayDataToOfflineCache(relayEnvironment, currentStep - 1)
 
         onSyncResultsChange(syncResults)
 
@@ -487,6 +488,10 @@ export function initSyncManager({
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
       .process(async (url, index) => {
+        if (syncAborted) {
+          return
+        }
+
         if (__DEV__) {
           currentIndex = index
 
@@ -511,6 +516,10 @@ export function initSyncManager({
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
       .process(async (url) => {
+        if (syncAborted) {
+          return
+        }
+
         return await downloadFileToCache({
           type: "image",
           url,
@@ -527,6 +536,10 @@ export function initSyncManager({
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
       .process(async (url) => {
+        if (syncAborted) {
+          return
+        }
+
         return await downloadFileToCache({
           type: "document",
           url,
@@ -543,6 +556,10 @@ export function initSyncManager({
     await retryOperation<FetchError>({
       errors: syncResults.queryErrors,
       execute: async ({ query, variables }) => {
+        if (syncAborted) {
+          return
+        }
+
         await fetchOrCatch(query, variables)
 
         // Ensure that the progress bar is at 100% when we're done
@@ -563,6 +580,10 @@ export function initSyncManager({
     await retryOperation<DownloadFileToCacheProps>({
       errors: syncResults.fileDownloadErrors,
       execute: async (file) => {
+        if (syncAborted) {
+          return
+        }
+
         await downloadFileToCache(file)
 
         onProgressChange(100)

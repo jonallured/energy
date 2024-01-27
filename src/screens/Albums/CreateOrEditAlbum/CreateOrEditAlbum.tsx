@@ -149,6 +149,16 @@ export const CreateOrEditAlbum = () => {
             />
           </Flex>
 
+          {mode === "create" && (
+            <>
+              <Spacer y={1} />
+
+              <Text variant="xs" color="black60">
+                Albums created in Folio are locally stored and not accessible on other devices.
+              </Text>
+            </>
+          )}
+
           <Spacer y={2} />
 
           <Touchable

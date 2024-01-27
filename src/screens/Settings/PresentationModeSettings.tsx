@@ -101,27 +101,36 @@ export const PresentationModeSettings = () => {
           />
         </SettingsItem>
 
-        {presentationConfigs.map((presentationConfig, index) => (
-          <Flex key={index}>
-            <SettingsItem title={presentationConfig.label}>
-              <SettingsItem.Toggle
-                value={presentationConfig.value}
-                onValueChange={() => {
-                  trackToggle({
-                    label: presentationConfig.label,
-                    value: presentationConfig.value,
-                    toggleHandler: presentationConfig.toggleHandler,
-                  })
-                }}
-              />
-            </SettingsItem>
-          </Flex>
-        ))}
         <Spacer y={2} />
+
         <Text variant="xs">
           When Presentation Mode is enabled, all the information and features toggled ON will be
           hidden. Features toggled OFF will be visible.
         </Text>
+
+        {presentationConfigs.map((presentationConfig, index) => {
+          const showBottomSeparator = index !== presentationConfigs.length - 1
+
+          return (
+            <Flex key={index}>
+              <SettingsItem
+                title={presentationConfig.label}
+                showBottomSeparator={showBottomSeparator}
+              >
+                <SettingsItem.Toggle
+                  value={presentationConfig.value}
+                  onValueChange={() => {
+                    trackToggle({
+                      label: presentationConfig.label,
+                      value: presentationConfig.value,
+                      toggleHandler: presentationConfig.toggleHandler,
+                    })
+                  }}
+                />
+              </SettingsItem>
+            </Flex>
+          )
+        })}
       </Screen.Body>
     </Screen>
   )

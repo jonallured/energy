@@ -114,6 +114,10 @@ export const LoginScreen = () => {
     }
   }
 
+  const handleInterestedInFolioClick = () => {
+    Linking.openURL("https://partners.artsy.net/resource/folio/")
+  }
+
   return (
     <Screen>
       <Text variant="lg" mx={SCREEN_HORIZONTAL_PADDING} my={1}>
@@ -196,9 +200,6 @@ export const LoginScreen = () => {
                     validateForm()
                   }
                   handleChange("otp")(text)
-                  if (__DEV__ && text.length > 5) {
-                    handleSubmit()
-                  }
                 }}
                 onSubmitEditing={() => handleSubmit()}
                 onBlur={() => validateForm()}
@@ -226,6 +227,16 @@ export const LoginScreen = () => {
         >
           Log in
         </Button>
+
+        <Spacer y={2} />
+
+        <Flex justifyContent="center" flexDirection="row" width="100%">
+          <Text>Interested in Folio? Learn more&nbsp;</Text>
+          <TouchableOpacity onPress={handleInterestedInFolioClick}>
+            <Text underline>here</Text>
+          </TouchableOpacity>
+          <Text>.</Text>
+        </Flex>
 
         <Spacer y={2} />
 

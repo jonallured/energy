@@ -1,4 +1,4 @@
-import { Button, Screen, Tabs } from "@artsy/palette-mobile"
+import { Button, Screen, Spacer, Tabs } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
@@ -23,12 +23,15 @@ export const Albums = () => {
           numColumns={1}
           renderItem={({ item: album }: { item: Album }) => {
             return (
-              <AlbumListItem
-                album={album}
-                onPress={() => {
-                  navigation.navigate("AlbumTabs", { albumId: album.id })
-                }}
-              />
+              <>
+                <AlbumListItem
+                  album={album}
+                  onPress={() => {
+                    navigation.navigate("AlbumTabs", { albumId: album.id })
+                  }}
+                />
+                <Spacer y={1} />
+              </>
             )
           }}
           keyExtractor={(item: Album) => item?.id}

@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { renderHook } from "@testing-library/react-hooks"
-import { Providers } from "Providers"
+import { Boot } from "Boot"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import {
@@ -22,9 +22,7 @@ describe("#useNavigationHistory", () => {
     const environment = createMockEnvironment()
 
     return (
-      <Providers relayEnvironment={environment as unknown as RelayModernEnvironment}>
-        {children}
-      </Providers>
+      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>{children}</Boot>
     )
   }
 

@@ -11,7 +11,6 @@ interface ShowListItemProps {
 
 export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   const show = useFragment<ShowListItem_show$key>(ShowListItemFragment, props.show)
-  const fontSize = isTablet() ? "sm" : "xs"
 
   return (
     <Flex mb={2} opacity={props.disabled ? 0.4 : 1}>
@@ -25,11 +24,11 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
       />
       <Flex width="100%">
         {!!show?.name && (
-          <Text variant={fontSize} mt={1}>
+          <Text variant="sm" mt={1}>
             {show.name}
           </Text>
         )}
-        <Text variant={fontSize} color="onBackgroundMedium">
+        <Text variant="xs" color="onBackgroundMedium">
           {show.formattedStartAt} - {show.formattedEndAt}
         </Text>
       </Flex>
