@@ -311,7 +311,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(artistSlugs)
       .onTaskStarted(reportProgress("Syncing artist artworks"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ArtistArtworksQuery>(artistArtworksQuery, {
           partnerID,
           slug,
@@ -329,7 +334,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(artworkSlugs)
       .onTaskStarted(reportProgress("Syncing artist artwork content"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ArtworkQuery>(artworkQuery, {
           slug,
         })
@@ -346,7 +356,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(artworkSlugs)
       .onTaskStarted(reportProgress("Syncing image content"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ArtworkImageModalQuery>(artworkImageModalQuery, {
           slug,
           imageSize,
@@ -364,7 +379,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(artistSlugs)
       .onTaskStarted(reportProgress("Syncing artist shows"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return (await fetchOrCatch<ArtistShowsQuery>(artistShowsQuery, {
           partnerID,
           slug,
@@ -382,7 +402,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(artistShowSlugs)
       .onTaskStarted(reportProgress("Syncing show tabs"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
       })
 
@@ -397,7 +422,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(artistSlugs)
       .onTaskStarted(reportProgress("Syncing artist documents"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ArtistDocumentsQuery>(artistDocumentsQuery, {
           partnerID,
           slug,
@@ -415,7 +445,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing partner shows"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ShowTabsQuery>(showTabsQuery, { slug })
       })
 
@@ -430,7 +465,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing show artworks"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug })
       })
 
@@ -445,7 +485,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing show installs"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return await fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug })
       })
 
@@ -460,7 +505,12 @@ export function initSyncManager({
     const { results } = await PromisePool.for(showSlugs)
       .onTaskStarted(reportProgress("Syncing show documents"))
       .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug) => {
+      .process(async (slug, _index, pool) => {
+        if (syncAborted) {
+          pool.stop()
+          return
+        }
+
         return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
       })
 
@@ -493,8 +543,9 @@ export function initSyncManager({
       )
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
-      .process(async (url, index) => {
+      .process(async (url, index, pool) => {
         if (syncAborted) {
+          pool.stop()
           return
         }
 
@@ -521,8 +572,9 @@ export function initSyncManager({
       .onTaskStarted(reportProgress("Syncing install shots"))
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
-      .process(async (url) => {
+      .process(async (url, _index, pool) => {
         if (syncAborted) {
+          pool.stop()
           return
         }
 
@@ -541,8 +593,9 @@ export function initSyncManager({
       .onTaskStarted(reportProgress("Syncing documents"))
       .withConcurrency(MAX_FILE_DOWNLOAD_CONCURRENCY)
       .withTaskTimeout(FILE_DOWNLOAD_POOL_TIMEOUT)
-      .process(async (url) => {
+      .process(async (url, _index, pool) => {
         if (syncAborted) {
+          pool.stop()
           return
         }
 
@@ -561,8 +614,9 @@ export function initSyncManager({
   const retryQueriesForErrors = async () => {
     await retryOperation<FetchError>({
       errors: syncResults.queryErrors,
-      execute: async ({ query, variables }) => {
+      execute: async ({ query, variables }, _index, pool) => {
         if (syncAborted) {
+          pool.stop()
           return
         }
 
@@ -575,7 +629,7 @@ export function initSyncManager({
         syncResults.queryErrors = []
       },
       shouldRetry: () => {
-        return syncResults.queryErrors.length > 0
+        return syncResults.queryErrors.length > 0 && !syncAborted
       },
       updateStatus: () => updateStatus("Validating data."),
       reportProgress: () => reportProgress("Retrying failed"),
@@ -585,8 +639,9 @@ export function initSyncManager({
   const retryFileDownloadsForErrors = async () => {
     await retryOperation<DownloadFileToCacheProps>({
       errors: syncResults.fileDownloadErrors,
-      execute: async (file) => {
+      execute: async (file, _index, pool) => {
         if (syncAborted) {
+          pool.stop()
           return
         }
 
@@ -598,7 +653,7 @@ export function initSyncManager({
         syncResults.fileDownloadErrors = []
       },
       shouldRetry: () => {
-        return syncResults.fileDownloadErrors.length > 0
+        return syncResults.fileDownloadErrors.length > 0 && !syncAborted
       },
       updateStatus: () => updateStatus("Validating downloads."),
       reportProgress: () => reportProgress("Retrying download"),

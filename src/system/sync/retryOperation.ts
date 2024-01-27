@@ -1,10 +1,10 @@
-import PromisePool, { OnProgressCallback } from "@supercharge/promise-pool"
+import PromisePool, { OnProgressCallback, Stoppable } from "@supercharge/promise-pool"
 
 const MAX_RETRY_ATTEMPTS = 2
 
 interface RetryOperationProps<T> {
   errors: T[]
-  execute: (operation: any) => Promise<any>
+  execute: (operation: any, index: number, pool: Stoppable) => Promise<any>
   onStart: () => void
   shouldRetry: () => boolean
   updateStatus: () => void
@@ -32,8 +32,8 @@ export const retryOperation = async <T>({
 
     await PromisePool.for(errors)
       .onTaskStarted(reportProgress() as any)
-      .process(async (operation) => {
-        return await execute(operation)
+      .process(async (operation, index, pool) => {
+        return await execute(operation, index, pool)
       })
 
     // After the requests above execute, check if there are any new errors

@@ -4,6 +4,7 @@ import { isEqual } from "lodash"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem } from "system/store/Models/SelectModeModel"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface SelectModeProps {
   allSelected: boolean
@@ -14,10 +15,13 @@ interface SelectModeProps {
 export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, unselectAll }) => {
   const insets = useSafeAreaInsets()
   const isActive = GlobalStore.useAppState((state) => state.selectMode.sessionState.isActive)
+  const isDarkMode = useIsDarkMode()
 
   const handleSelectButtonPress = () => {
     GlobalStore.actions.selectMode.toggleSelectMode()
   }
+
+  const backgroundColor = isDarkMode ? "black100" : "white100"
 
   return (
     <Flex
@@ -30,7 +34,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, 
       position="absolute"
       zIndex={ZINDEX.selectMode}
       pointerEvents="box-none"
-      backgroundColor={isActive ? "white100" : "transparent"}
+      backgroundColor={isActive ? backgroundColor : "transparent"}
     >
       {!!isActive && (
         <Button

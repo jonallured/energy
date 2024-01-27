@@ -9,6 +9,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
 import { getCurrentSyncProgress } from "system/sync/fileCache/getCurrentSyncProgress"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
 export const OfflineModeSettings = () => {
@@ -26,6 +27,10 @@ export const OfflineModeSettings = () => {
 
   const [isSyncing, setIsSyncing] = useState(false)
   const [showResumeSyncText, setShowResumeSyncText] = useState(false)
+
+  const isDarkMode = useIsDarkMode()
+
+  const buttonVariant = isDarkMode ? "fillLight" : "fillDark"
 
   const handleSyncButtonPress = () => {
     setIsSyncing(true)
@@ -86,7 +91,13 @@ export const OfflineModeSettings = () => {
             {isSyncing ? (
               <OfflineModeSync onCancelSync={handleCancelSync} />
             ) : (
-              <Button mt={1} block onPress={handleSyncButtonPress} disabled={!isOnline}>
+              <Button
+                mt={1}
+                block
+                onPress={handleSyncButtonPress}
+                disabled={!isOnline}
+                variant={buttonVariant}
+              >
                 {showResumeSyncText ? "Resume sync" : "Start sync"} {isOnline ? "" : " (Offline)"}
               </Button>
             )}
@@ -95,7 +106,7 @@ export const OfflineModeSettings = () => {
 
             {!isSyncing && (
               <>
-                <Button mt={1} block onPress={handleClearFileCache}>
+                <Button mt={1} block onPress={handleClearFileCache} variant={buttonVariant}>
                   Clear cache
                 </Button>
 
