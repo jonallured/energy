@@ -2,7 +2,7 @@ import { exists, mkdir } from "react-native-fs"
 import {
   PATH_CACHE_DOCUMENTS,
   PATH_CACHE_IMAGES,
-  PATH_CACHE_RELAY_DATA,
+  PATH_CACHE_JSON,
 } from "system/sync/fileCache/constants"
 
 export const warmFilesystem = async () => {
@@ -10,7 +10,7 @@ export const warmFilesystem = async () => {
     const cacheReady = await Promise.all([
       await exists(PATH_CACHE_IMAGES),
       await exists(PATH_CACHE_DOCUMENTS),
-      await exists(PATH_CACHE_RELAY_DATA),
+      await exists(PATH_CACHE_JSON),
     ]).then(([images, documents, relayData]) => images && documents && relayData)
 
     if (!cacheReady) {
@@ -26,7 +26,7 @@ const createDirectories = async () => {
     await Promise.all([
       mkdir(PATH_CACHE_IMAGES),
       mkdir(PATH_CACHE_DOCUMENTS),
-      mkdir(PATH_CACHE_RELAY_DATA),
+      mkdir(PATH_CACHE_JSON),
     ])
   } catch (error) {
     console.log("[fileCache] Error creating directories:", error)

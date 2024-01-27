@@ -1,6 +1,6 @@
 import { exists, unlink } from "react-native-fs"
 import { clearUrlMap } from "system/sync/fileCache"
-import { PATH_CACHE, PATH_CACHE_RELAY_DATA } from "system/sync/fileCache/constants"
+import { JSON_FILES, PATH_CACHE, PATH_CACHE_JSON } from "system/sync/fileCache/constants"
 
 export const clearFileCache = async () => {
   clearUrlMap()
@@ -13,7 +13,7 @@ export const clearFileCache = async () => {
 }
 
 export const clearSyncProgressFileCache = async () => {
-  const filePath = `${PATH_CACHE_RELAY_DATA}/syncProgress.json`
+  const filePath = `${PATH_CACHE_JSON}/${JSON_FILES.syncProgress}`
 
   const fileExists = await exists(filePath)
 

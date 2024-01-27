@@ -8,7 +8,6 @@ import { OfflineModeSync } from "screens/Settings/OfflineMode/OfflineModeSync"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
-import { clearFileCache } from "system/sync/fileCache/clearFileCache"
 import { getCurrentSyncProgress } from "system/sync/fileCache/getCurrentSyncProgress"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
@@ -20,9 +19,8 @@ export const OfflineModeSettings = () => {
   const offlineSyncedChecksum = GlobalStore.useAppState(
     (state) => state.devicePrefs.offlineSyncedChecksum
   )!
-  const { setOfflineSyncedChecksum } = GlobalStore.actions.devicePrefs
+  const { clearCache } = GlobalStore.actions.devicePrefs
   const lastSync = GlobalStore.useAppState((state) => state.devicePrefs.lastSync)
-  const { setLastSync } = GlobalStore.actions.devicePrefs
   const isOnline = useIsOnline()
   const showDeveloperOptions = isUserDev || __DEV__
 
@@ -34,9 +32,7 @@ export const OfflineModeSettings = () => {
   }
 
   const handleClearFileCache = async () => {
-    await clearFileCache()
-    setOfflineSyncedChecksum(null)
-    setLastSync(null)
+    clearCache()
 
     Alert.alert("Cache cleared.", "", [
       {

@@ -2,7 +2,6 @@ import CookieManager from "@react-native-cookies/cookies"
 import { action, Action, thunk, Thunk } from "easy-peasy"
 import { stringify } from "qs"
 import Config from "react-native-config"
-import { clearSyncProgressFileCache } from "system/sync/fileCache"
 import { getUserAgent } from "utils/getUserAgent"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
@@ -200,8 +199,6 @@ export const getAuthModel = (): AuthModel => ({
     context.getStoreActions().reset()
     actions.setState(authModelInitialState)
 
-    // Reset sync progress so fresh syncs can occur
-    await clearSyncProgressFileCache()
     await CookieManager.clearAll()
   }),
 })

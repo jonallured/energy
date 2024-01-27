@@ -62,7 +62,7 @@ describe("clearFileCache", () => {
 
   describe("clearSyncProgressFileCache", () => {
     it("should unlink the file if it exists", async () => {
-      const filePath = "/cache/relayData/syncProgress.json"
+      const filePath = "/cache/json/syncProgress.json"
       existsMock.mockResolvedValue(true)
 
       await clearSyncProgressFileCache()

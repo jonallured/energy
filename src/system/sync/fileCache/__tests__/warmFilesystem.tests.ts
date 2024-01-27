@@ -2,7 +2,7 @@ import { exists, mkdir } from "react-native-fs"
 import {
   PATH_CACHE_DOCUMENTS,
   PATH_CACHE_IMAGES,
-  PATH_CACHE_RELAY_DATA,
+  PATH_CACHE_JSON,
 } from "system/sync/fileCache/constants"
 import { warmFilesystem } from "system/sync/fileCache/warmFilesystem"
 
@@ -37,7 +37,7 @@ describe("warmFilesystem", () => {
     expect(mkdirMock).toHaveBeenCalledTimes(3)
     expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_IMAGES)
     expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_DOCUMENTS)
-    expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_RELAY_DATA)
+    expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_JSON)
   })
 
   it("logs an error message if there is an error creating the directories", async () => {
@@ -50,7 +50,7 @@ describe("warmFilesystem", () => {
     expect(mkdirMock).toHaveBeenCalledTimes(3)
     expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_IMAGES)
     expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_DOCUMENTS)
-    expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_RELAY_DATA)
+    expect(mkdirMock).toHaveBeenCalledWith(PATH_CACHE_JSON)
   })
 
   it("logs an error message if there is an error checking directory existence", async () => {

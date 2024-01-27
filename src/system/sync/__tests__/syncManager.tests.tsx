@@ -5,8 +5,18 @@ import { ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
 import { ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
 import { ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { getFileFromCache, initDownloadFileToCache, saveFileToCache } from "system/sync/fileCache"
-import { initSyncManager, loadRelayDataFromOfflineCache, tests } from "system/sync/syncManager"
+import {
+  JSON_FILES,
+  getFileFromCache,
+  initDownloadFileToCache,
+  saveFileToCache,
+} from "system/sync/fileCache"
+import {
+  initSyncManager,
+  loadRelayDataFromOfflineCache,
+  saveRelayDataToOfflineCache,
+  tests,
+} from "system/sync/syncManager"
 import { initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { delay } from "utils/delay"
 import { flushPromiseQueue } from "utils/test/flushPromiseQueue"
@@ -315,13 +325,15 @@ describe("syncManager", () => {
 
       saveFileToCacheMock.mockImplementation(saveFileToCacheSpy)
 
-      tests.saveRelayDataToOfflineCache(relayEnvironmentMock as unknown as RelayModernEnvironment)
+      tests.saveRelayDataToOfflineCache({
+        relayEnvironment: relayEnvironmentMock as unknown as RelayModernEnvironment,
+      })
 
       expect(toJSONSpy).toBeCalled()
       expect(saveFileToCacheSpy).toHaveBeenCalledWith({
         data: '{"data":"mock-json"}',
-        filename: "relayData.json",
-        type: "relayData",
+        filename: JSON_FILES.relayData,
+        type: "json",
       })
     })
 
@@ -334,6 +346,93 @@ describe("syncManager", () => {
       await flushPromiseQueue()
 
       expect(resetRelayEnvironmentSpy).toHaveBeenCalledWith({ data: "mock-json" })
+    })
+  })
+
+  describe("#saveRelayDataToOfflineCache", () => {
+    it("should not persist data if sync is aborted", async () => {
+      const relayEnvironment = {
+        getStore: jest.fn(),
+      } as unknown as RelayModernEnvironment
+
+      await saveRelayDataToOfflineCache({
+        relayEnvironment,
+        persistStepForResume: 1,
+        syncAborted: true,
+      })
+
+      expect(relayEnvironment.getStore).not.toHaveBeenCalled()
+      expect(saveFileToCacheMock).not.toHaveBeenCalled()
+    })
+
+    it("should persist relay data to offline cache", async () => {
+      const relayEnvironment = {
+        getStore: jest.fn(() => ({
+          getSource: jest.fn(() => ({
+            toJSON: jest.fn(() => ({
+              relayData: "mockData",
+            })),
+          })),
+        })),
+      } as unknown as RelayModernEnvironment
+
+      await saveRelayDataToOfflineCache({
+        relayEnvironment,
+        persistStepForResume: 1,
+        syncAborted: false,
+      })
+
+      expect(relayEnvironment.getStore).toHaveBeenCalled()
+      expect(saveFileToCacheMock).toHaveBeenCalledWith({
+        data: '{"relayData":"mockData"}',
+        filename: "relayData.json",
+        type: "json",
+      })
+    })
+
+    it("should store metadata about current sync progress if persistStepForResume is provided", async () => {
+      const relayEnvironment = {
+        getStore: jest.fn(() => ({
+          getSource: jest.fn(() => ({
+            toJSON: jest.fn(() => ({
+              relayData: "mockData",
+            })),
+          })),
+        })),
+      } as unknown as RelayModernEnvironment
+
+      await saveRelayDataToOfflineCache({
+        relayEnvironment,
+        persistStepForResume: 5,
+        syncAborted: false,
+      })
+
+      expect(saveFileToCacheMock).toHaveBeenCalledWith({
+        data: '{ "currentStep": 5 }',
+        filename: "syncProgress.json",
+        type: "json",
+      })
+    })
+
+    it("should not store metadata if persistStepForResume is not provided", async () => {
+      const relayEnvironment = {
+        getStore: jest.fn(() => ({
+          getSource: jest.fn(() => ({
+            toJSON: jest.fn(() => ({
+              relayData: "mockData",
+            })),
+          })),
+        })),
+      } as unknown as RelayModernEnvironment
+
+      await saveRelayDataToOfflineCache({
+        relayEnvironment,
+        syncAborted: false,
+      })
+
+      expect(saveFileToCacheMock).not.toHaveBeenCalledWith(
+        expect.objectContaining({ filename: "syncProgress.json" })
+      )
     })
   })
 })

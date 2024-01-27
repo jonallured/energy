@@ -1,6 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
-import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { CachedImage } from "system/wrappers/CachedImage"
 

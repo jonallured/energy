@@ -1,3 +1,4 @@
+import { JSON_FILES } from "system/sync/fileCache/constants"
 import { getCurrentSyncProgress } from "system/sync/fileCache/getCurrentSyncProgress"
 import { getFileFromCache } from "system/sync/fileCache/getFileFromCache"
 
@@ -19,8 +20,8 @@ describe("getCurrentSyncProgress", () => {
     const result = await getCurrentSyncProgress()
 
     expect(getFileFromCache).toHaveBeenCalledWith({
-      filename: "syncProgress.json",
-      type: "relayData",
+      filename: JSON_FILES.syncProgress,
+      type: "json",
     })
     expect(result).toEqual(expectedMetadata)
   })
@@ -35,8 +36,8 @@ describe("getCurrentSyncProgress", () => {
     const result = await getCurrentSyncProgress()
 
     expect(getFileFromCache).toHaveBeenCalledWith({
-      filename: "syncProgress.json",
-      type: "relayData",
+      filename: JSON_FILES.syncProgress,
+      type: "json",
     })
 
     expect(result).toEqual(expectedMetadata)

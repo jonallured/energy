@@ -2,7 +2,7 @@ import {
   FileProps,
   PATH_CACHE_DOCUMENTS,
   PATH_CACHE_IMAGES,
-  PATH_CACHE_RELAY_DATA,
+  PATH_CACHE_JSON,
 } from "system/sync/fileCache/constants"
 import { getFilePath } from "system/sync/fileCache/getFilePath"
 
@@ -35,13 +35,13 @@ describe("getFilePath", () => {
     expect(actualPath).toEqual(expectedPath)
   })
 
-  it("returns the correct path for a relay data file", () => {
+  it("returns the correct path for a relay json data file", () => {
     const fileProps: FileProps = {
       filename: "relay.json",
-      type: "relayData",
+      type: "json",
     }
 
-    const expectedPath = `${PATH_CACHE_RELAY_DATA}/relay.json`
+    const expectedPath = `${PATH_CACHE_JSON}/relay.json`
     const actualPath = getFilePath(fileProps)
 
     expect(actualPath).toEqual(expectedPath)

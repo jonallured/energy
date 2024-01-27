@@ -1,4 +1,4 @@
-import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
+import { action, Action, computed, Computed, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { DateTime } from "luxon"
 import { Appearance } from "react-native"
 import { clearFileCache, clearSyncProgressFileCache } from "system/sync/fileCache/clearFileCache"
@@ -25,6 +25,7 @@ export interface DevicePrefsModel {
   setLastSync: Action<this, DateTime | null>
 
   clearCacheOnSignOut: ThunkOn<this, null, GlobalStoreModel>
+  clearCache: Thunk<this, void, {}, GlobalStoreModel>
   offlineSyncedChecksum: string | null
   setOfflineSyncedChecksum: Action<this, string | null>
 }
@@ -33,13 +34,17 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   clearCacheOnSignOut: thunkOn(
     (_actions, storeActions) => storeActions.auth.signOut,
     async (actions) => {
-      await clearSyncProgressFileCache()
-      await clearFileCache()
-
-      actions.setOfflineSyncedChecksum(null)
-      actions.setLastSync(null)
+      actions.clearCache()
     }
   ),
+
+  clearCache: thunk(async (actions) => {
+    await clearSyncProgressFileCache()
+    await clearFileCache()
+
+    actions.setOfflineSyncedChecksum(null)
+    actions.setLastSync(null)
+  }),
 
   colorScheme: computed([(_, store) => store], (store) =>
     store.devicePrefs.usingSystemColorScheme

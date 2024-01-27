@@ -2,7 +2,7 @@ import {
   FileProps,
   PATH_CACHE_DOCUMENTS,
   PATH_CACHE_IMAGES,
-  PATH_CACHE_RELAY_DATA,
+  PATH_CACHE_JSON,
 } from "system/sync/fileCache/constants"
 
 export const getFilePath = ({ filename, type }: FileProps) => {
@@ -12,8 +12,8 @@ export const getFilePath = ({ filename, type }: FileProps) => {
         return PATH_CACHE_DOCUMENTS
       case "image":
         return PATH_CACHE_IMAGES
-      case "relayData":
-        return PATH_CACHE_RELAY_DATA
+      case "json":
+        return PATH_CACHE_JSON
     }
   })()
 

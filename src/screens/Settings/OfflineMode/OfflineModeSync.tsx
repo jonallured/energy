@@ -117,7 +117,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
 
           <ProgressBar
             progress={Number(progressChange)}
-            duration={progressChange === 0 ? 0 : 200}
+            duration={progressChange === 0 ? 1 : 200}
           />
 
           <Button block onPress={handleCancelSync}>

@@ -1,3 +1,4 @@
+import { JSON_FILES } from "system/sync/fileCache/constants"
 import { getFileFromCache } from "system/sync/fileCache/getFileFromCache"
 
 export interface RelaySyncProgress {
@@ -11,8 +12,8 @@ export const getCurrentSyncProgress = async () => {
 
   try {
     const syncProgress = await getFileFromCache({
-      filename: "syncProgress.json",
-      type: "relayData",
+      filename: JSON_FILES.syncProgress,
+      type: "json",
     })
 
     // No sync present
