@@ -1,4 +1,4 @@
-import { Environment, fetchQuery, GraphQLTaggedNode, VariablesOf } from "react-relay"
+import { Disposable, Environment, fetchQuery, GraphQLTaggedNode, VariablesOf } from "react-relay"
 import { RRNLRequestError } from "react-relay-network-modern"
 import { createOperationDescriptor, getRequest, OperationType } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -13,17 +13,23 @@ interface FetchOrCatchProps {
   relayEnvironment: RelayModernEnvironment
   checkIfAborted: () => boolean
   onError: (props: FetchError) => void
+  onComplete: (disposableQuery: Disposable) => void
 }
 
 export const initFetchOrCatch = ({
   relayEnvironment,
   onError,
+  onComplete,
   checkIfAborted,
 }: FetchOrCatchProps) => {
   const fetchOrCatch = async <TQuery extends OperationType>(
     query: GraphQLTaggedNode,
     variables: VariablesOf<TQuery>
   ): Promise<TQuery["response"]> => {
+    // Ensure that data is not garbage collected by Relay
+    const operationDescriptor = createOperationDescriptor(getRequest(query), variables)
+    const disposable = relayEnvironment.retain(operationDescriptor)
+
     try {
       if (checkIfAborted()) {
         return false
@@ -31,14 +37,20 @@ export const initFetchOrCatch = ({
 
       const data = await fetch(query, variables)
 
-      // Ensure that data is not garbage collected by Relay
-      const operationDescriptor = createOperationDescriptor(getRequest(query), variables)
-      relayEnvironment.retain(operationDescriptor)
+      // Pass up relay's disposable ref to be called after we write to disk
+      onComplete(disposable)
 
       return data
     } catch (error) {
-      onError({ query, variables, error: error as RRNLRequestError })
       console.warn("[sync] Error fetching data:", { query, variables, error })
+
+      onError({
+        query,
+        variables,
+        error: error as RRNLRequestError,
+      })
+
+      disposable.dispose()
       return null
     }
   }

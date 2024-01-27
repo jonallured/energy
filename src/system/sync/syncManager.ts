@@ -29,6 +29,7 @@ import { artworkImageModalQuery } from "components/ArtworkImageModal"
 import { artistsListQuery } from "components/Lists/ArtistsList"
 import { compact, once } from "lodash"
 import { Alert } from "react-native"
+import { Disposable } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { artistArtworksQuery } from "screens/Artists/ArtistTabs/ArtistArtworks"
 import { artistDocumentsQuery } from "screens/Artists/ArtistTabs/ArtistDocuments"
@@ -72,6 +73,7 @@ export interface SyncResultsData {
   showDocumentsQuery?: ShowDocumentsQuery$data[]
   queryErrors: FetchError[]
   fileDownloadErrors: DownloadFileToCacheProps[]
+  disposableQueries: Disposable[]
 }
 
 /**
@@ -94,6 +96,18 @@ const syncResults: SyncResultsData = {
   // Error retries
   queryErrors: [],
   fileDownloadErrors: [],
+
+  /**
+   * When individual query syncs complete from above, store their corresponding
+   * relay disposable refs so that we can properly evict them from memory after
+   * writing to the offline JSON file on disk.
+   *
+   * This is necessary because if we don't retain the queries, they might be
+   * garbage collected before we've had a chance to store things, and we might
+   * encounter missing entries when going offline. Hence the manual memory
+   * mangement.
+   */
+  disposableQueries: [],
 }
 
 // Safe timeout for fetches, so that the PromisePool doesn't clog
@@ -137,6 +151,9 @@ export function initSyncManager({
     checkIfAborted: () => syncAborted,
     onError: (error) => {
       syncResults.queryErrors.push(error)
+    },
+    onComplete: (disposableQuery) => {
+      syncResults.disposableQueries.push(disposableQuery)
     },
   })
 
@@ -262,6 +279,11 @@ export function initSyncManager({
 
     // Reset sync progress so fresh syncs can occur
     await clearSyncProgressFileCache()
+
+    // Dispose of the completed relay query to free up memory
+    syncResults.disposableQueries.forEach((disposable) => {
+      disposable.dispose()
+    })
 
     onComplete()
 
