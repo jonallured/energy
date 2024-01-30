@@ -11,6 +11,7 @@ import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
+  const partnerName = GlobalStore.useAppState((state) => state.auth.activePartnerName)
   const { toast } = useToast()
   const { trackSentContent } = useAppTracking()
 
@@ -31,7 +32,12 @@ export const useMailComposer = () => {
         .replace("$title", title ?? "")
         .replace("$artist", artistNames ?? "")
 
-      const htmlContent = getArtworkEmailTemplate({ artwork: firstSelectedItem, emailSettings })
+      const htmlContent = getArtworkEmailTemplate({
+        artwork: firstSelectedItem,
+        emailSettings,
+        includeLogo: true,
+        partnerName,
+      })
 
       const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
 
@@ -59,7 +65,10 @@ export const useMailComposer = () => {
           artwork: selectedItem,
           fullHtml: false,
           emailSettings,
+          partnerName,
         })
+
+        aggregatedArtworks += "<br/><br/>"
       })
 
       const subject = (() => {
@@ -85,7 +94,25 @@ export const useMailComposer = () => {
         `
         <html>
           <body>
-            ${emailSettings.greetings ? `<p>${emailSettings.greetings}</p><br/>` : ""}
+            ${logoHtml}
+
+            ${
+              emailSettings.greetings
+                ? `
+                  ${
+                    partnerName
+                      ? `
+                      <p>
+                        <b>From ${partnerName}:</b>
+                      </p>
+                    `
+                      : ""
+                  }
+                  <p>${emailSettings.greetings}</p>
+                  <br/>
+                `
+                : ""
+            }
             ${aggregatedArtworks}
             ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
           </body>
@@ -117,6 +144,14 @@ export const useMailComposer = () => {
     sendMail,
   }
 }
+
+const logoHtml = `
+  <div width="100%" style="text-align:right">
+    <img style='width: 100px; height: 33px;' src="https://d7hftxdivxxvm.cloudfront.net/?height=66&quality=80&resize_to=fit&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fartsy-logo-1706648712115.png&width=200" />
+  </div>
+
+  <br />
+`
 
 interface EmailComposerProps {
   subject: string
@@ -170,7 +205,7 @@ const emailComposer = ({
         case "cancelled":
           toast.show({
             title: "Email cancelled",
-            type: "error",
+            type: "info",
           })
           break
         case "failed":
@@ -205,10 +240,14 @@ export const getArtworkEmailTemplate = ({
   artwork,
   fullHtml = true,
   emailSettings,
+  includeLogo = false,
+  partnerName,
 }: {
   artwork: SelectedItemArtwork
   fullHtml?: boolean
   emailSettings: StateMapper<FilterActionTypes<EmailModel>>
+  includeLogo?: boolean
+  partnerName?: string | null
 }) => {
   if (!artwork) {
     return ""
@@ -229,12 +268,11 @@ export const getArtworkEmailTemplate = ({
 
   // Android images need different constraints to not be cut off in PDF
   const imageSrc = image?.resized?.url
-  const imageAttributes = Platform.OS === "ios" ? 'height="60%"' : 'style="max-width: 100%;"'
 
   let imageTag = ""
 
   if (imageSrc) {
-    imageTag = `<img ${imageAttributes} src="${imageSrc}" />`
+    imageTag = `<img style="width: 100%; max-width: 600px;" src="${imageSrc}" />`
 
     if (published) {
       imageTag = `<a href="https://www.artsy.net${href}">${imageTag}</a>`
@@ -244,26 +282,33 @@ export const getArtworkEmailTemplate = ({
   const snippet = `
     ${imageTag}
 
-    ${artistNames ? `<h1>${artistNames}</h1>` : ""}
+    <br />
 
-    <p>${(() => {
-      let titleAggregator = ""
-      if (title && date) {
-        titleAggregator = title + ", " + date
-      } else if (title && !date) {
-        titleAggregator += title
-      } else if (!title && date) {
-        titleAggregator += date
-      } else {
-        titleAggregator = ""
-      }
-      return titleAggregator
-    })()}</p>
+    <p>
+      ${artistNames ? `<b>${artistNames}</b><br />` : ""}
 
-    ${price ? `<p>${price}</p>` : ""}
-    ${mediumType?.name ? `<p>${mediumType?.name}</p>` : ""}
-    ${medium ? `<p>${medium}</p>` : ""}
-    ${dimensions?.in ? `<p>${dimensions?.in}</p>` : ""}
+      ${(() => {
+        let titleAggregator = ""
+        if (title && date) {
+          titleAggregator = title + ", " + date
+        } else if (title && !date) {
+          titleAggregator += title
+        } else if (!title && date) {
+          titleAggregator += date
+        } else {
+          titleAggregator = ""
+        }
+        return titleAggregator
+      })()}
+
+      <br /><br />
+
+      ${price ? `${price}<br />` : ""}
+      ${mediumType?.name ? `${mediumType?.name}<br />` : ""}
+      ${medium ? `${medium}<br />` : ""}
+      ${dimensions?.in ? `${dimensions?.in}<br />` : ""}
+    </p>
+
     ${published ? `<p><a href="https://www.artsy.net${href}">View on Artsy</a></p>` : ""}
 `
 
@@ -272,12 +317,34 @@ export const getArtworkEmailTemplate = ({
       ? `
         <html>
           <body>
-            ${emailSettings.greetings ? `<p>${emailSettings.greetings}</p><br />` : ""}
+            ${includeLogo ? logoHtml : ""}
+
+            ${
+              emailSettings.greetings
+                ? `
+                    ${
+                      partnerName
+                        ? `
+                        <p>
+                          <b>From ${partnerName}:</b>
+                        </p>
+                      `
+                        : ""
+                    }
+                    <p>
+                      ${emailSettings.greetings}
+                    </p>
+                    <br />
+                  `
+                : ""
+            }
             ${snippet}
             ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
           </body>
         </html>`
-      : snippet
+      : `
+        ${snippet}
+      `
   )
     // Remove tagged template whitespace
     .replace(/\s+/g, " ")

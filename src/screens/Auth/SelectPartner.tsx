@@ -1,4 +1,13 @@
-import { Flex, Button, SearchInput, Separator, Text, Spacer, Screen } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Button,
+  SearchInput,
+  Separator,
+  Text,
+  Spacer,
+  Screen,
+  Box,
+} from "@artsy/palette-mobile"
 import { SelectPartnerQuery } from "__generated__/SelectPartnerQuery.graphql"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { useState, useEffect, useRef, Suspense } from "react"
@@ -24,7 +33,13 @@ export const SelectPartnerScreen: React.FC = () => {
             }
           }}
         >
-          <Suspense fallback={<ActivityIndicator />}>
+          <Suspense
+            fallback={
+              <Box mt={4}>
+                <ActivityIndicator />
+              </Box>
+            }
+          >
             <SelectPartner />
           </Suspense>
         </RetryErrorBoundary>
@@ -94,7 +109,12 @@ const SelectPartner: React.FC = () => {
           <Button
             variant="outline"
             block
-            onPress={() => GlobalStore.actions.auth.setActivePartnerID(partner!.internalID)}
+            onPress={() =>
+              GlobalStore.actions.auth.setActivePartnerID({
+                internalID: partner?.internalID as string,
+                name: partner?.name as string,
+              })
+            }
           >
             {partner!.name}
           </Button>

@@ -6,7 +6,6 @@ import {
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
-import { GlobalStore } from "system/store/GlobalStore"
 import { useLocalUri } from "system/sync/fileCache/useLocalUri"
 
 export interface ArtistListItemProps extends FlexProps {
@@ -22,9 +21,6 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = ({ artist, count, o
   const screenWidth = useWindowDimensions().width
   const space = useSpace()
   const width = isTablet() ? (screenWidth - 2 * space(2)) / 2 : undefined
-  const isPresentationModeEnabled = GlobalStore.useAppState(
-    (state) => state.presentationMode.isPresentationModeEnabled
-  )
 
   const handlePress = () => {
     if (onPress) {
@@ -39,11 +35,9 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = ({ artist, count, o
         <Flex mx={1} justifyContent="center">
           <Text variant="sm">{data.name}</Text>
 
-          {!isPresentationModeEnabled && (
-            <Text variant={variant} color="onBackgroundMedium">
-              {count} Artworks
-            </Text>
-          )}
+          <Text variant={variant} color="onBackgroundMedium">
+            {count} Artworks
+          </Text>
         </Flex>
       </Flex>
     </Touchable>

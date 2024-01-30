@@ -40,7 +40,7 @@ describe("useMailComposer", () => {
       const recipients = ["cc@example.com"]
       const subject = "More information about Artwork Title by Artist Name."
       const body = replaceWhitespace(
-        "<html> <body> <p>Here is more information about the artwork(s) we discussed.</p><br /> <h1>Artist Name</h1> <p>Artwork Title</p> <br/><p>Some signature</p> </body> </html>"
+        '<html><body><div width="100%" style="text-align:right"><img style=\'width: 100px; height: 33px;\' src="https://d7hftxdivxxvm.cloudfront.net/?height=66&quality=80&resize_to=fit&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fartsy-logo-1706648712115.png&width=200" /></div><br /><p><b>From [object Object]:</b></p><p> Here is more information about the artwork(s) we discussed. </p><br /><br /><p><b>Artist Name</b><br /> Artwork Title <br /><br /></p><br/><p>Some signature</p></body></html>'
       )
       const artworks = [
         {
@@ -70,7 +70,7 @@ describe("useMailComposer", () => {
       const recipients = ["cc@example.com"]
       const subject = "More information about Artist A's artworks."
       const body = replaceWhitespace(
-        "<html> <body> <p>Here is more information about the artwork(s) we discussed.</p><br/> <h1>Artist A</h1> <p>Artwork Title 1</p><h1>Artist A</h1> <p>Artwork Title 2</p> <br/><p>Some signature</p> </body> </html>"
+        '<html><body><div width="100%" style="text-align:right"><img style=\'width: 100px; height: 33px;\' src="https://d7hftxdivxxvm.cloudfront.net/?height=66&quality=80&resize_to=fit&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fartsy-logo-1706648712115.png&width=200" /></div><br /><p><b>From [object Object]:</b></p><p>Here is more information about the artwork(s) we discussed.</p><br/><br /><p><b>Artist A</b><br /> Artwork Title 1 <br /><br /></p><br/><br/><br /><p><b>Artist A</b><br /> Artwork Title 2 <br /><br /></p><br/><br/><br/><p>Some signature</p></body></html>'
       )
       const artworks = [
         {
@@ -108,7 +108,7 @@ describe("useMailComposer", () => {
 
       const subject = "More information about Artwork Title by Artist Name."
       const body = replaceWhitespace(
-        "<html> <body> <p>Here is more information about the artwork(s) we discussed.</p><br /> <h1>Artist Name</h1> <p>Artwork Title</p> <br/><p>Some signature</p> </body> </html>"
+        '<html><body><div width="100%" style="text-align:right"><img style=\'width: 100px; height: 33px;\' src="https://d7hftxdivxxvm.cloudfront.net/?height=66&quality=80&resize_to=fit&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fartsy-logo-1706648712115.png&width=200" /></div><br /><p><b>From [object Object]:</b></p><p> Here is more information about the artwork(s) we discussed. </p><br /><br /><p><b>Artist Name</b><br /> Artwork Title <br /><br /></p><br/><p>Some signature</p></body></html>'
       )
       const artworks = [
         {
@@ -274,20 +274,7 @@ describe("useMailComposer", () => {
 
     it("returns an HTML template with the correct content when fullHtml is true", () => {
       const expectedHtml = replaceWhitespace(`
-        <html>
-          <body>
-            <p>${emailSettings?.greetings}</p><br />
-            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-            <h1>Vincent van Gogh</h1>
-            <p>The Starry Night, 1889</p>
-            <p>$10,000</p>
-            <p>Painting</p>
-            <p>Oil on canvas</p>
-            <p>28 x 36 in</p>
-            <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
-            <br/><p>${emailSettings?.signature}</p>
-          </body>
-        </html>
+      <html><body><p> Here is more information about the artwork(s) we discussed. </p><br /><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p><br/><p>Some signature</p></body></html>
       `)
 
       expect(getArtworkEmailTemplate({ artwork, fullHtml: true, emailSettings } as any)).toBe(
@@ -297,14 +284,7 @@ describe("useMailComposer", () => {
 
     it("returns a snippet of HTML when fullHtml is false", () => {
       const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+      <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
       expect(getArtworkEmailTemplate({ artwork, fullHtml: false, emailSettings } as any)).toBe(
@@ -315,19 +295,7 @@ describe("useMailComposer", () => {
     describe("omits fields for missing data", () => {
       it("greeting", () => {
         const expectedHtml = replaceWhitespace(`
-        <html>
-          <body>
-            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-            <h1>Vincent van Gogh</h1>
-            <p>The Starry Night, 1889</p>
-            <p>$10,000</p>
-            <p>Painting</p>
-            <p>Oil on canvas</p>
-            <p>28 x 36 in</p>
-            <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
-            <br/><p>${emailSettings?.signature}</p>
-          </body>
-        </html>
+        <html><body><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p><br/><p>Some signature</p></body></html>
       `)
 
         expect(
@@ -344,18 +312,7 @@ describe("useMailComposer", () => {
 
       it("signature", () => {
         const expectedHtml = replaceWhitespace(`
-        <html>
-          <body>
-            <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-            <h1>Vincent van Gogh</h1>
-            <p>The Starry Night, 1889</p>
-            <p>$10,000</p>
-            <p>Painting</p>
-            <p>Oil on canvas</p>
-            <p>28 x 36 in</p>
-            <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
-          </body>
-        </html>
+        <html><body><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p></body></html>
       `)
 
         expect(
@@ -373,13 +330,7 @@ describe("useMailComposer", () => {
 
       it("img", () => {
         const expectedSnippet = replaceWhitespace(`
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -396,14 +347,7 @@ describe("useMailComposer", () => {
 
       it("title", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -420,14 +364,7 @@ describe("useMailComposer", () => {
 
       it("date", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -444,13 +381,7 @@ describe("useMailComposer", () => {
 
       it("artistNames", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -467,13 +398,7 @@ describe("useMailComposer", () => {
 
       it("price", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -490,13 +415,7 @@ describe("useMailComposer", () => {
 
       it("mediumType", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -513,13 +432,7 @@ describe("useMailComposer", () => {
 
       it("medium", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>28 x 36 in</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -536,13 +449,7 @@ describe("useMailComposer", () => {
 
       it("dimensions", () => {
         const expectedSnippet = replaceWhitespace(`
-        <a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night"><img height="60%" src="https://example.com/starry_night.jpg" /></a>
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p><a href="https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night">View on Artsy</a></p>
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
         expect(
@@ -559,13 +466,7 @@ describe("useMailComposer", () => {
 
       it("published", () => {
         const expectedSnippet = replaceWhitespace(`
-        <img height="60%" src="https://example.com/starry_night.jpg" />
-        <h1>Vincent van Gogh</h1>
-        <p>The Starry Night, 1889</p>
-        <p>$10,000</p>
-        <p>Painting</p>
-        <p>Oil on canvas</p>
-        <p>28 x 36 in</p>
+        <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p>
       `)
 
         expect(
