@@ -77,6 +77,7 @@ const SelectPartner: React.FC = () => {
           partners(size: 100) {
             name
             internalID
+            slug
           }
         }
       }
@@ -113,6 +114,7 @@ const SelectPartner: React.FC = () => {
               GlobalStore.actions.auth.setActivePartnerID({
                 internalID: partner?.internalID as string,
                 name: partner?.name as string,
+                slug: partner?.slug as string,
               })
             }
           >

@@ -13,7 +13,9 @@ export const OfflineLoadingWrapper: React.FC = ({ children }) => {
   if (isLoadingFromOfflineCache) {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center">
-        <Text>Loading offline from cache... This may take a moment for large collections.</Text>
+        <Text textAlign="center">
+          Loading artworks in Offline Mode. This may take a few minutes for large collections.
+        </Text>
         <Spacer y={2} />
         <ActivityIndicator color={isDarkMode ? "white" : "black"} />
       </Flex>

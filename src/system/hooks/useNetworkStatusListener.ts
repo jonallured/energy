@@ -22,11 +22,14 @@ export const useNetworkStatusListener = () => {
       resetRelayEnvironment()
     } else {
       console.log("[network-status]: Offline.")
+
       GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(true)
 
       // If a user has synced data before, load it from disk
       loadRelayDataFromOfflineCache(resetRelayEnvironment, () => {
-        GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(false)
+        setTimeout(() => {
+          GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(false)
+        }, 5000)
       })
     }
   }

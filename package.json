@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "^4.166.0",
-    "@artsy/palette-mobile": "^13.0.30",
+    "@artsy/palette-mobile": "13.1.0--canary.180.1173.0",
     "@gorhom/bottom-sheet": "4.5.1",
     "@openspacelabs/react-native-zoomable-view": "2.1.5",
     "@react-native-async-storage/async-storage": "1.17.11",

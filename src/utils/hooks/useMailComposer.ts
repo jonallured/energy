@@ -12,6 +12,7 @@ import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
   const partnerName = GlobalStore.useAppState((state) => state.auth.activePartnerName)
+  const partnerSlug = GlobalStore.useAppState((state) => state.auth.activePartnerSlug)
   const { toast } = useToast()
   const { trackSentContent } = useAppTracking()
 
@@ -37,6 +38,7 @@ export const useMailComposer = () => {
         emailSettings,
         includeLogo: true,
         partnerName,
+        partnerSlug,
       })
 
       const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
@@ -66,6 +68,7 @@ export const useMailComposer = () => {
           fullHtml: false,
           emailSettings,
           partnerName,
+          partnerSlug,
         })
 
         aggregatedArtworks += "<br/><br/>"
@@ -113,8 +116,19 @@ export const useMailComposer = () => {
                 `
                 : ""
             }
+
             ${aggregatedArtworks}
             ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
+
+            ${
+              partnerSlug && partnerName
+                ? `
+                  <p>
+                    Follow <a href='https://www.artsy.net/partner/${partnerSlug}'>${partnerName}</a> on Artsy for more works and shows.
+                  </p>
+                  `
+                : ""
+            }
           </body>
         </html>
       ` // Remove tagged template whitespace
@@ -242,12 +256,14 @@ export const getArtworkEmailTemplate = ({
   emailSettings,
   includeLogo = false,
   partnerName,
+  partnerSlug,
 }: {
   artwork: SelectedItemArtwork
   fullHtml?: boolean
   emailSettings: StateMapper<FilterActionTypes<EmailModel>>
   includeLogo?: boolean
   partnerName?: string | null
+  partnerSlug?: string | null
 }) => {
   if (!artwork) {
     return ""
@@ -340,6 +356,16 @@ export const getArtworkEmailTemplate = ({
             }
             ${snippet}
             ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
+
+            ${
+              partnerSlug && partnerName
+                ? `
+                  <p>
+                    Follow <a href='https://www.artsy.net/partner/${partnerSlug}'>${partnerName}</a> on Artsy for more works and shows.
+                  </p>
+                  `
+                : ""
+            }
           </body>
         </html>`
       : `

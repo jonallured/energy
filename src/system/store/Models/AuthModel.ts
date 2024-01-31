@@ -14,6 +14,7 @@ interface EmailOAuthParams {
 interface AuthModelState {
   activePartnerID: string | null
   activePartnerName: string | null
+  activePartnerSlug: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   userID: string | null
@@ -22,9 +23,10 @@ interface AuthModelState {
 }
 
 const authModelInitialState: AuthModelState = {
-  // TODO: Roll the below two into a proper Partner model
+  // TODO: Roll the below three into a proper Partner model
   activePartnerID: null,
   activePartnerName: null,
+  activePartnerSlug: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   userID: null,
@@ -34,7 +36,7 @@ const authModelInitialState: AuthModelState = {
 
 export interface AuthModel extends AuthModelState {
   setState: Action<this, Partial<AuthModelState>>
-  setActivePartnerID: Action<this, { internalID: string; name: string }>
+  setActivePartnerID: Action<this, { internalID: string; name: string; slug: string }>
   getUserID: Thunk<this, void, {}, GlobalStoreModel>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   gravityUnauthenticatedRequest: Thunk<
@@ -60,9 +62,10 @@ export const getAuthModel = (): AuthModel => ({
     state = Object.assign(state, payload)
   }),
 
-  setActivePartnerID: action((state, { internalID, name }) => {
+  setActivePartnerID: action((state, { internalID, name, slug }) => {
     state.activePartnerID = internalID
     state.activePartnerName = name
+    state.activePartnerSlug = slug
   }),
 
   getUserID: thunk(async (actions, _payload, context) => {
