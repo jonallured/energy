@@ -7,7 +7,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
 
 export const Shows: React.FC = () => {
-  useTrackScreen("Shows")
+  useTrackScreen({ name: "Shows", type: "Shows" })
 
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
   const { data, refreshControl } = useSystemQueryLoader<ShowsQuery>(showsQuery, {

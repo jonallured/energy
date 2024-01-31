@@ -9,7 +9,12 @@ import {
   SCREEN_HORIZONTAL_PADDING,
 } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import {
@@ -26,7 +31,10 @@ import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
-import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import {
+  SelectedItem,
+  SelectedItemArtwork,
+} from "system/store/Models/SelectModeModel"
 import { useMailComposer } from "utils/hooks/useMailComposer"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
@@ -35,10 +43,14 @@ import { EditArtworkInCms } from "./EditArtworkInCms"
 type ArtworkRoute = RouteProp<NavigationScreens, "Artwork">
 
 export const Artwork: React.FC = () => {
-  useTrackScreen("Artwork")
-
   const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
   const artworkSlugs = contextArtworkSlugs ?? [slug]
+
+  useTrackScreen({
+    name: "Artwork",
+    type: "Artwork",
+    slug,
+  })
 
   const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => {
     return {
@@ -53,17 +65,27 @@ export const Artwork: React.FC = () => {
     }
   })
 
-  return <PageableScreenView screens={screens} initialScreenName={slug} prefetchScreensCount={5} />
+  return (
+    <PageableScreenView
+      screens={screens}
+      initialScreenName={slug}
+      prefetchScreensCount={5}
+    />
+  )
 }
 
 export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { saveNavigationHistory } = useSaveNavigationHistory()
+
   const bottomSheetRef = useRef<BottomSheetRef>(null)
+
   const { data } = useSystemQueryLoader<ArtworkQuery>(artworkQuery, {
     slug,
   })
+
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
+
   const { artwork } = data
 
   const numberOfAlbumsIncludingArtwork = albums

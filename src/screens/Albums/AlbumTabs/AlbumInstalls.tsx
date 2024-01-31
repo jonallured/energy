@@ -13,7 +13,7 @@ interface AlbumInstallsProps {
 }
 
 export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ albumId }) => {
-  useTrackScreen("AlbumInstalls")
+  useTrackScreen({ name: "AlbumInstalls", type: "Album" })
 
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID as string)
   const { installs } = useAlbum({ albumId })

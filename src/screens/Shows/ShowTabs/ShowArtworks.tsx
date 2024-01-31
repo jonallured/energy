@@ -13,11 +13,14 @@ interface ShowArtworksProps {
 }
 
 export const ShowArtworks: React.FC<ShowArtworksProps> = ({ slug }) => {
-  useTrackScreen("ShowArtworks")
+  useTrackScreen({ name: "ShowArtworks", type: "Show", slug })
 
-  const { data, refreshControl } = useSystemQueryLoader<ShowArtworksQuery>(showArtworksQuery, {
-    slug,
-  })
+  const { data, refreshControl } = useSystemQueryLoader<ShowArtworksQuery>(
+    showArtworksQuery,
+    {
+      slug,
+    }
+  )
   const artworks = extractNodes(data.show?.artworksConnection)
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 

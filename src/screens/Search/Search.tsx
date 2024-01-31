@@ -21,7 +21,7 @@ const SEARCH_THROTTLE_INTERVAL = 1000
 const MINIMUM_SEARCH_INPUT_LENGTH = 2
 
 export const SearchScreen = () => {
-  useTrackScreen("Search")
+  useTrackScreen({ name: "Search", type: "Search" })
 
   return (
     <SearchContext.Provider>

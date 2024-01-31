@@ -6,7 +6,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const PresentationModeSettings = () => {
-  useTrackScreen("PresentationModeSettings")
+  useTrackScreen({ name: "PresentationModeSettings", type: "Settings" })
 
   const { trackToggledPresentationViewSetting } = useAppTracking()
   const navigation = useNavigation()

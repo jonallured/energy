@@ -7,12 +7,19 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
 
-export const ShowInstalls = ({ slug }: { slug: string }) => {
-  useTrackScreen("ShowInstalls")
+interface ShowInstallsProps {
+  slug: string
+}
 
-  const { data, refreshControl } = useSystemQueryLoader<ShowInstallsQuery>(showInstallsQuery, {
-    slug,
-  })
+export const ShowInstalls: React.FC<ShowInstallsProps> = ({ slug }) => {
+  useTrackScreen({ name: "ShowInstalls", type: "Show", slug })
+
+  const { data, refreshControl } = useSystemQueryLoader<ShowInstallsQuery>(
+    showInstallsQuery,
+    {
+      slug,
+    }
+  )
 
   const installs = (data?.show?.images as SelectedItemInstall[]) ?? []
 

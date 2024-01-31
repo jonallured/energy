@@ -13,7 +13,7 @@ interface AlbumDocumentsProps {
 }
 
 export const AlbumDocuments: React.FC<AlbumDocumentsProps> = ({ albumId }) => {
-  useTrackScreen("AlbumDocuments")
+  useTrackScreen({ name: "AlbumDocuments", type: "Album" })
 
   const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
   const { documents } = useAlbum({ albumId })

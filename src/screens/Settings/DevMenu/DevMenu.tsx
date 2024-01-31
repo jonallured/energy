@@ -6,17 +6,30 @@ import { NativeModules } from "react-native"
 import { CodePushOptions } from "screens/Settings/DevMenu/CodePushOptions"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
-import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
 
 export const DevMenu = () => {
+  const currentEnvironment = GlobalStore.useAppState(
+    (s) => s.config.environment.activeEnvironment
+  )
+
+  const isAnalyticsVisualizerEnabled = GlobalStore.useAppState(
+    (state) => state.artsyPrefs.isAnalyticsVisualizerEnabled
+  )
+
   const navigation = useNavigation()
-  const currentEnvironment = GlobalStore.useAppState((s) => s.config.environment.activeEnvironment)
   const { relayEnvironment } = useSystemRelayEnvironment()
 
   return (
     <Join separator={<Spacer y={1} />}>
-      <CodePushOptions />
+      <Button
+        block
+        onPress={() =>
+          GlobalStore.actions.artsyPrefs.toggleAnalyticsVisualizer()
+        }
+      >
+        {isAnalyticsVisualizerEnabled ? "Hide" : "Show"} Analytics Visualizer
+      </Button>
 
       <Button block onPress={() => NativeModules.DevMenu.show()}>
         Show Native Dev Menu
@@ -33,14 +46,20 @@ export const DevMenu = () => {
       >
         Switch to {currentEnvironment == "staging" ? "production" : "staging"}
       </Button>
-      {/* eslint-disable-next-line */}
 
-      <Button block onPress={() => ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}>
+      <CodePushOptions />
+
+      <Button
+        block
+        onPress={() => ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}
+      >
         Add native test albums
       </Button>
       <Button
         block
-        onPress={() => ARTNativeModules.ARTAlbumMigrationModule.resetAlbumReadAttempts()}
+        onPress={() =>
+          ARTNativeModules.ARTAlbumMigrationModule.resetAlbumReadAttempts()
+        }
       >
         Reset Album Read Attempts
       </Button>

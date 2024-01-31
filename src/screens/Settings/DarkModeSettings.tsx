@@ -5,7 +5,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const DarkModeSettings = () => {
-  useTrackScreen("DarkModeSettings")
+  useTrackScreen({ name: "DarkModeSettings", type: "Settings" })
 
   const navigation = useNavigation()
   const isUsingSystemColorScheme = GlobalStore.useAppState(

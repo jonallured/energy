@@ -39,7 +39,7 @@ const APP_SCHEME_URL = "artsy:///"
 export const LoginScreen = () => {
   const { relayEnvironment } = useSystemRelayEnvironment()
 
-  useTrackScreen("Login")
+  useTrackScreen({ name: "Login" })
   useSetupRageShake()
 
   const color = useColor()

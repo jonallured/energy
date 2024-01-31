@@ -17,7 +17,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const Settings = () => {
-  useTrackScreen("Settings")
+  useTrackScreen({ name: "Settings", type: "Settings" })
 
   const appVersion = getVersion()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()

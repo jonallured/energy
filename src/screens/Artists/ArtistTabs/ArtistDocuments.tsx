@@ -13,9 +13,11 @@ interface ArtistDocumentsProps {
 }
 
 export const ArtistDocuments: React.FC<ArtistDocumentsProps> = ({ slug }) => {
-  useTrackScreen("ArtistDocuments")
+  useTrackScreen({ name: "ArtistDocuments", type: "Artist", slug })
 
-  const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
+  const selectedPartner = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
   const { data, refreshControl } = useSystemQueryLoader<ArtistDocumentsQuery>(
     artistDocumentsQuery,
     {

@@ -20,7 +20,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { RetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 
 export const SelectPartnerScreen: React.FC = () => {
-  useTrackScreen("SelectPartner")
+  useTrackScreen({ name: "SelectPartner" })
 
   return (
     <Screen>

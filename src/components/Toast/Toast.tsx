@@ -1,4 +1,11 @@
-import { Flex, Box, useColor, Text, Touchable, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Box,
+  useColor,
+  Text,
+  Touchable,
+  NAVBAR_HEIGHT,
+} from "@artsy/palette-mobile"
 import { useToast } from "components/Toast/ToastContext"
 import { Animated, StyleProp, ViewStyle } from "react-native"
 import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
@@ -9,13 +16,16 @@ const EDGE_POPOVER_MESSAGE_PADDING = 10
 
 export type ToastPlacement = "top" | "bottom"
 export type ToastType = "info" | "success" | "error" | "default"
-export type ToastItem = Omit<ToastProps, "translateYAnimation" | "opacityAnimation">
+export type ToastItem = Omit<
+  ToastProps,
+  "translateYAnimation" | "opacityAnimation"
+>
 export type ToastPointerType = "top" | "bottom"
 
 export interface ToastProps {
   autoHide?: boolean
   hideTimeout?: number
-  message?: string
+  message?: string | JSX.Element
   onPress?: () => void
   onUndoPress?: () => void
   opacityAnimation: Animated.Value
@@ -86,9 +96,16 @@ export const Toast: React.FC<ToastProps> = (props) => {
   }
 
   const range = [-50, 0]
-  const outputRange = placement === "top" ? range : range.map((item) => item * -1)
-  const translateY = translateYAnimation.interpolate({ inputRange: [0, 1], outputRange })
-  const opacity = opacityAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
+  const outputRange =
+    placement === "top" ? range : range.map((item) => item * -1)
+  const translateY = translateYAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange,
+  })
+  const opacity = opacityAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  })
 
   const Pointer = () => {
     return (
@@ -105,19 +122,29 @@ export const Toast: React.FC<ToastProps> = (props) => {
         borderRightColor="transparent"
         borderBottomColor="black100"
         style={{
-          transform: [{ rotate: rotatePointer({ pointerDirection: withPointer }).rotate }],
+          transform: [
+            { rotate: rotatePointer({ pointerDirection: withPointer }).rotate },
+          ],
         }}
       />
     )
   }
 
   const content = (
-    // @ts-ignore
-    <Flex flexDirection={rotatePointer({ pointerDirection: withPointer }).flexDirection}>
+    <Flex
+      // @ts-ignore
+      flexDirection={
+        rotatePointer({ pointerDirection: withPointer }).flexDirection
+      }
+    >
       <Flex py={1} px={2} backgroundColor={colors.backgroundColor}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flex={1} mr={!!onUndoPress ? 1 : 0}>
-            <Text color="white100" variant="sm-display" textAlign={withPointer ? "center" : "left"}>
+            <Text
+              color="white100"
+              variant="sm-display"
+              textAlign={withPointer ? "center" : "left"}
+            >
               {title}
             </Text>
             {!!message && (
@@ -151,7 +178,9 @@ export const Toast: React.FC<ToastProps> = (props) => {
       left="1"
       right="1"
       bottom={
-        placement === "bottom" ? safeAreaInsets.bottom + EDGE_POPOVER_MESSAGE_PADDING : undefined
+        placement === "bottom"
+          ? safeAreaInsets.bottom + EDGE_POPOVER_MESSAGE_PADDING
+          : undefined
       }
       top={
         placement === "top"
@@ -185,7 +214,11 @@ export const Toast: React.FC<ToastProps> = (props) => {
   )
 }
 
-const rotatePointer = ({ pointerDirection }: { pointerDirection?: ToastPointerType }) => {
+const rotatePointer = ({
+  pointerDirection,
+}: {
+  pointerDirection?: ToastPointerType
+}) => {
   switch (pointerDirection) {
     case "bottom":
       return {

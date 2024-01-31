@@ -14,6 +14,13 @@ global.clearImmediate = jest.fn()
 
 jest.mock("@segment/analytics-react-native")
 
+jest.mock(
+  "react-native-json-tree",
+  () =>
+    ({ children }: any) =>
+      children
+)
+
 jest.mock("react-tracking", () => ({
   useTracking: jest.fn().mockReturnValue({
     trackEvent: jest.fn(),

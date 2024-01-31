@@ -36,7 +36,7 @@ const createAlbumSchema = object().shape({
 type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
 
 export const CreateOrEditAlbum = () => {
-  useTrackScreen("CreateOrEditAlbum")
+  useTrackScreen({ name: "CreateOrEditAlbum", type: "Album" })
 
   const { mode, albumId, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>().params || {
     mode: "create",

@@ -14,13 +14,18 @@ interface ArtistArtworkProps {
 }
 
 export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
-  useTrackScreen("ArtistArtworks")
+  useTrackScreen({ name: "ArtistArtworks", type: "Artwork", slug })
 
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const { data, refreshControl } = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
-    partnerID,
-    slug,
-  })
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
+  const { data, refreshControl } = useSystemQueryLoader<ArtistArtworksQuery>(
+    artistArtworksQuery,
+    {
+      partnerID,
+      slug,
+    }
+  )
 
   const artworks = extractNodes(data.partner?.artworksConnection)
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
@@ -39,7 +44,11 @@ export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
 export const artistArtworksQuery = graphql`
   query ArtistArtworksQuery($partnerID: String!, $slug: String!) {
     partner(id: $partnerID) {
-      artworksConnection(first: 100, artistID: $slug, includeUnpublished: true) {
+      artworksConnection(
+        first: 100
+        artistID: $slug
+        includeUnpublished: true
+      ) {
         edges {
           node {
             ...Artwork_artworkProps @relay(mask: false)

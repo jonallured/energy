@@ -11,7 +11,7 @@ type CreateOrEditAlbumChooseArtistRoute = RouteProp<
 >
 
 export const CreateOrEditAlbumChooseArtist = () => {
-  useTrackScreen("CreateOrEditAlbumChooseArtist")
+  useTrackScreen({ name: "CreateOrEditAlbumChooseArtist", type: "Artist" })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { mode, albumId } = useRoute<CreateOrEditAlbumChooseArtistRoute>().params

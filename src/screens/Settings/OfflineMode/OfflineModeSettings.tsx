@@ -13,7 +13,7 @@ import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
 export const OfflineModeSettings = () => {
-  useTrackScreen("OfflineModeSettings")
+  useTrackScreen({ name: "OfflineModeSettings", type: "Settings" })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)

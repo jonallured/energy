@@ -15,7 +15,7 @@ import { waitForScreenTransition } from "utils/waitForScreenTransition"
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
 
 export const AddItemsToAlbum = () => {
-  useTrackScreen("AddItemsToAlbum")
+  useTrackScreen({ name: "AddItemsToAlbum", type: "Album" })
 
   const { trackAddedToAlbum } = useAppTracking()
   const { artworksToAdd } = useRoute<HomeTabsRoute>().params

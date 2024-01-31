@@ -18,7 +18,7 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 >
 
 export const CreateOrEditAlbumChooseArtworks = () => {
-  useTrackScreen("CreateOrEditAlbumChooseArtworks")
+  useTrackScreen({ name: "CreateOrEditAlbumChooseArtworks", type: "Artwork" })
 
   const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const space = useSpace()

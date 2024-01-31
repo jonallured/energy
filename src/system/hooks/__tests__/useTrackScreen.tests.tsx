@@ -2,7 +2,7 @@ import { useIsFocused as useIsRouteFocused } from "@react-navigation/native"
 import { renderHook } from "@testing-library/react-hooks"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { useAppTracking } from "system/hooks/useAppTracking"
-import { useTrackScreen } from "system/hooks/useTrackScreen"
+import { UseTrackScreenViewProps, useTrackScreen } from "system/hooks/useTrackScreen"
 
 jest.mock("system/hooks/useAppTracking", () => ({
   useAppTracking: jest.fn(),
@@ -20,52 +20,52 @@ describe("useTrackScreen", () => {
   const mockUseFocusedTab = useFocusedTab as jest.Mock
 
   afterEach(() => {
-    jest.clearAllMocks()
+    jest.resetAllMocks()
   })
 
   it("should track screen when route is focused", () => {
-    const screenName = "TestScreen" as any
+    const screen = { name: "Artists", type: "Artists" } as UseTrackScreenViewProps
     const spy = jest.fn()
 
     mockUseRouteIsFocused.mockReturnValue(true)
     mockUseAppTracking.mockReturnValue({ trackScreenView: spy })
 
-    renderHook(() => useTrackScreen(screenName))
-    expect(spy).toHaveBeenCalledWith(screenName)
+    renderHook(() => useTrackScreen(screen))
+    expect(spy).toHaveBeenCalledWith(screen)
   })
 
   it("should track screen when activeTab == screenName", () => {
-    const screenName = "ActiveTab" as any
+    const screen = { name: "Artists" } as UseTrackScreenViewProps
     const spy = jest.fn()
 
     mockUseRouteIsFocused.mockReturnValue(true)
     mockUseAppTracking.mockReturnValue({ trackScreenView: spy })
-    mockUseFocusedTab.mockReturnValue("ActiveTab")
+    mockUseFocusedTab.mockReturnValue("Artists")
 
-    renderHook(() => useTrackScreen(screenName))
+    renderHook(() => useTrackScreen(screen))
     expect(spy).toHaveBeenCalled()
   })
 
   it("should not track screen when route is not focused", () => {
-    const screenName = "TestScreen" as any
+    const screen = { name: "Artists" } as UseTrackScreenViewProps
     const spy = jest.fn()
 
     mockUseRouteIsFocused.mockReturnValue(false)
     mockUseAppTracking.mockReturnValue({ trackScreenView: spy })
 
-    renderHook(() => useTrackScreen(screenName))
+    renderHook(() => useTrackScreen(screen))
     expect(spy).not.toHaveBeenCalled()
   })
 
   it("should not track screen when activeTab != screenName", () => {
-    const screenName = "TestScreen" as any
+    const screen = { name: "Artists" } as UseTrackScreenViewProps
     const spy = jest.fn()
 
     mockUseRouteIsFocused.mockReturnValue(true)
     mockUseAppTracking.mockReturnValue({ trackScreenView: spy })
     mockUseFocusedTab.mockReturnValue("AnotherTab")
 
-    renderHook(() => useTrackScreen(screenName))
+    renderHook(() => useTrackScreen(screen))
     expect(spy).not.toHaveBeenCalled()
   })
 })

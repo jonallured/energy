@@ -14,7 +14,10 @@ interface ProviderProps {
   relayEnvironment?: RelayModernEnvironment
 }
 
-export const Boot: React.FC<ProviderProps> = ({ children, relayEnvironment }) => {
+export const Boot: React.FC<ProviderProps> = ({
+  children,
+  relayEnvironment,
+}) => {
   return (
     <AnalyticsProvider>
       <GlobalRetryErrorBoundary>

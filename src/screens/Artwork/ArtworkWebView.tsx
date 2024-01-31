@@ -9,7 +9,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 type ArtworkWebViewRoute = RouteProp<NavigationScreens, "ArtworkWebView">
 
 export const ArtworkWebView = () => {
-  useTrackScreen("ArtworkWebView")
+  useTrackScreen({ name: "ArtworkWebView", type: "Artwork" })
 
   const navigation = useNavigation()
   const { params } = useRoute<ArtworkWebViewRoute>()

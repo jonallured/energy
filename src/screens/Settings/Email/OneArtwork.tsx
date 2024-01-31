@@ -4,7 +4,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const OneArtwork = () => {
-  useTrackScreen("EmailSettingsOneArtwork")
+  useTrackScreen({ name: "EmailSettingsOneArtwork", type: "Settings" })
 
   const navigation = useNavigation()
   const value = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)

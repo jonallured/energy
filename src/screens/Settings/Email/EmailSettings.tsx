@@ -14,7 +14,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const EmailSettings = () => {
-  useTrackScreen("EmailSettings")
+  useTrackScreen({ name: "EmailSettings", type: "Settings" })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const emailCC = GlobalStore.useAppState((state) => state.email.ccRecipients)

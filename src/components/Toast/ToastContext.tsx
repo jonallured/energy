@@ -1,4 +1,11 @@
-import React, { useCallback, useState, useEffect, useRef, useContext, useMemo } from "react"
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useMemo,
+} from "react"
 import { Animated } from "react-native"
 import { Toast, ToastItem } from "./Toast"
 
@@ -26,7 +33,8 @@ export const ToastProvider: React.FC = ({ children }) => {
 
   const runAnimation = useCallback((mode: "show" | "hide") => {
     const nextAnimationValue = mode === "show" ? 1 : 0
-    const animationDuration = mode === "show" ? SHOW_ANIMATION_VELOCITY : HIDE_ANIMATION_VELOCITY
+    const animationDuration =
+      mode === "show" ? SHOW_ANIMATION_VELOCITY : HIDE_ANIMATION_VELOCITY
 
     return new Promise((resolve) => {
       if (__TEST__) {
@@ -100,13 +108,18 @@ export const ToastProvider: React.FC = ({ children }) => {
     <ToastContext.Provider value={{ show, hide }}>
       {children}
       {!!toast && (
-        <Toast {...toast} opacityAnimation={opacityAnim} translateYAnimation={translateYAnim} />
+        <Toast
+          {...toast}
+          opacityAnimation={opacityAnim}
+          translateYAnimation={translateYAnim}
+        />
       )}
     </ToastContext.Provider>
   )
 }
 
-export const delay = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
+export const delay = (time: number) =>
+  new Promise((resolve) => setTimeout(resolve, time))
 
 export const useToast = () => {
   const contextValue = useContext(ToastContext)

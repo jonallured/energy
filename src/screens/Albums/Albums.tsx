@@ -9,7 +9,7 @@ import { Album } from "system/store/Models/AlbumsModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const Albums = () => {
-  useTrackScreen("Albums")
+  useTrackScreen({ name: "Albums", type: "Albums" })
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()

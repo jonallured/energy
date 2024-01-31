@@ -11,14 +11,39 @@ import {
   SuccessfullyLoggedIn,
   ToggledPresentationModeSetting,
 } from "@artsy/cohesion"
+import { useToast } from "components/Toast/ToastContext"
+import { useCallback } from "react"
+import JSONTree from "react-native-json-tree"
 import { useTracking } from "react-tracking"
+import { UseTrackScreenViewProps } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const useAppTracking = () => {
-  const { trackEvent } = useTracking()
+  const tracking = useTracking()
+  const { toast } = useToast()
 
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
-  const launchCount = GlobalStore.useAppState((store) => store.system.launchCount)
+  const launchCount = GlobalStore.useAppState(
+    (store) => store.system.launchCount
+  )
+
+  const isAnalyticsVisualizerEnabled = GlobalStore.useAppState(
+    (store) => store.artsyPrefs.isAnalyticsVisualizerEnabled
+  )
+
+  // Enable the visualizer via Settings > Dev Menu
+  const trackingWithVisualizer = (event: any) => {
+    toast.show({
+      message: <JSONTree data={event} />,
+      title: "",
+    })
+
+    tracking.trackEvent(event)
+  }
+
+  const trackEvent = isAnalyticsVisualizerEnabled
+    ? trackingWithVisualizer
+    : tracking.trackEvent
 
   return {
     /**
@@ -51,10 +76,13 @@ export const useAppTracking = () => {
       trackEvent(event)
     },
 
-    trackScreenView: (screenName: string) => {
+    trackScreenView: (props: UseTrackScreenViewProps) => {
       const event = {
         action: ActionType.screen,
-        context_screen_owner_type: screenName,
+        context_screen: props.name,
+        context_screen_owner_type: props.type,
+        context_screen_owner_id: props.internalID,
+        context_screen_owner_slug: props.slug,
       }
 
       trackEvent(event)

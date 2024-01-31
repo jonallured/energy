@@ -13,13 +13,18 @@ interface ShowDocumentsProps {
 }
 
 export const ShowDocuments: React.FC<ShowDocumentsProps> = ({ slug }) => {
-  useTrackScreen("ShowDocuments")
+  useTrackScreen({ name: "ShowDocuments", type: "Show", slug })
 
-  const activePartnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const { data, refreshControl } = useSystemQueryLoader<ShowDocumentsQuery>(showDocumentsQuery, {
-    slug,
-    partnerID: activePartnerID,
-  })
+  const activePartnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
+  const { data, refreshControl } = useSystemQueryLoader<ShowDocumentsQuery>(
+    showDocumentsQuery,
+    {
+      slug,
+      partnerID: activePartnerID,
+    }
+  )
 
   const documents = extractNodes(data.partner?.documentsConnection)
 

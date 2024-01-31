@@ -5,7 +5,7 @@ import { ArtistsList } from "components/Lists/ArtistsList"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 
 export const Artists: React.FC = () => {
-  useTrackScreen("Artists")
+  useTrackScreen({ name: "Artists", type: "Artists" })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
 

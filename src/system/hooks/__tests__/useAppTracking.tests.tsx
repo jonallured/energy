@@ -70,11 +70,19 @@ describe("useAppTracking", () => {
     mockUseTracking.mockReturnValue({ trackEvent: spy })
 
     const { result } = renderHook(() => useAppTracking())
-    result.current.trackScreenView("TestScreen")
+    result.current.trackScreenView({
+      name: "AddItemsToAlbum",
+      type: "Album",
+      internalID: "internalID",
+      slug: "slug",
+    })
 
     expect(spy).toHaveBeenCalledWith({
       action: "screen",
-      context_screen_owner_type: "TestScreen",
+      context_screen: "AddItemsToAlbum",
+      context_screen_owner_type: "Album",
+      context_screen_owner_slug: "slug",
+      context_screen_owner_id: "internalID",
     })
   })
 
