@@ -9,10 +9,14 @@ import { useAppTracking } from "system/hooks/useAppTracking"
 import { ScreenTypes } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
+import { PresentationModeModel } from "system/store/Models/PresentationModeModel"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
+  const presentationModeSettings = GlobalStore.useAppState(
+    (state) => state.presentationMode
+  )
   const partnerName = GlobalStore.useAppState(
     (state) => state.auth.activePartnerName
   )
@@ -47,6 +51,7 @@ export const useMailComposer = () => {
       const htmlContent = getArtworkEmailTemplate({
         artwork: firstSelectedItem,
         emailSettings,
+        presentationModeSettings,
         includeLogo: true,
         partnerName,
         partnerSlug,
@@ -81,6 +86,7 @@ export const useMailComposer = () => {
           artwork: selectedItem,
           fullHtml: false,
           emailSettings,
+          presentationModeSettings,
           partnerName,
           partnerSlug,
         })
@@ -287,6 +293,7 @@ export const getArtworkEmailTemplate = ({
   artwork,
   fullHtml = true,
   emailSettings,
+  presentationModeSettings,
   includeLogo = false,
   partnerName,
   partnerSlug,
@@ -294,6 +301,9 @@ export const getArtworkEmailTemplate = ({
   artwork: SelectedItemArtwork
   fullHtml?: boolean
   emailSettings: StateMapper<FilterActionTypes<EmailModel>>
+  presentationModeSettings?: StateMapper<
+    FilterActionTypes<PresentationModeModel>
+  >
   includeLogo?: boolean
   partnerName?: string | null
   partnerSlug?: string | null
@@ -340,7 +350,11 @@ export const getArtworkEmailTemplate = ({
       ${editionSet?.editionOf ? `${editionSet?.editionOf}<br />` : ""}
 
       ${editionSet?.saleMessage ? `${editionSet?.saleMessage}<br />` : ""}
-      ${editionSet?.price ? `${editionSet?.price}<br />` : ""}
+      ${
+        !presentationModeSettings?.isHidePriceEnabled && editionSet?.price
+          ? `${editionSet?.price}<br />`
+          : ""
+      }
 
       <br />
     `
@@ -370,7 +384,11 @@ export const getArtworkEmailTemplate = ({
 
       <br /><br />
 
-      ${price ? `${price}<br />` : ""}
+      ${
+        !presentationModeSettings?.isHidePriceEnabled && price
+          ? `${price}<br />`
+          : ""
+      }
       ${mediumType?.name ? `${mediumType?.name}<br />` : ""}
       ${medium ? `${medium}<br />` : ""}
       ${dimensions?.in ? `${dimensions?.in}<br />` : ""}

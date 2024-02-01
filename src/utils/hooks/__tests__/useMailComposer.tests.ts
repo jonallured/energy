@@ -436,6 +436,26 @@ describe("useMailComposer", () => {
         ).toBe(expectedSnippet)
       })
 
+      it("price exists, but presentation mode has it turned off", () => {
+        const expectedSnippet = replaceWhitespace(`
+        <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
+      `)
+
+        expect(
+          getArtworkEmailTemplate({
+            artwork: {
+              ...artwork,
+              price: "$100",
+            },
+            fullHtml: false,
+            emailSettings,
+            presentationModeSettings: {
+              isHidePriceEnabled: true,
+            } as any,
+          })
+        ).toBe(expectedSnippet)
+      })
+
       it("mediumType", () => {
         const expectedSnippet = replaceWhitespace(`
         <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
@@ -677,6 +697,38 @@ describe("useMailComposer", () => {
           },
           fullHtml: false,
           emailSettings,
+        })
+      ).toBe(expectedSnippet)
+    })
+
+    it("hides price, but when presentation mode setting has turned it off", () => {
+      const expectedSnippet = replaceWhitespace(`
+        <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 28 x 36 in<br /> 128 x 236 cm<br /> 10 of 20<br /> Some sale message<br /><br /></p>
+      `)
+
+      expect(
+        getArtworkEmailTemplate({
+          artwork: {
+            ...artwork,
+            published: false,
+            editionSets: [
+              {
+                dimensions: {
+                  cm: "128 x 236 cm",
+                  in: "28 x 36 in",
+                },
+                editionOf: "10 of 20",
+                internalDisplayPrice: null,
+                price: "$100",
+                saleMessage: "Some sale message",
+              },
+            ],
+          },
+          fullHtml: false,
+          emailSettings,
+          presentationModeSettings: {
+            isHidePriceEnabled: true,
+          } as any,
         })
       ).toBe(expectedSnippet)
     })
