@@ -15,6 +15,7 @@ import { getVersion } from "react-native-device-info"
 import { DevMenu } from "screens/Settings/DevMenu/DevMenu"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const Settings = () => {
   useTrackScreen({ name: "Settings", type: "Settings" })
@@ -22,11 +23,15 @@ export const Settings = () => {
   const appVersion = getVersion()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
 
-  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+  const isUserDev = GlobalStore.useAppState(
+    (state) => state.artsyPrefs.isUserDev
+  )
   const showDevMenuButtonInternalToggle = GlobalStore.useAppState(
     (state) => state.devicePrefs.showDevMenuButtonInternalToggle
   )
   const [tapCount, updateTapCount] = useState(0)
+
+  const isDarkMode = useIsDarkMode()
 
   return (
     <Screen>
@@ -41,46 +46,69 @@ export const Settings = () => {
         <Join separator={<Screen.FullWidthDivider />}>
           <Touchable onPress={() => navigation.navigate("DarkModeSettings")}>
             <Flex>
-              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
                 <Text>Dark Mode</Text>
                 <ArrowRightIcon fill="onBackground" />
               </Flex>
             </Flex>
           </Touchable>
 
-          <Touchable onPress={() => navigation.navigate("PresentationModeSettings")}>
+          <Touchable
+            onPress={() => navigation.navigate("PresentationModeSettings")}
+          >
             <Flex>
-              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
                 <Text>Presentation Mode</Text>
                 <ArrowRightIcon fill="onBackground" />
               </Flex>
               <Text variant="xs" color="onBackgroundMedium">
-                Presentation Mode hides sensitive information when showing artworks to clients.
+                Presentation Mode hides sensitive information when showing
+                artworks to clients.
               </Text>
             </Flex>
           </Touchable>
 
           <Touchable onPress={() => navigation.navigate("OfflineModeSettings")}>
             <Flex>
-              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
                 <Text>Offline Mode</Text>
                 <ArrowRightIcon fill="onBackground" />
               </Flex>
               <Text variant="xs" color="onBackgroundMedium">
-                Folio can be used when you're not connected to the internet, but you will need to
-                cache all the data before you go offline
+                Folio can be used when you're not connected to the internet, but
+                you will need to cache all the data before you go offline
               </Text>
             </Flex>
           </Touchable>
 
           <Touchable onPress={() => navigation.navigate("EmailSettings")}>
-            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Flex
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
               <Text>Email</Text>
               <ArrowRightIcon fill="onBackground" />
             </Flex>
           </Touchable>
 
-          <Button block onPress={() => GlobalStore.actions.auth.signOut()}>
+          <Button
+            block
+            variant={isDarkMode ? "fillLight" : "fillDark"}
+            onPress={() => GlobalStore.actions.auth.signOut()}
+          >
             Log out
           </Button>
         </Join>
@@ -90,6 +118,7 @@ export const Settings = () => {
             <Spacer y={2} />
             <Button
               block
+              variant={isDarkMode ? "fillLight" : "fillDark"}
               onPress={() =>
                 GlobalStore.actions.devicePrefs.setShowDevMenuButton(
                   !showDevMenuButtonInternalToggle

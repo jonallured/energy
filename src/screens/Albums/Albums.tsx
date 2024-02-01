@@ -30,7 +30,7 @@ export const Albums = () => {
                     navigation.navigate("AlbumTabs", { albumId: album.id })
                   }}
                 />
-                <Spacer y={1} />
+                <Spacer y={2} />
               </>
             )
           }}
@@ -41,7 +41,10 @@ export const Albums = () => {
         <Screen.BottomView darkMode={isDarkMode}>
           <Button
             block
-            onPress={() => navigation.navigate("CreateOrEditAlbum", { mode: "create" })}
+            variant={isDarkMode ? "fillLight" : "fillDark"}
+            onPress={() =>
+              navigation.navigate("CreateOrEditAlbum", { mode: "create" })
+            }
           >
             Create New Album
           </Button>

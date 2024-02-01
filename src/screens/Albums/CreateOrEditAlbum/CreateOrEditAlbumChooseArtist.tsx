@@ -1,5 +1,10 @@
 import { Screen, useSpace } from "@artsy/palette-mobile"
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistsList } from "components/Lists/ArtistsList"
@@ -11,10 +16,12 @@ type CreateOrEditAlbumChooseArtistRoute = RouteProp<
 >
 
 export const CreateOrEditAlbumChooseArtist = () => {
+  // TODO: is edit: Album / is new Artist
   useTrackScreen({ name: "CreateOrEditAlbumChooseArtist", type: "Artist" })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const { mode, albumId } = useRoute<CreateOrEditAlbumChooseArtistRoute>().params
+  const { mode, albumId } =
+    useRoute<CreateOrEditAlbumChooseArtistRoute>().params
   const space = useSpace()
 
   const handleItemPress = (item: ArtistListItem_artist$data) => {

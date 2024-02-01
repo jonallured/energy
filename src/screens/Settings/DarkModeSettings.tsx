@@ -1,6 +1,7 @@
 import { Text, Screen } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SettingsItem } from "components/SettingsItem"
+import { useAppTracking } from "system/hooks/useAppTracking"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
@@ -8,10 +9,14 @@ export const DarkModeSettings = () => {
   useTrackScreen({ name: "DarkModeSettings", type: "Settings" })
 
   const navigation = useNavigation()
+  const tracking = useAppTracking()
+
   const isUsingSystemColorScheme = GlobalStore.useAppState(
     (state) => state.devicePrefs.usingSystemColorScheme
   )
-  const forcedColorScheme = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
+  const forcedColorScheme = GlobalStore.useAppState(
+    (state) => state.devicePrefs.forcedColorScheme
+  )
 
   return (
     <Screen>
@@ -25,11 +30,20 @@ export const DarkModeSettings = () => {
           <SettingsItem.Toggle
             accessibilityRole="switch"
             accessibilityLabel="Dark mode always on switch"
-            accessibilityValue={{ text: forcedColorScheme === "dark" ? "on" : "off" }}
+            accessibilityValue={{
+              text: forcedColorScheme === "dark" ? "on" : "off",
+            }}
             value={forcedColorScheme === "dark"}
             onValueChange={(value) => {
               GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(false)
-              GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
+              GlobalStore.actions.devicePrefs.setForcedColorScheme(
+                value ? "dark" : "light"
+              )
+
+              tracking.trackToggledPresentationViewSetting(
+                "forceDarkMode",
+                value
+              )
             }}
           />
         </SettingsItem>
@@ -40,13 +54,23 @@ export const DarkModeSettings = () => {
           <SettingsItem.Toggle
             accessibilityRole="switch"
             accessibilityLabel="Follow System Settings switch"
-            accessibilityValue={{ text: isUsingSystemColorScheme ? "on" : "off" }}
+            accessibilityValue={{
+              text: isUsingSystemColorScheme ? "on" : "off",
+            }}
             value={isUsingSystemColorScheme}
             onValueChange={(value) => {
               GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(value)
+
               if (value) {
-                GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "light" : "dark")
+                GlobalStore.actions.devicePrefs.setForcedColorScheme(
+                  value ? "light" : "dark"
+                )
               }
+
+              tracking.trackToggledPresentationViewSetting(
+                "darkModeFollowSystemSettings",
+                value
+              )
             }}
           />
         </SettingsItem>

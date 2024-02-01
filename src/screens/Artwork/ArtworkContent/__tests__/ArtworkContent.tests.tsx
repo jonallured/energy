@@ -1,8 +1,12 @@
 import { screen, waitFor } from "@testing-library/react-native"
 import { ArtworkContentTestQuery } from "__generated__/ArtworkContentTestQuery.graphql"
 import { graphql } from "react-relay"
-import { ArtworkContent } from "screens/Artwork/ArtworkContent/ArtworkContent"
+import {
+  ArtworkContent,
+  getEditionSetInfo,
+} from "screens/Artwork/ArtworkContent/ArtworkContent"
 import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
+import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { setupTestWrapper } from "utils/test/setupTestWrapper"
 
 jest.mock("@react-navigation/native", () => ({
@@ -107,7 +111,9 @@ describe("ArtworkContent", () => {
         expect(screen.queryByText("parent internalDisplayPrice")).toBeFalsy()
         expect(screen.queryByText("edition 2 price")).toBeFalsy()
         expect(screen.queryByText("parent in")).toBeFalsy()
-        expect(screen.queryByText("edition 1 internalDisplayPrice")).toBeTruthy()
+        expect(
+          screen.queryByText("edition 1 internalDisplayPrice")
+        ).toBeTruthy()
         expect(screen.queryByText("edition 2 cm")).toBeTruthy()
       })
     })
@@ -268,5 +274,163 @@ describe("ArtworkContent", () => {
         })
       })
     })
+  })
+})
+
+describe("getEditionSetInfo", () => {
+  it("returns null if artwork has no editionSets", () => {
+    const artwork = { editionSets: undefined } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toBeNull()
+  })
+
+  it("returns null if editionSet is null", () => {
+    const artwork = { editionSets: null } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual(null)
+  })
+
+  it("returns edition set info with saleMessage and price", () => {
+    const artwork = {
+      editionSets: [
+        {
+          saleMessage: "Sale",
+          price: 100,
+          internalDisplayPrice: 90,
+          dimensions: { in: 10, cm: 25 },
+          editionOf: 50,
+        },
+      ],
+      availability: "available",
+    } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual([
+      {
+        saleMessage: "Sale",
+        price: 90,
+        dimensions: { in: 10, cm: 25 },
+        editionOf: 50,
+      },
+    ])
+  })
+
+  it("returns edition set info with null saleMessage if saleMessage equals price", () => {
+    const artwork = {
+      editionSets: [
+        {
+          saleMessage: 100,
+          price: 100,
+          internalDisplayPrice: null,
+          dimensions: { in: 10, cm: 25 },
+          editionOf: 50,
+        },
+      ],
+      availability: "available",
+    } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual([
+      {
+        saleMessage: null,
+        price: 100,
+        dimensions: { in: 10, cm: 25 },
+        editionOf: 50,
+      },
+    ])
+  })
+
+  it("returns edition set info with null price if availability is sold", () => {
+    const artwork = {
+      editionSets: [
+        {
+          saleMessage: "Sale",
+          price: 100,
+          internalDisplayPrice: 90,
+          dimensions: { in: 10, cm: 25 },
+          editionOf: 50,
+        },
+      ],
+      availability: "sold",
+    } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual([
+      {
+        saleMessage: "Sale",
+        price: null,
+        dimensions: { in: 10, cm: 25 },
+        editionOf: 50,
+      },
+    ])
+  })
+
+  it("returns edition set info with internalDisplayPrice if not null", () => {
+    const artwork = {
+      editionSets: [
+        {
+          saleMessage: "Sale",
+          price: 100,
+          internalDisplayPrice: 500,
+          dimensions: { in: 10, cm: 25 },
+          editionOf: 50,
+        },
+      ],
+      availability: "available",
+    } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual([
+      {
+        saleMessage: "Sale",
+        price: 500,
+        dimensions: { in: 10, cm: 25 },
+        editionOf: 50,
+      },
+    ])
+  })
+
+  it("returns edition set info with null price if price is null", () => {
+    const artwork = {
+      editionSets: [
+        {
+          saleMessage: "Sale",
+          price: null,
+          internalDisplayPrice: null,
+          dimensions: { in: 10, cm: 25 },
+          editionOf: 50,
+        },
+      ],
+      availability: "available",
+    } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual([
+      {
+        saleMessage: "Sale",
+        price: null,
+        dimensions: { in: 10, cm: 25 },
+        editionOf: 50,
+      },
+    ])
+  })
+
+  it("returns edition set info with price", () => {
+    const artwork = {
+      editionSets: [
+        {
+          saleMessage: "Sale",
+          price: 100,
+          internalDisplayPrice: null,
+          dimensions: { in: 10, cm: 25 },
+          editionOf: 50,
+        },
+      ],
+      availability: "available",
+    } as unknown as SelectedItemArtwork
+
+    expect(getEditionSetInfo(artwork)).toEqual([
+      {
+        saleMessage: "Sale",
+        price: 100,
+        dimensions: { in: 10, cm: 25 },
+        editionOf: 50,
+      },
+    ])
   })
 })

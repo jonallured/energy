@@ -114,7 +114,10 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
 
   const sendByEmailHandler = async () => {
     if (artwork) {
-      await sendMail({ artworks: [artwork as unknown as SelectedItemArtwork] })
+      await sendMail({
+        artworks: [artwork as unknown as SelectedItemArtwork],
+        type: "Artwork",
+      })
     }
   }
 
@@ -200,6 +203,16 @@ export const Artwork_artworkProps = graphql`
     dimensions {
       in
       cm
+    }
+    editionSets {
+      dimensions {
+        cm
+        in
+      }
+      editionOf
+      saleMessage
+      internalDisplayPrice
+      price
     }
     href
     image {

@@ -1,5 +1,10 @@
 import { Screen, Button, Text, Spacer, useSpace } from "@artsy/palette-mobile"
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
@@ -20,15 +25,21 @@ type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
 export const CreateOrEditAlbumChooseArtworks = () => {
   useTrackScreen({ name: "CreateOrEditAlbumChooseArtworks", type: "Artwork" })
 
-  const { mode, slug, albumId } = useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
+  const { mode, slug, albumId } =
+    useRoute<CreateOrEditAlbumChooseArtworksRoute>().params
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const { data } = useSystemQueryLoader<ArtistArtworksQuery>(artistArtworksQuery, {
-    partnerID,
-    slug,
-  })
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
+  const { data } = useSystemQueryLoader<ArtistArtworksQuery>(
+    artistArtworksQuery,
+    {
+      partnerID,
+      slug,
+    }
+  )
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
@@ -57,7 +68,10 @@ export const CreateOrEditAlbumChooseArtworks = () => {
     <Screen>
       <Screen.Header
         title={mode === "edit" ? "Save to Album" : "Add to Album"}
-        onBack={navigation.goBack}
+        onBack={() => {
+          GlobalStore.actions.selectMode.clearSelectedItems()
+          navigation.goBack()
+        }}
         rightElements={
           <Button
             mt={0.5}
@@ -70,7 +84,9 @@ export const CreateOrEditAlbumChooseArtworks = () => {
               }
             }}
           >
-            {selectedItems.length === presentedArtworks.length ? "Unselect All" : "Select All"}
+            {selectedItems.length === presentedArtworks.length
+              ? "Unselect All"
+              : "Select All"}
           </Button>
         }
       />
@@ -82,7 +98,9 @@ export const CreateOrEditAlbumChooseArtworks = () => {
           contentContainerStyle={{ paddingHorizontal: space(2) }}
           artworks={presentedArtworks}
           checkIfDisabled={(item) => {
-            return !!album?.items?.find((albumItem) => albumItem?.internalID === item.internalID)
+            return !!album?.items?.find(
+              (albumItem) => albumItem?.internalID === item.internalID
+            )
           }}
           onItemPress={(item) => {
             GlobalStore.actions.selectMode.toggleSelectedItem(item)
@@ -90,12 +108,22 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         />
 
         <Screen.BottomView darkMode={isDarkMode}>
-          <Text variant="xs" color="onBackgroundMedium" mb={1} textAlign="center">
-            Selected artworks for {presentedArtworks[0]?.artistNames ?? "Artist"}:{" "}
+          <Text
+            variant="xs"
+            color="onBackgroundMedium"
+            mb={1}
+            textAlign="center"
+          >
+            Selected artworks for{" "}
+            {presentedArtworks[0]?.artistNames ?? "Artist"}:{" "}
             {selectedItems.length}
           </Text>
 
-          <Button block onPress={selectArtworksToAddToAnAlbum} disabled={selectedItems.length <= 0}>
+          <Button
+            block
+            onPress={selectArtworksToAddToAnAlbum}
+            disabled={selectedItems.length <= 0}
+          >
             {mode === "edit" ? "Save" : "Add"}
           </Button>
         </Screen.BottomView>

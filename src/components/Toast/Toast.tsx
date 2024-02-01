@@ -5,10 +5,10 @@ import {
   Text,
   Touchable,
   NAVBAR_HEIGHT,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { useToast } from "components/Toast/ToastContext"
 import { Animated, StyleProp, ViewStyle } from "react-native"
-import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 export const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 

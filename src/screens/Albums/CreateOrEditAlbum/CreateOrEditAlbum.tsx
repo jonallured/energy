@@ -8,7 +8,12 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { useToast } from "components/Toast/ToastContext"
@@ -20,7 +25,10 @@ import { useAppTracking } from "system/hooks/useAppTracking"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
-import { SelectedItem, SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import {
+  SelectedItem,
+  SelectedItemArtwork,
+} from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { object, string } from "yup"
@@ -38,7 +46,8 @@ type CreateOrEditAlbumRoute = RouteProp<NavigationScreens, "CreateOrEditAlbum">
 export const CreateOrEditAlbum = () => {
   useTrackScreen({ name: "CreateOrEditAlbum", type: "Album" })
 
-  const { mode, albumId, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>().params || {
+  const { mode, albumId, artworksToAdd } = useRoute<CreateOrEditAlbumRoute>()
+    .params || {
     mode: "create",
   }
 
@@ -50,6 +59,10 @@ export const CreateOrEditAlbum = () => {
 
   const selectedItems = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.selectedItems
+  )
+
+  const isSelectModeActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
   )
 
   const { album, artworks } = useAlbum({ albumId: albumId as string })
@@ -66,67 +79,83 @@ export const CreateOrEditAlbum = () => {
     artworksToSave = [...(album?.items ?? [])]
   }
 
-  const { handleSubmit, handleChange, values, errors, validateForm, isValid, isSubmitting } =
-    useFormik<CreateAlbumValuesSchema>({
-      initialValues: {
-        albumName: mode === "edit" ? album?.name ?? "" : "",
-      },
-      initialErrors: {},
-      onSubmit: () => {
-        try {
-          // Take the items to save and subtract selected items (items to delete)
-          // which returns final result.
-          const items = differenceBy(artworksToSave, selectedItems, "internalID")
+  const {
+    handleSubmit,
+    handleChange,
+    values,
+    errors,
+    validateForm,
+    isValid,
+    isSubmitting,
+  } = useFormik<CreateAlbumValuesSchema>({
+    initialValues: {
+      albumName: mode === "edit" ? album?.name ?? "" : "",
+    },
+    initialErrors: {},
+    onSubmit: () => {
+      try {
+        // Take the items to save and subtract selected items (items to delete)
+        // which returns final result.
+        const items = differenceBy(artworksToSave, selectedItems, "internalID")
 
-          if (mode === "edit" && albumId) {
-            GlobalStore.actions.albums.editAlbum({
-              albumId: albumId,
-              name: values.albumName,
-              items,
-            })
-          } else {
-            GlobalStore.actions.albums.addAlbum({
-              name: values.albumName.trim(),
-              items,
-            })
-
-            trackCreatedAlbum()
-          }
-
-          GlobalStore.actions.selectMode.cancelSelectMode()
-
-          navigateToSavedHistory({
-            lookupKey: "before-adding-to-album",
-            onComplete: () => {
-              waitForScreenTransition(() => {
-                toast.show({
-                  title: `Successfully ${mode === "edit" ? "edited" : "created"} album.`,
-                  type: "success",
-                  onPress: () => {
-                    console.log("hiii")
-                  },
-                })
-              })
-            },
+        if (mode === "edit" && albumId) {
+          GlobalStore.actions.albums.editAlbum({
+            albumId: albumId,
+            name: values.albumName,
+            items,
           })
-        } catch (error) {
-          console.error(error)
-        }
-      },
-      validationSchema: createAlbumSchema,
-    })
+        } else {
+          GlobalStore.actions.albums.addAlbum({
+            name: values.albumName.trim(),
+            items,
+          })
 
-  const isActionButtonEnabled = isValid && !isSubmitting && artworksToSave.length > 0
+          trackCreatedAlbum()
+        }
+
+        GlobalStore.actions.selectMode.cancelSelectMode()
+
+        navigateToSavedHistory({
+          lookupKey: "before-adding-to-album",
+          onComplete: () => {
+            waitForScreenTransition(() => {
+              toast.show({
+                title: `Successfully ${
+                  mode === "edit" ? "edited" : "created"
+                } album.`,
+                type: "success",
+                onPress: () => {
+                  console.log("hiii")
+                },
+              })
+            })
+          },
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    validationSchema: createAlbumSchema,
+  })
+
+  const isActionButtonEnabled =
+    isValid && !isSubmitting && artworksToSave.length > 0
 
   const CreateOrEditButton = () => {
     return (
       <Flex>
-        <Button block onPress={() => handleSubmit()} disabled={!isActionButtonEnabled}>
+        <Button
+          block
+          onPress={() => handleSubmit()}
+          disabled={!isActionButtonEnabled}
+        >
           {mode === "edit" ? "Save" : "Create"}
         </Button>
       </Flex>
     )
   }
+
+  const showAddMessage = isSelectModeActive || !artworksToAdd?.length
 
   const showRemoveMessage = mode === "edit" && artworks.length > 0
 
@@ -154,21 +183,47 @@ export const CreateOrEditAlbum = () => {
               <Spacer y={1} />
 
               <Text variant="xs" color="black60">
-                Albums created in Folio are locally stored and not accessible on other devices.
+                Albums created in Folio are locally stored and not accessible on
+                other devices.
               </Text>
             </>
           )}
 
           <Spacer y={2} />
 
-          <Touchable
+          {!!showAddMessage && (
+            <Touchable
+              onPress={() =>
+                navigation.navigate("CreateOrEditAlbumChooseArtist", {
+                  mode,
+                  albumId,
+                })
+              }
+            >
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Text>Add Items to Album</Text>
+                <ArrowRightIcon fill="onBackgroundHigh" />
+              </Flex>
+            </Touchable>
+          )}
+
+          {/* TODO: Ensure that this is always visible, though doing so leads
+              to some unexpected behavior on the screen.
+
+              See: https://www.notion.so/artsy/c38e09c886f941759f16bee64144188e?v=805609c645ad4e4f9a80779094406d27&p=fd6a6b99fe5b4da8b04e166065c6af93&pm=s
+          */}
+          {/* <Touchable
             onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
           >
             <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
               <Text>Add Items to Album</Text>
               <ArrowRightIcon fill="onBackgroundHigh" />
             </Flex>
-          </Touchable>
+          </Touchable> */}
 
           <Spacer y={1} />
 
@@ -186,7 +241,9 @@ export const CreateOrEditAlbum = () => {
             checkIfSelectedToRemove={(item) => {
               return (
                 mode === "edit" &&
-                !!selectedItems.find((selectedItem) => selectedItem?.internalID === item.internalID)
+                !!selectedItems.find(
+                  (selectedItem) => selectedItem?.internalID === item.internalID
+                )
               )
             }}
             contentContainerStyle={{

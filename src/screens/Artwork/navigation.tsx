@@ -5,7 +5,7 @@ import { RetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 
 export type ArtworkNavigationScreens = {
   Artwork: { slug: string; contextArtworkSlugs?: string[] }
-  ArtworkWebView: { uri: string }
+  ArtworkWebView: { uri: string; internalID: string; slug: string }
 }
 
 export const ArtworkNavigation = () => {

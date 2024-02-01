@@ -15,16 +15,20 @@ interface ArtworkImageModalProps {
   uri?: string
 }
 
-export const ArtworkImageModalQueryRenderer: React.FC<ArtworkImageModalProps> = ({
-  slug,
-  ...props
-}) => {
-  const { data } = useSystemQueryLoader<ArtworkImageModalQuery>(artworkImageModalQuery, {
-    slug: slug as string,
-    imageSize,
-  })
+export const ArtworkImageModalQueryRenderer: React.FC<
+  ArtworkImageModalProps
+> = ({ slug, ...props }) => {
+  const { data } = useSystemQueryLoader<ArtworkImageModalQuery>(
+    artworkImageModalQuery,
+    {
+      slug: slug as string,
+      imageSize,
+    }
+  )
 
-  return <ArtworkImageModal {...props} uri={data?.artwork?.image?.resized?.url} />
+  return (
+    <ArtworkImageModal {...props} uri={data?.artwork?.image?.resized?.url} />
+  )
 }
 
 export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
@@ -42,6 +46,7 @@ export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
       }}
       animationType="fade"
       presentationStyle="fullScreen"
+      supportedOrientations={["portrait", "landscape"]}
     >
       <Flex backgroundColor="background" flex={1} pt={`${insets.top}px`}>
         <ReactNativeZoomableView maxZoom={2}>
@@ -56,7 +61,11 @@ export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
         </ReactNativeZoomableView>
 
         <Flex position="absolute" top={insets.top} px={2} py={2}>
-          <BackButton showX onPress={() => setIsModalVisible(false)} hitSlop={DEFAULT_HIT_SLOP} />
+          <BackButton
+            showX
+            onPress={() => setIsModalVisible(false)}
+            hitSlop={DEFAULT_HIT_SLOP}
+          />
         </Flex>
       </Flex>
     </Modal>

@@ -15,7 +15,11 @@ export const PresentationModeSettings = () => {
     (state) => state.presentationMode.isPresentationModeEnabled
   )
 
-  const trackToggle = (props: { label: string; value: boolean; toggleHandler: () => void }) => {
+  const trackToggle = (props: {
+    label: string
+    value: boolean
+    toggleHandler: () => void
+  }) => {
     trackToggledPresentationViewSetting(props.label, !props.value)
     props.toggleHandler()
   }
@@ -23,7 +27,9 @@ export const PresentationModeSettings = () => {
   const presentationConfigs = [
     {
       label: "Hide Prices",
-      value: GlobalStore.useAppState((state) => state.presentationMode.isHidePriceEnabled),
+      value: GlobalStore.useAppState(
+        (state) => state.presentationMode.isHidePriceEnabled
+      ),
       toggleHandler: () => {
         GlobalStore.actions.presentationMode.toggleIsHidePriceEnabled()
       },
@@ -95,17 +101,22 @@ export const PresentationModeSettings = () => {
         <SettingsItem title="Enabled">
           <SettingsItem.Toggle
             value={isPresentationModeEnabled}
-            onValueChange={() =>
+            onValueChange={() => {
+              trackToggledPresentationViewSetting(
+                "Presentation Mode Enabled",
+                !isPresentationModeEnabled
+              )
+
               GlobalStore.actions.presentationMode.toggleIsPresentationModeEnabled()
-            }
+            }}
           />
         </SettingsItem>
 
         <Spacer y={2} />
 
         <Text variant="xs">
-          When Presentation Mode is enabled, all the information and features toggled ON will be
-          hidden. Features toggled OFF will be visible.
+          When Presentation Mode is enabled, all the information and features
+          toggled ON will be hidden. Features toggled OFF will be visible.
         </Text>
 
         {presentationConfigs.map((presentationConfig, index) => {

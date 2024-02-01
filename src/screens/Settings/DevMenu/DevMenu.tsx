@@ -7,6 +7,7 @@ import { CodePushOptions } from "screens/Settings/DevMenu/CodePushOptions"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const DevMenu = () => {
   const currentEnvironment = GlobalStore.useAppState(
@@ -19,11 +20,13 @@ export const DevMenu = () => {
 
   const navigation = useNavigation()
   const { relayEnvironment } = useSystemRelayEnvironment()
+  const isDarkMode = useIsDarkMode()
 
   return (
     <Join separator={<Spacer y={1} />}>
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() =>
           GlobalStore.actions.artsyPrefs.toggleAnalyticsVisualizer()
         }
@@ -31,11 +34,16 @@ export const DevMenu = () => {
         {isAnalyticsVisualizerEnabled ? "Hide" : "Show"} Analytics Visualizer
       </Button>
 
-      <Button block onPress={() => NativeModules.DevMenu.show()}>
+      <Button
+        block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
+        onPress={() => NativeModules.DevMenu.show()}
+      >
         Show Native Dev Menu
       </Button>
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() => {
           GlobalStore.actions.config.environment.setEnvironment(
             currentEnvironment === "staging" ? "production" : "staging"
@@ -51,12 +59,14 @@ export const DevMenu = () => {
 
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() => ARTNativeModules.ARTAlbumMigrationModule.addTestAlbums()}
       >
         Add native test albums
       </Button>
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() =>
           ARTNativeModules.ARTAlbumMigrationModule.resetAlbumReadAttempts()
         }
@@ -65,6 +75,7 @@ export const DevMenu = () => {
       </Button>
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() => {
           attemptAlbumMigration(relayEnvironment)
         }}
@@ -73,6 +84,7 @@ export const DevMenu = () => {
       </Button>
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() => {
           Sentry.nativeCrash()
         }}
@@ -81,6 +93,7 @@ export const DevMenu = () => {
       </Button>
       <Button
         block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
         onPress={() => {
           throw Error("Sentry test error")
         }}

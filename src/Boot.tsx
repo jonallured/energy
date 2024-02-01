@@ -8,7 +8,6 @@ import { GlobalStoreProvider } from "system/store/GlobalStore"
 import { GlobalRetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 import { SuspenseWrapper } from "system/wrappers/SuspenseWrapper"
 import { ThemeProvider } from "system/wrappers/ThemeProvider"
-import { ProvideScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 interface ProviderProps {
   relayEnvironment?: RelayModernEnvironment
@@ -27,9 +26,7 @@ export const Boot: React.FC<ProviderProps> = ({
               <RelayProvider relayEnvironment={relayEnvironment}>
                 <SafeAreaProvider>
                   <ScreenDimensionsProvider>
-                    <ProvideScreenDimensions>
-                      <ToastProvider>{children}</ToastProvider>
-                    </ProvideScreenDimensions>
+                    <ToastProvider>{children}</ToastProvider>
                   </ScreenDimensionsProvider>
                 </SafeAreaProvider>
               </RelayProvider>

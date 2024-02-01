@@ -1,19 +1,20 @@
-import { Button, Flex, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex } from "@artsy/palette-mobile"
 import { FlatList } from "react-native"
 import { Filters, SearchContext } from "screens/Search/SearchContext"
 
-const FILTERS: Filters[] = ["Artists", "Shows", "Albums"]
+const FILTERS: Filters[] = ["All", "Artists", "Shows", "Albums"]
 
 export const SearchFilters = () => {
-  const { currentFilter, disabledFilters } = SearchContext.useStoreState((state) => state)
+  const { currentFilter, disabledFilters } = SearchContext.useStoreState(
+    (state) => state
+  )
   const { selectFilter } = SearchContext.useStoreActions((actions) => actions)
-  const space = useSpace()
 
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      data={["All" as Filters].concat(FILTERS)}
+      data={FILTERS}
       renderItem={({ item, index }) => {
         const isDisabled = disabledFilters.includes(item)
 

@@ -8,6 +8,7 @@ import {
   useTheme,
   NAVBAR_HEIGHT,
   ZINDEX,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ArtworkContent_artwork$key } from "__generated__/ArtworkContent_artwork.graphql"
@@ -21,11 +22,16 @@ import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-svg"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
-import { ArtworkDetail, ArtworkDetailLineItem } from "screens/Artwork/ArtworkContent/ArtworkDetail"
+import {
+  ArtworkDetail,
+  ArtworkDetailLineItem,
+} from "screens/Artwork/ArtworkContent/ArtworkDetail"
 import { GlobalStore } from "system/store/GlobalStore"
+import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { CachedImage } from "system/wrappers/CachedImage"
+import { useDeviceOrientation } from "utils/hooks/useDeviceOrientation"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
-import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
+// import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 import { defaultRules } from "utils/renderMarkdown"
 
 const BOTTOM_SHEET_HEIGHT = 180
@@ -44,46 +50,19 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   const artworkData = useFragment(artworkContentQuery, artwork)
   const touchActivated = useRef<any>(null)
 
-  const markdownRules = defaultRules({
-    ruleOverrides: {
-      heading: {
-        react: (node, output, state) => {
-          return (
-            <Text mb={1} key={state.key} variant="sm">
-              {output(node.content, state)}
-            </Text>
-          )
-        },
-      },
-      link: {
-        react: (node, output, state) => {
-          state.withinText = true
-          return (
-            <Text
-              key={state.key}
-              testID={`linktext-${state.key}`}
-              onPress={() => Linking.openURL(node.target)}
-              variant="sm"
-              style={{ textDecorationLine: "underline" }}
-            >
-              {output(node.content, state)}
-            </Text>
-          )
-        },
-      },
-    },
-  })
-
+  const deviceOrientation = useDeviceOrientation()
   const screenDimensions = useScreenDimensions()
   const extraAndroidMargin = Platform.OS === "android" ? 40 : 10
 
-  const snapPoints = useMemo(
-    () => [
+  const snapPoints = useMemo(() => {
+    return [
       BOTTOM_SHEET_HEIGHT - extraAndroidMargin,
-      screenDimensions.height - NAVBAR_HEIGHT - safeAreaInsets.top - extraAndroidMargin,
-    ],
-    [safeAreaInsets.top, screenDimensions.height, extraAndroidMargin]
-  )
+      screenDimensions.height -
+        NAVBAR_HEIGHT -
+        safeAreaInsets.top -
+        extraAndroidMargin,
+    ]
+  }, [safeAreaInsets.top, screenDimensions.height, extraAndroidMargin])
 
   // Enable scroll only when the bottom sheet is expanded.
   const handleSheetChanges = useCallback((index: number) => {
@@ -95,7 +74,9 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   }, [])
 
   // For Presentation Mode
-  const isPriceHidden = GlobalStore.useAppState((state) => state.presentationMode.hiddenItems.price)
+  const isPriceHidden = GlobalStore.useAppState(
+    (state) => state.presentationMode.hiddenItems.price
+  )
   const isPriceForSoldWorksHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.priceForSoldWorks
   )
@@ -105,7 +86,6 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   const isAvailabilityHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.worksAvailability
   )
-
   const showQRCode = GlobalStore.useAppState(
     (state) => state.presentationMode.isPresentationModeEnabled
   )
@@ -154,7 +134,10 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
     provenance
 
   const shouldShowAboutTheArtworkTitle =
-    additionalInformation || shouldDisplayTheDetailBox || exhibitionHistory || literature
+    additionalInformation ||
+    shouldDisplayTheDetailBox ||
+    exhibitionHistory ||
+    literature
 
   const hasEditionSets = !!editionSets?.length
 
@@ -233,6 +216,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
+        enablePanDownToClose={deviceOrientation.isLandscape()}
         handleComponent={() => (
           <Touchable onPress={handlePresentModalPress}>
             <Flex
@@ -244,7 +228,12 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
               borderTopLeftRadius={10}
               borderTopRightRadius={10}
             >
-              <Flex width={30} height={4} backgroundColor="onSurfaceMedium" borderRadius={10} />
+              <Flex
+                width={30}
+                height={4}
+                backgroundColor="onSurfaceMedium"
+                borderRadius={10}
+              />
             </Flex>
           </Touchable>
         )}
@@ -263,7 +252,10 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
             <Flex flexDirection="row">
               {!!showQRCode && (
                 <Flex mr={2} pt={0.5}>
-                  <QRCode value={`https://artsy.net/artwork/${artworkData.slug}`} size={75} />
+                  <QRCode
+                    value={`https://artsy.net/artwork/${artworkData.slug}`}
+                    size={75}
+                  />
                 </Flex>
               )}
 
@@ -278,10 +270,14 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
                   )}
                 </Text>
                 {!hasEditionSets &&
-                  (internalDisplayPrice ? renderPrice(internalDisplayPrice) : renderPrice(price))}
+                  (internalDisplayPrice
+                    ? renderPrice(internalDisplayPrice)
+                    : renderPrice(price))}
                 <ArtworkDetailLineItem value={medium} />
                 {!hasEditionSets && !!(dimensions?.in || dimensions?.cm) && (
-                  <ArtworkDetailLineItem value={`${dimensions?.in} - ${dimensions?.cm}`} />
+                  <ArtworkDetailLineItem
+                    value={`${dimensions?.in} - ${dimensions?.cm}`}
+                  />
                 )}
                 {!!hasEditionSets && (
                   <>
@@ -295,9 +291,10 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
                         <ArtworkDetailLineItem value={set?.dimensions?.cm} />
                         <ArtworkDetailLineItem value={set?.editionOf} />
 
-                        {set?.saleMessage !== set?.price && !isAvailabilityHidden && (
-                          <ArtworkDetailLineItem value={set?.saleMessage} />
-                        )}
+                        {set?.saleMessage !== set?.price &&
+                          !isAvailabilityHidden && (
+                            <ArtworkDetailLineItem value={set?.saleMessage} />
+                          )}
 
                         {set?.internalDisplayPrice
                           ? renderPrice(set?.internalDisplayPrice)
@@ -320,14 +317,49 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
             )}
 
             {!!additionalInformation && (
-              <Markdown rules={markdownRules}>{additionalInformation}</Markdown>
+              <Markdown
+                rules={defaultRules({
+                  ruleOverrides: {
+                    heading: {
+                      react: (node, output, state) => {
+                        return (
+                          <Text mb={1} key={state.key} variant="sm">
+                            {output(node.content, state)}
+                          </Text>
+                        )
+                      },
+                    },
+                    link: {
+                      react: (node, output, state) => {
+                        state.withinText = true
+                        return (
+                          <Text
+                            key={state.key}
+                            testID={`linktext-${state.key}`}
+                            onPress={() => Linking.openURL(node.target)}
+                            variant="sm"
+                            style={{ textDecorationLine: "underline" }}
+                          >
+                            {output(node.content, state)}
+                          </Text>
+                        )
+                      },
+                    },
+                  },
+                })}
+              >
+                {additionalInformation}
+              </Markdown>
             )}
 
             {!!shouldDisplayTheDetailBox && (
               <>
                 <BorderBox>
                   <ArtworkDetail label="Medium" value={mediumType?.name} />
-                  <ArtworkDetail label="Condition" value={conditionDescription?.details} />
+                  <ArtworkDetail
+                    label="Condition"
+                    value={conditionDescription?.details}
+                  />
                   <ArtworkDetail label="Signature" value={signature} />
                   <ArtworkDetail
                     label="Certificate of Authenticity"
@@ -338,7 +370,10 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
                   <ArtworkDetail label="Image Rights" value={imageRights} />
                   <ArtworkDetail label="Inventory ID" value={inventoryId} />
                   {!isConfidentialNotesHidden && (
-                    <ArtworkDetail label="Confidential Notes" value={confidentialNotes} />
+                    <ArtworkDetail
+                      label="Confidential Notes"
+                      value={confidentialNotes}
+                    />
                   )}
                   <ArtworkDetail label="Provenance" value={provenance} />
                 </BorderBox>
@@ -347,13 +382,21 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
 
             {!!exhibitionHistory && (
               <BorderBox>
-                <ArtworkDetail label="Exhibition history" value={exhibitionHistory} size="big" />
+                <ArtworkDetail
+                  label="Exhibition history"
+                  value={exhibitionHistory}
+                  size="big"
+                />
               </BorderBox>
             )}
 
             {!!literature && (
               <BorderBox>
-                <ArtworkDetail label="Bibliography" value={literature} size="big" />
+                <ArtworkDetail
+                  label="Bibliography"
+                  value={literature}
+                  size="big"
+                />
               </BorderBox>
             )}
           </Join>
@@ -369,6 +412,53 @@ const BorderBox: React.FC = ({ children }) => {
       {children}
     </Flex>
   )
+}
+
+export const getEditionSetInfo = (artwork: SelectedItemArtwork) => {
+  if (!artwork.editionSets) {
+    return null
+  }
+
+  const editionSetData = artwork.editionSets?.map((set) => {
+    if (!set) {
+      return null
+    }
+
+    const saleMessage = (() => {
+      if (set.saleMessage === set.price) {
+        return null
+      }
+      return set.saleMessage
+    })()
+
+    const price = (() => {
+      if (artwork.availability === "sold") {
+        return null
+      }
+
+      if (set.internalDisplayPrice) {
+        return set.internalDisplayPrice
+      }
+
+      if (!set.price) {
+        return null
+      }
+
+      return set.price
+    })()
+
+    return {
+      dimensions: {
+        in: set?.dimensions?.in,
+        cm: set?.dimensions?.cm,
+      },
+      editionOf: set?.editionOf,
+      saleMessage,
+      price,
+    }
+  })
+
+  return editionSetData
 }
 
 export const artworkContentQuery = graphql`

@@ -1,5 +1,10 @@
 import { Button, useSpace, Screen } from "@artsy/palette-mobile"
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { useToast } from "components/Toast/ToastContext"
 import { useState } from "react"
@@ -28,11 +33,17 @@ export const AddItemsToAlbum = () => {
   const isDarkMode = useIsDarkMode()
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
+
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
+
   const selectedItems = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.selectedItems
+  )
+
+  const isAnalyticsVisualizerEnabled = GlobalStore.useAppState(
+    (store) => store.artsyPrefs.isAnalyticsVisualizerEnabled
   )
 
   const selectAlbumHandler = (albumId: string) => {
@@ -58,6 +69,7 @@ export const AddItemsToAlbum = () => {
         })
       }
 
+      // Track new artwork additions
       selectedAlbumIds.forEach((albumId) => {
         const album = albums.find((album) => album.id === albumId)
 
@@ -70,6 +82,10 @@ export const AddItemsToAlbum = () => {
         lookupKey: "before-adding-to-album",
         onComplete: () => {
           waitForScreenTransition(() => {
+            if (isAnalyticsVisualizerEnabled) {
+              return
+            }
+
             toast.show({
               title: "Successfully added to album.",
               type: "success",

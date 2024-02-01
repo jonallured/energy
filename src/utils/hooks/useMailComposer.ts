@@ -4,15 +4,21 @@ import { uniq } from "lodash"
 import { Alert, Platform } from "react-native"
 import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
+import { getEditionSetInfo } from "screens/Artwork/ArtworkContent/ArtworkContent"
 import { useAppTracking } from "system/hooks/useAppTracking"
+import { ScreenTypes } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 
 export const useMailComposer = () => {
   const emailSettings = GlobalStore.useAppState((state) => state.email)
-  const partnerName = GlobalStore.useAppState((state) => state.auth.activePartnerName)
-  const partnerSlug = GlobalStore.useAppState((state) => state.auth.activePartnerSlug)
+  const partnerName = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerName
+  )
+  const partnerSlug = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerSlug
+  )
   const { toast } = useToast()
   const { trackSentContent } = useAppTracking()
 
@@ -20,10 +26,15 @@ export const useMailComposer = () => {
    * Send email with artwork info, using a passed artwork object or the selected
    * items from the select mode session.
    */
-  const sendMail = async (props: { artworks: SelectedItemArtwork[] }) => {
+  const sendMail = async (props: {
+    artworks: SelectedItemArtwork[]
+    type: ScreenTypes
+  }) => {
     const artworksToMail = props.artworks
     const firstSelectedItem = artworksToMail[0]
-    const ccRecipients = emailSettings.ccRecipients ? [emailSettings.ccRecipients] : undefined
+    const ccRecipients = emailSettings.ccRecipients
+      ? [emailSettings.ccRecipients]
+      : undefined
 
     // One item
     if (artworksToMail.length === 1) {
@@ -41,10 +52,13 @@ export const useMailComposer = () => {
         partnerSlug,
       })
 
-      const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
+      const body =
+        Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
 
       const attachments =
-        Platform.OS === "ios" ? undefined : await getHTMLPDFAttachment(htmlContent)
+        Platform.OS === "ios"
+          ? undefined
+          : await getHTMLPDFAttachment(htmlContent)
 
       log(subject, body, ccRecipients)
 
@@ -75,7 +89,9 @@ export const useMailComposer = () => {
       })
 
       const subject = (() => {
-        const artistNames = uniq(artworksToMail.map((artwork) => artwork.artistNames))
+        const artistNames = uniq(
+          artworksToMail.map((artwork) => artwork.artistNames)
+        )
 
         switch (true) {
           case artistNames.length === 1: {
@@ -118,7 +134,11 @@ export const useMailComposer = () => {
             }
 
             ${aggregatedArtworks}
-            ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
+            ${
+              emailSettings.signature
+                ? `<br/><p>${emailSettings.signature}</p>`
+                : ""
+            }
 
             ${
               partnerSlug && partnerName
@@ -136,9 +156,12 @@ export const useMailComposer = () => {
           .trim()
       )
 
-      const body = Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
+      const body =
+        Platform.OS === "ios" ? htmlContent : "Please see attached artworks."
       const attachments =
-        Platform.OS === "ios" ? undefined : await getHTMLPDFAttachment(htmlContent)
+        Platform.OS === "ios"
+          ? undefined
+          : await getHTMLPDFAttachment(htmlContent)
 
       log(subject, body, ccRecipients)
 
@@ -189,15 +212,20 @@ const emailComposer = ({
   Mailer.mail(
     {
       subject,
-      recipients: ccRecipients,
+      ccRecipients,
       body,
       isHTML,
       attachments,
     },
-    // event is either `sent`, `saved`, `cancelled`, `failed` or `error`
+    // Event is either `sent`, `saved`, `cancelled`, `failed` or `error`
     (error, event) => {
       if (!!error) {
-        console.log("[useMailComposer] Error sending email:", error, "event", event)
+        console.log(
+          "[useMailComposer] Error sending email:",
+          error,
+          "event",
+          event
+        )
         alertOnEmailFailure(error)
       }
 
@@ -223,7 +251,12 @@ const emailComposer = ({
           })
           break
         case "failed":
-          console.log("[useMailComposer] Error sending email:", error, "event", event)
+          console.log(
+            "[useMailComposer] Error sending email:",
+            error,
+            "event",
+            event
+          )
           alertOnEmailFailure(error)
           break
         default:
@@ -295,6 +328,24 @@ export const getArtworkEmailTemplate = ({
     }
   }
 
+  const editionSetInfo = getEditionSetInfo(artwork)
+
+  let editionSetText = ""
+
+  editionSetInfo?.forEach((editionSet) => {
+    editionSetText += `
+      ${editionSet?.dimensions.in ? `${editionSet?.dimensions.in}<br />` : ""}
+      ${editionSet?.dimensions.cm ? `${editionSet?.dimensions.cm}<br />` : ""}
+
+      ${editionSet?.editionOf ? `${editionSet?.editionOf}<br />` : ""}
+
+      ${editionSet?.saleMessage ? `${editionSet?.saleMessage}<br />` : ""}
+      ${editionSet?.price ? `${editionSet?.price}<br />` : ""}
+
+      <br />
+    `
+  })
+
   const snippet = `
     ${imageTag}
 
@@ -325,7 +376,23 @@ export const getArtworkEmailTemplate = ({
       ${dimensions?.in ? `${dimensions?.in}<br />` : ""}
     </p>
 
-    ${published ? `<p><a href="https://www.artsy.net${href}">View on Artsy</a></p>` : ""}
+    ${
+      artwork.editionSets?.length
+        ? `
+        <p>
+          <b>Editions</b><br />
+
+          ${editionSetText}
+        </p>
+      `
+        : ""
+    }
+
+    ${
+      published
+        ? `<p><a href="https://www.artsy.net${href}">View on Artsy</a></p>`
+        : ""
+    }
 `
 
   const htmlWrapper = (
@@ -355,7 +422,11 @@ export const getArtworkEmailTemplate = ({
                 : ""
             }
             ${snippet}
-            ${emailSettings.signature ? `<br/><p>${emailSettings.signature}</p>` : ""}
+            ${
+              emailSettings.signature
+                ? `<br/><p>${emailSettings.signature}</p>`
+                : ""
+            }
 
             ${
               partnerSlug && partnerName
@@ -401,7 +472,11 @@ const alertOnEmailFailure = (error: any) => {
   ])
 }
 
-const log = (subject: string, body: string, ccRecipients: string[] | undefined) => {
+const log = (
+  subject: string,
+  body: string,
+  ccRecipients: string[] | undefined
+) => {
   if (__DEV__ && !__TEST__) {
     console.log(
       "[useMailComposer] Sending email:",
@@ -414,4 +489,5 @@ const log = (subject: string, body: string, ccRecipients: string[] | undefined) 
   }
 }
 
-export const replaceWhitespace = (str: string) => str.replace(/>\s+</g, "><").trim()
+export const replaceWhitespace = (str: string) =>
+  str.replace(/>\s+</g, "><").trim()

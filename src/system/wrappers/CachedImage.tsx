@@ -1,4 +1,4 @@
-import { useColor, useSpace } from "@artsy/palette-mobile"
+import { useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ImagePlaceholder } from "components/ImagePlaceholder"
 import React, { useRef } from "react"
 import { Image, ImageProps, Platform } from "react-native"
@@ -9,7 +9,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { useLocalUri } from "system/sync/fileCache/useLocalUri"
-import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
   width?: string | number | undefined
@@ -21,7 +20,15 @@ interface CachedImageProps extends Omit<ImageProps, "source"> {
 }
 
 export const CachedImage: React.FC<CachedImageProps> = React.memo(
-  ({ fadeInOnLoad = true, style, uri, width, height, aspectRatio = 1, ...restProps }) => {
+  ({
+    fadeInOnLoad = true,
+    style,
+    uri,
+    width,
+    height,
+    aspectRatio = 1,
+    ...restProps
+  }) => {
     const isDoneLoading = useRef(false)
     const color = useColor()
     const space = useSpace()
@@ -30,7 +37,10 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
     const initialOpacity = Platform.OS === "ios" ? 0.2 : 1
     const opacity = useSharedValue(fadeInOnLoad ? initialOpacity : 1)
 
-    const fadeInAnimStyle = useAnimatedStyle(() => ({ opacity: opacity.value }), [])
+    const fadeInAnimStyle = useAnimatedStyle(
+      () => ({ opacity: opacity.value }),
+      []
+    )
     const localUri = useLocalUri(uri ?? "")
 
     const handleOnLoad = () => {

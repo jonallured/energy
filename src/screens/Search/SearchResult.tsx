@@ -1,4 +1,4 @@
-import { Avatar, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Avatar, Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { SearchResultQuery } from "__generated__/SearchResultQuery.graphql"
@@ -22,7 +22,12 @@ export const SearchResult: React.FC<SearchResultProps> = ({ searchInput }) => {
   return (
     <Suspense
       fallback={
-        <Flex backgroundColor="background" flex={1} justifyContent="center" alignItems="center">
+        <Flex
+          backgroundColor="background"
+          flex={1}
+          justifyContent="center"
+          alignItems="center"
+        >
           <ActivityIndicator />
         </Flex>
       }
@@ -40,8 +45,11 @@ interface SearchResult {
 }
 
 const SearchResultView = ({ searchInput }: SearchResultProps) => {
+  const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
   const { data } = useSystemQueryLoader<SearchResultQuery>(searchResultQuery, {
     partnerID,
     searchInput,
@@ -49,32 +57,21 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
   })
   const variant = isTablet() ? "sm" : "xs"
 
-  const { currentFilter, disabledFilters } = SearchContext.useStoreState((state) => state)
+  const { currentFilter } = SearchContext.useStoreState((state) => state)
   const { disableFilters } = SearchContext.useStoreActions((actions) => actions)
 
   const artists = extractNodes(data.partner?.artistsSearchConnection)
+
   const artworks =
-    searchInput.length > 0 ? extractNodes(data.partner?.artworksSearchConnection) : []
+    searchInput.length > 0
+      ? extractNodes(data.partner?.artworksSearchConnection)
+      : []
+
   const shows = extractNodes(data.partner?.showsSearchConnection)
+
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
 
-  useEffect(() => {
-    const maybeDisbleFilters: [any[], Filters][] = [
-      [albums, "Albums"],
-      [artists, "Artists"],
-      [shows, "Shows"],
-    ]
-
-    maybeDisbleFilters.forEach(([filter, filterName]) => {
-      if (filter.length === 0) {
-        disableFilters([filterName])
-      } else {
-        disableFilters(disabledFilters.filter((filter) => filter !== filterName))
-      }
-    })
-  }, [albums.length, artists.length, shows.length])
-
-  const searchResults: SearchResult[] = (() => {
+  const searchResults = (() => {
     const artworkResults = artworks.map((artwork) => ({
       ...artwork,
       name: artwork.title,
@@ -96,7 +93,7 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
     // Cross-reference returned artworks to determine which album items we
     // should display in search results. If internalID from an artwork matches,
     // we know its in an album and should display it.
-    const albumResults = uniqBy(
+    const albumArtworkResults = uniqBy(
       intersectionBy(
         artworkResults,
         albums
@@ -104,35 +101,109 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
           .filter((item) => item?.__typename === "Artwork")
           .map((item) => ({
             ...item,
-            type: "Album",
+            type: "AlbumArtwork",
           })) as (SelectedItemArtwork & { type: string })[],
         "internalID"
       ),
       "internalID"
     )
 
-    switch (currentFilter) {
-      case "Artists": {
-        return artistResults
+    const albumResults = albums.reduce((acc: any, album) => {
+      const foundAlbum = album.name
+        .toLowerCase()
+        .includes(searchInput.toLowerCase())
+
+      const items = album.items as SelectedItemArtwork[]
+
+      const foundArtworksInAlbum = artworkResults.some((artwork) => {
+        return items.some((item) => item?.internalID === artwork?.internalID)
+      })
+
+      if (foundAlbum || foundArtworksInAlbum) {
+        return [
+          ...acc,
+          {
+            imageUrl: items[0]?.image?.resized?.url,
+            internalID: album?.id, // Albums don't have slugs, so use the album id
+            slug: album?.id, // Albums don't have slugs, so use the album id
+            name: album?.name,
+            type: "Album",
+          },
+        ]
       }
-      case "Shows": {
-        return showResults
-      }
-      case "Albums": {
-        return albumResults
-      }
-      // All
-      default: {
-        return uniqBy(
-          [...artworkResults, ...artistResults, ...showResults, ...albumResults],
-          "internalID"
-        )
-      }
+
+      return acc
+    }, [])
+
+    const results = {
+      allResults: uniqBy(
+        [
+          ...artworkResults,
+          ...artistResults,
+          ...showResults,
+          ...albumResults,
+          ...albumArtworkResults,
+        ],
+        "internalID"
+      ),
+      filteredResults: (() => {
+        switch (currentFilter) {
+          case "Artists": {
+            return artistResults
+          }
+          case "Shows": {
+            return showResults
+          }
+          case "Albums": {
+            return albumResults
+          }
+        }
+      })(),
     }
+
+    return results
   })()
+
+  useEffect(() => {
+    const albums = searchResults.allResults.filter(
+      (result) => result.type === "Album"
+    )
+    const artists = searchResults.allResults.filter(
+      (result) => result.type === "Artist"
+    )
+    const shows = searchResults.allResults.filter(
+      (result) => result.type === "Show"
+    )
+
+    const maybeDisbleFilters: [any[], Filters][] = [
+      [albums, "Albums"],
+      [artists, "Artists"],
+      [shows, "Shows"],
+    ]
+
+    const disabledFilters: any = []
+
+    maybeDisbleFilters.forEach(([results, filterName]) => {
+      if (results.length === 0) {
+        disabledFilters.push(filterName)
+      }
+    })
+
+    if (searchResults.allResults.length === 0) {
+      disabledFilters.push("All")
+    }
+
+    disableFilters(disabledFilters)
+  }, [searchResults.allResults.length])
 
   const handleNavigation = (item: SearchResult) => {
     switch (item.type) {
+      case "Album": {
+        navigation.navigate("AlbumTabs", {
+          albumId: item.slug,
+        })
+        break
+      }
       case "Artist":
         navigation.navigate("ArtistTabs", {
           slug: item.slug,
@@ -151,9 +222,19 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
     }
   }
 
+  const listData =
+    currentFilter === "All"
+      ? searchResults.allResults
+      : searchResults.filteredResults
+
+  if (!listData.length) {
+    return <Text>No results</Text>
+  }
+
   return (
     <FlatList
-      data={searchResults}
+      data={listData}
+      contentContainerStyle={{ paddingBottom: space(4) }}
       renderItem={({ item }) => (
         <Touchable onPress={() => handleNavigation(item)}>
           <Flex py={1} backgroundColor="background" flexDirection="row">
@@ -174,7 +255,11 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
 }
 
 const searchResultQuery = graphql`
-  query SearchResultQuery($partnerID: String!, $searchInput: String!, $imageSize: Int!) {
+  query SearchResultQuery(
+    $partnerID: String!
+    $searchInput: String!
+    $imageSize: Int!
+  ) {
     partner(id: $partnerID) {
       showsSearchConnection(query: $searchInput) {
         edges {

@@ -56,12 +56,13 @@ describe("useAppTracking", () => {
     expect(spy).toHaveBeenCalledWith({
       action: "successfullyLoggedIn",
       auth_redirect: "",
-      context_module: "popUpModal",
+      context_module: "",
       intent: "login",
       type: "login",
       service: "email",
       trigger: "click",
       user_id: "testUserID",
+      partner_id: "testUserID",
     })
   })
 
@@ -96,8 +97,8 @@ describe("useAppTracking", () => {
     expect(spy).toHaveBeenCalledWith({
       action: "sentContent",
       context_screen_owner_type: "artwork",
-      context_screen_owner_id: "id",
-      context_screen_owner_slug: "slug",
+      partner_id: undefined,
+      user_id: undefined,
     })
   })
 
@@ -111,8 +112,8 @@ describe("useAppTracking", () => {
     expect(spy).toHaveBeenCalledWith({
       action: "createdAlbum",
       context_screen_owner_type: "artwork",
-      context_screen_owner_id: "id",
-      context_screen_owner_slug: "slug",
+      partner_id: undefined,
+      user_id: undefined,
     })
   })
 
@@ -126,9 +127,9 @@ describe("useAppTracking", () => {
     expect(spy).toHaveBeenCalledWith({
       action: "addedToAlbum",
       context_screen_owner_type: "artwork",
-      context_screen_owner_id: "id",
-      context_screen_owner_slug: "slug",
       album_name: "TestAlbum",
+      partner_id: undefined,
+      user_id: undefined,
     })
   })
 

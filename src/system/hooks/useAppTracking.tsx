@@ -3,7 +3,6 @@ import {
   AddedToAlbum,
   AuthModalType,
   CompletedOfflineSync,
-  ContextModule,
   CreatedAlbum,
   Intent,
   OwnerType,
@@ -12,9 +11,9 @@ import {
   ToggledPresentationModeSetting,
 } from "@artsy/cohesion"
 import { useToast } from "components/Toast/ToastContext"
-import { useCallback } from "react"
 import JSONTree from "react-native-json-tree"
 import { useTracking } from "react-tracking"
+import { segmentClient } from "system/analytics/initializeSegment"
 import { UseTrackScreenViewProps } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
@@ -22,7 +21,11 @@ export const useAppTracking = () => {
   const tracking = useTracking()
   const { toast } = useToast()
 
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
+
   const launchCount = GlobalStore.useAppState(
     (store) => store.system.launchCount
   )
@@ -31,19 +34,23 @@ export const useAppTracking = () => {
     (store) => store.artsyPrefs.isAnalyticsVisualizerEnabled
   )
 
-  // Enable the visualizer via Settings > Dev Menu
-  const trackingWithVisualizer = (event: any) => {
-    toast.show({
-      message: <JSONTree data={event} />,
-      title: "",
-    })
+  const trackEvent = (event: any) => {
+    const payload = {
+      ...event,
+      partner_id: partnerID,
+      user_id: userID,
+    }
 
-    tracking.trackEvent(event)
+    // Enable the visualizer via Settings > Dev Menu
+    if (isAnalyticsVisualizerEnabled) {
+      toast.show({
+        message: <JSONTree data={payload} />,
+        title: "",
+      })
+    }
+
+    tracking.trackEvent(payload)
   }
-
-  const trackEvent = isAnalyticsVisualizerEnabled
-    ? trackingWithVisualizer
-    : tracking.trackEvent
 
   return {
     /**
@@ -56,6 +63,7 @@ export const useAppTracking = () => {
 
       const event = {
         action: "first_user_install",
+        anonymous_id: segmentClient?.userInfo.get().anonymousId,
       }
 
       trackEvent(event)
@@ -65,7 +73,7 @@ export const useAppTracking = () => {
       const event: SuccessfullyLoggedIn = {
         action: ActionType.successfullyLoggedIn,
         auth_redirect: "",
-        context_module: ContextModule.popUpModal,
+        context_module: "" as any, // don't need it
         intent: Intent.login,
         type: AuthModalType.login,
         service: "email",
@@ -81,8 +89,8 @@ export const useAppTracking = () => {
         action: ActionType.screen,
         context_screen: props.name,
         context_screen_owner_type: props.type,
-        context_screen_owner_id: props.internalID,
         context_screen_owner_slug: props.slug,
+        context_screen_owner_id: props.internalID,
       }
 
       trackEvent(event)
@@ -96,10 +104,6 @@ export const useAppTracking = () => {
       const event: SentContent = {
         action: ActionType.sentContent,
         context_screen_owner_type: OwnerType.artwork,
-
-        // TODO
-        context_screen_owner_id: "id",
-        context_screen_owner_slug: "slug",
       }
 
       trackEvent(event)
@@ -109,10 +113,6 @@ export const useAppTracking = () => {
       const event: CreatedAlbum = {
         action: ActionType.createdAlbum,
         context_screen_owner_type: OwnerType.artwork,
-
-        // TODO
-        context_screen_owner_id: "id",
-        context_screen_owner_slug: "slug",
       }
 
       trackEvent(event)
@@ -122,10 +122,6 @@ export const useAppTracking = () => {
       const event: AddedToAlbum = {
         action: ActionType.addedToAlbum,
         context_screen_owner_type: OwnerType.artwork,
-
-        // TODO
-        context_screen_owner_id: "id",
-        context_screen_owner_slug: "slug",
         album_name: albumnName,
       }
 

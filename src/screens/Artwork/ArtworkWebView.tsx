@@ -9,14 +9,21 @@ import { GlobalStore } from "system/store/GlobalStore"
 type ArtworkWebViewRoute = RouteProp<NavigationScreens, "ArtworkWebView">
 
 export const ArtworkWebView = () => {
-  useTrackScreen({ name: "ArtworkWebView", type: "Artwork" })
-
   const navigation = useNavigation()
   const { params } = useRoute<ArtworkWebViewRoute>()
-  const { webURL } = GlobalStore.useAppState((store) => store.config.environment.strings)
+  const { webURL } = GlobalStore.useAppState(
+    (store) => store.config.environment.strings
+  )
   const [loadProgress, setLoadProgress] = useState<number>(0)
   const [isProgressBarVisible, setIsProgressBarVisible] = useState(true)
   const uri = params.uri.startsWith("/") ? webURL + params.uri : params.uri
+
+  useTrackScreen({
+    name: "ArtworkWebView",
+    type: "Artwork",
+    slug: params.slug,
+    internalID: params.internalID,
+  })
 
   return (
     <Screen>

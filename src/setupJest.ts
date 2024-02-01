@@ -5,7 +5,6 @@ import React from "react"
 
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
-import { ScreenDimensionsWithSafeAreas } from "utils/hooks/useScreenDimensions"
 
 // Patch setImmediate for Jest 27
 // @ts-ignore
@@ -33,7 +32,9 @@ jest.mock("system/analytics/AnalyticsProvider", () => ({
 
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+jest.mock("react-native-reanimated", () =>
+  require("react-native-reanimated/mock")
+)
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
@@ -118,8 +119,8 @@ jest.mock("@gorhom/bottom-sheet", () => {
   }
 })
 
-jest.mock("utils/hooks/useScreenDimensions", () => {
-  const screenDimensions: ScreenDimensionsWithSafeAreas = {
+jest.mock("@artsy/palette-mobile", () => {
+  const screenDimensions = {
     width: 380,
     height: 550,
     orientation: "portrait",
@@ -133,8 +134,9 @@ jest.mock("utils/hooks/useScreenDimensions", () => {
     },
   }
   return {
-    ...jest.requireActual("utils/hooks/useScreenDimensions"),
-    ProvideScreenDimensions: ({ children }: { children: React.ReactNode }) => children,
+    ...jest.requireActual("@artsy/palette-mobile"),
+    ScreenDimensionsProvider: ({ children }: { children: React.ReactNode }) =>
+      children,
     useScreenDimensions: () => screenDimensions,
   }
 })

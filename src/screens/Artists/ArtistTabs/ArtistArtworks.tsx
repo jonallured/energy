@@ -14,11 +14,12 @@ interface ArtistArtworkProps {
 }
 
 export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
-  useTrackScreen({ name: "ArtistArtworks", type: "Artwork", slug })
+  useTrackScreen({ name: "ArtistArtworks", type: "Artist", slug })
 
   const partnerID = GlobalStore.useAppState(
     (state) => state.auth.activePartnerID
   )!
+
   const { data, refreshControl } = useSystemQueryLoader<ArtistArtworksQuery>(
     artistArtworksQuery,
     {

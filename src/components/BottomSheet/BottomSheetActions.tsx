@@ -24,6 +24,7 @@ import { useAlbum } from "screens/Albums/useAlbum"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useMailComposer } from "utils/hooks/useMailComposer"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 
@@ -32,7 +33,10 @@ export interface BottomSheetActionsProps {
   onSetRef?: (bottomSheetRef: BottomSheetRef) => void
 }
 
-export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId, onSetRef }) => {
+export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
+  albumId,
+  onSetRef,
+}) => {
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
@@ -43,6 +47,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
   const { album } = useAlbum({ albumId: albumId ?? "" })
   const { sendMail } = useMailComposer()
   const { toast } = useToast()
+  const isDarkMode = useIsDarkMode()
 
   const showActionButtons = selectedItems.length > 0
 
@@ -78,7 +83,10 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
     },
 
     shareArtworksByEmail: async () => {
-      await sendMail({ artworks: selectedItems as SelectedItemArtwork[] })
+      await sendMail({
+        artworks: selectedItems as SelectedItemArtwork[],
+        type: "Artwork",
+      })
     },
 
     /**
@@ -95,7 +103,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
       closeBottomSheet()
     },
 
-    emailAlbum: () => {
+    emailAlbum: async () => {
       if (!isAlbumMode) {
         return
       }
@@ -106,7 +114,10 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
         (item) => item?.__typename === "Artwork"
       ) as SelectedItemArtwork[]
 
-      sendMail({ artworks })
+      await sendMail({
+        artworks,
+        type: "Album",
+      })
     },
 
     deleteAlbum: () => {
@@ -114,27 +125,31 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
         return
       }
 
-      Alert.alert("Are you sure you want to delete this album?", "You cannot undo this action.", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: () => {
-            GlobalStore.actions.albums.removeAlbum(album.id)
-            navigation.goBack()
-
-            waitForScreenTransition(() => {
-              toast.show({
-                title: "Successfully deleted album.",
-                type: "info",
-              })
-            })
+      Alert.alert(
+        "Are you sure you want to delete this album?",
+        "You cannot undo this action.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
           },
-        },
-      ])
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: () => {
+              GlobalStore.actions.albums.removeAlbum(album.id)
+              navigation.goBack()
+
+              waitForScreenTransition(() => {
+                toast.show({
+                  title: "Successfully deleted album.",
+                  type: "info",
+                })
+              })
+            },
+          },
+        ]
+      )
     },
 
     showBottomSheetModal: () => {
@@ -161,7 +176,11 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
   return (
     <>
       {!isAlbumMode && (
-        <Flex position="absolute" bottom={0} pointerEvents={showActionButtons ? "auto" : "none"}>
+        <Flex
+          position="absolute"
+          bottom={0}
+          pointerEvents={showActionButtons ? "auto" : "none"}
+        >
           <SlideUpFromBottom visible={showActionButtons}>
             <Flex
               px={2}
@@ -173,7 +192,11 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({ albumId,
               <Text variant="xs" color="primary" mb={1} textAlign="center">
                 Selected items: {selectedItems.length}
               </Text>
-              <Button block onPress={handlers.showBottomSheetModal}>
+              <Button
+                block
+                variant={isDarkMode ? "fillLight" : "fillDark"}
+                onPress={handlers.showBottomSheetModal}
+              >
                 Add to Album or Email
               </Button>
             </Flex>

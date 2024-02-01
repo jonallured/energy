@@ -18,7 +18,7 @@ import { SearchFilters } from "./SearchFilters"
 import { SearchResult } from "./SearchResult"
 
 const SEARCH_THROTTLE_INTERVAL = 1000
-const MINIMUM_SEARCH_INPUT_LENGTH = 2
+const MINIMUM_SEARCH_INPUT_LENGTH = 3
 
 export const SearchScreen = () => {
   useTrackScreen({ name: "Search", type: "Search" })
@@ -32,7 +32,9 @@ export const SearchScreen = () => {
 
 export const Search = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const { disableFilters, selectFilter } = SearchContext.useStoreActions((actions) => actions)
+  const { disableFilters, selectFilter } = SearchContext.useStoreActions(
+    (actions) => actions
+  )
   const [inputText, setInputText] = useState("")
   const [search, setSearch] = useState("")
   const searchInputRef = useRef<Input>(null)
@@ -85,7 +87,10 @@ export const Search = () => {
               enableClearButton
             />
 
-            <Touchable onPress={() => navigation.goBack()} hitSlop={DEFAULT_HIT_SLOP}>
+            <Touchable
+              onPress={() => navigation.goBack()}
+              hitSlop={DEFAULT_HIT_SLOP}
+            >
               <Text variant="xs">Cancel</Text>
             </Touchable>
           </Flex>

@@ -21,8 +21,10 @@ describe("useMailComposer", () => {
     greetings: "Here is more information about the artwork(s) we discussed.",
     signature: "Some signature",
     oneArtworkSubject: "More information about $title by $artist.",
-    multipleArtworksAndArtistsSubject: "More information about the artworks we discussed.",
-    multipleArtworksBySameArtistSubject: "More information about $artist's artworks.",
+    multipleArtworksAndArtistsSubject:
+      "More information about the artworks we discussed.",
+    multipleArtworksBySameArtistSubject:
+      "More information about $artist's artworks.",
     activePartnerID: "1234",
     activePartnerName: "Test Partner",
     activePartnerSlug: "test-partner",
@@ -40,7 +42,7 @@ describe("useMailComposer", () => {
 
   describe("sendMail", () => {
     it("should call MailComposer with correct params when sending a single artwork", () => {
-      const recipients = ["cc@example.com"]
+      const ccRecipients = ["cc@example.com"]
       const subject = "More information about Artwork Title by Artist Name."
       const body = replaceWhitespace(
         '<html><body><div width="100%" style="text-align:right"><img style=\'width: 100px; height: 33px;\' src="https://d7hftxdivxxvm.cloudfront.net/?height=66&quality=80&resize_to=fit&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fartsy-logo-1706648712115.png&width=200" /></div><br /><p><b>From [object Object]:</b></p><p> Here is more information about the artwork(s) we discussed. </p><br /><br /><p><b>Artist Name</b><br /> Artwork Title <br /><br /></p><br/><p>Some signature</p><p> Follow <a href=\'https://www.artsy.net/partner/[object Object]\'>[object Object]</a> on Artsy for more works and shows. </p></body></html>'
@@ -61,7 +63,7 @@ describe("useMailComposer", () => {
         {
           isHTML: true,
           body,
-          recipients,
+          ccRecipients,
           subject,
         },
         // callback function
@@ -70,7 +72,7 @@ describe("useMailComposer", () => {
     })
 
     it("should call MailComposer with correct params when sending multiple artworks", async () => {
-      const recipients = ["cc@example.com"]
+      const ccRecipients = ["cc@example.com"]
       const subject = "More information about Artist A's artworks."
       const body = replaceWhitespace(
         '<html><body><div width="100%" style="text-align:right"><img style=\'width: 100px; height: 33px;\' src="https://d7hftxdivxxvm.cloudfront.net/?height=66&quality=80&resize_to=fit&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fartsy-logo-1706648712115.png&width=200" /></div><br /><p><b>From [object Object]:</b></p><p>Here is more information about the artwork(s) we discussed.</p><br/><br /><p><b>Artist A</b><br /> Artwork Title 1 <br /><br /></p><br/><br/><br /><p><b>Artist A</b><br /> Artwork Title 2 <br /><br /></p><br/><br/><br/><p>Some signature</p><p> Follow <a href=\'https://www.artsy.net/partner/[object Object]\'>[object Object]</a> on Artsy for more works and shows. </p></body></html>'
@@ -95,7 +97,7 @@ describe("useMailComposer", () => {
         {
           isHTML: true,
           body,
-          recipients,
+          ccRecipients,
           subject,
         },
         // callback function
@@ -198,7 +200,9 @@ describe("useMailComposer", () => {
       Platform.OS = "android"
 
       convertMock = jest.spyOn(RNHTMLtoPDF, "convert")
-      convertMock.mockImplementation(() => Promise.resolve({ filePath: "path/to/test.pdf" }))
+      convertMock.mockImplementation(() =>
+        Promise.resolve({ filePath: "path/to/test.pdf" })
+      )
     })
 
     afterEach(() => {
@@ -208,7 +212,7 @@ describe("useMailComposer", () => {
     })
 
     it("should call MailComposer with correct params for a single artwork as a PDF", async () => {
-      const recipients = ["cc@example.com"]
+      const ccRecipients = ["cc@example.com"]
       const subject = "More information about Artwork Title by Artist Name."
       const artworks = [{ title: "Artwork Title", artistNames: "Artist Name" }]
 
@@ -223,7 +227,7 @@ describe("useMailComposer", () => {
           isHTML: true,
           body: "Please see attached artworks.",
           attachments: [{ path: "path/to/test.pdf", type: "pdf" }],
-          recipients,
+          ccRecipients,
           subject,
         }),
         expect.any(Function)
@@ -231,7 +235,7 @@ describe("useMailComposer", () => {
     })
 
     it("should call MailComposer with correct params for multiple artworks as a PDF", async () => {
-      const recipients = ["cc@example.com"]
+      const ccRecipients = ["cc@example.com"]
       const subject = "More information about Artist A's artworks."
       const artworks = [
         { title: "Artwork Title 1", artistNames: "Artist A" },
@@ -249,7 +253,7 @@ describe("useMailComposer", () => {
           isHTML: true,
           body: "Please see attached artworks.",
           attachments: [{ path: "path/to/test.pdf", type: "pdf" }],
-          recipients,
+          ccRecipients,
           subject,
         }),
         expect.any(Function)
@@ -272,7 +276,9 @@ describe("useMailComposer", () => {
     } as SelectedItemArtwork
 
     it("returns an empty string when no artwork is provided", () => {
-      expect(getArtworkEmailTemplate({ artwork: null, emailSettings } as any)).toBe("")
+      expect(
+        getArtworkEmailTemplate({ artwork: null, emailSettings } as any)
+      ).toBe("")
     })
 
     it("returns an HTML template with the correct content when fullHtml is true", () => {
@@ -296,9 +302,13 @@ describe("useMailComposer", () => {
         <a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\"><img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /></a><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><a href=\"https://www.artsy.net/artwork/vincent-van-gogh-the-starry-night\">View on Artsy</a></p>
       `)
 
-      expect(getArtworkEmailTemplate({ artwork, fullHtml: false, emailSettings } as any)).toBe(
-        expectedSnippet
-      )
+      expect(
+        getArtworkEmailTemplate({
+          artwork,
+          fullHtml: false,
+          emailSettings,
+        } as any)
+      ).toBe(expectedSnippet)
     })
 
     describe("omits fields for missing data", () => {
@@ -493,6 +503,182 @@ describe("useMailComposer", () => {
           })
         ).toBe(expectedSnippet)
       })
+
+      describe("edition sets", () => {
+        it("shows all fields", () => {
+          const expectedSnippet = replaceWhitespace(`
+            <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 11 x 14 in<br /> 28 x 36 cm<br /> 10 of 20<br /> Some sale message<br /> $200<br /><br /></p>
+          `)
+
+          expect(
+            getArtworkEmailTemplate({
+              artwork: {
+                ...artwork,
+                published: false,
+                editionSets: [
+                  {
+                    dimensions: {
+                      cm: "28 x 36 cm",
+                      in: "11 x 14 in",
+                    },
+                    editionOf: "10 of 20",
+                    internalDisplayPrice: null,
+                    price: "$200",
+                    saleMessage: "Some sale message",
+                  },
+                ],
+              },
+              fullHtml: false,
+              emailSettings,
+            })
+          ).toBe(expectedSnippet)
+        })
+      })
+
+      it("hides in", () => {
+        const expectedSnippet = replaceWhitespace(`
+          <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 28 x 36 cm<br /> 10 of 20<br /> Some sale message<br /> $200<br /><br /></p>
+        `)
+
+        expect(
+          getArtworkEmailTemplate({
+            artwork: {
+              ...artwork,
+              published: false,
+              editionSets: [
+                {
+                  dimensions: {
+                    cm: "28 x 36 cm",
+                    in: "",
+                  },
+                  editionOf: "10 of 20",
+                  internalDisplayPrice: null,
+                  price: "$200",
+                  saleMessage: "Some sale message",
+                },
+              ],
+            },
+            fullHtml: false,
+            emailSettings,
+          })
+        ).toBe(expectedSnippet)
+      })
+    })
+
+    it("hides cm", () => {
+      const expectedSnippet = replaceWhitespace(`
+        <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 28 x 36 in<br /> 10 of 20<br /> Some sale message<br /> $200<br /><br /></p>
+      `)
+
+      expect(
+        getArtworkEmailTemplate({
+          artwork: {
+            ...artwork,
+            published: false,
+            editionSets: [
+              {
+                dimensions: {
+                  cm: "",
+                  in: "28 x 36 in",
+                },
+                editionOf: "10 of 20",
+                internalDisplayPrice: null,
+                price: "$200",
+                saleMessage: "Some sale message",
+              },
+            ],
+          },
+          fullHtml: false,
+          emailSettings,
+        })
+      ).toBe(expectedSnippet)
+    })
+
+    it("hides editionOf", () => {
+      const expectedSnippet = replaceWhitespace(`
+        <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 28 x 36 in<br /> 128 x 236 cm<br /> Some sale message<br /> $200<br /><br /></p>
+      `)
+
+      expect(
+        getArtworkEmailTemplate({
+          artwork: {
+            ...artwork,
+            published: false,
+            editionSets: [
+              {
+                dimensions: {
+                  cm: "128 x 236 cm",
+                  in: "28 x 36 in",
+                },
+                editionOf: "",
+                internalDisplayPrice: null,
+                price: "$200",
+                saleMessage: "Some sale message",
+              },
+            ],
+          },
+          fullHtml: false,
+          emailSettings,
+        })
+      ).toBe(expectedSnippet)
+    })
+
+    it("hides saleMessage", () => {
+      const expectedSnippet = replaceWhitespace(`
+        <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 28 x 36 in<br /> 128 x 236 cm<br /> 10 of 20<br /> $200<br /><br /></p>
+      `)
+
+      expect(
+        getArtworkEmailTemplate({
+          artwork: {
+            ...artwork,
+            published: false,
+            editionSets: [
+              {
+                dimensions: {
+                  cm: "128 x 236 cm",
+                  in: "28 x 36 in",
+                },
+                editionOf: "10 of 20",
+                internalDisplayPrice: null,
+                price: "$200",
+                saleMessage: "",
+              },
+            ],
+          },
+          fullHtml: false,
+          emailSettings,
+        })
+      ).toBe(expectedSnippet)
+    })
+
+    it("hides price", () => {
+      const expectedSnippet = replaceWhitespace(`
+        <img style=\"width: 100%; max-width: 600px;\" src=\"https://example.com/starry_night.jpg\" /><br /><p><b>Vincent van Gogh</b><br /> The Starry Night, 1889 <br /><br /> $10,000<br /> Painting<br /> Oil on canvas<br /> 28 x 36 in<br /></p><p><b>Editions</b><br /> 28 x 36 in<br /> 128 x 236 cm<br /> 10 of 20<br /> Some sale message<br /><br /></p>
+      `)
+
+      expect(
+        getArtworkEmailTemplate({
+          artwork: {
+            ...artwork,
+            published: false,
+            editionSets: [
+              {
+                dimensions: {
+                  cm: "128 x 236 cm",
+                  in: "28 x 36 in",
+                },
+                editionOf: "10 of 20",
+                internalDisplayPrice: null,
+                price: "",
+                saleMessage: "Some sale message",
+              },
+            ],
+          },
+          fullHtml: false,
+          emailSettings,
+        })
+      ).toBe(expectedSnippet)
     })
   })
 })
