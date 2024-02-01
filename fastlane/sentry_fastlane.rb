@@ -7,7 +7,7 @@ lane :upload_sentry_artifacts do |options|
   dist_version = options[:dist_version]
   sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
 
-  project_slug = 'eigen'
+  project_slug = 'energy'
   org_slug = 'artsynet'
 
   if sentry_release_name.nil?

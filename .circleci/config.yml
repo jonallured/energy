@@ -315,7 +315,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v3-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v4-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -328,7 +328,7 @@ jobs:
       - run:
           name: Quit early if Draft PR
           command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/energy/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
             then
               circleci step halt
             fi
