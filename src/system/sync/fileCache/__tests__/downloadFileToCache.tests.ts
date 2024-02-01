@@ -46,7 +46,9 @@ describe("initDownloadFileToCache", () => {
 
   it("calls onFileDownloadError if an error occurs", async () => {
     const onFileDownloadError = jest.fn()
-    const { downloadFileToCache } = initDownloadFileToCache({ onFileDownloadError })
+    const { downloadFileToCache } = initDownloadFileToCache({
+      onFileDownloadError,
+    })
 
     const url = "https://example.com/image.png"
 

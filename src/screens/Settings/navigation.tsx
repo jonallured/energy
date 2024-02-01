@@ -26,8 +26,14 @@ export const SettingsNavigation = () => {
     <StackNav.Group>
       <StackNav.Screen name="Settings" component={Settings} />
       <StackNav.Screen name="DarkModeSettings" component={DarkModeSettings} />
-      <StackNav.Screen name="PresentationModeSettings" component={PresentationModeSettings} />
-      <StackNav.Screen name="OfflineModeSettings" component={OfflineModeSettings} />
+      <StackNav.Screen
+        name="PresentationModeSettings"
+        component={PresentationModeSettings}
+      />
+      <StackNav.Screen
+        name="OfflineModeSettings"
+        component={OfflineModeSettings}
+      />
 
       <StackNav.Screen name="EmailSettings" component={EmailSettings} />
       <StackNav.Screen

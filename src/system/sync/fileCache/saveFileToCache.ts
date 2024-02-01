@@ -7,10 +7,17 @@ export interface SaveFileProps extends FileProps {
   data: string
 }
 
-export const saveFileToCache = async ({ data, filename, type, path }: SaveFileProps) => {
+export const saveFileToCache = async ({
+  data,
+  filename,
+  type,
+  path,
+}: SaveFileProps) => {
   try {
     if (!type && !path) {
-      console.log("[fileCache] Error saving file: `type` or `path` must be defined.")
+      console.log(
+        "[fileCache] Error saving file: `type` or `path` must be defined."
+      )
       return
     }
 

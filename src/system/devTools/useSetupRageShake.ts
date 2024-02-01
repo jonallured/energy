@@ -7,7 +7,9 @@ import { GlobalStore } from "system/store/GlobalStore"
 
 export const useSetupRageShake = () => {
   const nav = useNavigation<NavigationProp<NavigationScreens>>()
-  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+  const isUserDev = GlobalStore.useAppState(
+    (state) => state.artsyPrefs.isUserDev
+  )
 
   useEffect(() => {
     if (__DEV__) {

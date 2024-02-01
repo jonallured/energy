@@ -15,7 +15,9 @@ interface AlbumArtworksProps {
 export const AlbumArtworks: React.FC<AlbumArtworksProps> = ({ albumId }) => {
   useTrackScreen({ name: "AlbumArtworks", type: "Album" })
 
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID as string)
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID as string
+  )
   const { artworks } = useAlbum({ albumId })
   const artworkIDs = artworks.map((artwork) => artwork.internalID)
 
@@ -27,7 +29,9 @@ export const AlbumArtworks: React.FC<AlbumArtworksProps> = ({ albumId }) => {
     },
     idsToValidate: artworkIDs,
     mapResponseToIDs: (data) => {
-      return extractNodes(data?.partner?.artworksConnection).map((artwork) => artwork.internalID)
+      return extractNodes(data?.partner?.artworksConnection).map(
+        (artwork) => artwork.internalID
+      )
     },
   })
 
@@ -41,7 +45,11 @@ export const AlbumArtworks: React.FC<AlbumArtworksProps> = ({ albumId }) => {
 export const albumArtworksQuery = graphql`
   query AlbumArtworksQuery($artworkIDs: [String], $partnerID: String!) {
     partner(id: $partnerID) {
-      artworksConnection(first: 100, artworkIDs: $artworkIDs, includeUnpublished: true) {
+      artworksConnection(
+        first: 100
+        artworkIDs: $artworkIDs
+        includeUnpublished: true
+      ) {
         edges {
           node {
             internalID

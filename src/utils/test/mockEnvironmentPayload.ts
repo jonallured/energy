@@ -1,9 +1,13 @@
 import { takeRight } from "lodash"
 import { MockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import {
+  MockResolverContext,
+  MockResolvers,
+} from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { SetupTestWrapperProps } from "utils/test/setupTestWrapper"
 
-interface MockEnvironmentPayloadProps extends Omit<SetupTestWrapperProps<any>, "Component"> {
+interface MockEnvironmentPayloadProps
+  extends Omit<SetupTestWrapperProps<any>, "Component"> {
   mockEnvironment: MockEnvironment
   mockResolvers: MockResolvers
 }
@@ -46,9 +50,13 @@ const generateID = (pathComponents: readonly string[] | undefined) => {
 const paths: { [name: string]: string } = {}
 
 const mockResolver = (ctx: MockResolverContext) => {
-  const makePrefix = (path: string) => takeRight(path.split("."), length).join(".")
+  const makePrefix = (path: string) =>
+    takeRight(path.split("."), length).join(".")
 
-  const fullpath = (ctx.path?.join(".") ?? "_GLOBAL_").replace(".edges.node", "")
+  const fullpath = (ctx.path?.join(".") ?? "_GLOBAL_").replace(
+    ".edges.node",
+    ""
+  )
   let length = 1
   let prefix = makePrefix(fullpath)
 

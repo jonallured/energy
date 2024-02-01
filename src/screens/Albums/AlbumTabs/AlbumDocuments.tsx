@@ -15,7 +15,9 @@ interface AlbumDocumentsProps {
 export const AlbumDocuments: React.FC<AlbumDocumentsProps> = ({ albumId }) => {
   useTrackScreen({ name: "AlbumDocuments", type: "Album" })
 
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
   const { documents } = useAlbum({ albumId })
   const documentIDs = documents.map((document) => document.internalID)
 
@@ -27,7 +29,9 @@ export const AlbumDocuments: React.FC<AlbumDocumentsProps> = ({ albumId }) => {
     },
     idsToValidate: documentIDs,
     mapResponseToIDs: (data) => {
-      return extractNodes(data?.partner?.documentsConnection).map((document) => document.internalID)
+      return extractNodes(data?.partner?.documentsConnection).map(
+        (document) => document.internalID
+      )
     },
   })
 

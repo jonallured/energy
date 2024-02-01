@@ -9,7 +9,10 @@ interface SelectModePortalProps {
   items: SelectedItem[]
 }
 
-export const SelectModePortal: React.FC<SelectModePortalProps> = ({ tabName, items }) => {
+export const SelectModePortal: React.FC<SelectModePortalProps> = ({
+  tabName,
+  items,
+}) => {
   const selectedItems = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.selectedItems
   )

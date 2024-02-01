@@ -6,7 +6,11 @@ interface ArtworkDetailProps {
   value: string | null | undefined
 }
 
-export const ArtworkDetail: React.FC<ArtworkDetailProps> = ({ size = "big", label, value }) => {
+export const ArtworkDetail: React.FC<ArtworkDetailProps> = ({
+  size = "big",
+  label,
+  value,
+}) => {
   if (!value) {
     return null
   }
@@ -21,7 +25,9 @@ export const ArtworkDetail: React.FC<ArtworkDetailProps> = ({ size = "big", labe
   )
 }
 
-export const ArtworkDetailLineItem: React.FC<Pick<ArtworkDetailProps, "value">> = ({ value }) => {
+export const ArtworkDetailLineItem: React.FC<
+  Pick<ArtworkDetailProps, "value">
+> = ({ value }) => {
   if (!value) {
     return null
   }

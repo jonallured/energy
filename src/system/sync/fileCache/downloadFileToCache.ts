@@ -16,7 +16,9 @@ interface InitDownloadFileToCacheProps {
   onFileDownloadError: (fileProps: DownloadFileToCacheProps) => void
 }
 
-export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFileToCacheProps) => {
+export const initDownloadFileToCache = ({
+  onFileDownloadError,
+}: InitDownloadFileToCacheProps) => {
   const downloadFileToCache = async (fileProps: DownloadFileToCacheProps) => {
     const { url, type, accessToken } = fileProps
 
@@ -62,7 +64,9 @@ export const initDownloadFileToCache = ({ onFileDownloadError }: InitDownloadFil
       }).promise
 
       if (statusCode !== 200) {
-        throw new Error("download failed with status code " + statusCode + " - " + url)
+        throw new Error(
+          "download failed with status code " + statusCode + " - " + url
+        )
       }
 
       if (urlMap[url] !== undefined && urlMap[url] !== filename) {

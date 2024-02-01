@@ -14,7 +14,8 @@ export const OfflineLoadingWrapper: React.FC = ({ children }) => {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center">
         <Text textAlign="center">
-          Loading artworks in Offline Mode. This may take a few minutes for large collections.
+          Loading artworks in Offline Mode. This may take a few minutes for
+          large collections.
         </Text>
         <Spacer y={2} />
         <ActivityIndicator color={isDarkMode ? "white" : "black"} />

@@ -1,4 +1,11 @@
-import { Screen, Spacer, Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
+import {
+  Screen,
+  Spacer,
+  Flex,
+  Separator,
+  Text,
+  useColor,
+} from "@artsy/palette-mobile"
 import { Switch, SwitchProps } from "react-native"
 
 interface SettingsItemProps {
@@ -15,7 +22,11 @@ const SettingsItemRoot: React.FC<SettingsItemProps> = ({
 }) => (
   <>
     <Spacer y={2} />
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Text>{title}</Text>
       {children}
     </Flex>

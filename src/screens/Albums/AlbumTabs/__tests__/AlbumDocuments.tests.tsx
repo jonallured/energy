@@ -37,7 +37,9 @@ describe("AlbumDocuments", () => {
   })
 
   it("renders a list of documents", async () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(<AlbumDocuments albumId={albumId} />)
+    const { UNSAFE_getAllByType } = renderWithWrappers(
+      <AlbumDocuments albumId={albumId} />
+    )
     expect(UNSAFE_getAllByType(DocumentGridItem)).toHaveLength(3)
   })
 

@@ -13,7 +13,9 @@ export const StatusBar: React.FC<StatusBarProps> = ({ backgroundColor }) => {
     (state) => state.presentationMode.isPresentationModeEnabled
   )
   const isStaging =
-    GlobalStore.useAppState((state) => state.config.environment.activeEnvironment) === "staging"
+    GlobalStore.useAppState(
+      (state) => state.config.environment.activeEnvironment
+    ) === "staging"
 
   const saInsets = useSafeAreaInsets()
   const colors = useColor()

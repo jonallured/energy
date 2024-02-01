@@ -72,14 +72,19 @@ export const getAlbumsModel = (): AlbumsModel => ({
     albumIds.forEach((albumId) => {
       const index = state.albums.findIndex((x) => x.id === albumId)
       if (index !== -1) {
-        state.albums[index].items = uniqBy([...state.albums[index].items, ...items], "internalID")
+        state.albums[index].items = uniqBy(
+          [...state.albums[index].items, ...items],
+          "internalID"
+        )
       }
     })
   }),
 
   removeItemFromAlbums: action((state, internalID) => {
     state.albums.forEach((album) => {
-      album.items = album.items.filter((item) => item?.internalID !== internalID)
+      album.items = album.items.filter(
+        (item) => item?.internalID !== internalID
+      )
     })
   }),
 })

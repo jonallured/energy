@@ -7,7 +7,9 @@ import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 export const ThemeProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      GlobalStore.actions.devicePrefs.setSystemColorScheme(colorScheme ?? "light")
+      GlobalStore.actions.devicePrefs.setSystemColorScheme(
+        colorScheme ?? "light"
+      )
     })
     return () => subscription.remove()
   }, [])

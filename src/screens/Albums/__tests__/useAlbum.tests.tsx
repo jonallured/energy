@@ -33,7 +33,9 @@ describe("useAlbum", () => {
     const environment = createMockEnvironment()
 
     return (
-      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>{children}</Boot>
+      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>
+        {children}
+      </Boot>
     )
   }
 
@@ -43,9 +45,15 @@ describe("useAlbum", () => {
     })
 
     expect(result.current.album).toEqual(album)
-    expect(result.current.artworks).toEqual([{ __typename: "Artwork", internalID: "abc" }])
-    expect(result.current.documents).toEqual([{ __typename: "PartnerDocument", internalID: "def" }])
-    expect(result.current.installs).toEqual([{ __typename: "Image", internalID: "ghi" }])
+    expect(result.current.artworks).toEqual([
+      { __typename: "Artwork", internalID: "abc" },
+    ])
+    expect(result.current.documents).toEqual([
+      { __typename: "PartnerDocument", internalID: "def" },
+    ])
+    expect(result.current.installs).toEqual([
+      { __typename: "Image", internalID: "ghi" },
+    ])
   })
 
   it("should return undefined for album if it does not exist", () => {

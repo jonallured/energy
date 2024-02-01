@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react"
-import { Environment, GraphQLTaggedNode, fetchQuery, useRelayEnvironment } from "react-relay"
-import { CacheConfig, FetchQueryFetchPolicy, OperationType } from "relay-runtime"
+import {
+  Environment,
+  GraphQLTaggedNode,
+  fetchQuery,
+  useRelayEnvironment,
+} from "react-relay"
+import {
+  CacheConfig,
+  FetchQueryFetchPolicy,
+  OperationType,
+} from "relay-runtime"
 import { GlobalStore } from "system/store/GlobalStore"
 import { useUpdateEffect } from "utils/hooks/useUpdateEffect"
 
@@ -81,7 +90,16 @@ export const useSystemFetchQuery = <T extends OperationType>({
     refetch()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cacheConfig, data, environment, error, query, relayEnvironment, refetchOnly, variables])
+  }, [
+    cacheConfig,
+    data,
+    environment,
+    error,
+    query,
+    relayEnvironment,
+    refetchOnly,
+    variables,
+  ])
 
   return {
     data,

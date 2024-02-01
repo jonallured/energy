@@ -51,7 +51,9 @@ describe("AlbumListItem", () => {
   })
 
   it("renders album images", () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(<AlbumListItem album={album} />)
+    const { UNSAFE_getAllByType } = renderWithWrappers(
+      <AlbumListItem album={album} />
+    )
     const albumImages = UNSAFE_getAllByType(CachedImage)
     expect(albumImages).toHaveLength(3)
     expect(albumImages[0].props.uri).toBe(`image-3`)
@@ -60,9 +62,16 @@ describe("AlbumListItem", () => {
   })
 
   it("renders album images with empty artwork array", () => {
-    const emptyAlbum = { id: "foo", createdAt: "bar", name: "Empty Album", items: [] } as Album
+    const emptyAlbum = {
+      id: "foo",
+      createdAt: "bar",
+      name: "Empty Album",
+      items: [],
+    } as Album
     mockUseAlbum.mockImplementation(() => ({ album: emptyAlbum, artworks: [] }))
-    const { UNSAFE_queryAllByType } = renderWithWrappers(<AlbumListItem album={emptyAlbum} />)
+    const { UNSAFE_queryAllByType } = renderWithWrappers(
+      <AlbumListItem album={emptyAlbum} />
+    )
     expect(UNSAFE_queryAllByType(CachedImage).length).toBe(0)
   })
 

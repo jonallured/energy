@@ -1,5 +1,10 @@
 import { RefreshControl } from "react-native"
-import { FetchPolicy, GraphQLTaggedNode, VariablesOf, useLazyLoadQuery } from "react-relay"
+import {
+  FetchPolicy,
+  GraphQLTaggedNode,
+  VariablesOf,
+  useLazyLoadQuery,
+} from "react-relay"
 
 import { CacheConfig, OperationType, RenderPolicy } from "relay-runtime"
 import { useSystemFetchQuery } from "system/relay/useSystemFetchQuery"
@@ -19,12 +24,22 @@ export function useSystemQueryLoader<TQuery extends OperationType>(
     UNSTABLE_renderPolicy?: RenderPolicy | undefined
   }
 ) {
-  const fetchKey = GlobalStore.useAppState((state) => state.networkStatus.relayFetchKey)
-  const fetchPolicy = GlobalStore.useAppState((state) => state.networkStatus.relayFetchPolicy)!
-  const isOnline = GlobalStore.useAppState((state) => state.networkStatus.isOnline)
+  const fetchKey = GlobalStore.useAppState(
+    (state) => state.networkStatus.relayFetchKey
+  )
+  const fetchPolicy = GlobalStore.useAppState(
+    (state) => state.networkStatus.relayFetchPolicy
+  )!
+  const isOnline = GlobalStore.useAppState(
+    (state) => state.networkStatus.isOnline
+  )
 
   // Load initial data, trigger suspense boundaries
-  const data = useLazyLoadQuery<TQuery>(query, variables, { fetchKey, fetchPolicy, ...options })
+  const data = useLazyLoadQuery<TQuery>(query, variables, {
+    fetchKey,
+    fetchPolicy,
+    ...options,
+  })
 
   // Then use a refetchable version for pull-to-refresh
   // TODO: Refactor app to only use useSystemFetchQuery, and remove suspense

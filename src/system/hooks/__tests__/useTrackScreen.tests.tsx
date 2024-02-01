@@ -2,7 +2,10 @@ import { useIsFocused as useIsRouteFocused } from "@react-navigation/native"
 import { renderHook } from "@testing-library/react-hooks"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { useAppTracking } from "system/hooks/useAppTracking"
-import { UseTrackScreenViewProps, useTrackScreen } from "system/hooks/useTrackScreen"
+import {
+  UseTrackScreenViewProps,
+  useTrackScreen,
+} from "system/hooks/useTrackScreen"
 
 jest.mock("system/hooks/useAppTracking", () => ({
   useAppTracking: jest.fn(),
@@ -24,7 +27,10 @@ describe("useTrackScreen", () => {
   })
 
   it("should track screen when route is focused", () => {
-    const screen = { name: "Artists", type: "Artists" } as UseTrackScreenViewProps
+    const screen = {
+      name: "Artists",
+      type: "Artists",
+    } as UseTrackScreenViewProps
     const spy = jest.fn()
 
     mockUseRouteIsFocused.mockReturnValue(true)

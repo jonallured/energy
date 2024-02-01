@@ -7,7 +7,9 @@ export const OneArtwork = () => {
   useTrackScreen({ name: "EmailSettingsOneArtwork", type: "Settings" })
 
   const navigation = useNavigation()
-  const value = GlobalStore.useAppState((state) => state.email.oneArtworkSubject)
+  const value = GlobalStore.useAppState(
+    (state) => state.email.oneArtworkSubject
+  )
 
   return (
     <Screen>
@@ -17,7 +19,9 @@ export const OneArtwork = () => {
         <Input
           multiline
           value={value}
-          onChangeText={(e) => GlobalStore.actions.email.setOneArtworkSubject(e)}
+          onChangeText={(e) =>
+            GlobalStore.actions.email.setOneArtworkSubject(e)
+          }
         />
         <Text mt={1} color="onBackgroundMedium">
           $title and $artist will be replaced by the artwork title and artist

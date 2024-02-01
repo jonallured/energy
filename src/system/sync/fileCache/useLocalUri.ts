@@ -5,7 +5,10 @@ import { getFilePath } from "system/sync/fileCache/getFilePath"
 import { getURLMap } from "system/sync/fileCache/urlMap"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 
-export const useLocalUri = (url: string, type: AssetType = "image"): string | undefined => {
+export const useLocalUri = (
+  url: string,
+  type: AssetType = "image"
+): string | undefined => {
   const [uriOrUndef, setUriOrUndef] = useState<string | undefined>(undefined)
   const urlMap = getURLMap()
   const isOnline = useIsOnline()

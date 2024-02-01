@@ -6,19 +6,28 @@ const albums = [
   {
     id: "album-id-0",
     name: "album-name-0",
-    items: [{ internalID: "artwork-1-album-id-0" }, { internalID: "artwork-2-album-id-0" }],
+    items: [
+      { internalID: "artwork-1-album-id-0" },
+      { internalID: "artwork-2-album-id-0" },
+    ],
     createdAt: "date",
   },
   {
     id: "album-id-1",
     name: "album-name-1",
-    items: [{ internalID: "artwork-1-album-id-1" }, { internalID: "artwork-2-album-id-1" }],
+    items: [
+      { internalID: "artwork-1-album-id-1" },
+      { internalID: "artwork-2-album-id-1" },
+    ],
     createdAt: "date",
   },
   {
     id: "album-id-2",
     name: "album-name-2",
-    items: [{ internalID: "artwork-1-album-id-2" }, { internalID: "artwork-2-album-id-2" }],
+    items: [
+      { internalID: "artwork-1-album-id-2" },
+      { internalID: "artwork-2-album-id-2" },
+    ],
     createdAt: "date",
   },
 ] as unknown as Album[]
@@ -33,7 +42,10 @@ describe("AlbumsModel", () => {
   it("adds album", () => {
     const newAlbum = {
       name: "album-name-3",
-      items: [{ internalID: "artwork-1-album-id-3" }, { internalID: "artwork-2-album-id-3" }],
+      items: [
+        { internalID: "artwork-1-album-id-3" },
+        { internalID: "artwork-2-album-id-3" },
+      ],
     } as unknown as Album
 
     GlobalStore.actions.albums.addAlbum(newAlbum)
@@ -64,15 +76,24 @@ describe("AlbumsModel", () => {
     })
     const albumState = __globalStoreTestUtils__?.getCurrentState().albums.albums
     const selectedArtworksForCreateAlbum =
-      __globalStoreTestUtils__?.getCurrentState().selectMode.sessionState.selectedItems
+      __globalStoreTestUtils__?.getCurrentState().selectMode.sessionState
+        .selectedItems
 
     albumState?.forEach((album) => {
       if (albumIds.includes(album.id)) {
-        expect(album.items.some((item) => item?.internalID === "new-artwork-id-1")).toBe(true)
-        expect(album.items.some((item) => item?.internalID === "new-artwork-id-2")).toBe(true)
+        expect(
+          album.items.some((item) => item?.internalID === "new-artwork-id-1")
+        ).toBe(true)
+        expect(
+          album.items.some((item) => item?.internalID === "new-artwork-id-2")
+        ).toBe(true)
       } else {
-        expect(album.items.some((item) => item?.internalID === "new-artwork-id-1")).not.toBe(true)
-        expect(album.items.some((item) => item?.internalID === "new-artwork-id-2")).not.toBe(true)
+        expect(
+          album.items.some((item) => item?.internalID === "new-artwork-id-1")
+        ).not.toBe(true)
+        expect(
+          album.items.some((item) => item?.internalID === "new-artwork-id-2")
+        ).not.toBe(true)
       }
     })
 
@@ -117,9 +138,11 @@ describe("AlbumsModel", () => {
 
       GlobalStore.actions.albums.editAlbum(album)
 
-      const albumState = __globalStoreTestUtils__?.getCurrentState().albums.albums
+      const albumState =
+        __globalStoreTestUtils__?.getCurrentState().albums.albums
       const selectedArtworksForEditAlbum =
-        __globalStoreTestUtils__?.getCurrentState().selectMode.sessionState.selectedItems
+        __globalStoreTestUtils__?.getCurrentState().selectMode.sessionState
+          .selectedItems
 
       expect(albumState?.map((album) => album.name)).toContain(album.name)
       expect(albumState?.map((album) => album.items)).toContain(album.items)

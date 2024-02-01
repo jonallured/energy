@@ -47,9 +47,10 @@ export const getSelectModeModel = (): SelectModeModel => ({
     )
 
     if (foundItem) {
-      state.sessionState.selectedItems = state.sessionState.selectedItems.filter(
-        (selectedItem) => selectedItem?.internalID !== item?.internalID
-      )
+      state.sessionState.selectedItems =
+        state.sessionState.selectedItems.filter(
+          (selectedItem) => selectedItem?.internalID !== item?.internalID
+        )
     } else {
       state.sessionState.selectedItems.push(item)
     }
@@ -90,20 +91,32 @@ export type SelectedItem =
   // Artwork
   | NonNullable<
       NonNullable<
-        NonNullable<NonNullable<ArtistArtworksQuery$data["partner"]>["artworksConnection"]>["edges"]
+        NonNullable<
+          NonNullable<ArtistArtworksQuery$data["partner"]>["artworksConnection"]
+        >["edges"]
       >[0]
     >["node"]
   // Document
   | NonNullable<
       NonNullable<
         NonNullable<
-          NonNullable<ArtistDocumentsQuery$data["partner"]>["documentsConnection"]
+          NonNullable<
+            ArtistDocumentsQuery$data["partner"]
+          >["documentsConnection"]
         >["edges"]
       >[0]
     >["node"]
   // Installs
-  | NonNullable<NonNullable<NonNullable<ShowInstallsQuery$data["show"]>["images"]>[0]>
+  | NonNullable<
+      NonNullable<NonNullable<ShowInstallsQuery$data["show"]>["images"]>[0]
+    >
 
-export type SelectedItemArtwork = Extract<SelectedItem, { __typename: "Artwork" }>
+export type SelectedItemArtwork = Extract<
+  SelectedItem,
+  { __typename: "Artwork" }
+>
 export type SelectedItemInstall = Extract<SelectedItem, { __typename: "Image" }>
-export type SelectedItemDocument = Extract<SelectedItem, { __typename: "PartnerDocument" }>
+export type SelectedItemDocument = Extract<
+  SelectedItem,
+  { __typename: "PartnerDocument" }
+>

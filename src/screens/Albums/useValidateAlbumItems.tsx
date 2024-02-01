@@ -2,7 +2,10 @@ import { debounce, difference } from "lodash"
 import { useEffect } from "react"
 import { Alert } from "react-native"
 import { OperationType } from "relay-runtime"
-import { useSystemFetchQuery, UseSystemFetchQueryProps } from "system/relay/useSystemFetchQuery"
+import {
+  useSystemFetchQuery,
+  UseSystemFetchQueryProps,
+} from "system/relay/useSystemFetchQuery"
 import { GlobalStore } from "system/store/GlobalStore"
 
 interface UserValidateAlbumProps<TQuery extends OperationType>

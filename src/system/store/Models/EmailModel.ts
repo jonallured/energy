@@ -21,8 +21,10 @@ export const getEmailModel = (): EmailModel => ({
   greetings: "Here is more information about the artwork(s) we discussed.",
   signature: "",
   oneArtworkSubject: "More information about $title by $artist.",
-  multipleArtworksAndArtistsSubject: "More information about the artworks we discussed.",
-  multipleArtworksBySameArtistSubject: "More information about $artist's artworks.",
+  multipleArtworksAndArtistsSubject:
+    "More information about the artworks we discussed.",
+  multipleArtworksBySameArtistSubject:
+    "More information about $artist's artworks.",
 
   setCCRecipients: action((state, value) => {
     state.ccRecipients = value

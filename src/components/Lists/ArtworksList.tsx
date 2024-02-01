@@ -75,7 +75,9 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
 
         // When static, we're not apart of relay query / fragment lifecycle and
         // render out out a static list of items
-        const GridItem = isStatic ? ArtworkGridItem : ArtworkGridItemFragmentContainer
+        const GridItem = isStatic
+          ? ArtworkGridItem
+          : ArtworkGridItemFragmentContainer
 
         return (
           <ColumnItem index={i} numColumns={numColumns}>
@@ -84,7 +86,11 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
               disable={isDisabled}
               onPress={() => handleArtworkItemPress(gridItem)}
               selectedToAdd={isSelected(selectedItems, gridItem)}
-              selectedToRemove={checkIfSelectedToRemove ? checkIfSelectedToRemove(gridItem) : false}
+              selectedToRemove={
+                checkIfSelectedToRemove
+                  ? checkIfSelectedToRemove(gridItem)
+                  : false
+              }
             />
           </ColumnItem>
         )

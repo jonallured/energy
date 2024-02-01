@@ -28,7 +28,8 @@ const mockProps = {
           internalID: `5deff4b96fz7e7000f36ce37-${i}`,
           artworksCount: i,
           name: "Gustav Klimts shows",
-          coverImage: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+          coverImage:
+            "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
           formattedStartAt: "May 27",
           formattedEndAt: "June 15, 2022",
         },

@@ -1,4 +1,9 @@
-import { CheckCircleFillIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  CheckCircleFillIcon,
+  Flex,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { FileTypeIcon } from "components/FileTypeIcon"
 import { last } from "lodash"
 import { useEffect, useState } from "react"
@@ -22,7 +27,11 @@ interface DocumentGridItemProps {
   selectedToAdd?: boolean
 }
 
-export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentGridItemProps) => {
+export const DocumentGridItem = ({
+  document,
+  selectedToAdd,
+  onPress,
+}: DocumentGridItemProps) => {
   const [isOpening, setIsOpening] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
   const formattedSize = formatBytes(document.size)
@@ -30,7 +39,9 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
-  const userAccessToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)!
+  const userAccessToken = GlobalStore.useAppState(
+    (state) => state.auth.userAccessToken
+  )!
 
   const localUri = useLocalUri(document.url, "document")
 
@@ -65,7 +76,10 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
   }, [isDownloading, isOpening, localUri])
 
   return (
-    <Touchable disabled={isDownloading} onPress={isSelectModeActive ? onPress : openFile}>
+    <Touchable
+      disabled={isDownloading}
+      onPress={isSelectModeActive ? onPress : openFile}
+    >
       <Flex mb={4} opacity={selectedToAdd ? 0.4 : 1} width="100%">
         <Flex height={200} position="relative">
           <Flex flex={1} bg="black10" />
@@ -99,7 +113,13 @@ export const DocumentGridItem = ({ document, selectedToAdd, onPress }: DocumentG
         </Text>
       </Flex>
       {!!selectedToAdd && (
-        <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
+        <Flex
+          position="absolute"
+          top={1}
+          right={1}
+          alignItems="center"
+          justifyContent="center"
+        >
           <CheckCircleFillIcon height={30} width={30} fill="blue100" />
         </Flex>
       )}

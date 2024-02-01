@@ -1,6 +1,16 @@
-import { Disposable, Environment, fetchQuery, GraphQLTaggedNode, VariablesOf } from "react-relay"
+import {
+  Disposable,
+  Environment,
+  fetchQuery,
+  GraphQLTaggedNode,
+  VariablesOf,
+} from "react-relay"
 import { RRNLRequestError } from "react-relay-network-modern"
-import { createOperationDescriptor, getRequest, OperationType } from "relay-runtime"
+import {
+  createOperationDescriptor,
+  getRequest,
+  OperationType,
+} from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export interface FetchError {
@@ -27,7 +37,10 @@ export const initFetchOrCatch = ({
     variables: VariablesOf<TQuery>
   ): Promise<TQuery["response"]> => {
     // Ensure that data is not garbage collected by Relay
-    const operationDescriptor = createOperationDescriptor(getRequest(query), variables)
+    const operationDescriptor = createOperationDescriptor(
+      getRequest(query),
+      variables
+    )
     const disposable = relayEnvironment.retain(operationDescriptor)
 
     try {
@@ -59,7 +72,11 @@ export const initFetchOrCatch = ({
     query: GraphQLTaggedNode,
     variables: VariablesOf<TQuery>
   ): Promise<TQuery["response"]> => {
-    return fetchQuery(relayEnvironment as Environment, query, variables).toPromise()
+    return fetchQuery(
+      relayEnvironment as Environment,
+      query,
+      variables
+    ).toPromise()
   }
 
   return {

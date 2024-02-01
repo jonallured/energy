@@ -1,6 +1,9 @@
 import { StackNav } from "Navigation"
 import { Suspense } from "react"
-import { ArtistTabs, SkeletonArtistTabs } from "screens/Artists/ArtistTabs/ArtistTabs"
+import {
+  ArtistTabs,
+  SkeletonArtistTabs,
+} from "screens/Artists/ArtistTabs/ArtistTabs"
 import { RetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
 
 export type ArtistNavigationScreens = {

@@ -5,10 +5,13 @@ interface AnimationProps {
   visible?: boolean
 }
 
-export const SlideUpFromBottom: React.FC<AnimationProps> = ({ children, visible = true }) => {
+export const SlideUpFromBottom: React.FC<AnimationProps> = ({
+  children,
+  visible = true,
+}) => {
   return (
     <AnimatePresence>
-      {visible && (
+      {!!visible && (
         <MotiView
           from={{ opacity: 0, translateY: 400 }}
           animate={{ opacity: 1, translateY: 0 }}

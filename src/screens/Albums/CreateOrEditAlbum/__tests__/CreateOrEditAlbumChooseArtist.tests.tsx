@@ -49,6 +49,9 @@ describe("CreateOrEditAlbumChooseArtist", () => {
     const { getByText } = renderWithWrappers(<Artists />)
 
     fireEvent.press(getByText("ArtistsList"))
-    expect(spy).toHaveBeenCalledWith("ArtistTabs", { name: "name", slug: "slug" })
+    expect(spy).toHaveBeenCalledWith("ArtistTabs", {
+      name: "name",
+      slug: "slug",
+    })
   })
 })

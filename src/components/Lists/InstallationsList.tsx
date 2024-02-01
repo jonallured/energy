@@ -10,7 +10,9 @@ interface ShowInstallationsProps {
   images: SelectedItemInstall[]
 }
 
-export const InstallationsList: React.FC<ShowInstallationsProps> = ({ images = [] }) => {
+export const InstallationsList: React.FC<ShowInstallationsProps> = ({
+  images = [],
+}) => {
   const selectedItems = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.selectedItems
   )
@@ -26,13 +28,17 @@ export const InstallationsList: React.FC<ShowInstallationsProps> = ({ images = [
           <ColumnItem index={i} numColumns={2}>
             <ArtworkImageGridItem
               url={gridItem?.url ?? ""}
-              onPress={() => GlobalStore.actions.selectMode.toggleSelectedItem(gridItem)}
+              onPress={() =>
+                GlobalStore.actions.selectMode.toggleSelectedItem(gridItem)
+              }
               selectedToAdd={isSelected(selectedItems, gridItem)}
             />
           </ColumnItem>
         )
       }}
-      ListEmptyComponent={<ListEmptyComponent text="No show install shots to display" />}
+      ListEmptyComponent={
+        <ListEmptyComponent text="No show install shots to display" />
+      }
     />
   )
 }

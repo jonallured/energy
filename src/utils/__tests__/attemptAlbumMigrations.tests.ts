@@ -32,7 +32,8 @@ describe("attemptAlbumMigration", () => {
   let mockRelayEnvironment: RelayModernEnvironment
 
   beforeEach(() => {
-    mockRelayEnvironment = createMockEnvironment() as unknown as RelayModernEnvironment
+    mockRelayEnvironment =
+      createMockEnvironment() as unknown as RelayModernEnvironment
   })
 
   afterEach(() => {
@@ -40,12 +41,15 @@ describe("attemptAlbumMigration", () => {
   })
 
   it("does nothing if no albums are present", async () => {
-    const mockReadAlbums = ARTNativeModules.ARTAlbumMigrationModule.readAlbums as jest.Mock
+    const mockReadAlbums = ARTNativeModules.ARTAlbumMigrationModule
+      .readAlbums as jest.Mock
     mockReadAlbums.mockReturnValue(null)
 
     await attemptAlbumMigration(mockRelayEnvironment)
 
-    expect(ARTNativeModules.ARTAlbumMigrationModule.readAlbums).toHaveBeenCalled()
+    expect(
+      ARTNativeModules.ARTAlbumMigrationModule.readAlbums
+    ).toHaveBeenCalled()
     expect(fetchQuery).not.toHaveBeenCalled()
     expect(GlobalStore.actions.albums.addAlbum).not.toHaveBeenCalled()
   })
@@ -56,11 +60,16 @@ describe("attemptAlbumMigration", () => {
       { name: "Album 1", artworkIDs: ["artwork1", "artwork2"] },
       { name: "Album 2", artworkIDs: ["artwork3"] },
     ]
-    ;(ARTNativeModules.ARTAlbumMigrationModule.readAlbums as jest.Mock).mockReturnValue(mockAlbums)
+    ;(
+      ARTNativeModules.ARTAlbumMigrationModule.readAlbums as jest.Mock
+    ).mockReturnValue(mockAlbums)
 
     // Mock successful artwork metadata fetching
     const mockArtworkData = {
-      artwork: { title: "Artwork Title", artist: "Artist Name" /* other fields */ },
+      artwork: {
+        title: "Artwork Title",
+        artist: "Artist Name" /* other fields */,
+      },
     }
 
     ;(fetchQuery as jest.Mock).mockImplementation(() => ({
@@ -71,15 +80,27 @@ describe("attemptAlbumMigration", () => {
 
     // Check if fetchQuery was called correctly
     expect(fetchQuery).toHaveBeenCalledTimes(3) // Total number of artworkIDs
-    expect(fetchQuery).toHaveBeenCalledWith(mockRelayEnvironment, artworkQuery, {
-      slug: "artwork1",
-    })
-    expect(fetchQuery).toHaveBeenCalledWith(mockRelayEnvironment, artworkQuery, {
-      slug: "artwork2",
-    })
-    expect(fetchQuery).toHaveBeenCalledWith(mockRelayEnvironment, artworkQuery, {
-      slug: "artwork3",
-    })
+    expect(fetchQuery).toHaveBeenCalledWith(
+      mockRelayEnvironment,
+      artworkQuery,
+      {
+        slug: "artwork1",
+      }
+    )
+    expect(fetchQuery).toHaveBeenCalledWith(
+      mockRelayEnvironment,
+      artworkQuery,
+      {
+        slug: "artwork2",
+      }
+    )
+    expect(fetchQuery).toHaveBeenCalledWith(
+      mockRelayEnvironment,
+      artworkQuery,
+      {
+        slug: "artwork3",
+      }
+    )
 
     // Check if the albums were added to the store with the correct data
     expect(GlobalStore.actions.albums.addAlbum).toHaveBeenCalledTimes(2)

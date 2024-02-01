@@ -34,8 +34,11 @@ const codePushKeyToDeployment: { [key: string]: CodePushDeployment } = {
 }
 
 export const CodePushOptions = () => {
-  const [selectedDeployment, setSelectedDeployment] = useState<CodePushDeployment>("Staging")
-  const [currentRelease, setCurrentRelease] = useState<CodePushRelease | null>(null)
+  const [selectedDeployment, setSelectedDeployment] =
+    useState<CodePushDeployment>("Staging")
+  const [currentRelease, setCurrentRelease] = useState<CodePushRelease | null>(
+    null
+  )
   const [loading, setLoading] = useState(false)
   const [loadStatus, setLoadStatus] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -44,7 +47,8 @@ export const CodePushOptions = () => {
   const updateMetadata = () => {
     CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((update) => {
       if (update) {
-        const deployment = codePushKeyToDeployment[update.deploymentKey] ?? "unknown"
+        const deployment =
+          codePushKeyToDeployment[update.deploymentKey] ?? "unknown"
         setCurrentRelease({
           description: update.description,
           deployment: deployment,
@@ -74,7 +78,11 @@ export const CodePushOptions = () => {
       <Spacer y={2} />
       {!!currentRelease && (
         <>
-          <Message title="Active Release" text={activeReleaseText} variant="info" />
+          <Message
+            title="Active Release"
+            text={activeReleaseText}
+            variant="info"
+          />
           <Spacer y={2} />
         </>
       )}
@@ -84,7 +92,9 @@ export const CodePushOptions = () => {
             <Flex flexDirection="row">
               <RadioButton
                 selected={deployment == selectedDeployment}
-                onPress={() => setSelectedDeployment(deployment as CodePushDeployment)}
+                onPress={() =>
+                  setSelectedDeployment(deployment as CodePushDeployment)
+                }
               />
               <Text>{deployment}</Text>
             </Flex>
@@ -102,7 +112,11 @@ export const CodePushOptions = () => {
       )}
 
       {!!errorMessage && (
-        <Message title="Something went wrong" text={errorMessage} variant="error" />
+        <Message
+          title="Something went wrong"
+          text={errorMessage}
+          variant="error"
+        />
       )}
 
       <Spacer y={2} />
@@ -117,7 +131,10 @@ export const CodePushOptions = () => {
           setLoadStatus("")
           setErrorMessage(null)
           await CodePush.sync(
-            { deploymentKey: deploymentKey, installMode: CodePush.InstallMode.IMMEDIATE },
+            {
+              deploymentKey: deploymentKey,
+              installMode: CodePush.InstallMode.IMMEDIATE,
+            },
             (status) => {
               switch (status) {
                 case CodePush.SyncStatus.UPDATE_INSTALLED:
@@ -134,20 +151,30 @@ export const CodePushOptions = () => {
                   setLoadStatus("Installing update, app will restart")
                   break
                 case CodePush.SyncStatus.UP_TO_DATE:
-                  setLoadStatus("No updates available, checking for pending updates")
-                  CodePush.getUpdateMetadata(CodePush.UpdateState.PENDING).then((update) => {
-                    if (update) {
-                      setLoadStatus("Update found, installing, the app will restart")
-                      setLoading(false)
-                      update.install(CodePush.InstallMode.IMMEDIATE)
-                    } else {
-                      setLoadStatus("No update found, check the deployment in codepush")
-                      setLoading(false)
+                  setLoadStatus(
+                    "No updates available, checking for pending updates"
+                  )
+                  CodePush.getUpdateMetadata(CodePush.UpdateState.PENDING).then(
+                    (update) => {
+                      if (update) {
+                        setLoadStatus(
+                          "Update found, installing, the app will restart"
+                        )
+                        setLoading(false)
+                        update.install(CodePush.InstallMode.IMMEDIATE)
+                      } else {
+                        setLoadStatus(
+                          "No update found, check the deployment in codepush"
+                        )
+                        setLoading(false)
+                      }
                     }
-                  })
+                  )
                   break
                 case CodePush.SyncStatus.UNKNOWN_ERROR:
-                  setErrorMessage("Sync failed with error, try again or check deployment")
+                  setErrorMessage(
+                    "Sync failed with error, try again or check deployment"
+                  )
                   setLoading(false)
                   break
                 default:
@@ -155,7 +182,8 @@ export const CodePushOptions = () => {
               }
             },
             (progress) => {
-              const loadProgress = (progress.receivedBytes / progress.totalBytes) * 100
+              const loadProgress =
+                (progress.receivedBytes / progress.totalBytes) * 100
               setLoadProgress(loadProgress)
             },
             (codePushPackage) => {

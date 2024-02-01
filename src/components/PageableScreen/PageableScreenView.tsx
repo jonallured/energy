@@ -15,10 +15,14 @@ interface PageableScreenViewProps {
   prefetchScreensCount?: number
 }
 
-export const PageableScreenView: React.FC<PageableScreenViewProps> = (props) => {
+export const PageableScreenView: React.FC<PageableScreenViewProps> = (
+  props
+) => {
   const { screens, initialScreenName, prefetchScreensCount = 1 } = props
   const [activeScreenIndex, setActiveScreenIndex] = useState(
-    initialScreenName ? screens.findIndex((screen) => screen.name === initialScreenName) : 0
+    initialScreenName
+      ? screens.findIndex((screen) => screen.name === initialScreenName)
+      : 0
   )
 
   const context: PageableScreensContextValue = {
@@ -26,7 +30,9 @@ export const PageableScreenView: React.FC<PageableScreenViewProps> = (props) => 
     activeScreen: screens[activeScreenIndex],
   }
 
-  const handlePageSelected: PagerViewNativeProps["onPageSelected"] = (event) => {
+  const handlePageSelected: PagerViewNativeProps["onPageSelected"] = (
+    event
+  ) => {
     setActiveScreenIndex(event.nativeEvent.position)
   }
 
@@ -39,7 +45,8 @@ export const PageableScreenView: React.FC<PageableScreenViewProps> = (props) => 
         initialPage={activeScreenIndex}
       >
         {screens.map((screen, screenIndex) => {
-          const shouldRender = Math.abs(activeScreenIndex - screenIndex) <= prefetchScreensCount
+          const shouldRender =
+            Math.abs(activeScreenIndex - screenIndex) <= prefetchScreensCount
 
           return (
             <View style={styles.page} key={screen.name}>

@@ -27,7 +27,10 @@ export const SelectPartnerScreen: React.FC = () => {
       <Screen.Body>
         <RetryErrorBoundary
           catch={(e) => {
-            if (e.message.includes("Forbidden") && e.message.includes("Not authorized")) {
+            if (
+              e.message.includes("Forbidden") &&
+              e.message.includes("Not authorized")
+            ) {
               // this shows up if a user logs in with a user that is not a partner
               GlobalStore.actions.auth.signOut()
             }
@@ -53,9 +56,17 @@ interface SelectPartnerHeaderProps {
   searchValue: string
 }
 
-export const SelectPartnerHeader = ({ onSearchChange, searchValue }: SelectPartnerHeaderProps) => {
+export const SelectPartnerHeader = ({
+  onSearchChange,
+  searchValue,
+}: SelectPartnerHeaderProps) => {
   return (
-    <Flex mb={2} flexDirection="column" alignItems="center" backgroundColor="background">
+    <Flex
+      mb={2}
+      flexDirection="column"
+      alignItems="center"
+      backgroundColor="background"
+    >
       <Text variant="md" textAlign="center" my={2}>
         Select a partner to continue
       </Text>
@@ -125,7 +136,10 @@ const SelectPartner: React.FC = () => {
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <SelectPartnerHeader onSearchChange={setSearch} searchValue={search} />
+          <SelectPartnerHeader
+            onSearchChange={setSearch}
+            searchValue={search}
+          />
         }
         ListEmptyComponent={<ListEmptyComponent text="No partners found" />}
       />

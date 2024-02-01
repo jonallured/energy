@@ -1,4 +1,9 @@
-import { CheckCircleFillIcon, Flex, FlexProps, Touchable } from "@artsy/palette-mobile"
+import {
+  CheckCircleFillIcon,
+  Flex,
+  FlexProps,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { ArtworkImageModal } from "components/ArtworkImageModal"
 import { useState } from "react"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -43,8 +48,14 @@ export const ArtworkImageGridItem: React.FC<ArtworkImageGridItemProps> = ({
           <CachedImage uri={url} aspectRatio={1} />
         </Flex>
 
-        {selectedToAdd && (
-          <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
+        {!!selectedToAdd && (
+          <Flex
+            position="absolute"
+            top={1}
+            right={1}
+            alignItems="center"
+            justifyContent="center"
+          >
             <CheckCircleFillIcon height={30} width={30} fill="blue100" />
           </Flex>
         )}

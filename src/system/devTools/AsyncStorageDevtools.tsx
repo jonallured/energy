@@ -6,7 +6,8 @@
 
 export const AsyncStorageDevtools: React.FC = () => {
   if (__DEV__) {
-    const FlipperAsyncStorage = require("rn-flipper-async-storage-advanced").default
+    const FlipperAsyncStorage =
+      require("rn-flipper-async-storage-advanced").default
     return <FlipperAsyncStorage />
   }
 

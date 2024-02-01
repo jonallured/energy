@@ -11,7 +11,9 @@ export const renderWithWrappers = (
 
   try {
     return render(
-      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>{component}</Boot>
+      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>
+        {component}
+      </Boot>
     )
   } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {

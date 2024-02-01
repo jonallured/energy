@@ -12,7 +12,8 @@ export const Versions = {
   MigrateToUpstreamPesistedStateMigrations: 5,
 }
 
-export const CURRENT_APP_VERSION = Versions.MigrateToUpstreamPesistedStateMigrations
+export const CURRENT_APP_VERSION =
+  Versions.MigrateToUpstreamPesistedStateMigrations
 
 export type Migrations = Record<number, (oldState: any) => any>
 

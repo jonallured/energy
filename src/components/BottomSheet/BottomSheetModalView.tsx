@@ -11,7 +11,14 @@ import {
   ZINDEX,
 } from "@artsy/palette-mobile"
 import { BottomSheetModal, BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { forwardRef, ReactElement, useCallback, useImperativeHandle, useMemo, useRef } from "react"
+import {
+  forwardRef,
+  ReactElement,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface BottomSheetModalViewProps {
@@ -25,93 +32,94 @@ export interface BottomSheetRef {
   closeBottomSheetModal(): void
 }
 
-export const BottomSheetModalView = forwardRef<BottomSheetRef, BottomSheetModalViewProps>(
-  (props, ref) => {
-    const isDarkMode = useIsDarkMode()
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null)
-    const color = useColor()
+export const BottomSheetModalView = forwardRef<
+  BottomSheetRef,
+  BottomSheetModalViewProps
+>((props, ref) => {
+  const isDarkMode = useIsDarkMode()
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const color = useColor()
 
-    const snapPoints = useMemo(() => [props.modalHeight], [])
+  const snapPoints = useMemo(() => [props.modalHeight], [])
 
-    useImperativeHandle(ref, () => ({
-      showBottomSheetModal() {
-        presentModal()
-      },
-      closeBottomSheetModal() {
-        closeModal()
-      },
-    }))
+  useImperativeHandle(ref, () => ({
+    showBottomSheetModal() {
+      presentModal()
+    },
+    closeBottomSheetModal() {
+      closeModal()
+    },
+  }))
 
-    const presentModal = useCallback(() => {
-      bottomSheetModalRef.current?.present()
-    }, [])
+  const presentModal = useCallback(() => {
+    bottomSheetModalRef.current?.present()
+  }, [])
 
-    const closeModal = useCallback(() => {
-      bottomSheetModalRef.current?.close()
-    }, [])
+  const closeModal = useCallback(() => {
+    bottomSheetModalRef.current?.close()
+  }, [])
 
-    return (
-      <BottomSheetModal
-        style={{
-          ...getBottomSheetShadowStyle(isDarkMode),
-          zIndex: ZINDEX.bottomSheetModalView,
-        }}
-        backdropComponent={() => (
-          <Touchable
-            style={{
-              opacity: 0.0,
-              width: "100%",
-              height: "100%",
-              position: "absolute",
-            }}
-            underlayColor="transparent"
-            onPress={() => bottomSheetModalRef.current?.close()}
-          >
-            <Flex backgroundColor="black" height="100%" />
-          </Touchable>
-        )}
-        enablePanDownToClose
-        ref={bottomSheetModalRef}
-        snapPoints={snapPoints}
-        index={0}
-        handleComponent={() => (
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            height="50px"
-            backgroundColor="surface"
-            borderTopLeftRadius={10}
-            borderTopRightRadius={10}
-          >
-            <Flex m={2} position="absolute" left="0">
-              <Touchable
-                onPress={() => bottomSheetModalRef.current?.close()}
-                underlayColor="transparent"
-                hitSlop={DEFAULT_HIT_SLOP}
-              >
-                <CloseIcon fill="onSurfaceHigh" />
-              </Touchable>
-            </Flex>
-            <Text weight="medium">More</Text>
-          </Flex>
-        )}
-      >
-        <BottomSheetScrollView
+  return (
+    <BottomSheetModal
+      style={{
+        ...getBottomSheetShadowStyle(isDarkMode),
+        zIndex: ZINDEX.bottomSheetModalView,
+      }}
+      backdropComponent={() => (
+        <Touchable
           style={{
-            backgroundColor: color("surface"),
+            opacity: 0.0,
+            width: "100%",
+            height: "100%",
+            position: "absolute",
           }}
+          underlayColor="transparent"
+          onPress={() => bottomSheetModalRef.current?.close()}
         >
-          <Separator />
-          <Flex alignItems="center">
-            {props.modalRows}
-            <Spacer y={4} />
-            <Flex mx={2}>{props.extraButtons}</Flex>
+          <Flex backgroundColor="black" height="100%" />
+        </Touchable>
+      )}
+      enablePanDownToClose
+      ref={bottomSheetModalRef}
+      snapPoints={snapPoints}
+      index={0}
+      handleComponent={() => (
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          height="50px"
+          backgroundColor="surface"
+          borderTopLeftRadius={10}
+          borderTopRightRadius={10}
+        >
+          <Flex m={2} position="absolute" left="0">
+            <Touchable
+              onPress={() => bottomSheetModalRef.current?.close()}
+              underlayColor="transparent"
+              hitSlop={DEFAULT_HIT_SLOP}
+            >
+              <CloseIcon fill="onSurfaceHigh" />
+            </Touchable>
           </Flex>
-        </BottomSheetScrollView>
-      </BottomSheetModal>
-    )
-  }
-)
+          <Text weight="medium">More</Text>
+        </Flex>
+      )}
+    >
+      <BottomSheetScrollView
+        style={{
+          backgroundColor: color("surface"),
+        }}
+      >
+        <Separator />
+        <Flex alignItems="center">
+          {props.modalRows}
+          <Spacer y={4} />
+          <Flex mx={2}>{props.extraButtons}</Flex>
+        </Flex>
+      </BottomSheetScrollView>
+    </BottomSheetModal>
+  )
+})
 
 interface BottomSheetModalRowProps {
   Icon: ReactElement

@@ -22,10 +22,15 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
   onItemPress,
   isInTabs,
 }) => {
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const { data, refreshControl } = useSystemQueryLoader<ArtistsListQuery>(artistsListQuery, {
-    partnerID,
-  })
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
+  const { data, refreshControl } = useSystemQueryLoader<ArtistsListQuery>(
+    artistsListQuery,
+    {
+      partnerID,
+    }
+  )
   const artists = extractNodes(data.partner?.allArtistsConnection)
   const counts = data.partner?.allArtistsConnection?.edges?.map(
     (edge) => edge?.counts?.managedArtworks as string
@@ -44,7 +49,9 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
       data={items}
       numColumns={1}
       initialNumToRender={30}
-      contentContainerStyle={isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle}
+      contentContainerStyle={
+        isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle
+      }
       renderItem={({ item }) => {
         const artist = item[0]
         const count = item[1]
@@ -54,7 +61,11 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
         }
 
         return (
-          <ArtistListItem artist={artist} count={count} onPress={(item) => onItemPress(item)} />
+          <ArtistListItem
+            artist={artist}
+            count={count}
+            onPress={(item) => onItemPress(item)}
+          />
         )
       }}
       keyExtractor={(item) => item[0]?.internalID as string}

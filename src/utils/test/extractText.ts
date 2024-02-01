@@ -1,6 +1,8 @@
 import { ReactTestInstance } from "react-test-renderer"
 
-export const extractText = (root: ReactTestInstance | string | number): string => {
+export const extractText = (
+  root: ReactTestInstance | string | number
+): string => {
   if (typeof root === "string") {
     return root
   }

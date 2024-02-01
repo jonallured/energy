@@ -1,4 +1,11 @@
-import { Avatar, Flex, FlexProps, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import {
+  Avatar,
+  Flex,
+  FlexProps,
+  Text,
+  Touchable,
+  useSpace,
+} from "@artsy/palette-mobile"
 import {
   ArtistListItem_artist$data,
   ArtistListItem_artist$key,
@@ -14,8 +21,15 @@ export interface ArtistListItemProps extends FlexProps {
   onPress: (item: ArtistListItem_artist$data) => void
 }
 
-export const ArtistListItem: React.FC<ArtistListItemProps> = ({ artist, count, onPress }) => {
-  const data = useFragment<ArtistListItem_artist$key>(ArtistListItemFragment, artist)
+export const ArtistListItem: React.FC<ArtistListItemProps> = ({
+  artist,
+  count,
+  onPress,
+}) => {
+  const data = useFragment<ArtistListItem_artist$key>(
+    ArtistListItemFragment,
+    artist
+  )
   const variant = isTablet() ? "sm" : "xs"
   const src = useLocalUri(data.imageUrl!)
   const screenWidth = useWindowDimensions().width

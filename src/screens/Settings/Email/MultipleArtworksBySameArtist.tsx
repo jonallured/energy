@@ -4,10 +4,15 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const MultipleArtworksBySameArtist = () => {
-  useTrackScreen({ name: "EmailSettingsMultipleArtworksBySameArtist", type: "Settings" })
+  useTrackScreen({
+    name: "EmailSettingsMultipleArtworksBySameArtist",
+    type: "Settings",
+  })
 
   const navigation = useNavigation()
-  const value = GlobalStore.useAppState((state) => state.email.multipleArtworksBySameArtistSubject)
+  const value = GlobalStore.useAppState(
+    (state) => state.email.multipleArtworksBySameArtistSubject
+  )
 
   return (
     <Screen>
@@ -17,7 +22,9 @@ export const MultipleArtworksBySameArtist = () => {
         <Input
           multiline
           value={value}
-          onChangeText={(e) => GlobalStore.actions.email.setMultipleArtworksBySameArtistSubject(e)}
+          onChangeText={(e) =>
+            GlobalStore.actions.email.setMultipleArtworksBySameArtistSubject(e)
+          }
         />
         <Text m={1} color="onBackgroundMedium">
           $artist will be replaced by the name of the artist

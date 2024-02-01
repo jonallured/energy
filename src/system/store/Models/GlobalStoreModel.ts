@@ -9,7 +9,10 @@ import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "./DevicePrefsModel"
 import { EmailModel, getEmailModel } from "./EmailModel"
 import { getNetworkStatusModel, NetworkStatusModel } from "./NetworkStatusModel"
-import { getPresentationModeModel, PresentationModeModel } from "./PresentationModeModel"
+import {
+  getPresentationModeModel,
+  PresentationModeModel,
+} from "./PresentationModeModel"
 import { SelectModeModel, getSelectModeModel } from "./SelectModeModel"
 
 interface GlobalStoreStateModel {

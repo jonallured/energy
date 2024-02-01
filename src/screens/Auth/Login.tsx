@@ -27,13 +27,19 @@ export interface LoginSchema {
 
 export const loginSchema = object().shape({
   email: string().email("Please provide a valid email address"),
-  password: string().test("password", "Password field is required", (value) => value !== ""),
+  password: string().test(
+    "password",
+    "Password field is required",
+    (value) => value !== ""
+  ),
   otp: string().test("otp", "This field is required", (value) => value !== ""),
 })
 
-const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=net.artsy.app"
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=net.artsy.app"
 const PLAY_STORE_SCHEME_URL = "artsy://"
-const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
+const APP_STORE_URL =
+  "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
 const APP_SCHEME_URL = "artsy:///"
 
 export const LoginScreen = () => {
@@ -70,11 +76,12 @@ export const LoginScreen = () => {
     initialErrors: {},
     onSubmit: async ({ email, password, otp }, { setErrors, validateForm }) => {
       validateForm()
-      const { success, message } = await GlobalStore.actions.auth.signInUsingEmail({
-        email,
-        password,
-        otp: otp === "" ? undefined : otp.trim(),
-      })
+      const { success, message } =
+        await GlobalStore.actions.auth.signInUsingEmail({
+          email,
+          password,
+          otp: otp === "" ? undefined : otp.trim(),
+        })
 
       if (message === "otp_missing" || message === "on_demand_otp_missing") {
         setShowOtpInputField(true)
@@ -87,7 +94,11 @@ export const LoginScreen = () => {
         return
       }
 
-      if (["otp_missing", "on_demand_otp_missing", "invalid_otp"].includes(message)) {
+      if (
+        ["otp_missing", "on_demand_otp_missing", "invalid_otp"].includes(
+          message
+        )
+      ) {
         setErrors({ otp: "Incorrect authentication code" })
       } else {
         setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
@@ -99,7 +110,8 @@ export const LoginScreen = () => {
   // TODO: Test this on Android
   const handleOpenArtsyMobile = async () => {
     const storeURL = Platform.OS === "android" ? PLAY_STORE_URL : APP_STORE_URL
-    const appSchemeURL = Platform.OS === "android" ? PLAY_STORE_SCHEME_URL : APP_SCHEME_URL
+    const appSchemeURL =
+      Platform.OS === "android" ? PLAY_STORE_SCHEME_URL : APP_SCHEME_URL
 
     try {
       const supported = await Linking.canOpenURL(appSchemeURL)

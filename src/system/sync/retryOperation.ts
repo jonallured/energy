@@ -1,4 +1,7 @@
-import PromisePool, { OnProgressCallback, Stoppable } from "@supercharge/promise-pool"
+import PromisePool, {
+  OnProgressCallback,
+  Stoppable,
+} from "@supercharge/promise-pool"
 
 const MAX_RETRY_ATTEMPTS = 2
 

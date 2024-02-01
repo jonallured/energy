@@ -9,10 +9,15 @@ import { extractNodes } from "utils/extractNodes"
 export const Shows: React.FC = () => {
   useTrackScreen({ name: "Shows", type: "Shows" })
 
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)
-  const { data, refreshControl } = useSystemQueryLoader<ShowsQuery>(showsQuery, {
-    partnerID: partnerID!,
-  })
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )
+  const { data, refreshControl } = useSystemQueryLoader<ShowsQuery>(
+    showsQuery,
+    {
+      partnerID: partnerID!,
+    }
+  )
   const shows = extractNodes(data.partner?.showsConnection)
 
   return (

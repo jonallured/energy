@@ -21,7 +21,9 @@ import { AlbumInstalls } from "./AlbumInstalls"
 type AlbumTabsRoute = RouteProp<NavigationScreens, "AlbumTabs">
 
 export const AlbumTabs = () => {
-  const [bottomSheetRef, setBottomSheetRef] = useState<BottomSheetRef | null>(null)
+  const [bottomSheetRef, setBottomSheetRef] = useState<BottomSheetRef | null>(
+    null
+  )
   const { albumId } = useRoute<AlbumTabsRoute>().params
   const { album } = useAlbum({ albumId })
 

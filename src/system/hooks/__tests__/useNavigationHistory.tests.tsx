@@ -22,7 +22,9 @@ describe("#useNavigationHistory", () => {
     const environment = createMockEnvironment()
 
     return (
-      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>{children}</Boot>
+      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>
+        {children}
+      </Boot>
     )
   }
 
@@ -56,7 +58,8 @@ describe("#useNavigationHistory", () => {
       result.current.saveNavigationHistory(lookupKey)
 
       const navigationHistory =
-        __globalStoreTestUtils__?.getCurrentState().system.sessionState.navigationHistory
+        __globalStoreTestUtils__?.getCurrentState().system.sessionState
+          .navigationHistory
 
       expect(navigationHistory).toEqual({ home: ["HomeRoute", { foo: "bar" }] })
     })

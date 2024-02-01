@@ -1,4 +1,9 @@
-import { Button, Flex, SCREEN_HORIZONTAL_PADDING, ZINDEX } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  SCREEN_HORIZONTAL_PADDING,
+  ZINDEX,
+} from "@artsy/palette-mobile"
 import { FadeIn } from "components/Animations/FadeIn"
 import { isEqual } from "lodash"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -12,9 +17,15 @@ interface SelectModeProps {
   unselectAll: () => void
 }
 
-export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, unselectAll }) => {
+export const SelectMode: React.FC<SelectModeProps> = ({
+  allSelected,
+  selectAll,
+  unselectAll,
+}) => {
   const insets = useSafeAreaInsets()
-  const isActive = GlobalStore.useAppState((state) => state.selectMode.sessionState.isActive)
+  const isActive = GlobalStore.useAppState(
+    (state) => state.selectMode.sessionState.isActive
+  )
   const isDarkMode = useIsDarkMode()
 
   const handleSelectButtonPress = () => {
@@ -61,7 +72,10 @@ export const SelectMode: React.FC<SelectModeProps> = ({ allSelected, selectAll, 
   )
 }
 
-export const isAllSelected = (selectedItems: SelectedItem[], items: SelectedItem[]) => {
+export const isAllSelected = (
+  selectedItems: SelectedItem[],
+  items: SelectedItem[]
+) => {
   const allSelected = isEqual(
     new Set(selectedItems.map((item) => item?.internalID)),
     new Set(items.map((item) => item?.internalID))
@@ -69,7 +83,10 @@ export const isAllSelected = (selectedItems: SelectedItem[], items: SelectedItem
   return allSelected
 }
 
-export const isSelected = (selectedItems: SelectedItem[], item: SelectedItem) => {
+export const isSelected = (
+  selectedItems: SelectedItem[],
+  item: SelectedItem
+) => {
   const isSelected = !!selectedItems.find(
     (selectedItem) => selectedItem?.internalID === item?.internalID
   )

@@ -38,7 +38,8 @@ describe("useValidateAlbumItems", () => {
     const mapResponseToIDs = jest.fn(() => ["1", "3"])
     const removeItemFromAlbumsMock = jest.fn()
     const alertSpy = jest.spyOn(Alert, "alert")
-    GlobalStore.actions.albums.removeItemFromAlbums = removeItemFromAlbumsMock as any
+    GlobalStore.actions.albums.removeItemFromAlbums =
+      removeItemFromAlbumsMock as any
 
     const query = `
       query {

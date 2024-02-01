@@ -1,6 +1,9 @@
 import { Button, Flex, Join, Spacer, Text, Screen } from "@artsy/palette-mobile"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
+import {
+  activateKeepAwake,
+  deactivateKeepAwake,
+} from "@sayem314/react-native-keep-awake"
 import { ProgressBar } from "components/ProgressBar"
 import { DateTime } from "luxon"
 import { useEffect, useMemo, useState } from "react"
@@ -17,22 +20,35 @@ interface OfflineModeSyncProps {
   onCancelSync: () => void
 }
 
-export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }) => {
+export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({
+  onCancelSync,
+}) => {
   const { trackCompletedOfflineSync } = useAppTracking()
 
   const navigation = useNavigation()
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID)!
-  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )!
+  const isUserDev = GlobalStore.useAppState(
+    (state) => state.artsyPrefs.isUserDev
+  )
   const offlineSyncedChecksum = GlobalStore.useAppState(
     (state) => state.devicePrefs.offlineSyncedChecksum
   )!
-  const { setOfflineSyncedChecksum, setLastSync } = GlobalStore.actions.devicePrefs
-  const { relayEnvironment, resetRelayEnvironment } = useSystemRelayEnvironment()
+  const { setOfflineSyncedChecksum, setLastSync } =
+    GlobalStore.actions.devicePrefs
+  const { relayEnvironment, resetRelayEnvironment } =
+    useSystemRelayEnvironment()
 
-  const [syncResultsData, setSyncResultsChange] = useState<SyncResultsData | {}>({})
+  const [syncResultsData, setSyncResultsChange] = useState<
+    SyncResultsData | {}
+  >({})
   const [urlMap, setURLMap] = useState<Record<string, string> | {}>({})
   const [statusChange, setStatusChange] = useState("")
-  const [stepChange, setStepChange] = useState<{ current: number; total: number }>({
+  const [stepChange, setStepChange] = useState<{
+    current: number
+    total: number
+  }>({
     current: 0,
     total: 0,
   })
@@ -143,7 +159,9 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({ onCancelSync }
 
           <Spacer y={2} />
 
-          <Text color="onBackgroundLow">Last sync: {offlineSyncedChecksum}</Text>
+          <Text color="onBackgroundLow">
+            Last sync: {offlineSyncedChecksum}
+          </Text>
           <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
 
           <JSONTree data={syncResultsData as Record<string, string>} />

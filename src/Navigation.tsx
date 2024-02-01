@@ -1,17 +1,39 @@
 import { Flex } from "@artsy/palette-mobile"
-import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { StatusBar } from "components/StatusBar"
 import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
-import { AlbumsNavigation, AlbumNavigationScreens } from "screens/Albums/navigation"
-import { ArtistNavigation, ArtistNavigationScreens } from "screens/Artists/navigation"
-import { ArtworkNavigation, ArtworkNavigationScreens } from "screens/Artwork/navigation"
+import {
+  AlbumsNavigation,
+  AlbumNavigationScreens,
+} from "screens/Albums/navigation"
+import {
+  ArtistNavigation,
+  ArtistNavigationScreens,
+} from "screens/Artists/navigation"
+import {
+  ArtworkNavigation,
+  ArtworkNavigationScreens,
+} from "screens/Artwork/navigation"
 import { AuthNavigationScreens, AuthNavigation } from "screens/Auth/navigation"
 import { HomeTabs } from "screens/HomeTabs"
-import { SearchNavigation, SearchNavigationScreens } from "screens/Search/navigation"
-import { SettingsNavigation, SettingsNavigationScreens } from "screens/Settings/navigation"
-import { ShowsNavigation, ShowsNavigationScreens } from "screens/Shows/navigation"
+import {
+  SearchNavigation,
+  SearchNavigationScreens,
+} from "screens/Search/navigation"
+import {
+  SettingsNavigation,
+  SettingsNavigationScreens,
+} from "screens/Settings/navigation"
+import {
+  ShowsNavigation,
+  ShowsNavigationScreens,
+} from "screens/Shows/navigation"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { useErrorReporting } from "system/hooks/useErrorReporting"
 import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
@@ -60,8 +82,11 @@ export const Main = () => {
   const { maybeTrackFirstInstall } = useAppTracking()
   const isDoneBooting = useSystemIsDoneBooting()
   const { incrementLaunchCount } = GlobalStore.actions.system
-  const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
-  const selectedPartner = GlobalStore.useAppState((state) => state.auth.activePartnerID)
+  const isLoggedIn =
+    GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
+  const selectedPartner = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID
+  )
   const isDarkMode = useIsDarkMode()
 
   useAndroidNavigationBarThemeListener()
@@ -92,7 +117,10 @@ export const Main = () => {
   return (
     <Flex backgroundColor="background" flex={1}>
       <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
-        <StackNav.Navigator screenOptions={{ headerShown: false }} initialRouteName="HomeTabs">
+        <StackNav.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="HomeTabs"
+        >
           {AuthNavigation({ isLoggedIn, selectedPartner })}
 
           {!!isLoggedIn && !!selectedPartner && (

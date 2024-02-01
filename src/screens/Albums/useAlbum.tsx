@@ -27,8 +27,12 @@ export const useAlbum = ({ albumId }: UseAlbumProps): UseAlbumReturnType => {
   const artworks = usePresentationFilteredArtworks(
     filter(items, { __typename: "Artwork" }) as SelectedItemArtwork[]
   )
-  const documents = filter(items, { __typename: "PartnerDocument" }) as SelectedItemDocument[]
-  const installs = filter(items, { __typename: "Image" }) as SelectedItemInstall[]
+  const documents = filter(items, {
+    __typename: "PartnerDocument",
+  }) as SelectedItemDocument[]
+  const installs = filter(items, {
+    __typename: "Image",
+  }) as SelectedItemInstall[]
 
   return {
     album,

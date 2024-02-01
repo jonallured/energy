@@ -326,7 +326,8 @@ describe("syncManager", () => {
       saveFileToCacheMock.mockImplementation(saveFileToCacheSpy)
 
       tests.saveRelayDataToOfflineCache({
-        relayEnvironment: relayEnvironmentMock as unknown as RelayModernEnvironment,
+        relayEnvironment:
+          relayEnvironmentMock as unknown as RelayModernEnvironment,
       })
 
       expect(toJSONSpy).toBeCalled()
@@ -339,13 +340,17 @@ describe("syncManager", () => {
 
     it("retrieves file from cache", async () => {
       const resetRelayEnvironmentSpy = jest.fn()
-      const getFileFromCacheSpy = jest.fn().mockResolvedValue('{"data":"mock-json"}')
+      const getFileFromCacheSpy = jest
+        .fn()
+        .mockResolvedValue('{"data":"mock-json"}')
       getFileFromCacheMock.mockImplementation(getFileFromCacheSpy)
       loadRelayDataFromOfflineCache(resetRelayEnvironmentSpy)
 
       await flushPromiseQueue()
 
-      expect(resetRelayEnvironmentSpy).toHaveBeenCalledWith({ data: "mock-json" })
+      expect(resetRelayEnvironmentSpy).toHaveBeenCalledWith({
+        data: "mock-json",
+      })
     })
   })
 

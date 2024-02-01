@@ -15,7 +15,9 @@ interface AlbumInstallsProps {
 export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ albumId }) => {
   useTrackScreen({ name: "AlbumInstalls", type: "Album" })
 
-  const partnerID = GlobalStore.useAppState((state) => state.auth.activePartnerID as string)
+  const partnerID = GlobalStore.useAppState(
+    (state) => state.auth.activePartnerID as string
+  )
   const { installs } = useAlbum({ albumId })
   const installIDs = installs?.map((install) => install.internalID as string)
 
@@ -27,7 +29,8 @@ export const AlbumInstalls: React.FC<AlbumInstallsProps> = ({ albumId }) => {
     idsToValidate: installIDs,
     mapResponseToIDs: (data) => {
       return extractNodes(data.partner?.showsConnection).flatMap(
-        (show) => show.images?.map((image) => image?.internalID as string) as string[]
+        (show) =>
+          show.images?.map((image) => image?.internalID as string) as string[]
       )
     },
   })

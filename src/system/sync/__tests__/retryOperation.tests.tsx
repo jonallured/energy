@@ -28,7 +28,11 @@ describe("retryOperation", () => {
     })
 
     expect(execute).toHaveBeenCalledTimes(3)
-    expect(execute).toHaveBeenCalledWith(error, expect.anything(), expect.anything())
+    expect(execute).toHaveBeenCalledWith(
+      error,
+      expect.anything(),
+      expect.anything()
+    )
   })
 
   it("should not execute the given function if there are no errors", async () => {
@@ -57,7 +61,11 @@ describe("retryOperation", () => {
     })
 
     expect(execute).toHaveBeenCalledTimes(3)
-    expect(execute).toHaveBeenCalledWith(error, expect.anything(), expect.anything())
+    expect(execute).toHaveBeenCalledWith(
+      error,
+      expect.anything(),
+      expect.anything()
+    )
     expect(shouldRetry).toHaveBeenCalledTimes(3)
   })
 
@@ -74,7 +82,11 @@ describe("retryOperation", () => {
     })
 
     expect(execute).toHaveBeenCalledTimes(1)
-    expect(execute).toHaveBeenCalledWith(error, expect.anything(), expect.anything())
+    expect(execute).toHaveBeenCalledWith(
+      error,
+      expect.anything(),
+      expect.anything()
+    )
     expect(shouldRetry).toHaveBeenCalledTimes(1)
   })
 

@@ -1,4 +1,8 @@
-import { NavigationProp, useNavigation, useRoute } from "@react-navigation/native"
+import {
+  NavigationProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export function useSaveNavigationHistory() {
@@ -27,7 +31,10 @@ export function useNavigateToSavedHistory() {
     (state) => state.system.sessionState.navigationHistory
   )
 
-  const navigateToSavedHistory = ({ lookupKey, onComplete }: NavigateToSavedHistoryProps) => {
+  const navigateToSavedHistory = ({
+    lookupKey,
+    onComplete,
+  }: NavigateToSavedHistoryProps) => {
     if (!navigationHistory[lookupKey]) {
       navigation.goBack()
       onComplete?.()

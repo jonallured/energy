@@ -6,7 +6,10 @@ interface ErrorViewProps {
   withoutBackButton?: boolean
 }
 
-export const ErrorView = ({ error, withoutBackButton = false }: ErrorViewProps) => {
+export const ErrorView = ({
+  error,
+  withoutBackButton = false,
+}: ErrorViewProps) => {
   const navigation = useNavigation()
 
   return (

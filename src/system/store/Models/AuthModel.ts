@@ -36,7 +36,10 @@ const authModelInitialState: AuthModelState = {
 
 export interface AuthModel extends AuthModelState {
   setState: Action<this, Partial<AuthModelState>>
-  setActivePartnerID: Action<this, { internalID: string; name: string; slug: string }>
+  setActivePartnerID: Action<
+    this,
+    { internalID: string; name: string; slug: string }
+  >
   getUserID: Thunk<this, void, {}, GlobalStoreModel>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   gravityUnauthenticatedRequest: Thunk<
@@ -89,11 +92,16 @@ export const getAuthModel = (): AuthModel => ({
 
   getXAppToken: thunk(async (actions, _payload, context) => {
     const { xAppToken, xApptokenExpiresIn } = context.getState()
-    if (xAppToken && xApptokenExpiresIn && new Date() < new Date(xApptokenExpiresIn)) {
+    if (
+      xAppToken &&
+      xApptokenExpiresIn &&
+      new Date() < new Date(xApptokenExpiresIn)
+    ) {
       return xAppToken
     }
 
-    const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
+    const gravityBaseURL =
+      context.getStoreState().config.environment.strings.gravityURL
 
     const tokenURL = `${gravityBaseURL}/api/v1/xapp_token?${stringify({
       client_id: Config.ARTSY_API_CLIENT_KEY,
@@ -121,7 +129,8 @@ export const getAuthModel = (): AuthModel => ({
   }),
 
   gravityUnauthenticatedRequest: thunk(async (actions, payload, context) => {
-    const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
+    const gravityBaseURL =
+      context.getStoreState().config.environment.strings.gravityURL
     const xAppToken = await actions.getXAppToken()
 
     try {

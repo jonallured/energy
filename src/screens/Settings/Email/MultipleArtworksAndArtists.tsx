@@ -4,10 +4,15 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export const MultipleArtworksAndArtists = () => {
-  useTrackScreen({ name: "EmailSettingsMultipleArtworksAndArtists", type: "Settings" })
+  useTrackScreen({
+    name: "EmailSettingsMultipleArtworksAndArtists",
+    type: "Settings",
+  })
 
   const navigation = useNavigation()
-  const value = GlobalStore.useAppState((state) => state.email.multipleArtworksAndArtistsSubject)
+  const value = GlobalStore.useAppState(
+    (state) => state.email.multipleArtworksAndArtistsSubject
+  )
 
   return (
     <Screen>
@@ -17,7 +22,9 @@ export const MultipleArtworksAndArtists = () => {
         <Input
           multiline
           value={value}
-          onChangeText={(e) => GlobalStore.actions.email.setMultipleArtworksAndArtistsSubject(e)}
+          onChangeText={(e) =>
+            GlobalStore.actions.email.setMultipleArtworksAndArtistsSubject(e)
+          }
         />
       </Screen.Body>
     </Screen>

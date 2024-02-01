@@ -8,14 +8,20 @@ import { ClassTheme, Separator, Text, TextProps } from "@artsy/palette-mobile"
 import { decode } from "html-entities"
 import _ from "lodash"
 import { Linking, Text as RNText, View } from "react-native"
-import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
+import SimpleMarkdown, {
+  ParserRule,
+  ParserRules,
+  ReactNodeOutput,
+} from "simple-markdown"
 
 interface OurReactRule extends Partial<ParserRule> {
   // simpler typings here, for better intellisense
   react?: ReactNodeOutput
 }
 
-export type MarkdownRules = Partial<{ [k in keyof SimpleMarkdown.DefaultRules]: OurReactRule }>
+export type MarkdownRules = Partial<{
+  [k in keyof SimpleMarkdown.DefaultRules]: OurReactRule
+}>
 
 // just to get better intellisense when creating the rules
 function createReactRules(rules: MarkdownRules): ParserRules {

@@ -16,8 +16,12 @@ const createNetworkLayer = () => {
    */
   const { errorMiddleware } = require("../middlewares/errorMiddleware")
   const { authMiddleware } = require("../middlewares/authMiddleware")
-  const { metaphysicsUrlMiddleware } = require("../middlewares/metaphysicsUrlMiddleware")
-  const { checkAuthenticationMiddleware } = require("../middlewares/checkAuthenticationMiddleware")
+  const {
+    metaphysicsUrlMiddleware,
+  } = require("../middlewares/metaphysicsUrlMiddleware")
+  const {
+    checkAuthenticationMiddleware,
+  } = require("../middlewares/checkAuthenticationMiddleware")
 
   const network = new RelayNetworkLayer(
     [
@@ -29,7 +33,11 @@ const createNetworkLayer = () => {
       metaphysicsUrlMiddleware(),
       // @ts-ignore
       errorMiddleware(),
-      __DEV__ && !__TEST__ ? (showLoggerMiddleware ? loggerMiddleware() : null) : null,
+      __DEV__ && !__TEST__
+        ? showLoggerMiddleware
+          ? loggerMiddleware()
+          : null
+        : null,
       // __DEV__ ? relayErrorMiddleware() : null,
       __DEV__ ? (showPerfMiddleware ? perfMiddleware() : null) : null,
       authMiddleware(),

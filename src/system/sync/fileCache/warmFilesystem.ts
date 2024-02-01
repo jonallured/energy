@@ -11,7 +11,9 @@ export const warmFilesystem = async () => {
       await exists(PATH_CACHE_IMAGES),
       await exists(PATH_CACHE_DOCUMENTS),
       await exists(PATH_CACHE_JSON),
-    ]).then(([images, documents, relayData]) => images && documents && relayData)
+    ]).then(
+      ([images, documents, relayData]) => images && documents && relayData
+    )
 
     if (!cacheReady) {
       await createDirectories()

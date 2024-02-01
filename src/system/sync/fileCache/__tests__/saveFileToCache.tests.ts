@@ -1,6 +1,9 @@
 import { writeFile } from "react-native-fs"
 import { getFilePath } from "system/sync/fileCache/getFilePath"
-import { SaveFileProps, saveFileToCache } from "system/sync/fileCache/saveFileToCache"
+import {
+  SaveFileProps,
+  saveFileToCache,
+} from "system/sync/fileCache/saveFileToCache"
 import { warmFilesystem } from "system/sync/fileCache/warmFilesystem"
 
 jest.mock("react-native-fs", () => ({
@@ -39,7 +42,10 @@ describe("saveFileToCache", () => {
   it("should call getFilePath with type and filename if type is defined", async () => {
     getFilePathMock.mockReturnValueOnce("/cache/documents/test.txt")
     await saveFileToCache(props)
-    expect(getFilePath).toHaveBeenCalledWith({ type: "document", filename: "test.txt" })
+    expect(getFilePath).toHaveBeenCalledWith({
+      type: "document",
+      filename: "test.txt",
+    })
   })
 
   it("should call writeFile with the correct arguments", async () => {

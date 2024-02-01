@@ -61,10 +61,18 @@ describe("ArtistArtworks", () => {
           },
         })
         await waitFor(() => {
-          expect(queryByText("Date of not for sale and unpublished artwork")).toBeTruthy()
-          expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
-          expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
-          expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+          expect(
+            queryByText("Date of not for sale and unpublished artwork")
+          ).toBeTruthy()
+          expect(
+            queryByText("Date of artwork on sale but unpublished")
+          ).toBeTruthy()
+          expect(
+            queryByText("Date of not for sale and published artwork")
+          ).toBeTruthy()
+          expect(
+            queryByText("Date of artwork on sale and published")
+          ).toBeTruthy()
         })
       })
     })
@@ -79,10 +87,18 @@ describe("ArtistArtworks", () => {
         },
       })
       await waitFor(() => {
-        expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
-        expect(queryByText("Date of artwork on sale but unpublished")).toBeTruthy()
-        expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
-        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+        expect(
+          queryByText("Date of not for sale and unpublished artwork")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of artwork on sale but unpublished")
+        ).toBeTruthy()
+        expect(
+          queryByText("Date of not for sale and published artwork")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of artwork on sale and published")
+        ).toBeTruthy()
       })
     })
 
@@ -96,10 +112,18 @@ describe("ArtistArtworks", () => {
         },
       })
       await waitFor(() => {
-        expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
-        expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
-        expect(queryByText("Date of not for sale and published artwork")).toBeTruthy()
-        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+        expect(
+          queryByText("Date of not for sale and unpublished artwork")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of artwork on sale but unpublished")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of not for sale and published artwork")
+        ).toBeTruthy()
+        expect(
+          queryByText("Date of artwork on sale and published")
+        ).toBeTruthy()
       })
     })
 
@@ -113,10 +137,18 @@ describe("ArtistArtworks", () => {
         },
       })
       await waitFor(() => {
-        expect(queryByText("Date of not for sale and unpublished artwork")).toBeFalsy()
-        expect(queryByText("Date of artwork on sale but unpublished")).toBeFalsy()
-        expect(queryByText("Date of not for sale and published artwork")).toBeFalsy()
-        expect(queryByText("Date of artwork on sale and published")).toBeTruthy()
+        expect(
+          queryByText("Date of not for sale and unpublished artwork")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of artwork on sale but unpublished")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of not for sale and published artwork")
+        ).toBeFalsy()
+        expect(
+          queryByText("Date of artwork on sale and published")
+        ).toBeTruthy()
       })
     })
   })

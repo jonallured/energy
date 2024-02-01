@@ -16,12 +16,16 @@ export const OfflineModeSettings = () => {
   useTrackScreen({ name: "OfflineModeSettings", type: "Settings" })
 
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-  const isUserDev = GlobalStore.useAppState((state) => state.artsyPrefs.isUserDev)
+  const isUserDev = GlobalStore.useAppState(
+    (state) => state.artsyPrefs.isUserDev
+  )
   const offlineSyncedChecksum = GlobalStore.useAppState(
     (state) => state.devicePrefs.offlineSyncedChecksum
   )!
   const { clearCache } = GlobalStore.actions.devicePrefs
-  const lastSync = GlobalStore.useAppState((state) => state.devicePrefs.lastSync)
+  const lastSync = GlobalStore.useAppState(
+    (state) => state.devicePrefs.lastSync
+  )
   const isOnline = useIsOnline()
   const showDeveloperOptions = isUserDev || __DEV__
 
@@ -73,15 +77,15 @@ export const OfflineModeSettings = () => {
         </Text>
 
         <Text variant="xs" color="onBackgroundMedium">
-          Folio can be used when you're not connected to the internet, but you will need to cache
-          all the data before you go offline.
+          Folio can be used when you're not connected to the internet, but you
+          will need to cache all the data before you go offline.
         </Text>
 
         <Spacer y={1} />
 
         <Text variant="xs" color="onBackgroundMedium">
-          If you have over 1,000 artworks uploaded to your CMS, the sync may take several minutes.
-          You can resume the sync later at any time.
+          If you have over 1,000 artworks uploaded to your CMS, the sync may
+          take several minutes. You can resume the sync later at any time.
         </Text>
 
         <Screen.FullWidthDivider />
@@ -98,7 +102,8 @@ export const OfflineModeSettings = () => {
                 disabled={!isOnline}
                 variant={buttonVariant}
               >
-                {showResumeSyncText ? "Resume sync" : "Start sync"} {isOnline ? "" : " (Offline)"}
+                {showResumeSyncText ? "Resume sync" : "Start sync"}{" "}
+                {isOnline ? "" : " (Offline)"}
               </Button>
             )}
 
@@ -106,21 +111,29 @@ export const OfflineModeSettings = () => {
 
             {!isSyncing && (
               <>
-                <Button mt={1} block onPress={handleClearFileCache} variant={buttonVariant}>
+                <Button
+                  mt={1}
+                  block
+                  onPress={handleClearFileCache}
+                  variant={buttonVariant}
+                >
                   Clear cache
                 </Button>
 
                 {!!lastSync && (
                   <>
                     <Text color="onBackgroundMedium" mt={2}>
-                      Last sync: {DateTime.fromISO(lastSync).toLocaleString(DateTime.DATETIME_MED)}
+                      Last sync:{" "}
+                      {DateTime.fromISO(lastSync).toLocaleString(
+                        DateTime.DATETIME_MED
+                      )}
                     </Text>
 
                     {offlineSyncedChecksum !== relayChecksum && (
                       <>
                         <Text color="red100">
-                          Your synced data needs to be refreshed. Please tap the "Start sync" button
-                          above.
+                          Your synced data needs to be refreshed. Please tap the
+                          "Start sync" button above.
                         </Text>
                       </>
                     )}
@@ -132,7 +145,9 @@ export const OfflineModeSettings = () => {
                     <Text color="onBackgroundLow" mt={2}>
                       Last sync: {offlineSyncedChecksum}
                     </Text>
-                    <Text color="onBackgroundLow">Current: {relayChecksum}</Text>
+                    <Text color="onBackgroundLow">
+                      Current: {relayChecksum}
+                    </Text>
                   </>
                 )}
               </>

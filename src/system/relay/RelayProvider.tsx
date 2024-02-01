@@ -15,10 +15,9 @@ export const RelayContext = createContext<RelayContextProps>({
   resetRelayEnvironment: () => null,
 })
 
-export const RelayProvider: React.FC<Partial<Pick<RelayContextProps, "relayEnvironment">>> = ({
-  children,
-  relayEnvironment,
-}) => {
+export const RelayProvider: React.FC<
+  Partial<Pick<RelayContextProps, "relayEnvironment">>
+> = ({ children, relayEnvironment }) => {
   const isOnline = useIsOnline()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const environment = useMemo(() => relayEnvironment ?? createEnvironment(), [])
@@ -38,7 +37,9 @@ export const RelayProvider: React.FC<Partial<Pick<RelayContextProps, "relayEnvir
 
   return (
     <RelayContext.Provider value={providerValues}>
-      <RelayEnvironmentProvider environment={currentRelayEnvironment as Environment}>
+      <RelayEnvironmentProvider
+        environment={currentRelayEnvironment as Environment}
+      >
         {children}
       </RelayEnvironmentProvider>
     </RelayContext.Provider>

@@ -9,7 +9,10 @@ interface ShowListItemProps {
 }
 
 export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
-  const show = useFragment<ShowListItem_show$key>(ShowListItemFragment, props.show)
+  const show = useFragment<ShowListItem_show$key>(
+    ShowListItemFragment,
+    props.show
+  )
 
   return (
     <Flex mb={2} opacity={props.disabled ? 0.4 : 1}>

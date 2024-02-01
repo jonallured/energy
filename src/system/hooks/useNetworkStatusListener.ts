@@ -28,14 +28,17 @@ export const useNetworkStatusListener = () => {
       // If a user has synced data before, load it from disk
       loadRelayDataFromOfflineCache(resetRelayEnvironment, () => {
         setTimeout(() => {
-          GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(false)
+          GlobalStore.actions.networkStatus.toggleIsLoadingFromOfflineCache(
+            false
+          )
         }, 5000)
       })
     }
   }
 
   useEffect(() => {
-    const unsubscribeToNetworkInfo = NetInfo.addEventListener(handleStatusChange)
+    const unsubscribeToNetworkInfo =
+      NetInfo.addEventListener(handleStatusChange)
 
     return () => {
       unsubscribeToNetworkInfo()

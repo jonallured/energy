@@ -10,14 +10,20 @@ export interface PageableScreensContextValue {
   activeScreen: ScrollableScreenEntity
 }
 
-export const PageableScreensContext = createContext(null as unknown as PageableScreensContextValue)
+export const PageableScreensContext = createContext(
+  null as unknown as PageableScreensContextValue
+)
 
 // ts-prune-ignore-next
 export const usePageableScreensContext = () => {
-  const context = useContext<PageableScreensContextValue>(PageableScreensContext)
+  const context = useContext<PageableScreensContextValue>(
+    PageableScreensContext
+  )
 
   if (!context) {
-    throw new Error("usePageableScreensContext must be inside PageableScreensContext.Provider")
+    throw new Error(
+      "usePageableScreensContext must be inside PageableScreensContext.Provider"
+    )
   }
 
   return context

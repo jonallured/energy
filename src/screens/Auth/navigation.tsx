@@ -7,10 +7,10 @@ export type AuthNavigationScreens = {
   SelectPartner: undefined
 }
 
-export const AuthNavigation: React.FC<{ isLoggedIn: boolean; selectedPartner: string | null }> = ({
-  isLoggedIn,
-  selectedPartner,
-}) => {
+export const AuthNavigation: React.FC<{
+  isLoggedIn: boolean
+  selectedPartner: string | null
+}> = ({ isLoggedIn, selectedPartner }) => {
   if (!isLoggedIn) {
     return (
       <StackNav.Group>

@@ -1,5 +1,8 @@
 import { exists, unlink } from "react-native-fs"
-import { clearFileCache, clearSyncProgressFileCache } from "system/sync/fileCache/clearFileCache"
+import {
+  clearFileCache,
+  clearSyncProgressFileCache,
+} from "system/sync/fileCache/clearFileCache"
 import { PATH_CACHE } from "system/sync/fileCache/constants"
 import { clearUrlMap } from "system/sync/fileCache/urlMap"
 

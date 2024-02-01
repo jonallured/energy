@@ -45,12 +45,18 @@ export const getPresentationModeModel = (): PresentationModeModel => ({
 
   hiddenItems: computed((state) => ({
     price: state.isPresentationModeEnabled && state.isHidePriceEnabled,
-    priceForSoldWorks: state.isPresentationModeEnabled && state.isHidePriceForSoldWorksEnabled,
-    unpublishedWorks: state.isPresentationModeEnabled && state.isHideUnpublishedWorksEnabled,
-    worksNotForSale: state.isPresentationModeEnabled && state.isHideWorksNotForSaleEnabled,
-    worksAvailability: state.isPresentationModeEnabled && state.isHideWorksAvailabilityEnabled,
-    confidentialNotes: state.isPresentationModeEnabled && state.isHideConfidentialNotesEnabled,
-    editArtwork: state.isPresentationModeEnabled && state.isHideArtworkEditButtonEnabled,
+    priceForSoldWorks:
+      state.isPresentationModeEnabled && state.isHidePriceForSoldWorksEnabled,
+    unpublishedWorks:
+      state.isPresentationModeEnabled && state.isHideUnpublishedWorksEnabled,
+    worksNotForSale:
+      state.isPresentationModeEnabled && state.isHideWorksNotForSaleEnabled,
+    worksAvailability:
+      state.isPresentationModeEnabled && state.isHideWorksAvailabilityEnabled,
+    confidentialNotes:
+      state.isPresentationModeEnabled && state.isHideConfidentialNotesEnabled,
+    editArtwork:
+      state.isPresentationModeEnabled && state.isHideArtworkEditButtonEnabled,
   })),
 
   toggleIsPresentationModeEnabled: action((state) => {

@@ -47,8 +47,8 @@ export const EmailSettings = () => {
             onChangeText={(e) => GlobalStore.actions.email.setSignature(e)}
           />
           <Text mt={2} mb={1} color="onBackgroundMedium">
-            This signature will be displayed together with any signature you specified in your iOS
-            Mail settings.
+            This signature will be displayed together with any signature you
+            specified in your iOS Mail settings.
           </Text>
           <Text my={1} mt={2} mb={1}>
             Subject lines
@@ -60,11 +60,15 @@ export const EmailSettings = () => {
           />
           <SubjectLineRow
             label="Multiple artworks by the same artist"
-            navigateTo={() => navigation.navigate("EmailSettingsMultipleArtworksBySameArtist")}
+            navigateTo={() =>
+              navigation.navigate("EmailSettingsMultipleArtworksBySameArtist")
+            }
           />
           <SubjectLineRow
             label="Multiple artworks and artists"
-            navigateTo={() => navigation.navigate("EmailSettingsMultipleArtworksAndArtists")}
+            navigateTo={() =>
+              navigation.navigate("EmailSettingsMultipleArtworksAndArtists")
+            }
           />
         </Flex>
         <Spacer y={6} />
@@ -73,11 +77,21 @@ export const EmailSettings = () => {
   )
 }
 
-const SubjectLineRow = ({ label, navigateTo }: { label: string; navigateTo: () => void }) => {
+const SubjectLineRow = ({
+  label,
+  navigateTo,
+}: {
+  label: string
+  navigateTo: () => void
+}) => {
   return (
     <>
       <Touchable onPress={navigateTo}>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Flex
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Text my={0.5}>{label}</Text>
           <ArrowRightIcon fill="onBackgroundMedium" />
         </Flex>

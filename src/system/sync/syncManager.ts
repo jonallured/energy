@@ -11,19 +11,34 @@ import {
   ArtistShowsQuery,
   ArtistShowsQuery$rawResponse,
 } from "__generated__/ArtistShowsQuery.graphql"
-import { ArtistsListQuery, ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
+import {
+  ArtistsListQuery,
+  ArtistsListQuery$data,
+} from "__generated__/ArtistsListQuery.graphql"
 import {
   ArtworkImageModalQuery,
   ArtworkImageModalQuery$data,
 } from "__generated__/ArtworkImageModalQuery.graphql"
-import { ArtworkQuery, ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
-import { ShowArtworksQuery, ShowArtworksQuery$data } from "__generated__/ShowArtworksQuery.graphql"
+import {
+  ArtworkQuery,
+  ArtworkQuery$data,
+} from "__generated__/ArtworkQuery.graphql"
+import {
+  ShowArtworksQuery,
+  ShowArtworksQuery$data,
+} from "__generated__/ShowArtworksQuery.graphql"
 import {
   ShowDocumentsQuery,
   ShowDocumentsQuery$data,
 } from "__generated__/ShowDocumentsQuery.graphql"
-import { ShowInstallsQuery, ShowInstallsQuery$data } from "__generated__/ShowInstallsQuery.graphql"
-import { ShowTabsQuery, ShowTabsQuery$data } from "__generated__/ShowTabsQuery.graphql"
+import {
+  ShowInstallsQuery,
+  ShowInstallsQuery$data,
+} from "__generated__/ShowInstallsQuery.graphql"
+import {
+  ShowTabsQuery,
+  ShowTabsQuery$data,
+} from "__generated__/ShowTabsQuery.graphql"
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
 import { artworkImageModalQuery } from "components/ArtworkImageModal"
 import { artistsListQuery } from "components/Lists/ArtistsList"
@@ -300,9 +315,12 @@ export function initSyncManager({
     // Manually setting progress since we're not using a PromisePool
     onProgressChange(0)
 
-    syncResults.artistsListQuery = await fetchOrCatch<ArtistsListQuery>(artistsListQuery, {
-      partnerID,
-    })
+    syncResults.artistsListQuery = await fetchOrCatch<ArtistsListQuery>(
+      artistsListQuery,
+      {
+        partnerID,
+      }
+    )
 
     onProgressChange(100)
 
@@ -384,15 +402,21 @@ export function initSyncManager({
           return
         }
 
-        return await fetchOrCatch<ArtworkImageModalQuery>(artworkImageModalQuery, {
-          slug,
-          imageSize,
-        })
+        return await fetchOrCatch<ArtworkImageModalQuery>(
+          artworkImageModalQuery,
+          {
+            slug,
+            imageSize,
+          }
+        )
       })
 
     syncResults.artworkImageModalQuery = compact(results)
 
-    log("Complete. `artworkImageModalQuery`", syncResults.artworkImageModalQuery)
+    log(
+      "Complete. `artworkImageModalQuery`",
+      syncResults.artworkImageModalQuery
+    )
   }
 
   const syncArtistShowsQuery = async () => {
@@ -493,7 +517,9 @@ export function initSyncManager({
           return
         }
 
-        return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, { slug })
+        return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, {
+          slug,
+        })
       })
 
     syncResults.showArtworksQuery = compact(results)
@@ -513,7 +539,9 @@ export function initSyncManager({
           return
         }
 
-        return await fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, { slug })
+        return await fetchOrCatch<ShowInstallsQuery>(showInstallsQuery, {
+          slug,
+        })
       })
 
     syncResults.showInstallsQuery = compact(results)
@@ -533,7 +561,10 @@ export function initSyncManager({
           return
         }
 
-        return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, { slug, partnerID })
+        return fetchOrCatch<ShowDocumentsQuery>(showDocumentsQuery, {
+          slug,
+          partnerID,
+        })
       })
 
     syncResults.showDocumentsQuery = compact(results)
@@ -684,12 +715,18 @@ export function initSyncManager({
 
   const reportProgress = (
     message: string,
-    options: { showMeta?: boolean; getCurrentIndex?: () => number; totalCount?: number } = {}
+    options: {
+      showMeta?: boolean
+      getCurrentIndex?: () => number
+      totalCount?: number
+    } = {}
   ) => {
     const onProgressCallback: OnProgressCallback<string> = (_, pool) => {
       if (__DEV__ && options.showMeta) {
         // Output the total count and current index for debugging
-        onStatusChange(`${message} (${options.getCurrentIndex?.()} - ${options.totalCount})`)
+        onStatusChange(
+          `${message} (${options.getCurrentIndex?.()} - ${options.totalCount})`
+        )
       } else {
         onStatusChange(message)
       }
@@ -710,7 +747,9 @@ export function initSyncManager({
 
 const parsers = {
   getArtistSlugs: (): string[] => {
-    const artists = extractNodes(syncResults.artistsListQuery?.partner?.allArtistsConnection)
+    const artists = extractNodes(
+      syncResults.artistsListQuery?.partner?.allArtistsConnection
+    )
 
     const artistSlugs = compact(
       artists.map((artist) => {
@@ -722,9 +761,11 @@ const parsers = {
   },
 
   getArtistArtworkSlugs: (): string[] => {
-    const artworks = syncResults.artistArtworksQuery?.flatMap((artistArtworks) => {
-      return extractNodes(artistArtworks.partner?.artworksConnection)
-    })
+    const artworks = syncResults.artistArtworksQuery?.flatMap(
+      (artistArtworks) => {
+        return extractNodes(artistArtworks.partner?.artworksConnection)
+      }
+    )
 
     if (!artworks) {
       return []
@@ -775,9 +816,11 @@ const parsers = {
         artworkContent?.artwork?.image?.resized?.url!,
         artworkContent?.artwork?.artist?.imageUrl!,
       ]),
-      ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map((show) => {
-        return show?.coverImage?.url
-      }),
+      ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map(
+        (show) => {
+          return show?.coverImage?.url
+        }
+      ),
       ...(syncResults.artworkImageModalQuery ?? []).map(({ artwork }) => {
         return artwork?.image?.resized?.url
       }),
@@ -789,7 +832,9 @@ const parsers = {
   getInstallShotUrls: (): string[] => {
     const installShotUrls = compact(
       (syncResults.artistShowsQuery ?? [])
-        .flatMap((artistShows) => extractNodes(artistShows.partner?.showsConnection))
+        .flatMap((artistShows) =>
+          extractNodes(artistShows.partner?.showsConnection)
+        )
         .map((show) => show.coverImage?.url!)
     )
 
@@ -799,7 +844,9 @@ const parsers = {
   getDocumentsUrls: (): string[] => {
     const documentsUrls = compact(
       (syncResults.artistDocumentsQuery ?? [])
-        .flatMap((artistDocs) => extractNodes(artistDocs.partner?.documentsConnection))
+        .flatMap((artistDocs) =>
+          extractNodes(artistDocs.partner?.documentsConnection)
+        )
         .map((doc) => doc.publicURL)
     )
 

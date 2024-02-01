@@ -7,7 +7,10 @@ interface PageableLazyScreenProps {
   shouldRender: boolean
 }
 
-export const PageableLazyScreen: React.FC<PageableLazyScreenProps> = ({ screen, shouldRender }) => {
+export const PageableLazyScreen: React.FC<PageableLazyScreenProps> = ({
+  screen,
+  shouldRender,
+}) => {
   const [canMount, setCanMount] = useState(false)
 
   useEffect(() => {

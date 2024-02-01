@@ -7,14 +7,19 @@ export const useAndroidNavigationBarThemeListener = () => {
   const isUsingSystemColorScheme = GlobalStore.useAppState(
     (state) => state.devicePrefs.usingSystemColorScheme
   )
-  const forcedColorScheme = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
-  const systemColorScheme = GlobalStore.useAppState((state) => state.devicePrefs.systemColorScheme)
+  const forcedColorScheme = GlobalStore.useAppState(
+    (state) => state.devicePrefs.forcedColorScheme
+  )
+  const systemColorScheme = GlobalStore.useAppState(
+    (state) => state.devicePrefs.systemColorScheme
+  )
 
   useEffect(() => {
     const update = async () => {
       if (Platform.OS === "android") {
         if (isUsingSystemColorScheme) {
-          const navigationBarColor = systemColorScheme === "light" ? "white" : "black"
+          const navigationBarColor =
+            systemColorScheme === "light" ? "white" : "black"
           const isLight = systemColorScheme === "light"
 
           await changeNavigationBarColor(navigationBarColor, isLight, false)

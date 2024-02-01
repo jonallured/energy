@@ -1,6 +1,10 @@
 import { exists, unlink } from "react-native-fs"
 import { clearUrlMap } from "system/sync/fileCache"
-import { JSON_FILES, PATH_CACHE, PATH_CACHE_JSON } from "system/sync/fileCache/constants"
+import {
+  JSON_FILES,
+  PATH_CACHE,
+  PATH_CACHE_JSON,
+} from "system/sync/fileCache/constants"
 
 export const clearFileCache = async () => {
   clearUrlMap()

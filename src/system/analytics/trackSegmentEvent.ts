@@ -10,6 +10,8 @@ export const trackSegmentEvent = (data: any) => {
   if (actionName) {
     segmentClient?.track(actionName, trackingData)
   } else {
-    console.error(`Unknown analytics schema being used: ${JSON.stringify(data)}`)
+    console.error(
+      `Unknown analytics schema being used: ${JSON.stringify(data)}`
+    )
   }
 }

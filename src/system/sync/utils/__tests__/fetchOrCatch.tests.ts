@@ -27,7 +27,9 @@ describe("fetchOrCatch", () => {
     })
 
     const { fetchOrCatch } = initFetchOrCatch({
-      relayEnvironment: { retain: disposableSpy } as unknown as RelayModernEnvironment,
+      relayEnvironment: {
+        retain: disposableSpy,
+      } as unknown as RelayModernEnvironment,
       onError: onErrorSpy,
       checkIfAborted: jest.fn().mockReturnValue(false),
       onComplete: jest.fn(),
@@ -55,7 +57,9 @@ describe("fetchOrCatch", () => {
     })
 
     const { fetchOrCatch } = initFetchOrCatch({
-      relayEnvironment: { retain: retainSpy } as unknown as RelayModernEnvironment,
+      relayEnvironment: {
+        retain: retainSpy,
+      } as unknown as RelayModernEnvironment,
       onError: jest.fn(),
       checkIfAborted: jest.fn().mockReturnValue(false),
       onComplete: onCompleteSpy,

@@ -101,7 +101,8 @@ export const errorMiddleware = () => {
 
     // at this point, we have errors that are not optional
 
-    const requestHasPrincipalField = req.operation.text?.includes("@principalField")
+    const requestHasPrincipalField =
+      req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
       trackError(req.operation.name, req.operation.kind, "default", req)

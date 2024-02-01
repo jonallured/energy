@@ -11,7 +11,8 @@ export const PortalContext = createContext<PortalContextProps>({
 } as unknown as PortalContextProps)
 
 export const PortalProvider: React.FC = ({ children }) => {
-  const [portalChildren, setPortalChildren] = useState<PortalContextProps["portalChildren"]>(null)
+  const [portalChildren, setPortalChildren] =
+    useState<PortalContextProps["portalChildren"]>(null)
 
   const contextProps = {
     setPortalChildren,

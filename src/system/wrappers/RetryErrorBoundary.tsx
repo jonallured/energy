@@ -27,7 +27,9 @@ export class RetryErrorBoundary extends Component<
 > {
   state = { error: null }
 
-  static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
+  static getDerivedStateFromError(
+    error: Error | null
+  ): RetryErrorBoundaryState {
     return { error: error }
   }
 

@@ -37,7 +37,9 @@ describe("AlbumArtworks", () => {
   })
 
   it("renders a list of artworks", async () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(<AlbumArtworks albumId={albumId} />)
+    const { UNSAFE_getAllByType } = renderWithWrappers(
+      <AlbumArtworks albumId={albumId} />
+    )
     expect(UNSAFE_getAllByType(ArtworkGridItem)).toHaveLength(3)
   })
 

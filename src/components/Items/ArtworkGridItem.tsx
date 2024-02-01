@@ -48,10 +48,15 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
         opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}
         style={style}
       >
-        <CachedImage uri={artwork.image?.resized?.url} aspectRatio={artwork.image?.aspectRatio} />
+        <CachedImage
+          uri={artwork.image?.resized?.url}
+          aspectRatio={artwork.image?.aspectRatio}
+        />
 
         <Text italic variant={fontSize} color="onBackgroundMedium" mt={1}>
-          {!isAvailabilityHidden && <AvailabilityDot availability={artwork.availability} />}{" "}
+          {!isAvailabilityHidden && (
+            <AvailabilityDot availability={artwork.availability} />
+          )}{" "}
           {artwork.title}
           {!!artwork.date && (
             <>
@@ -63,17 +68,28 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
           )}
         </Text>
       </Flex>
-      {!disable && !selectedToRemove && selectedToAdd && (
-        <Flex position="absolute" top={1} right={1} alignItems="center" justifyContent="center">
+      {!disable && !selectedToRemove && !!selectedToAdd && (
+        <Flex
+          position="absolute"
+          top={1}
+          right={1}
+          alignItems="center"
+          justifyContent="center"
+        >
           <FadeIn>
             <CheckCircleFillIcon height={30} width={30} fill="blue100" />
           </FadeIn>
         </Flex>
       )}
-      {selectedToRemove && (
+      {!!selectedToRemove && (
         <Flex position="absolute" alignItems="center" top={1} right={1}>
           <FadeIn>
-            <Flex p={0.5} borderRadius="50px" justifyContent="center" backgroundColor="red100">
+            <Flex
+              p={0.5}
+              borderRadius="50px"
+              justifyContent="center"
+              backgroundColor="red100"
+            >
               <TrashIcon height={20} width={20} fill="onBackgroundHigh" />
             </Flex>
           </FadeIn>
@@ -88,8 +104,16 @@ export const ArtworkGridItemFragmentContainer: React.FC<
     artwork: ArtworkGridItem_artwork$key
   }
 > = (props) => {
-  const artwork = useFragment<ArtworkGridItem_artwork$key>(ArtworkGridItemFragment, props.artwork)
-  return <ArtworkGridItem {...props} artwork={artwork as unknown as SelectedItemArtwork} />
+  const artwork = useFragment<ArtworkGridItem_artwork$key>(
+    ArtworkGridItemFragment,
+    props.artwork
+  )
+  return (
+    <ArtworkGridItem
+      {...props}
+      artwork={artwork as unknown as SelectedItemArtwork}
+    />
+  )
 }
 
 export const ArtworkGridItemFragment = graphql`

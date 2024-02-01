@@ -1,4 +1,11 @@
-import { BoxProps, Flex, ReloadIcon, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import {
+  BoxProps,
+  Flex,
+  ReloadIcon,
+  Text,
+  Touchable,
+  useColor,
+} from "@artsy/palette-mobile"
 import { debounce } from "lodash"
 import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
@@ -9,11 +16,9 @@ interface LoadFailureErrorViewProps {
   onRetry?: () => void
 }
 
-export const LoadFailureErrorView: React.FC<LoadFailureErrorViewProps & BoxProps> = ({
-  error,
-  onRetry,
-  ...restProps
-}) => {
+export const LoadFailureErrorView: React.FC<
+  LoadFailureErrorViewProps & BoxProps
+> = ({ error, onRetry, ...restProps }) => {
   const color = useColor()
   const isDarkMode = useIsDarkMode()
   const spinAnimation = useRef(new Animated.Value(0)).current
@@ -72,7 +77,11 @@ export const LoadFailureErrorView: React.FC<LoadFailureErrorViewProps & BoxProps
             ],
           }}
         >
-          <ReloadIcon height={25} width={25} fill={isDarkMode ? "white100" : "black100"} />
+          <ReloadIcon
+            height={25}
+            width={25}
+            fill={isDarkMode ? "white100" : "black100"}
+          />
         </Animated.View>
       </Touchable>
       <Flex m={2}>

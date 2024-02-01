@@ -28,14 +28,20 @@ export const HomeTabs = () => {
       headerProps={{
         animated: false,
         leftElements: (
-          <Touchable hitSlop={DEFAULT_HIT_SLOP} onPress={() => navigation.navigate("Settings")}>
+          <Touchable
+            hitSlop={DEFAULT_HIT_SLOP}
+            onPress={() => navigation.navigate("Settings")}
+          >
             <MenuIcon fill="onBackgroundHigh" top="1px" />
           </Touchable>
         ),
         rightElements: (
           <>
             {!!isOnline && (
-              <Touchable onPress={() => navigation.navigate("Search")} hitSlop={DEFAULT_HIT_SLOP}>
+              <Touchable
+                onPress={() => navigation.navigate("Search")}
+                hitSlop={DEFAULT_HIT_SLOP}
+              >
                 <MagnifyingGlassIcon fill="onBackgroundHigh" top="4px" />
               </Touchable>
             )}

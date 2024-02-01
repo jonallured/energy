@@ -1,5 +1,8 @@
 import fetchMock from "jest-fetch-mock"
-import { GraphQLResponseErrors, MiddlewareNextFn } from "react-relay-network-modern"
+import {
+  GraphQLResponseErrors,
+  MiddlewareNextFn,
+} from "react-relay-network-modern"
 import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
 import { checkAuthenticationMiddleware } from "./checkAuthenticationMiddleware"
 import { GraphQLRequest } from "./types"
@@ -32,12 +35,12 @@ describe(checkAuthenticationMiddleware, () => {
     expect(fetchMock).toHaveBeenCalledTimes(0)
     await middleware(next)(request)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
-      "@thunk.auth.signOut(start)"
-    )
-    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
-      "@thunk.auth.signOut(success)"
-    )
+    expect(
+      __globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)
+    ).toContain("@thunk.auth.signOut(start)")
+    expect(
+      __globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)
+    ).toContain("@thunk.auth.signOut(success)")
   })
 
   it("passes through if there is no errors", async () => {

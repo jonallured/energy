@@ -2,7 +2,9 @@ import { useEffect } from "react"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export function useWebViewCookies() {
-  const accesstoken = GlobalStore.useAppState((store) => store.auth.userAccessToken)
+  const accesstoken = GlobalStore.useAppState(
+    (store) => store.auth.userAccessToken
+  )
   const isLoggedIn = !!accesstoken
   const { webURL, predictionURL } = GlobalStore.useAppState(
     (store) => store.config.environment.strings
@@ -11,7 +13,11 @@ export function useWebViewCookies() {
   useUrlCookies(predictionURL + "/login", accesstoken, isLoggedIn)
 }
 
-function useUrlCookies(url: string, accessToken: string | null, isLoggedIn: boolean) {
+function useUrlCookies(
+  url: string,
+  accessToken: string | null,
+  isLoggedIn: boolean
+) {
   useEffect(() => {
     if (accessToken && isLoggedIn) {
       const attempt = new CookieRequestAttempt(url, accessToken)
@@ -42,7 +48,9 @@ class CookieRequestAttempt {
       if (res.status > 400) {
         throw new Error("couldn't authenticate")
       }
-      console.log({ message: `Successfully set up artsy web view cookies for ${this.url}` })
+      console.log({
+        message: `Successfully set up artsy web view cookies for ${this.url}`,
+      })
     } catch (e) {
       if (this.invalidated) {
         return

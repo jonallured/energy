@@ -12,7 +12,10 @@ interface ShowsListProps {
   refreshControl?: JSX.Element
 }
 
-export const ShowsList: React.FC<ShowsListProps> = ({ shows, refreshControl }) => {
+export const ShowsList: React.FC<ShowsListProps> = ({
+  shows,
+  refreshControl,
+}) => {
   const isSelectModeActive = GlobalStore.useAppState(
     (state) => state.selectMode.sessionState.isActive
   )
@@ -23,7 +26,9 @@ export const ShowsList: React.FC<ShowsListProps> = ({ shows, refreshControl }) =
   return (
     <Tabs.FlatList
       columnWrapperStyle={
-        isTablet() ? { justifyContent: "space-between", alignItems: "flex-start" } : null
+        isTablet()
+          ? { justifyContent: "space-between", alignItems: "flex-start" }
+          : null
       }
       data={shows}
       numColumns={isTablet() ? 2 : 1}
@@ -34,7 +39,9 @@ export const ShowsList: React.FC<ShowsListProps> = ({ shows, refreshControl }) =
               slug: item.slug,
             })
           }
-          style={{ width: isTablet() ? (screenWidth - margin * 3) / 2 : undefined }}
+          style={{
+            width: isTablet() ? (screenWidth - margin * 3) / 2 : undefined,
+          }}
           disabled={isSelectModeActive}
         >
           <ShowListItem show={item} disabled={isSelectModeActive} />

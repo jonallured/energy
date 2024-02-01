@@ -17,7 +17,11 @@ describe("SelectMode", () => {
     })
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={false} selectAll={() => {}} unselectAll={() => {}} />
+      <SelectMode
+        allSelected={false}
+        selectAll={() => {}}
+        unselectAll={() => {}}
+      />
     )
 
     const selectAllButton = getByText("Select All")
@@ -34,7 +38,11 @@ describe("SelectMode", () => {
     })
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={true} selectAll={() => {}} unselectAll={() => {}} />
+      <SelectMode
+        allSelected={true}
+        selectAll={() => {}}
+        unselectAll={() => {}}
+      />
     )
 
     const unselectAllButton = getByText("Unselect All")
@@ -51,7 +59,11 @@ describe("SelectMode", () => {
     })
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={false} selectAll={() => {}} unselectAll={() => {}} />
+      <SelectMode
+        allSelected={false}
+        selectAll={() => {}}
+        unselectAll={() => {}}
+      />
     )
 
     const selectButton = getByText("Select")
@@ -68,7 +80,11 @@ describe("SelectMode", () => {
     })
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={false} selectAll={() => {}} unselectAll={() => {}} />
+      <SelectMode
+        allSelected={false}
+        selectAll={() => {}}
+        unselectAll={() => {}}
+      />
     )
 
     const cancelButton = getByText("Cancel")
@@ -85,12 +101,19 @@ describe("SelectMode", () => {
     })
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={false} selectAll={() => {}} unselectAll={() => {}} />
+      <SelectMode
+        allSelected={false}
+        selectAll={() => {}}
+        unselectAll={() => {}}
+      />
     )
 
     const selectButton = getByText("Select")
     fireEvent.press(selectButton)
-    expect(__globalStoreTestUtils__?.getCurrentState().selectMode.sessionState.isActive).toBe(true)
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().selectMode.sessionState
+        .isActive
+    ).toBe(true)
   })
 
   it("calls unselectAll if all selected", () => {
@@ -148,7 +171,10 @@ describe("isAllSelected", () => {
   })
 
   it("returns false when not all items are selected", () => {
-    const selectedItems = [{ internalID: 1 }, { internalID: 2 }] as unknown as SelectedItemArtwork[]
+    const selectedItems = [
+      { internalID: 1 },
+      { internalID: 2 },
+    ] as unknown as SelectedItemArtwork[]
     const items = [
       { internalID: 1 },
       { internalID: 2 },
@@ -160,13 +186,19 @@ describe("isAllSelected", () => {
 
 describe("isSelected", () => {
   it("returns true when item is selected", () => {
-    const selectedItems = [{ internalID: 1 }, { internalID: 2 }] as unknown as SelectedItemArtwork[]
+    const selectedItems = [
+      { internalID: 1 },
+      { internalID: 2 },
+    ] as unknown as SelectedItemArtwork[]
     const item = { internalID: 1 } as unknown as SelectedItemArtwork
     expect(isSelected(selectedItems, item)).toBe(true)
   })
 
   it("returns false when item is not selected", () => {
-    const selectedItems = [{ internalID: 1 }, { internalID: 2 }] as unknown as SelectedItemArtwork[]
+    const selectedItems = [
+      { internalID: 1 },
+      { internalID: 2 },
+    ] as unknown as SelectedItemArtwork[]
     const item = { internalID: 3 } as unknown as SelectedItemArtwork
     expect(isSelected(selectedItems, item)).toBe(false)
   })

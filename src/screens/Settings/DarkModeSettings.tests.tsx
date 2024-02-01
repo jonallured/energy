@@ -29,7 +29,9 @@ describe("DarkModeSettings", () => {
     renderWithWrappers(<DarkModeSettings />)
 
     const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-    const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+    const followSystemToggle = screen.getByLabelText(
+      "Follow System Settings switch"
+    )
 
     expect(screen.queryByText("Dark Mode")).toBeOnTheScreen()
     expect(darkModeToggle).toBeOnTheScreen()
@@ -49,7 +51,9 @@ describe("DarkModeSettings", () => {
       renderWithWrappers(<DarkModeSettings />)
 
       const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-      const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+      const followSystemToggle = screen.getByLabelText(
+        "Follow System Settings switch"
+      )
       expect(darkModeToggle).toHaveProp("value", false)
       expect(followSystemToggle).toHaveProp("value", false)
 
@@ -63,7 +67,9 @@ describe("DarkModeSettings", () => {
       renderWithWrappers(<DarkModeSettings />)
 
       const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-      const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+      const followSystemToggle = screen.getByLabelText(
+        "Follow System Settings switch"
+      )
       expect(darkModeToggle).toHaveProp("value", false)
       expect(followSystemToggle).toHaveProp("value", false)
 
@@ -83,7 +89,9 @@ describe("DarkModeSettings", () => {
       renderWithWrappers(<DarkModeSettings />)
 
       const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-      const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+      const followSystemToggle = screen.getByLabelText(
+        "Follow System Settings switch"
+      )
       expect(darkModeToggle).toHaveProp("value", false)
       expect(followSystemToggle).toHaveProp("value", false)
 
@@ -97,7 +105,9 @@ describe("DarkModeSettings", () => {
       renderWithWrappers(<DarkModeSettings />)
 
       const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-      const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+      const followSystemToggle = screen.getByLabelText(
+        "Follow System Settings switch"
+      )
       expect(darkModeToggle).toHaveProp("value", false)
       expect(followSystemToggle).toHaveProp("value", false)
 
@@ -120,7 +130,9 @@ describe("DarkModeSettings", () => {
       renderWithWrappers(<DarkModeSettings />)
 
       const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-      const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+      const followSystemToggle = screen.getByLabelText(
+        "Follow System Settings switch"
+      )
       expect(darkModeToggle).toHaveProp("value", true)
       expect(followSystemToggle).toHaveProp("value", false)
     })
@@ -136,7 +148,9 @@ describe("DarkModeSettings", () => {
       renderWithWrappers(<DarkModeSettings />)
 
       const darkModeToggle = screen.getByLabelText("Dark mode always on switch")
-      const followSystemToggle = screen.getByLabelText("Follow System Settings switch")
+      const followSystemToggle = screen.getByLabelText(
+        "Follow System Settings switch"
+      )
 
       expect(darkModeToggle).toHaveProp("value", false)
       expect(followSystemToggle).toHaveProp("value", true)

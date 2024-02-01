@@ -54,7 +54,9 @@ describe("warmFilesystem", () => {
   })
 
   it("logs an error message if there is an error checking directory existence", async () => {
-    existsMock.mockRejectedValue(new Error("Failed to check directory existence"))
+    existsMock.mockRejectedValue(
+      new Error("Failed to check directory existence")
+    )
 
     await warmFilesystem()
 

@@ -1,7 +1,19 @@
-import { action, Action, computed, Computed, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
+import {
+  action,
+  Action,
+  computed,
+  Computed,
+  Thunk,
+  thunk,
+  thunkOn,
+  ThunkOn,
+} from "easy-peasy"
 import { DateTime } from "luxon"
 import { Appearance } from "react-native"
-import { clearFileCache, clearSyncProgressFileCache } from "system/sync/fileCache/clearFileCache"
+import {
+  clearFileCache,
+  clearSyncProgressFileCache,
+} from "system/sync/fileCache/clearFileCache"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
 export interface DevicePrefsModel {
@@ -73,7 +85,8 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
 
   showDevMenuButton: computed([(_, store) => store], (store) => {
     return (
-      (__DEV__ || store.artsyPrefs.isUserDev) && store.devicePrefs.showDevMenuButtonInternalToggle
+      (__DEV__ || store.artsyPrefs.isUserDev) &&
+      store.devicePrefs.showDevMenuButtonInternalToggle
     )
   }),
   showDevMenuButtonInternalToggle: false,
