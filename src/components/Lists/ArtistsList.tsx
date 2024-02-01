@@ -48,6 +48,7 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
     <ArtistsFlatList
       data={items}
       numColumns={1}
+      // maxToRenderPerBatch={20}
       initialNumToRender={30}
       contentContainerStyle={
         isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle

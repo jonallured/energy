@@ -178,6 +178,7 @@
     "patch-package": "^6.5.1",
     "prettier": "2.8.2",
     "react-native-flipper": "0.207.0",
+    "react-native-flipper-performance-plugin": "^0.4.0",
     "react-native-flipper-relay-devtools": "^1.0.3",
     "react-test-renderer": "18.2.0",
     "relay-compiler": "^14.1.0",
