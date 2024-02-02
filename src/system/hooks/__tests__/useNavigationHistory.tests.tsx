@@ -1,13 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { renderHook } from "@testing-library/react-hooks"
-import { Boot } from "Boot"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment } from "relay-test-utils"
 import {
   useNavigateToSavedHistory,
   useSaveNavigationHistory,
 } from "system/hooks/useNavigationHistory"
 import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
+import { HookWrapper } from "utils/test/renderWithWrappers"
 
 jest.mock("@react-navigation/native", () => ({
   useRoute: jest.fn(),
@@ -17,16 +15,6 @@ jest.mock("@react-navigation/native", () => ({
 describe("#useNavigationHistory", () => {
   const mockUseRoute = useRoute as jest.Mock
   const mockUseNavigation = useNavigation as jest.Mock
-
-  const HookWrapper: React.FC = ({ children }) => {
-    const environment = createMockEnvironment()
-
-    return (
-      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>
-        {children}
-      </Boot>
-    )
-  }
 
   beforeEach(() => {
     __globalStoreTestUtils__?.injectState({

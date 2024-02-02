@@ -1,3 +1,4 @@
+import { ScreenNames } from "Navigation"
 import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ShowInstallsQuery$data } from "__generated__/ShowInstallsQuery.graphql"
@@ -6,6 +7,8 @@ import { GlobalStoreModel } from "system/store/Models/GlobalStoreModel"
 
 export interface SelectModeModel {
   sessionState: {
+    activeTab: ScreenNames | ""
+    activeTabItems: Array<SelectedItem>
     isActive: boolean
     selectedItems: Array<SelectedItem>
   }
@@ -15,6 +18,13 @@ export interface SelectModeModel {
   cancelSelectMode: Thunk<this>
   toggleSelectedItem: Action<this, SelectedItem>
   selectItems: Action<this, Array<SelectedItem>>
+  setActiveTab: Action<
+    this,
+    {
+      activeTab: SelectModeModel["sessionState"]["activeTab"]
+      activeTabItems: SelectModeModel["sessionState"]["activeTabItems"]
+    }
+  >
   setIsActive: Action<this, this["sessionState"]["isActive"]>
   clearSelectedItems: Action<this>
 
@@ -24,6 +34,8 @@ export interface SelectModeModel {
 
 export const getSelectModeModel = (): SelectModeModel => ({
   sessionState: {
+    activeTab: "",
+    activeTabItems: [],
     isActive: false,
     selectedItems: [],
   },
@@ -34,6 +46,11 @@ export const getSelectModeModel = (): SelectModeModel => ({
     if (newValue === false) {
       actions.clearSelectedItems()
     }
+  }),
+
+  setActiveTab: action((state, { activeTab, activeTabItems }) => {
+    state.sessionState.activeTab = activeTab
+    state.sessionState.activeTabItems = activeTabItems
   }),
 
   cancelSelectMode: thunk((actions) => {

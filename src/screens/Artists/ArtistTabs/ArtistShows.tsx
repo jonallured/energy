@@ -1,11 +1,11 @@
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { ShowsList } from "components/Lists/ShowsList"
-import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
+import { useSetSelectModeActiveTab } from "utils/hooks/useSetSelectModeActiveTab"
 
 interface ArtistShowsProps {
   slug: string
@@ -13,6 +13,10 @@ interface ArtistShowsProps {
 
 export const ArtistShows: React.FC<ArtistShowsProps> = ({ slug }) => {
   useTrackScreen({ name: "ArtistShows", type: "Artist", slug })
+
+  useSetSelectModeActiveTab({
+    name: "ArtistShows",
+  })
 
   const partnerID = GlobalStore.useAppState(
     (state) => state.auth.activePartnerID
@@ -24,12 +28,11 @@ export const ArtistShows: React.FC<ArtistShowsProps> = ({ slug }) => {
       slug,
     }
   )
+
   const shows = extractNodes(data.partner?.showsConnection)
 
   return (
     <>
-      <SelectModePortal tabName="ArtistShows" items={[]} />
-
       <ShowsList shows={shows} refreshControl={refreshControl} />
     </>
   )

@@ -1,13 +1,13 @@
 import { Tabs } from "@artsy/palette-mobile"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtworksList } from "components/Lists/ArtworksList"
-import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
 import { usePresentationFilteredArtworks } from "utils/hooks/usePresentationFilteredArtworks"
+import { useSetSelectModeActiveTab } from "utils/hooks/useSetSelectModeActiveTab"
 
 interface ArtistArtworkProps {
   slug: string
@@ -31,10 +31,13 @@ export const ArtistArtworks: React.FC<ArtistArtworkProps> = ({ slug }) => {
   const artworks = extractNodes(data.partner?.artworksConnection)
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
+  useSetSelectModeActiveTab({
+    name: "ArtistArtworks",
+    items: presentedArtworks,
+  })
+
   return (
     <>
-      <SelectModePortal tabName="ArtistArtworks" items={presentedArtworks} />
-
       <Tabs.ScrollView refreshControl={refreshControl}>
         <ArtworksList artworks={presentedArtworks} />
       </Tabs.ScrollView>

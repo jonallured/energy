@@ -6,7 +6,6 @@ import {
   BottomSheetActions,
   BottomSheetActionsProps,
 } from "components/BottomSheet/BottomSheetActions"
-import { PortalProvider } from "components/Portal"
 import { CollapsibleProps } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 
@@ -39,16 +38,14 @@ export const TabsView: React.FC<TabsViewProps> = ({
   return (
     <Screen.ScreenScrollContextProvider>
       <BottomSheetModalProvider>
-        <PortalProvider>
-          <Tabs.TabsWithHeader
-            title={title}
-            headerProps={headerProps}
-            showLargeHeaderText={showLargeHeaderText}
-          >
-            {children}
-          </Tabs.TabsWithHeader>
-          <BottomSheetActions {...bottomSheetActionsProps} />
-        </PortalProvider>
+        <Tabs.TabsWithHeader
+          title={title}
+          headerProps={headerProps}
+          showLargeHeaderText={showLargeHeaderText}
+        >
+          {children}
+        </Tabs.TabsWithHeader>
+        <BottomSheetActions {...bottomSheetActionsProps} />
       </BottomSheetModalProvider>
     </Screen.ScreenScrollContextProvider>
   )

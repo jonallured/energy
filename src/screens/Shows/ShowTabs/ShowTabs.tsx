@@ -3,6 +3,7 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 
+import { SelectModeActions } from "components/SelectMode/SelectModeActions"
 import { TabsView } from "components/TabsView"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
@@ -19,23 +20,27 @@ export const ShowTabs = () => {
   const { data } = useSystemQueryLoader<ShowTabsQuery>(showTabsQuery, { slug })
 
   return (
-    <TabsView title={data.show?.name!}>
-      <Tabs.Tab name="ShowArtworks" label="Works">
-        <TabScreen>
-          <ShowArtworks slug={slug} />
-        </TabScreen>
-      </Tabs.Tab>
-      <Tabs.Tab name="ShowInstalls" label="Installs">
-        <TabScreen>
-          <ShowInstalls slug={slug} />
-        </TabScreen>
-      </Tabs.Tab>
-      <Tabs.Tab name="ShowDocuments" label="Documents">
-        <TabScreen>
-          <ShowDocuments slug={slug} />
-        </TabScreen>
-      </Tabs.Tab>
-    </TabsView>
+    <>
+      <SelectModeActions />
+
+      <TabsView title={data.show?.name!}>
+        <Tabs.Tab name="ShowArtworks" label="Works">
+          <TabScreen>
+            <ShowArtworks slug={slug} />
+          </TabScreen>
+        </Tabs.Tab>
+        <Tabs.Tab name="ShowInstalls" label="Installs">
+          <TabScreen>
+            <ShowInstalls slug={slug} />
+          </TabScreen>
+        </Tabs.Tab>
+        <Tabs.Tab name="ShowDocuments" label="Documents">
+          <TabScreen>
+            <ShowDocuments slug={slug} />
+          </TabScreen>
+        </Tabs.Tab>
+      </TabsView>
+    </>
   )
 }
 

@@ -1,11 +1,9 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { Boot } from "Boot"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment } from "relay-test-utils"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
 import { Album } from "system/store/Models/AlbumsModel"
 import { SelectedItem } from "system/store/Models/SelectModeModel"
+import { HookWrapper } from "utils/test/renderWithWrappers"
 
 describe("useAlbum", () => {
   const album = {
@@ -28,16 +26,6 @@ describe("useAlbum", () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
-
-  const HookWrapper: React.FC = ({ children }) => {
-    const environment = createMockEnvironment()
-
-    return (
-      <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>
-        {children}
-      </Boot>
-    )
-  }
 
   it("should return the album and selected items", () => {
     const { result } = renderHook(() => useAlbum({ albumId: "123" }), {

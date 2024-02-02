@@ -2,7 +2,7 @@ import MasonryList from "@react-native-seoul/masonry-list"
 import { ArtworkImageGridItem } from "components/Items/ArtworkImageGridItem"
 import { ColumnItem } from "components/Items/ColumnItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { isSelected } from "components/SelectMode"
+import { isSelected } from "components/SelectMode/SelectMode"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
 

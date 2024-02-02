@@ -1,5 +1,9 @@
 import { fireEvent } from "@testing-library/react-native"
-import { SelectMode, isAllSelected, isSelected } from "components/SelectMode"
+import {
+  SelectMode,
+  isAllSelected,
+  isSelected,
+} from "components/SelectMode/SelectMode"
 import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { renderWithWrappers } from "utils/test/renderWithWrappers"
@@ -18,6 +22,30 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
+        allSelected={false}
+        selectAll={() => {}}
+        unselectAll={() => {}}
+        activeTab="foo"
+      />
+    )
+
+    const selectAllButton = getByText("Select All")
+    expect(selectAllButton).toBeDefined()
+  })
+
+  it("does not render Select All button when disabled", () => {
+    __globalStoreTestUtils__?.injectState({
+      selectMode: {
+        sessionState: {
+          isActive: true,
+        },
+      },
+    })
+
+    const { getByText } = renderWithWrappers(
+      <SelectMode
+        enabled={false}
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
@@ -40,6 +68,7 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
         allSelected={true}
         selectAll={() => {}}
         unselectAll={() => {}}
@@ -62,6 +91,7 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
@@ -84,6 +114,7 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
@@ -109,6 +140,7 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
@@ -136,6 +168,7 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
         allSelected={true}
         selectAll={jest.fn()}
         unselectAll={spy}
@@ -143,8 +176,12 @@ describe("SelectMode", () => {
       />
     )
 
-    const selectButton = getByText("Unselect All")
+    const selectButton = getByText("Select")
     fireEvent.press(selectButton)
+
+    const unselectAllButton = getByText("Unselect All")
+    fireEvent.press(unselectAllButton)
+
     expect(spy).toHaveBeenCalled()
   })
 
@@ -160,6 +197,7 @@ describe("SelectMode", () => {
 
     const { getByText } = renderWithWrappers(
       <SelectMode
+        enabled
         allSelected={false}
         selectAll={spy}
         unselectAll={jest.fn()}
@@ -167,8 +205,12 @@ describe("SelectMode", () => {
       />
     )
 
-    const selectButton = getByText("Select All")
+    const selectButton = getByText("Select")
     fireEvent.press(selectButton)
+
+    const selectAllButton = getByText("Select All")
+    fireEvent.press(selectAllButton)
+
     expect(spy).toHaveBeenCalled()
   })
 })
@@ -198,6 +240,15 @@ describe("isAllSelected", () => {
       { internalID: 2 },
       { internalID: 3 },
     ] as unknown as SelectedItemArtwork[]
+    expect(isAllSelected(selectedItems, items)).toBe(false)
+  })
+
+  it("returns false when items.length = 0", () => {
+    const selectedItems = [
+      { internalID: 1 },
+      { internalID: 2 },
+    ] as unknown as SelectedItemArtwork[]
+    const items = [] as unknown as SelectedItemArtwork[]
     expect(isAllSelected(selectedItems, items)).toBe(false)
   })
 })

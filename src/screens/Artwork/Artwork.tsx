@@ -27,7 +27,7 @@ import {
   ScrollableScreenEntity,
   usePageableScreensContext,
 } from "components/PageableScreen/PageableScreensContext"
-import React, { Suspense, useEffect, useRef } from "react"
+import React, { Suspense, useEffect, useMemo, useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
@@ -57,24 +57,28 @@ export const Artwork: React.FC = () => {
     slug,
   })
 
-  const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug, index) => {
-    return {
-      name: slug,
-      Component: () => {
-        return (
-          <Suspense fallback={<SkeletonArtwork />}>
-            <ArtworkPage
-              slug={slug}
-              screenIndex={index}
-              onRender={(handler) => {
-                actionMenuHandler.current = handler
-              }}
-            />
-          </Suspense>
-        )
-      },
-    }
-  })
+  const screens: ScrollableScreenEntity[] = useMemo(
+    () =>
+      artworkSlugs.map((slug, index) => {
+        return {
+          name: slug,
+          Component: () => {
+            return (
+              <Suspense fallback={<SkeletonArtwork />}>
+                <ArtworkPage
+                  slug={slug}
+                  screenIndex={index}
+                  onRender={(handler) => {
+                    actionMenuHandler.current = handler
+                  }}
+                />
+              </Suspense>
+            )
+          },
+        }
+      }),
+    []
+  )
 
   return (
     <Screen safeArea={false}>

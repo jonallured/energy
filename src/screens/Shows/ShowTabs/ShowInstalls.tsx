@@ -1,11 +1,11 @@
 import { Tabs } from "@artsy/palette-mobile"
 import { ShowInstallsQuery } from "__generated__/ShowInstallsQuery.graphql"
 import { InstallationsList } from "components/Lists/InstallationsList"
-import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
+import { useSetSelectModeActiveTab } from "utils/hooks/useSetSelectModeActiveTab"
 
 interface ShowInstallsProps {
   slug: string
@@ -23,10 +23,13 @@ export const ShowInstalls: React.FC<ShowInstallsProps> = ({ slug }) => {
 
   const installs = (data?.show?.images as SelectedItemInstall[]) ?? []
 
+  useSetSelectModeActiveTab({
+    name: "ShowInstalls",
+    items: installs,
+  })
+
   return (
     <>
-      <SelectModePortal tabName="ShowInstalls" items={installs} />
-
       <Tabs.ScrollView refreshControl={refreshControl}>
         <InstallationsList images={installs} />
       </Tabs.ScrollView>

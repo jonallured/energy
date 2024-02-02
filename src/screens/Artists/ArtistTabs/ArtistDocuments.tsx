@@ -1,12 +1,12 @@
 import { Tabs } from "@artsy/palette-mobile"
 import { ArtistDocumentsQuery } from "__generated__/ArtistDocumentsQuery.graphql"
 import { DocumentList } from "components/Lists/DocumentList"
-import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
+import { useSetSelectModeActiveTab } from "utils/hooks/useSetSelectModeActiveTab"
 
 interface ArtistDocumentsProps {
   slug: string
@@ -28,10 +28,13 @@ export const ArtistDocuments: React.FC<ArtistDocumentsProps> = ({ slug }) => {
 
   const documents = extractNodes(data.partner?.documentsConnection)
 
+  useSetSelectModeActiveTab({
+    name: "ArtistDocuments",
+    items: documents,
+  })
+
   return (
     <>
-      <SelectModePortal tabName="ArtistDocuments" items={documents} />
-
       <Tabs.ScrollView refreshControl={refreshControl}>
         <DocumentList documents={documents} />
       </Tabs.ScrollView>

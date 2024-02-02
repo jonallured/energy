@@ -8,7 +8,7 @@ import {
 } from "components/Items/ArtworkGridItem"
 import { ColumnItem } from "components/Items/ColumnItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
-import { isSelected } from "components/SelectMode"
+import { isSelected } from "components/SelectMode/SelectMode"
 import { memo } from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"

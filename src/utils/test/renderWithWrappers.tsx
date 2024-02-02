@@ -28,3 +28,13 @@ export const renderWithWrappers = (
     }
   }
 }
+
+export const HookWrapper: React.FC = ({ children }) => {
+  const environment = createMockEnvironment()
+
+  return (
+    <Boot relayEnvironment={environment as unknown as RelayModernEnvironment}>
+      {children}
+    </Boot>
+  )
+}

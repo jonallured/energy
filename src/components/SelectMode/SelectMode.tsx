@@ -13,6 +13,7 @@ import { SelectedItem } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface SelectModeProps {
+  enabled: boolean
   activeTab: string
   allSelected: boolean
   selectAll: () => void
@@ -20,6 +21,7 @@ interface SelectModeProps {
 }
 
 export const SelectMode: React.FC<SelectModeProps> = ({
+  enabled,
   activeTab,
   allSelected,
   selectAll,
@@ -44,7 +46,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
   return (
     <Flex
       flexDirection="row"
-      justifyContent={isActive ? "space-between" : "flex-end"}
+      justifyContent="space-between"
       width="100%"
       px={SCREEN_HORIZONTAL_PADDING}
       my="13px"
@@ -54,14 +56,17 @@ export const SelectMode: React.FC<SelectModeProps> = ({
       pointerEvents="box-none"
       backgroundColor={isActive ? backgroundColor : "transparent"}
     >
-      <MotiView from={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }}>
+      <MotiView
+        from={{ opacity: isActive ? 1 : 0 }}
+        animate={{ opacity: isActive ? 1 : 0 }}
+        transition={{ duration: 200 }}
+        pointerEvents={isActive ? "auto" : "none"}
+      >
         <Button
           size="small"
           variant="fillGray"
           onPress={allSelected ? unselectAll : selectAll}
           longestText="Unselect All"
-          opacity={isActive ? 1 : 0}
-          pointerEvents={isActive ? "auto" : "none"}
         >
           {allSelected ? "Unselect All" : "Select All"}
         </Button>
@@ -73,7 +78,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
           variant="fillGray"
           onPress={handleSelectButtonPress}
           longestText="Cancel"
-          disabled={activeTab === "ArtistShows"}
+          disabled={!enabled}
         >
           {isActive ? "Cancel" : "Select"}
         </Button>
@@ -86,6 +91,9 @@ export const isAllSelected = (
   selectedItems: SelectedItem[],
   items: SelectedItem[]
 ) => {
+  if (items.length === 0) {
+    return false
+  }
   const allSelected = isEqual(
     new Set(selectedItems.map((item) => item?.internalID)),
     new Set(items.map((item) => item?.internalID))
