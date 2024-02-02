@@ -56,9 +56,9 @@ describe("AlbumListItem", () => {
     )
     const albumImages = UNSAFE_getAllByType(CachedImage)
     expect(albumImages).toHaveLength(3)
-    expect(albumImages[0].props.uri).toBe(`image-3`)
+    expect(albumImages[0].props.uri).toBe(`image-1`)
     expect(albumImages[1].props.uri).toBe(`image-2`)
-    expect(albumImages[2].props.uri).toBe(`image-1`)
+    expect(albumImages[2].props.uri).toBe(`image-3`)
   })
 
   it("renders album images with empty artwork array", () => {

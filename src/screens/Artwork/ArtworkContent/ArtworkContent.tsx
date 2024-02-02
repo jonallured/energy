@@ -31,7 +31,7 @@ import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { CachedImage } from "system/wrappers/CachedImage"
 import { useDeviceOrientation } from "utils/hooks/useDeviceOrientation"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
-// import { useScreenDimensions } from "utils/hooks/useScreenDimensions"
+import { useIsMounted } from "utils/hooks/useIsMounted"
 import { defaultRules } from "utils/renderMarkdown"
 
 const BOTTOM_SHEET_HEIGHT = 180
@@ -49,6 +49,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   const safeAreaInsets = useSafeAreaInsets()
   const artworkData = useFragment(artworkContentQuery, artwork)
   const touchActivated = useRef<any>(null)
+  const isMounted = useIsMounted()
 
   const deviceOrientation = useDeviceOrientation()
   const screenDimensions = useScreenDimensions()
@@ -176,13 +177,15 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
 
   return (
     <Flex height="100%" ref={touchActivated}>
-      <Suspense fallback={null}>
-        <ArtworkImageModalQueryRenderer
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          slug={artworkData.slug}
-        />
-      </Suspense>
+      {!!isMounted && (
+        <Suspense fallback={null}>
+          <ArtworkImageModalQueryRenderer
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
+            slug={artworkData.slug}
+          />
+        </Suspense>
+      )}
 
       <Flex height="90%" justifyContent="center">
         <Flex px={2} py={4}>

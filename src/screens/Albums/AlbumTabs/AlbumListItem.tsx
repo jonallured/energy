@@ -4,11 +4,10 @@ import {
   Text,
   CheckCircleFillIcon,
   Touchable,
-  Box,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { FadeIn } from "components/Animations/FadeIn"
-import { FlatList, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { Album } from "system/store/Models/AlbumsModel"
@@ -27,7 +26,6 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
 }) => {
   const { artworks } = useAlbum({ albumId: album.id })
   const placeholderHeight = useScreenDimensions().height / 5
-  const first3Artworks = artworks.slice(0, 10)
   const variant = isTablet() ? "sm" : "xs"
 
   return (
@@ -38,7 +36,7 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
         showsHorizontalScrollIndicator={false}
       >
         <Flex flexDirection="row" alignItems="flex-end">
-          {first3Artworks.reverse().map((artwork) => {
+          {artworks.map((artwork, index) => {
             if (!artwork) {
               return null
             }
@@ -46,6 +44,7 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
 
             return (
               <Touchable
+                key={index}
                 onPress={() => {
                   onPress?.(album.id)
                 }}

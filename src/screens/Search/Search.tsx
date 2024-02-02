@@ -32,6 +32,7 @@ export const SearchScreen = () => {
 
 export const Search = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+
   const { disableFilters, selectFilter } = SearchContext.useStoreActions(
     (actions) => actions
   )
@@ -47,13 +48,11 @@ export const Search = () => {
   }, [inputText])
 
   useEffect(() => {
-    if (searchInputRef.current) {
-      const unsubscribe = navigation.addListener("focus", () => {
-        searchInputRef.current?.focus()
-      })
-      return unsubscribe
-    }
-  }, [navigation])
+    // Slight delay to autoshow the keyboard when the screen first renders
+    setTimeout(() => {
+      searchInputRef.current?.focus()
+    }, 800)
+  }, [])
 
   const handleChangeText = (text: string) => {
     setInputText(text)

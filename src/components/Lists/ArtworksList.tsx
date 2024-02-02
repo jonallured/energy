@@ -9,10 +9,14 @@ import {
 import { ColumnItem } from "components/Items/ColumnItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { isSelected } from "components/SelectMode"
+import { memo } from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { GlobalStore } from "system/store/GlobalStore"
-import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
+import {
+  SelectedItem,
+  SelectedItemArtwork,
+} from "system/store/Models/SelectModeModel"
 import { usePresentationFilteredArtworks } from "utils/hooks/usePresentationFilteredArtworks"
 
 interface ArtworksListProps {
@@ -70,29 +74,18 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
       numColumns={numColumns}
       data={presentedArtworks}
       renderItem={({ item, i }) => {
-        const gridItem = item as SelectedItemArtwork
-        const isDisabled = checkIfDisabled ? checkIfDisabled(gridItem) : false
-
-        // When static, we're not apart of relay query / fragment lifecycle and
-        // render out out a static list of items
-        const GridItem = isStatic
-          ? ArtworkGridItem
-          : ArtworkGridItemFragmentContainer
-
         return (
-          <ColumnItem index={i} numColumns={numColumns}>
-            <GridItem
-              artwork={gridItem}
-              disable={isDisabled}
-              onPress={() => handleArtworkItemPress(gridItem)}
-              selectedToAdd={isSelected(selectedItems, gridItem)}
-              selectedToRemove={
-                checkIfSelectedToRemove
-                  ? checkIfSelectedToRemove(gridItem)
-                  : false
-              }
-            />
-          </ColumnItem>
+          <MemoizedArtworkListItem
+            checkIfDisabled={checkIfDisabled}
+            checkIfSelectedToRemove={checkIfSelectedToRemove}
+            handleArtworkItemPress={handleArtworkItemPress}
+            index={i}
+            isStatic={isStatic}
+            item={item as SelectedItemArtwork}
+            key={i}
+            numColumns={numColumns}
+            selectedItems={selectedItems}
+          />
         )
       }}
       keyExtractor={(item) => item.internalID}
@@ -100,3 +93,53 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
     />
   )
 }
+
+interface MemoizedArtworkListItemProps {
+  checkIfDisabled?: (item: SelectedItemArtwork) => boolean
+  checkIfSelectedToRemove?: (item: SelectedItemArtwork) => boolean
+  handleArtworkItemPress: (item: SelectedItemArtwork) => void
+  index: number
+  isStatic?: boolean
+  item: SelectedItem
+  numColumns: number
+  selectedItems: SelectedItem[]
+}
+
+const MemoizedArtworkListItem: React.FC<MemoizedArtworkListItemProps> = memo(
+  ({
+    item,
+    checkIfDisabled,
+    isStatic,
+    numColumns,
+    handleArtworkItemPress,
+    selectedItems,
+    checkIfSelectedToRemove,
+    index,
+  }) => {
+    const gridItem = item as SelectedItemArtwork
+    const isDisabled = checkIfDisabled ? checkIfDisabled(gridItem) : false
+
+    // When static, we're not apart of relay query / fragment lifecycle and
+    // render out out a static list of items
+    const GridItem = isStatic
+      ? ArtworkGridItem
+      : ArtworkGridItemFragmentContainer
+
+    return (
+      <ColumnItem index={index} numColumns={numColumns}>
+        <GridItem
+          artwork={gridItem}
+          disable={isDisabled}
+          onPress={() => handleArtworkItemPress(gridItem)}
+          selectedToAdd={isSelected(selectedItems, gridItem)}
+          selectedToRemove={
+            checkIfSelectedToRemove ? checkIfSelectedToRemove(gridItem) : false
+          }
+        />
+      </ColumnItem>
+    )
+  },
+  (prevProps, nextProps) => {
+    return prevProps.item === nextProps.item
+  }
+)

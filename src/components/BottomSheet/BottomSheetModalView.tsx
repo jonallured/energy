@@ -139,7 +139,6 @@ export const BottomSheetModalRow = ({
   <Touchable
     onPress={onPress}
     underlayColor="transparent"
-    activeOpacity={0.5}
     style={{ width: "100%", height: 100 }}
   >
     <Flex flex={1}>

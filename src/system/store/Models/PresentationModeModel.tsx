@@ -35,13 +35,13 @@ export interface PresentationModeModel {
 
 export const getPresentationModeModel = (): PresentationModeModel => ({
   isPresentationModeEnabled: false,
-  isHidePriceEnabled: true,
-  isHidePriceForSoldWorksEnabled: true,
-  isHideUnpublishedWorksEnabled: true,
-  isHideWorksNotForSaleEnabled: true,
-  isHideWorksAvailabilityEnabled: true,
-  isHideConfidentialNotesEnabled: true,
-  isHideArtworkEditButtonEnabled: true,
+  isHidePriceEnabled: false,
+  isHidePriceForSoldWorksEnabled: false,
+  isHideUnpublishedWorksEnabled: false,
+  isHideWorksNotForSaleEnabled: false,
+  isHideWorksAvailabilityEnabled: false,
+  isHideConfidentialNotesEnabled: false,
+  isHideArtworkEditButtonEnabled: false,
 
   hiddenItems: computed((state) => ({
     price: state.isPresentationModeEnabled && state.isHidePriceEnabled,

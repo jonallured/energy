@@ -80,8 +80,12 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
       contentContainerStyle={
         isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle
       }
-      renderItem={({ item }) => (
-        <MemoizedArtistListItem item={item} onItemPress={onItemPress} />
+      renderItem={({ item, index }) => (
+        <MemoizedArtistListItem
+          key={index}
+          item={item}
+          onItemPress={onItemPress}
+        />
       )}
       keyExtractor={(item) => item[0]?.internalID as string}
       ListEmptyComponent={<ListEmptyComponent text="No artists" />}

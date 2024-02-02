@@ -4,7 +4,7 @@ import {
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { StatusBar } from "components/StatusBar"
 import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
@@ -76,7 +76,7 @@ type MiscScreens = {
 
 export type ScreenNames = keyof NavigationScreens
 
-export const StackNav = createStackNavigator<NavigationScreens>()
+export const StackNav = createNativeStackNavigator<NavigationScreens>()
 
 export const Main = () => {
   const { maybeTrackFirstInstall } = useAppTracking()

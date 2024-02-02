@@ -1,3 +1,4 @@
+import { setGlobalActiveOpacity } from "@artsy/palette-mobile"
 import { Boot } from "Boot"
 import { Main } from "Navigation"
 import codePush from "react-native-code-push"
@@ -8,6 +9,7 @@ import { ignoreLogs } from "system/devTools/ignoreLogs"
 
 setupFlipper()
 ignoreLogs()
+setGlobalActiveOpacity(0.5)
 
 // ts-prune-ignore-next
 const InnerApp = () => {
