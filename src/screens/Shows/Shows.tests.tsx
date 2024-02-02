@@ -4,6 +4,10 @@ import { range } from "lodash"
 import { setupTestWrapper } from "utils/test/setupTestWrapper"
 import { Shows } from "./Shows"
 
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: jest.fn(),
+}))
+
 describe("Shows", () => {
   const { renderWithRelay } = setupTestWrapper<ShowsQuery>({
     Component: Shows,

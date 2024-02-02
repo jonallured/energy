@@ -15,6 +15,7 @@ import { graphql, useFragment } from "react-relay"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { CachedImage } from "system/wrappers/CachedImage"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export interface ArtworkGridItemProps extends FlexProps {
   artwork: SelectedItemArtwork
@@ -36,18 +37,23 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
 }) => {
   const fontSize = isTablet() ? "sm" : "xs"
 
+  const isDarkMode = useIsDarkMode()
+
   const isAvailabilityHidden = GlobalStore.useAppState(
     (state) => state.presentationMode.hiddenItems.worksAvailability
   )
 
+  const selectedOpacity = (() => {
+    if (disable || selectedToAdd || selectedToRemove) {
+      return isDarkMode ? 0.6 : 0.4
+    }
+
+    return 1
+  })()
+
   return (
     <Touchable disabled={disable} onPress={onPress}>
-      <Flex
-        {...flexProps}
-        mb={2}
-        opacity={disable || selectedToAdd || selectedToRemove ? 0.4 : 1}
-        style={style}
-      >
+      <Flex {...flexProps} mb={2} opacity={selectedOpacity} style={style}>
         <CachedImage
           uri={artwork.image?.resized?.url}
           aspectRatio={artwork.image?.aspectRatio}

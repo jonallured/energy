@@ -146,6 +146,7 @@ export const CreateOrEditAlbum = () => {
       <Flex>
         <Button
           block
+          variant={isDarkMode ? "fillLight" : "fillDark"}
           onPress={() => handleSubmit()}
           disabled={!isActionButtonEnabled}
         >

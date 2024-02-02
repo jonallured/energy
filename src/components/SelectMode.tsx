@@ -4,8 +4,8 @@ import {
   SCREEN_HORIZONTAL_PADDING,
   ZINDEX,
 } from "@artsy/palette-mobile"
-import { FadeIn } from "components/Animations/FadeIn"
 import { isEqual } from "lodash"
+import { MotiView } from "moti"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem } from "system/store/Models/SelectModeModel"
@@ -47,18 +47,20 @@ export const SelectMode: React.FC<SelectModeProps> = ({
       pointerEvents="box-none"
       backgroundColor={isActive ? backgroundColor : "transparent"}
     >
-      {!!isActive && (
+      <MotiView from={{ opacity: 0 }} animate={{ opacity: isActive ? 1 : 0 }}>
         <Button
           size="small"
           variant="fillGray"
           onPress={allSelected ? unselectAll : selectAll}
           longestText="Unselect All"
+          opacity={isActive ? 1 : 0}
+          pointerEvents={isActive ? "auto" : "none"}
         >
           {allSelected ? "Unselect All" : "Select All"}
         </Button>
-      )}
+      </MotiView>
 
-      <FadeIn>
+      <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <Button
           size="small"
           variant="fillGray"
@@ -67,7 +69,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
         >
           {isActive ? "Cancel" : "Select"}
         </Button>
-      </FadeIn>
+      </MotiView>
     </Flex>
   )
 }

@@ -1,10 +1,12 @@
-import { SegmentClient, createClient } from "@segment/analytics-react-native"
 import { Platform } from "react-native"
 import Config from "react-native-config"
+import type { SegmentClient } from "@segment/analytics-react-native"
 
 export let segmentClient = null as unknown as SegmentClient
 
 export const initializeSegment = (): SegmentClient | null => {
+  const { createClient } = require("@segment/analytics-react-native")
+
   const writeKey = Platform.select({
     ios: __DEV__
       ? Config.SEGMENT_STAGING_WRITE_KEY_IOS

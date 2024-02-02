@@ -5,4 +5,4 @@
  * also part of the `syncManager` file, and any dependency they might have (eg. fragments).
  */
 
-export const relayChecksum = "4fa53981da69c6cd879c42270b14a465838a5aa1" // pragma: allowlist secret
+export const relayChecksum = "256166912c4838ec31135a7bb578c572a5d38862" // pragma: allowlist secret

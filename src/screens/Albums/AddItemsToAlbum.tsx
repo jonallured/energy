@@ -141,11 +141,19 @@ export const AddItemsToAlbum = () => {
 
         <Screen.BottomView darkMode={isDarkMode}>
           {selectedAlbumIds.length <= 0 ? (
-            <Button block onPress={createNewAlbumHandler}>
+            <Button
+              block
+              variant={isDarkMode ? "fillLight" : "fillDark"}
+              onPress={createNewAlbumHandler}
+            >
               Create New Album
             </Button>
           ) : (
-            <Button block onPress={addArtworkToSelectedAlbumsHandler}>
+            <Button
+              block
+              variant={isDarkMode ? "fillLight" : "fillDark"}
+              onPress={addArtworkToSelectedAlbumsHandler}
+            >
               Add
             </Button>
           )}

@@ -17,6 +17,7 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemRelayEnvironment } from "system/relay/useSystemRelayEnvironment"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { object, string } from "yup"
 
 export interface LoginSchema {
@@ -49,6 +50,7 @@ export const LoginScreen = () => {
   useSetupRageShake()
 
   const color = useColor()
+  const isDarkMode = useIsDarkMode()
 
   const { trackLoginSuccess } = useAppTracking()
   const passwordInputRef = useRef<Input>(null)
@@ -235,7 +237,7 @@ export const LoginScreen = () => {
           disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
           loading={isSubmitting}
           testID="loginButton"
-          variant="fillDark"
+          variant={isDarkMode ? "fillLight" : "fillDark"}
         >
           Log in
         </Button>

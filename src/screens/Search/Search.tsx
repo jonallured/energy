@@ -18,7 +18,7 @@ import { SearchFilters } from "./SearchFilters"
 import { SearchResult } from "./SearchResult"
 
 const SEARCH_THROTTLE_INTERVAL = 1000
-const MINIMUM_SEARCH_INPUT_LENGTH = 3
+const MINIMUM_SEARCH_INPUT_LENGTH = 2
 
 export const SearchScreen = () => {
   useTrackScreen({ name: "Search", type: "Search" })
@@ -61,11 +61,15 @@ export const Search = () => {
   }
 
   const handleSearch = useMemo(() => {
-    return throttle((searchInput: string) => {
-      if (searchInput.length >= MINIMUM_SEARCH_INPUT_LENGTH) {
-        setSearch(searchInput)
-      }
-    }, SEARCH_THROTTLE_INTERVAL)
+    return throttle(
+      (searchInput: string) => {
+        if (searchInput.length >= MINIMUM_SEARCH_INPUT_LENGTH) {
+          setSearch(searchInput)
+        }
+      },
+      SEARCH_THROTTLE_INTERVAL,
+      { trailing: true }
+    )
   }, [])
 
   const showSearchResults = inputText.length >= MINIMUM_SEARCH_INPUT_LENGTH

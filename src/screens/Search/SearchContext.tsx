@@ -10,7 +10,7 @@ interface SearchContextStore {
 }
 
 export const SearchContext = createContextStore<SearchContextStore>({
-  disabledFilters: [],
+  disabledFilters: ["Albums", "Artists", "Shows", "All"],
   currentFilter: "All",
 
   disableFilters: action((state, filters) => {

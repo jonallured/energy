@@ -37,35 +37,9 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
   isStatic = true,
   onItemPress,
 }) => {
-  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
-
-  const isSelectModeActive = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.isActive
-  )
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
-
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
-  const artworkSlugs = presentedArtworks.map((artwork) => artwork.slug)
 
   const numColumns = isTablet() ? 3 : 2
-
-  const handleArtworkItemPress = (item: SelectedItemArtwork) => {
-    if (onItemPress) {
-      onItemPress(item)
-    } else {
-      // Default list mode funcitonality
-      if (isSelectModeActive) {
-        GlobalStore.actions.selectMode.toggleSelectedItem(item)
-      } else {
-        navigation.navigate("Artwork", {
-          slug: item.slug,
-          contextArtworkSlugs: artworkSlugs,
-        })
-      }
-    }
-  }
 
   return (
     <MasonryList
@@ -78,13 +52,13 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
           <MemoizedArtworkListItem
             checkIfDisabled={checkIfDisabled}
             checkIfSelectedToRemove={checkIfSelectedToRemove}
-            handleArtworkItemPress={handleArtworkItemPress}
             index={i}
             isStatic={isStatic}
             item={item as SelectedItemArtwork}
             key={i}
             numColumns={numColumns}
-            selectedItems={selectedItems}
+            presentedArtworks={presentedArtworks}
+            onItemPress={onItemPress}
           />
         )
       }}
@@ -97,25 +71,52 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
 interface MemoizedArtworkListItemProps {
   checkIfDisabled?: (item: SelectedItemArtwork) => boolean
   checkIfSelectedToRemove?: (item: SelectedItemArtwork) => boolean
-  handleArtworkItemPress: (item: SelectedItemArtwork) => void
   index: number
   isStatic?: boolean
   item: SelectedItem
   numColumns: number
-  selectedItems: SelectedItem[]
+  onItemPress?: (item: SelectedItemArtwork) => void
+  presentedArtworks: SelectedItemArtwork[]
 }
 
 const MemoizedArtworkListItem: React.FC<MemoizedArtworkListItemProps> = memo(
   ({
-    item,
     checkIfDisabled,
-    isStatic,
-    numColumns,
-    handleArtworkItemPress,
-    selectedItems,
     checkIfSelectedToRemove,
     index,
+    isStatic,
+    item,
+    numColumns,
+    onItemPress,
+    presentedArtworks,
   }) => {
+    const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+
+    const isSelectModeActive = GlobalStore.useAppState(
+      (state) => state.selectMode.sessionState.isActive
+    )
+    const selectedItems = GlobalStore.useAppState(
+      (state) => state.selectMode.sessionState.selectedItems
+    )
+
+    const artworkSlugs = presentedArtworks.map((artwork) => artwork.slug)
+
+    const handleArtworkItemPress = (item: SelectedItemArtwork) => {
+      if (onItemPress) {
+        onItemPress(item)
+      } else {
+        // Default list mode funcitonality
+        if (isSelectModeActive) {
+          GlobalStore.actions.selectMode.toggleSelectedItem(item)
+        } else {
+          navigation.navigate("Artwork", {
+            slug: item.slug,
+            contextArtworkSlugs: artworkSlugs,
+          })
+        }
+      }
+    }
+
     const gridItem = item as SelectedItemArtwork
     const isDisabled = checkIfDisabled ? checkIfDisabled(gridItem) : false
 
