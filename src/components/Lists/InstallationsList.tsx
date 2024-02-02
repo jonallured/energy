@@ -25,7 +25,7 @@ export const InstallationsList: React.FC<ShowInstallationsProps> = ({
         const gridItem = item as SelectedItemInstall
 
         return (
-          <ColumnItem index={i} numColumns={2}>
+          <ColumnItem index={i} numColumns={2} mb={2}>
             <ArtworkImageGridItem
               url={gridItem?.url ?? ""}
               onPress={() =>

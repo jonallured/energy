@@ -42,7 +42,7 @@ export const HomeTabs = () => {
                 onPress={() => navigation.navigate("Search")}
                 hitSlop={DEFAULT_HIT_SLOP}
               >
-                <MagnifyingGlassIcon fill="onBackgroundHigh" top="3px" />
+                <MagnifyingGlassIcon fill="onBackgroundHigh" top="0px" />
               </Touchable>
             )}
           </>

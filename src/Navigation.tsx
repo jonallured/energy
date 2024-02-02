@@ -79,14 +79,15 @@ export type ScreenNames = keyof NavigationScreens
 export const StackNav = createNativeStackNavigator<NavigationScreens>()
 
 export const Main = () => {
-  const { maybeTrackFirstInstall } = useAppTracking()
-  const isDoneBooting = useSystemIsDoneBooting()
-  const { incrementLaunchCount } = GlobalStore.actions.system
   const isLoggedIn =
     GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
+
   const selectedPartner = GlobalStore.useAppState(
     (state) => state.auth.activePartnerID
   )
+
+  const { maybeTrackFirstInstall } = useAppTracking()
+  const isDoneBooting = useSystemIsDoneBooting()
   const isDarkMode = useIsDarkMode()
 
   useAndroidNavigationBarThemeListener()
@@ -95,7 +96,7 @@ export const Main = () => {
   useWebViewCookies()
 
   useEffect(() => {
-    incrementLaunchCount()
+    GlobalStore.actions.system.incrementLaunchCount()
   }, [])
 
   useEffect(() => {

@@ -7,18 +7,21 @@ import {
   Screen,
   Text,
   Touchable,
+  Button,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { throttle } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { SearchContext } from "screens/Search/SearchContext"
+import { FlatList } from "react-native"
+import { Filters, SearchContext } from "screens/Search/SearchContext"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
-import { SearchFilters } from "./SearchFilters"
 import { SearchResult } from "./SearchResult"
 
 const SEARCH_THROTTLE_INTERVAL = 1000
 const MINIMUM_SEARCH_INPUT_LENGTH = 2
+
+const FILTERS: Filters[] = ["All", "Artists", "Shows", "Albums"]
 
 export const SearchScreen = () => {
   useTrackScreen({ name: "Search", type: "Search" })
@@ -36,6 +39,10 @@ export const Search = () => {
   const { disableFilters, selectFilter } = SearchContext.useStoreActions(
     (actions) => actions
   )
+  const { currentFilter, disabledFilters } = SearchContext.useStoreState(
+    (state) => state
+  )
+
   const [inputText, setInputText] = useState("")
   const [search, setSearch] = useState("")
   const searchInputRef = useRef<Input>(null)
@@ -101,13 +108,41 @@ export const Search = () => {
           <Separator />
         </Flex>
 
-        {!!showSearchResults && (
-          <Screen.FullWidthItem>
-            <Flex mt={2} mb={1}>
-              <SearchFilters />
-            </Flex>
-          </Screen.FullWidthItem>
-        )}
+        <Screen.FullWidthItem>
+          <Flex mt={2} mb={1}>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={FILTERS}
+              renderItem={({ item, index }) => {
+                const isDisabled = disabledFilters.includes(item)
+
+                if (isDisabled) {
+                  return null
+                }
+
+                return (
+                  <Button
+                    key={item}
+                    size="small"
+                    variant={
+                      currentFilter === item ? "fillSuccess" : "outlineGray"
+                    }
+                    onPress={() => selectFilter(item)}
+                    disabled={
+                      !showSearchResults || disabledFilters.includes(item)
+                    }
+                    ml={index === 0 ? 2 : 0}
+                    mr={1}
+                  >
+                    {item}
+                  </Button>
+                )
+              }}
+              ListFooterComponent={<Flex pr={2} />}
+            />
+          </Flex>
+        </Screen.FullWidthItem>
 
         {!!showSearchResults && <SearchResult searchInput={search} />}
       </Screen.Body>
