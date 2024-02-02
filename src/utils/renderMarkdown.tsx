@@ -51,6 +51,10 @@ export function defaultRules({
   return createReactRules({
     link: {
       react: (node, output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         state.withinText = true
         return (
           <Text
@@ -67,6 +71,10 @@ export function defaultRules({
     },
     text: {
       react: (node) => {
+        if (!node.content) {
+          return null
+        }
+
         return decode(node.content)
       },
     },
@@ -74,6 +82,10 @@ export function defaultRules({
     paragraph: {
       match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         return (
           <Text variant="sm" key={state.key}>
             {output(node.content, state)}
@@ -84,6 +96,10 @@ export function defaultRules({
 
     strong: {
       react: (node, output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         return (
           <Text variant="sm" weight="medium" key={state.key}>
             {output(node.content, state)}
@@ -94,6 +110,10 @@ export function defaultRules({
 
     em: {
       react: (node, output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         return (
           <Text variant="xs" italic key={state.key}>
             {output(node.content, state)}
@@ -116,6 +136,10 @@ export function defaultRules({
 
     list: {
       react: (node, output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         const items = _.map(node.items, (item, i) => {
           let bullet
           if (node.ordered) {
@@ -133,6 +157,7 @@ export function defaultRules({
               {output(node.content, state)}
             </Text>
           )
+
           return (
             <View key={i} style={{ flexDirection: "row" }}>
               <RNText>
@@ -147,6 +172,10 @@ export function defaultRules({
 
     codeBlock: {
       react: (node, _output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         return (
           <Text variant="sm" key={state.key}>
             {node.content}
@@ -157,6 +186,10 @@ export function defaultRules({
 
     inlineCode: {
       react: (node, _output, state) => {
+        if (!node.content) {
+          return null
+        }
+
         return (
           <Text variant="sm" key={state.key}>
             {node.content}
@@ -172,6 +205,10 @@ export function defaultRules({
           2: "lg",
           3: "md",
           4: "md",
+        }
+
+        if (!node.content) {
+          return null
         }
 
         const variant = map[node.level] || "md"
@@ -198,21 +235,27 @@ export function defaultRules({
       react: () => null,
     },
     blockQuote: {
-      react: (node, output, state) => (
-        <ClassTheme>
-          {({ color, space }) => (
-            <View
-              style={{
-                borderLeftColor: color("black10"),
-                borderLeftWidth: 2,
-                paddingLeft: space(1),
-              }}
-            >
-              {output(node.content, state)}
-            </View>
-          )}
-        </ClassTheme>
-      ),
+      react: (node, output, state) => {
+        if (!node.content) {
+          return null
+        }
+
+        return (
+          <ClassTheme>
+            {({ color, space }) => (
+              <View
+                style={{
+                  borderLeftColor: color("black10"),
+                  borderLeftWidth: 2,
+                  paddingLeft: space(1),
+                }}
+              >
+                {output(node.content, state)}
+              </View>
+            )}
+          </ClassTheme>
+        )
+      },
     },
     hr: {
       react: () => <Separator mb={2} />,
