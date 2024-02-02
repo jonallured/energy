@@ -23,8 +23,11 @@ import {
   BottomSheetModalRow,
 } from "components/BottomSheet/BottomSheetModalView"
 import { PageableScreenView } from "components/PageableScreen/PageableScreenView"
-import { ScrollableScreenEntity } from "components/PageableScreen/PageableScreensContext"
-import { Suspense, useRef } from "react"
+import {
+  ScrollableScreenEntity,
+  usePageableScreensContext,
+} from "components/PageableScreen/PageableScreensContext"
+import React, { Suspense, useEffect, useRef } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
@@ -44,6 +47,8 @@ type ArtworkRoute = RouteProp<NavigationScreens, "Artwork">
 
 export const Artwork: React.FC = () => {
   const { contextArtworkSlugs, slug } = useRoute<ArtworkRoute>().params
+  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const actionMenuHandler = useRef<any>(null)
   const artworkSlugs = contextArtworkSlugs ?? [slug]
 
   useTrackScreen({
@@ -52,13 +57,19 @@ export const Artwork: React.FC = () => {
     slug,
   })
 
-  const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug) => {
+  const screens: ScrollableScreenEntity[] = artworkSlugs.map((slug, index) => {
     return {
       name: slug,
       Component: () => {
         return (
           <Suspense fallback={<SkeletonArtwork />}>
-            <ArtworkPage slug={slug} />
+            <ArtworkPage
+              slug={slug}
+              screenIndex={index}
+              onRender={(handler) => {
+                actionMenuHandler.current = handler
+              }}
+            />
           </Suspense>
         )
       },
@@ -66,17 +77,42 @@ export const Artwork: React.FC = () => {
   })
 
   return (
-    <PageableScreenView
-      screens={screens}
-      initialScreenName={slug}
-      prefetchScreensCount={5}
-    />
+    <Screen safeArea={false}>
+      <Screen.FloatingHeader
+        onBack={navigation.goBack}
+        rightElements={
+          <Touchable
+            onPress={() => actionMenuHandler?.current()}
+            hitSlop={DEFAULT_HIT_SLOP}
+            style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
+          >
+            <MoreIcon />
+          </Touchable>
+        }
+      />
+      <PageableScreenView
+        screens={screens}
+        initialScreenName={slug}
+        prefetchScreensCount={5}
+      />
+    </Screen>
   )
 }
 
-export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
+interface ArtworkPageProps {
+  slug: string
+  screenIndex: number
+  onRender: (handler: () => void) => void
+}
+
+export const ArtworkPage: React.FC<ArtworkPageProps> = ({
+  slug,
+  screenIndex,
+  onRender,
+}) => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { saveNavigationHistory } = useSaveNavigationHistory()
+  const { activeScreenIndex } = usePageableScreensContext()
 
   const bottomSheetRef = useRef<BottomSheetRef>(null)
 
@@ -121,25 +157,23 @@ export const ArtworkPage: React.FC<{ slug: string }> = ({ slug }) => {
     }
   }
 
-  const addToButtonHandler = () => {
+  const actionMenuHandler = () => {
     bottomSheetRef.current?.showBottomSheetModal()
   }
+
+  /**
+   * When the screen is visible, pass the action button handler up to parent
+   * so that we can trigger the modal action items
+   */
+  useEffect(() => {
+    if (activeScreenIndex === screenIndex) {
+      onRender(actionMenuHandler)
+    }
+  }, [activeScreenIndex])
 
   return (
     <BottomSheetModalProvider>
       <Screen safeArea={false}>
-        <Screen.FloatingHeader
-          onBack={navigation.goBack}
-          rightElements={
-            <Touchable
-              onPress={addToButtonHandler}
-              hitSlop={DEFAULT_HIT_SLOP}
-              style={{ paddingRight: `${SCREEN_HORIZONTAL_PADDING}%` }}
-            >
-              <MoreIcon />
-            </Touchable>
-          }
-        />
         <Screen.Body fullwidth>
           <ArtworkContent artwork={artwork!} />
         </Screen.Body>
