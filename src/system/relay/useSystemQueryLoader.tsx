@@ -59,6 +59,7 @@ export function useSystemQueryLoader<TQuery extends OperationType>(
 
   const refreshControl = isOnline ? (
     <RefreshControl
+      key={JSON.stringify(variables)}
       refreshing={loading}
       onRefresh={() => {
         refetch()

@@ -15,8 +15,6 @@ interface ShowArtworksProps {
 export const ShowArtworks: React.FC<ShowArtworksProps> = ({ slug }) => {
   useTrackScreen({ name: "ShowArtworks", type: "Show", slug })
 
-  console.log(slug)
-
   const { data, refreshControl } = useSystemQueryLoader<ShowArtworksQuery>(
     showArtworksQuery,
     {

@@ -1,5 +1,6 @@
 import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
 import { ShowsList } from "components/Lists/ShowsList"
+import { SelectModePortal } from "components/SelectModePortal"
 import { graphql } from "react-relay"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
@@ -27,6 +28,8 @@ export const ArtistShows: React.FC<ArtistShowsProps> = ({ slug }) => {
 
   return (
     <>
+      <SelectModePortal tabName="ArtistShows" items={[]} />
+
       <ShowsList shows={shows} refreshControl={refreshControl} />
     </>
   )

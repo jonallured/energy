@@ -21,6 +21,7 @@ describe("SelectMode", () => {
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
+        activeTab="foo"
       />
     )
 
@@ -42,6 +43,7 @@ describe("SelectMode", () => {
         allSelected={true}
         selectAll={() => {}}
         unselectAll={() => {}}
+        activeTab="foo"
       />
     )
 
@@ -63,6 +65,7 @@ describe("SelectMode", () => {
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
+        activeTab="foo"
       />
     )
 
@@ -84,8 +87,12 @@ describe("SelectMode", () => {
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
+        activeTab="foo"
       />
     )
+
+    const selectButton = getByText("Select")
+    fireEvent.press(selectButton)
 
     const cancelButton = getByText("Cancel")
     expect(cancelButton).toBeDefined()
@@ -105,6 +112,7 @@ describe("SelectMode", () => {
         allSelected={false}
         selectAll={() => {}}
         unselectAll={() => {}}
+        activeTab="foo"
       />
     )
 
@@ -127,7 +135,12 @@ describe("SelectMode", () => {
     const spy = jest.fn()
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={true} selectAll={jest.fn()} unselectAll={spy} />
+      <SelectMode
+        allSelected={true}
+        selectAll={jest.fn()}
+        unselectAll={spy}
+        activeTab="foo"
+      />
     )
 
     const selectButton = getByText("Unselect All")
@@ -146,7 +159,12 @@ describe("SelectMode", () => {
     const spy = jest.fn()
 
     const { getByText } = renderWithWrappers(
-      <SelectMode allSelected={false} selectAll={spy} unselectAll={jest.fn()} />
+      <SelectMode
+        allSelected={false}
+        selectAll={spy}
+        unselectAll={jest.fn()}
+        activeTab="foo"
+      />
     )
 
     const selectButton = getByText("Select All")

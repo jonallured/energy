@@ -1,9 +1,10 @@
-import { Tabs } from "@artsy/palette-mobile"
+import { Flex, Tabs, useScreenDimensions } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { ShowTabsQuery } from "__generated__/ShowTabsQuery.graphql"
 
 import { TabsView } from "components/TabsView"
+import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { TabScreen } from "system/wrappers/TabScreen"
@@ -54,8 +55,16 @@ export const showTabsQuery = graphql`
 `
 
 export const SkeletonShowTabs = () => {
+  const dimensions = useScreenDimensions()
+
   return (
-    <TabsView title="">
+    <TabsView
+      title={
+        <Flex alignItems="center" width={dimensions.width} pr={4}>
+          <ActivityIndicator />
+        </Flex>
+      }
+    >
       <Tabs.Tab name="ShowArtworks" label="Works">
         <></>
       </Tabs.Tab>

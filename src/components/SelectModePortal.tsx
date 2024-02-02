@@ -23,6 +23,7 @@ export const SelectModePortal: React.FC<SelectModePortalProps> = ({
   return (
     <Portal active={tabName === activeTab}>
       <SelectMode
+        activeTab={activeTab}
         allSelected={allSelected}
         selectAll={() => {
           GlobalStore.actions.selectMode.selectItems(items)

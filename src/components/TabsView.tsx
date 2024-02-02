@@ -11,7 +11,7 @@ import { CollapsibleProps } from "react-native-collapsible-tab-view"
 import { isTablet } from "react-native-device-info"
 
 interface TabsViewProps {
-  title: string
+  title: string | JSX.Element
   bottomSheetActionsProps?: BottomSheetActionsProps
   headerProps?: HeaderProps
   showLargeHeaderText?: boolean

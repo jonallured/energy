@@ -6,18 +6,21 @@ import {
 } from "@artsy/palette-mobile"
 import { isEqual } from "lodash"
 import { MotiView } from "moti"
+import { useEffect } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItem } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface SelectModeProps {
+  activeTab: string
   allSelected: boolean
   selectAll: () => void
   unselectAll: () => void
 }
 
 export const SelectMode: React.FC<SelectModeProps> = ({
+  activeTab,
   allSelected,
   selectAll,
   unselectAll,
@@ -33,6 +36,10 @@ export const SelectMode: React.FC<SelectModeProps> = ({
   }
 
   const backgroundColor = isDarkMode ? "black100" : "white100"
+
+  useEffect(() => {
+    GlobalStore.actions.selectMode.cancelSelectMode()
+  }, [activeTab])
 
   return (
     <Flex
@@ -66,6 +73,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
           variant="fillGray"
           onPress={handleSelectButtonPress}
           longestText="Cancel"
+          disabled={activeTab === "ArtistShows"}
         >
           {isActive ? "Cancel" : "Select"}
         </Button>
