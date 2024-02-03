@@ -119,7 +119,9 @@ export const Main = () => {
     <Flex backgroundColor="background" flex={1}>
       <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
         <StackNav.Navigator
-          screenOptions={{ headerShown: false }}
+          screenOptions={{
+            headerShown: false,
+          }}
           initialRouteName="HomeTabs"
         >
           {AuthNavigation({ isLoggedIn, selectedPartner })}
