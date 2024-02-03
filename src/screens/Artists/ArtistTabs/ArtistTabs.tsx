@@ -5,6 +5,7 @@ import { SelectModeActions } from "components/SelectMode/SelectModeActions"
 import { TabsView } from "components/TabsView"
 import { ActivityIndicator } from "react-native"
 import { TabScreen } from "system/wrappers/TabScreen"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useIsOnline } from "utils/hooks/useIsOnline"
 import { ArtistArtworks } from "./ArtistArtworks"
 import { ArtistDocuments } from "./ArtistDocuments"
@@ -43,13 +44,14 @@ export const ArtistTabs = () => {
 
 export const SkeletonArtistTabs = () => {
   const isOnline = useIsOnline()
+  const isDarkMode = useIsDarkMode()
 
   return (
     <TabsView title="" headerProps={{ hideRightElements: !isOnline }}>
       <Tabs.Tab name="ArtistArtworks" label="Works">
         <Tabs.ScrollView>
           <Flex my={2}>
-            <ActivityIndicator />
+            <ActivityIndicator color={isDarkMode ? "white" : "black"} />
           </Flex>
         </Tabs.ScrollView>
       </Tabs.Tab>

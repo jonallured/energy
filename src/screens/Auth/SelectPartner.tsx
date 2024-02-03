@@ -18,18 +18,21 @@ import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { RetryErrorBoundary } from "system/wrappers/RetryErrorBoundary"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export const SelectPartnerScreen: React.FC = () => {
   useTrackScreen({ name: "SelectPartner" })
+
+  const isDarkMode = useIsDarkMode()
 
   return (
     <Screen>
       <Screen.Body>
         <RetryErrorBoundary
-          catch={(e) => {
+          catch={(error) => {
             if (
-              e.message.includes("Forbidden") &&
-              e.message.includes("Not authorized")
+              error.message.includes("Forbidden") &&
+              error.message.includes("Not authorized")
             ) {
               // this shows up if a user logs in with a user that is not a partner
               GlobalStore.actions.auth.signOut()
@@ -39,7 +42,7 @@ export const SelectPartnerScreen: React.FC = () => {
           <Suspense
             fallback={
               <Box mt={4}>
-                <ActivityIndicator />
+                <ActivityIndicator color={isDarkMode ? "white" : "black"} />
               </Box>
             }
           >

@@ -13,6 +13,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { initDownloadFileToCache } from "system/sync/fileCache"
 import { useLocalUri } from "system/sync/fileCache/useLocalUri"
 import { formatBytes } from "utils/formatBytes"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 export interface DocumentEntity {
   id: string
@@ -75,6 +76,8 @@ export const DocumentGridItem = ({
     }
   }, [isDownloading, isOpening, localUri])
 
+  const isDarkMode = useIsDarkMode()
+
   return (
     <Touchable
       disabled={isDownloading}
@@ -101,7 +104,10 @@ export const DocumentGridItem = ({
               alignItems="center"
               bg="rgba(0, 0, 0, 0.5)"
             >
-              <ActivityIndicator accessibilityLabel="Loading Indicator" />
+              <ActivityIndicator
+                accessibilityLabel="Loading Indicator"
+                color={isDarkMode ? "white" : "black"}
+              />
             </Flex>
           )}
         </Flex>

@@ -38,6 +38,7 @@ import {
   SelectedItem,
   SelectedItemArtwork,
 } from "system/store/Models/SelectModeModel"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useMailComposer } from "utils/hooks/useMailComposer"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
@@ -274,6 +275,8 @@ export const Artwork_artworkProps = graphql`
 `
 
 export const SkeletonArtwork = () => {
+  const isDarkMode = useIsDarkMode()
+
   return (
     <BottomSheetModalProvider>
       <Screen safeArea={false}>
@@ -289,13 +292,14 @@ export const SkeletonArtwork = () => {
         />
         <Screen.Body fullwidth>
           <Flex
+            mt={-6}
             backgroundColor="background"
             flex={1}
             justifyContent="center"
             alignItems="center"
-            height="78%"
+            height="100%"
           >
-            <ActivityIndicator />
+            <ActivityIndicator color={isDarkMode ? "white" : "black"} />
           </Flex>
         </Screen.Body>
       </Screen>

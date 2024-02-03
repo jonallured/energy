@@ -12,6 +12,7 @@ import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { extractNodes } from "utils/extractNodes"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { imageSize } from "utils/imageSize"
 
 interface SearchResultProps {
@@ -19,6 +20,8 @@ interface SearchResultProps {
 }
 
 export const SearchResult: React.FC<SearchResultProps> = ({ searchInput }) => {
+  const isDarkMode = useIsDarkMode()
+
   return (
     <Suspense
       fallback={
@@ -28,7 +31,7 @@ export const SearchResult: React.FC<SearchResultProps> = ({ searchInput }) => {
           justifyContent="center"
           alignItems="center"
         >
-          <ActivityIndicator />
+          <ActivityIndicator color={isDarkMode ? "white" : "black"} />
         </Flex>
       }
     >

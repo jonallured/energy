@@ -59,7 +59,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
       <MotiView
         from={{ opacity: isActive ? 1 : 0 }}
         animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 200 }}
+        transition={{ duration: isActive ? 200 : 100 }}
         pointerEvents={isActive ? "auto" : "none"}
       >
         <Button

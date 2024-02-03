@@ -12,12 +12,11 @@ import {
 } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ArtworkContent_artwork$key } from "__generated__/ArtworkContent_artwork.graphql"
-import { ArtworkImageModalQueryRenderer } from "components/ArtworkImageModal"
 import { getBottomSheetShadowStyle } from "components/BottomSheet/BottomSheetModalView"
 import { ImagePlaceholder } from "components/ImagePlaceholder"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { Markdown } from "components/Markdown"
-import { Suspense, useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { Linking, Platform } from "react-native"
 import QRCode from "react-native-qrcode-svg"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -26,12 +25,12 @@ import {
   ArtworkDetail,
   ArtworkDetailLineItem,
 } from "screens/Artwork/ArtworkContent/ArtworkDetail"
+import { ArtworkImageModal } from "screens/Artwork/ArtworkContent/ArtworkImageModal"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { CachedImage } from "system/wrappers/CachedImage"
 import { useDeviceOrientation } from "utils/hooks/useDeviceOrientation"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
-import { useIsMounted } from "utils/hooks/useIsMounted"
 import { defaultRules } from "utils/renderMarkdown"
 
 const BOTTOM_SHEET_HEIGHT = 180
@@ -49,7 +48,6 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   const safeAreaInsets = useSafeAreaInsets()
   const artworkData = useFragment(artworkContentQuery, artwork)
   const touchActivated = useRef<any>(null)
-  const isMounted = useIsMounted()
 
   const deviceOrientation = useDeviceOrientation()
   const screenDimensions = useScreenDimensions()
@@ -177,14 +175,11 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
 
   return (
     <Flex height="100%" ref={touchActivated}>
-      {!!isMounted && (
-        <Suspense fallback={null}>
-          <ArtworkImageModalQueryRenderer
-            isModalVisible={isModalVisible}
-            setIsModalVisible={setIsModalVisible}
-            slug={artworkData.slug}
-          />
-        </Suspense>
+      {!!isModalVisible && (
+        <ArtworkImageModal
+          onClose={() => setIsModalVisible(false)}
+          image={image}
+        />
       )}
 
       <Flex height="90%" justifyContent="center">
@@ -199,10 +194,10 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
               onPress={onPress}
             >
               <CachedImage
+                backgroundColor="transparent"
                 uri={image?.resized?.url}
-                width={resizedImage.width}
-                height={resizedImage.height}
                 aspectRatio={image?.aspectRatio}
+                resizeMode="contain"
                 style={{
                   zIndex: ZINDEX.artworkContent,
                   flex: 1,

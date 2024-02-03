@@ -9,6 +9,7 @@ import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
 import { TabScreen } from "system/wrappers/TabScreen"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { ShowArtworks } from "./ShowArtworks"
 import { ShowDocuments } from "./ShowDocuments"
 import { ShowInstalls } from "./ShowInstalls"
@@ -61,12 +62,13 @@ export const showTabsQuery = graphql`
 
 export const SkeletonShowTabs = () => {
   const dimensions = useScreenDimensions()
+  const isDarkMode = useIsDarkMode()
 
   return (
     <TabsView
       title={
         <Flex alignItems="center" width={dimensions.width} pr={4}>
-          <ActivityIndicator />
+          <ActivityIndicator color={isDarkMode ? "white" : "black"} />
         </Flex>
       }
     >

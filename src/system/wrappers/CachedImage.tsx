@@ -1,4 +1,9 @@
-import { useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Flex,
+  useColor,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ImagePlaceholder } from "components/ImagePlaceholder"
 import React, { useRef } from "react"
 import { Image, ImageProps, Platform } from "react-native"
@@ -9,32 +14,36 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { useLocalUri } from "system/sync/fileCache/useLocalUri"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
-  width?: string | number | undefined
+  aspectRatio?: number | null | undefined
+  backgroundColor?: string
+  fadeInOnLoad?: boolean
   height?: string | number | undefined
   placeholderHeight?: number | undefined
-  aspectRatio?: number | null | undefined
   uri: string | undefined
-  fadeInOnLoad?: boolean
+  width?: string | number | undefined
 }
 
 export const CachedImage: React.FC<CachedImageProps> = React.memo(
   ({
+    aspectRatio = 1,
+    backgroundColor,
     fadeInOnLoad = true,
+    height,
     style,
     uri,
     width,
-    height,
-    aspectRatio = 1,
     ...restProps
   }) => {
+    const screenDimensions = useScreenDimensions()
     const isDoneLoading = useRef(false)
+    const isDarkMode = useIsDarkMode()
     const color = useColor()
     const space = useSpace()
-    const screenDimensions = useScreenDimensions()
 
-    const initialOpacity = Platform.OS === "ios" ? 0.2 : 1
+    const initialOpacity = Platform.OS === "ios" ? 0.0 : 1
     const opacity = useSharedValue(fadeInOnLoad ? initialOpacity : 1)
 
     const fadeInAnimStyle = useAnimatedStyle(
@@ -75,14 +84,29 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
       styleProps = [initialStyle, fadeInAnimStyle]
     }
 
+    const bgColor = backgroundColor
+      ? backgroundColor
+      : isDarkMode
+      ? "#222"
+      : color("black10")
+
     return (
-      <ImageWrapper
-        backgroundColor={color("black30")}
-        {...restProps}
-        style={styleProps}
-        source={{ uri: localUri ?? uri }}
-        onLoad={handleOnLoad}
-      />
+      <Flex
+        width={width}
+        height={height}
+        backgroundColor={bgColor}
+        flex={1}
+        alignContent="center"
+        justifyContent="center"
+      >
+        <ImageWrapper
+          backgroundColor={bgColor}
+          {...restProps}
+          style={styleProps}
+          source={{ uri: localUri ?? uri }}
+          onLoad={handleOnLoad}
+        />
+      </Flex>
     )
   },
   (prevProps, nextProps) => prevProps.uri === nextProps.uri

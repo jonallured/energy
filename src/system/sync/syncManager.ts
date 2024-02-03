@@ -16,10 +16,6 @@ import {
   ArtistsListQuery$data,
 } from "__generated__/ArtistsListQuery.graphql"
 import {
-  ArtworkImageModalQuery,
-  ArtworkImageModalQuery$data,
-} from "__generated__/ArtworkImageModalQuery.graphql"
-import {
   ArtworkQuery,
   ArtworkQuery$data,
 } from "__generated__/ArtworkQuery.graphql"
@@ -40,7 +36,6 @@ import {
   ShowTabsQuery$data,
 } from "__generated__/ShowTabsQuery.graphql"
 import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
-import { artworkImageModalQuery } from "components/ArtworkImageModal"
 import { artistsListQuery } from "components/Lists/ArtistsList"
 import { compact, once } from "lodash"
 import { Alert } from "react-native"
@@ -71,14 +66,12 @@ import { retryOperation } from "system/sync/retryOperation"
 import { FetchError, initFetchOrCatch } from "system/sync/utils/fetchOrCatch"
 import { delay } from "utils/delay"
 import { extractNodes } from "utils/extractNodes"
-import { imageSize } from "utils/imageSize"
 
 export interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
   showsQuery?: ShowsQuery$data
   artistArtworksQuery?: ArtistArtworksQuery$data[]
   artworkQuery?: ArtworkQuery$data[]
-  artworkImageModalQuery?: ArtworkImageModalQuery$data[]
   artistShowsQuery?: ArtistShowsQuery$rawResponse[]
   showTabsQuery?: ShowTabsQuery$data[]
   artistDocumentsQuery?: ArtistDocumentsQuery$data[]
@@ -99,7 +92,6 @@ const syncResults: SyncResultsData = {
   showsQuery: undefined,
   artistArtworksQuery: [],
   artworkQuery: [],
-  artworkImageModalQuery: [],
   artistShowsQuery: [],
   showTabsQuery: [],
   artistDocumentsQuery: [],
@@ -220,7 +212,6 @@ export function initSyncManager({
       // Sub-queries. Order matters
       syncArtistArtworksQuery,
       syncArtworkQuery,
-      syncImageModalQuery,
       syncArtistShowsQuery,
       syncArtistDocumentsQuery,
       syncShowTabsQuery,
@@ -388,35 +379,6 @@ export function initSyncManager({
     syncResults.artworkQuery = compact(results)
 
     log("Complete. `artistArtworksContentData`", syncResults.artworkQuery)
-  }
-
-  const syncImageModalQuery = async () => {
-    const artworkSlugs = parsers.getArtistArtworkSlugs()
-
-    const { results } = await PromisePool.for(artworkSlugs)
-      .onTaskStarted(reportProgress("Syncing image content"))
-      .withConcurrency(MAX_QUERY_CONCURRENCY)
-      .process(async (slug, _index, pool) => {
-        if (syncAborted) {
-          pool.stop()
-          return
-        }
-
-        return await fetchOrCatch<ArtworkImageModalQuery>(
-          artworkImageModalQuery,
-          {
-            slug,
-            imageSize,
-          }
-        )
-      })
-
-    syncResults.artworkImageModalQuery = compact(results)
-
-    log(
-      "Complete. `artworkImageModalQuery`",
-      syncResults.artworkImageModalQuery
-    )
   }
 
   const syncArtistShowsQuery = async () => {
@@ -821,9 +783,6 @@ const parsers = {
           return show?.coverImage?.url
         }
       ),
-      ...(syncResults.artworkImageModalQuery ?? []).map(({ artwork }) => {
-        return artwork?.image?.resized?.url
-      }),
     ])
 
     return imageUrls

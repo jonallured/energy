@@ -4,8 +4,8 @@ import {
   FlexProps,
   Touchable,
 } from "@artsy/palette-mobile"
-import { ArtworkImageModal } from "components/ArtworkImageModal"
 import { useState } from "react"
+import { ArtworkImageModal } from "screens/Artwork/ArtworkContent/ArtworkImageModal"
 import { GlobalStore } from "system/store/GlobalStore"
 import { CachedImage } from "system/wrappers/CachedImage"
 
@@ -28,11 +28,13 @@ export const ArtworkImageGridItem: React.FC<ArtworkImageGridItemProps> = ({
 
   return (
     <Flex testID={url} {...flexProps}>
-      <ArtworkImageModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        uri={url}
-      />
+      {!!isModalVisible && (
+        <ArtworkImageModal
+          onClose={() => setIsModalVisible(false)}
+          uri={url}
+          isStandAlone
+        />
+      )}
 
       <Touchable
         onPress={
