@@ -7,7 +7,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ReactNativeZoomableView } from "@openspacelabs/react-native-zoomable-view"
 import { ArtworkContent_artwork$data } from "__generated__/ArtworkContent_artwork.graphql"
-import { Modal } from "react-native"
+import { Modal, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { CachedImage } from "system/wrappers/CachedImage"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
@@ -45,7 +45,12 @@ export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
 
   // If we're in an artwork view, we need to account for the bottom sheet and
   // center within the remaining area of the screeen. Elsewhere, we can be exact
-  const offset = isStandAlone ? 0 : (`${-SCREEN_TOP_MARGIN}px` as any)
+
+  const androidMargin = Platform.OS === "android" ? insets.top + 20 : 0
+  const offset = isStandAlone
+    ? 0
+    : (`${-SCREEN_TOP_MARGIN + androidMargin}px` as any)
+
   const backgroundColor = color(isDarkMode ? "black100" : "white100")
 
   return (
