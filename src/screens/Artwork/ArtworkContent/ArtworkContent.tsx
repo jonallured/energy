@@ -48,6 +48,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   const safeAreaInsets = useSafeAreaInsets()
   const artworkData = useFragment(artworkContentQuery, artwork)
   const touchActivated = useRef<any>(null)
+  const [isBottomSheetOpen, setBottomSheetOpen] = useState(false)
 
   const deviceOrientation = useDeviceOrientation()
   const screenDimensions = useScreenDimensions()
@@ -69,8 +70,14 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
   }, [])
 
   const handlePresentModalPress = useCallback(() => {
-    bottomSheetRef.current?.expand()
-  }, [])
+    if (isBottomSheetOpen) {
+      setBottomSheetOpen(false)
+      bottomSheetRef.current?.collapse()
+    } else {
+      setBottomSheetOpen(true)
+      bottomSheetRef.current?.expand()
+    }
+  }, [isBottomSheetOpen])
 
   // For Presentation Mode
   const isPriceHidden = GlobalStore.useAppState(
@@ -398,6 +405,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
               </BorderBox>
             )}
           </Join>
+          <Spacer y={2} />
         </BottomSheetScrollView>
       </BottomSheet>
     </Flex>

@@ -40,12 +40,19 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
       }}
       disabled={isSelectModeActive}
     >
-      <Flex mb={2} opacity={props.disabled ? 0.4 : 1}>
+      <Flex
+        mb={2}
+        opacity={props.disabled ? 0.4 : 1}
+        overflow="hidden"
+        height={260}
+      >
         <CachedImage
           uri={show?.coverImage?.url as string}
           resizeMode="cover"
+          backgroundColor="transparent"
           width="100%"
           height={200}
+          style={{ maxHeight: 200 }}
           placeholderHeight={200}
           aspectRatio={null}
         />

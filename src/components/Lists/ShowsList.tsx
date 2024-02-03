@@ -20,6 +20,8 @@ export const ShowsList: React.FC<ShowsListProps> = ({
           : null
       }
       data={shows}
+      maxToRenderPerBatch={20}
+      initialNumToRender={20}
       numColumns={isTablet() ? 2 : 1}
       renderItem={({ item }) => <ShowListItem show={item} />}
       keyExtractor={(item) => item?.internalID}
