@@ -15,6 +15,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { relayChecksum } from "system/sync/artifacts/__generatedRelayChecksum"
 import { getURLMap, loadUrlMap } from "system/sync/fileCache"
 import { initSyncManager, SyncResultsData } from "system/sync/syncManager"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface OfflineModeSyncProps {
   onCancelSync: () => void
@@ -24,6 +25,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({
   onCancelSync,
 }) => {
   const { trackCompletedOfflineSync } = useAppTracking()
+  const isDarkMode = useIsDarkMode()
 
   const navigation = useNavigation()
   const partnerID = GlobalStore.useAppState(
@@ -126,7 +128,7 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({
           <Text>Sync in progress...</Text>
 
           <Flex flexDirection="row">
-            <Text ml="2px">
+            <Text ml="2px" color="onBackgroundHigh">
               Step {stepChange.current} of {stepChange.total}: {statusChange}
             </Text>
           </Flex>
@@ -136,7 +138,11 @@ export const OfflineModeSync: React.FC<OfflineModeSyncProps> = ({
             duration={progressChange === 0 ? 1 : 200}
           />
 
-          <Button block onPress={handleCancelSync}>
+          <Button
+            block
+            onPress={handleCancelSync}
+            variant={isDarkMode ? "fillLight" : "fillDark"}
+          >
             Cancel Sync
           </Button>
         </Join>

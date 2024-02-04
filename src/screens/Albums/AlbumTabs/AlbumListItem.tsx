@@ -5,6 +5,7 @@ import {
   CheckCircleFillIcon,
   Touchable,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { FadeIn } from "components/Animations/FadeIn"
 import { ScrollView } from "react-native"
@@ -26,6 +27,7 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
 }) => {
   const { artworks } = useAlbum({ albumId: album.id })
   const placeholderHeight = useScreenDimensions().height / 5
+  const space = useSpace()
   const variant = isTablet() ? "sm" : "xs"
 
   return (
@@ -34,6 +36,11 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
         horizontal
         nestedScrollEnabled
         showsHorizontalScrollIndicator={false}
+        style={{
+          marginLeft: -space(2),
+          marginRight: -space(2),
+          paddingHorizontal: space(2),
+        }}
       >
         <Flex flexDirection="row" alignItems="flex-end">
           {artworks.map((artwork, index) => {

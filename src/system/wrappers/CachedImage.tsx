@@ -17,6 +17,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { useOfflineCachedURI } from "system/sync/fileCache/useOfflineCachedURI"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
+import { useIsOnline } from "utils/hooks/useIsOnline"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
   aspectRatio?: number | null | undefined
@@ -44,6 +45,7 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
     const screenDimensions = useScreenDimensions()
     const isDoneLoading = useRef(false)
     const isDarkMode = useIsDarkMode()
+    const isOnline = useIsOnline()
     const color = useColor()
     const space = useSpace()
 
@@ -58,6 +60,11 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
 
     const handleOnLoad = () => {
       opacity.value = withTiming(1, { duration: 200, easing: Easing.ease })
+    }
+
+    // FIXME: Need to figure out placeholders for offline mode
+    if (!imageUri && isOnline) {
+      return <ImagePlaceholder height={restProps.placeholderHeight} />
     }
 
     if (opacity.value === 1) {
@@ -89,10 +96,6 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
       : isDarkMode
       ? "#222"
       : color("black10")
-
-    if (!imageUri) {
-      return <ImagePlaceholder height={restProps.placeholderHeight} />
-    }
 
     return (
       <Flex
