@@ -196,10 +196,6 @@ export function initSyncManager({
 
     const currentSyncProgress = await getCurrentSyncProgress()
 
-    // TODO: Do we actually need this?
-    // Be sure we're starting from scratch
-    // await clearFileCache()
-
     onStart()
 
     /**

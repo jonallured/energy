@@ -139,8 +139,5 @@ const MemoizedArtworkListItem: React.FC<MemoizedArtworkListItemProps> = memo(
         />
       </ColumnItem>
     )
-  },
-  (prevProps, nextProps) => {
-    return prevProps.item === nextProps.item
   }
 )

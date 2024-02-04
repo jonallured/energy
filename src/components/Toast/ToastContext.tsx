@@ -72,7 +72,7 @@ export const ToastProvider: React.FC = ({ children }) => {
 
   const show: ToastContextProps["show"] = useCallback(
     async (options) => {
-      const { autoHide = true, hideTimeout = 3500 } = options
+      const { autoHide = true, hideTimeout = 2000 } = options
       const now = Date.now()
       lastStartedAt.current = now
 

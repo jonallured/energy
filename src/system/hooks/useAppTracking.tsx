@@ -44,6 +44,7 @@ export const useAppTracking = () => {
     // Enable the visualizer via Settings > Dev Menu
     if (isAnalyticsVisualizerEnabled) {
       toast.show({
+        hideTimeout: 3500,
         message: <JSONTree data={payload} />,
         title: "",
       })

@@ -74,7 +74,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         }}
         rightElements={
           <Button
-            variant={isDarkMode ? "fillLight" : "fillDark"}
+            variant={isDarkMode ? "outlineLight" : "fillGray"}
             size="small"
             mt={0.5}
             onPress={() => {

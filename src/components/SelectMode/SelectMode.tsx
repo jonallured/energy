@@ -64,7 +64,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
       >
         <Button
           size="small"
-          variant="fillGray"
+          variant={isDarkMode ? "outlineLight" : "fillGray"}
           onPress={allSelected ? unselectAll : selectAll}
           longestText="Unselect All"
         >
@@ -75,7 +75,7 @@ export const SelectMode: React.FC<SelectModeProps> = ({
       <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <Button
           size="small"
-          variant="fillGray"
+          variant={isDarkMode ? "outlineLight" : "fillGray"}
           onPress={handleSelectButtonPress}
           longestText="Cancel"
           disabled={!enabled}

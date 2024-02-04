@@ -19,6 +19,7 @@ import { ArtworksList } from "components/Lists/ArtworksList"
 import { useToast } from "components/Toast/ToastContext"
 import { useFormik } from "formik"
 import { differenceBy, uniqBy } from "lodash"
+import React from "react"
 import { Platform } from "react-native"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { useAppTracking } from "system/hooks/useAppTracking"
@@ -117,6 +118,7 @@ export const CreateOrEditAlbum = () => {
 
         navigateToSavedHistory({
           lookupKey: "before-adding-to-album",
+
           onComplete: () => {
             waitForScreenTransition(() => {
               toast.show({
@@ -124,9 +126,6 @@ export const CreateOrEditAlbum = () => {
                   mode === "edit" ? "edited" : "created"
                 } album.`,
                 type: "success",
-                onPress: () => {
-                  console.log("hiii")
-                },
               })
             })
           },
@@ -140,21 +139,6 @@ export const CreateOrEditAlbum = () => {
 
   const isActionButtonEnabled =
     isValid && !isSubmitting && artworksToSave.length > 0
-
-  const CreateOrEditButton = () => {
-    return (
-      <Flex>
-        <Button
-          block
-          variant={isDarkMode ? "fillLight" : "fillDark"}
-          onPress={() => handleSubmit()}
-          disabled={!isActionButtonEnabled}
-        >
-          {mode === "edit" ? "Save" : "Create"}
-        </Button>
-      </Flex>
-    )
-  }
 
   const showAddMessage = isSelectModeActive || !artworksToAdd?.length
 
@@ -256,12 +240,75 @@ export const CreateOrEditAlbum = () => {
 
         {Platform.OS === "ios" ? (
           <Screen.BottomView darkMode={isDarkMode}>
-            <CreateOrEditButton />
+            <CreateOrEditButton
+              onSubmit={handleSubmit}
+              isActionButtonEnabled={isActionButtonEnabled}
+              showRemoveMessage={showRemoveMessage}
+              selectedItems={selectedItems}
+              mode={mode}
+            />
           </Screen.BottomView>
         ) : (
-          <CreateOrEditButton />
+          <CreateOrEditButton
+            onSubmit={handleSubmit}
+            isActionButtonEnabled={isActionButtonEnabled}
+            showRemoveMessage={showRemoveMessage}
+            selectedItems={selectedItems}
+            mode={mode}
+          />
         )}
       </Screen.Body>
     </Screen>
+  )
+}
+
+interface CreateOrEditButtonProps {
+  onSubmit: () => void
+  isActionButtonEnabled: boolean
+  mode: "create" | "edit"
+  showRemoveMessage: boolean
+  selectedItems: SelectedItem[]
+}
+
+const CreateOrEditButton: React.FC<CreateOrEditButtonProps> = ({
+  onSubmit,
+  isActionButtonEnabled,
+  mode,
+  showRemoveMessage,
+  selectedItems,
+}) => {
+  const isDarkMode = useIsDarkMode()
+
+  const buttonLabel = (() => {
+    const selectedItemsLength = selectedItems.length
+
+    if (mode === "edit") {
+      if (showRemoveMessage && selectedItemsLength > 0) {
+        return `Remove ${selectedItemsLength} ${
+          selectedItemsLength > 1 ? "items" : "item"
+        }`
+      }
+      return "Save"
+    } else {
+      return "Create"
+    }
+  })()
+
+  return (
+    <Flex>
+      <Button
+        block
+        variant={isDarkMode ? "fillLight" : "fillDark"}
+        onPress={onSubmit}
+        disabled={!isActionButtonEnabled}
+      >
+        <Text
+          color={isDarkMode ? "black100" : "white100"}
+          style={{ textDecorationLine: "none" }}
+        >
+          {buttonLabel}
+        </Text>
+      </Button>
+    </Flex>
   )
 }

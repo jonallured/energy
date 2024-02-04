@@ -24,13 +24,13 @@ export const AddItemsToAlbum = () => {
 
   const { trackAddedToAlbum } = useAppTracking()
   const { artworksToAdd } = useRoute<HomeTabsRoute>().params
-  const { toast } = useToast()
   const space = useSpace()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
 
   const [selectedAlbumIds, setSelectedAlbumIds] = useState<string[]>([])
   const isDarkMode = useIsDarkMode()
+  const { toast } = useToast()
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
 
@@ -43,7 +43,7 @@ export const AddItemsToAlbum = () => {
   )
 
   const isAnalyticsVisualizerEnabled = GlobalStore.useAppState(
-    (store) => store.artsyPrefs.isAnalyticsVisualizerEnabled
+    (state) => state.artsyPrefs.isAnalyticsVisualizerEnabled
   )
 
   const selectAlbumHandler = (albumId: string) => {
@@ -80,6 +80,7 @@ export const AddItemsToAlbum = () => {
 
       navigateToSavedHistory({
         lookupKey: "before-adding-to-album",
+
         onComplete: () => {
           waitForScreenTransition(() => {
             if (isAnalyticsVisualizerEnabled) {
