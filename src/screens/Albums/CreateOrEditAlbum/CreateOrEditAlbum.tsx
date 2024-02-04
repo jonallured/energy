@@ -119,13 +119,15 @@ export const CreateOrEditAlbum = () => {
           lookupKey: "before-adding-to-album",
           onComplete: () => {
             waitForScreenTransition(() => {
-              // TODO: Do we want toasts here? Feels faster without.
-              // toast.show({
-              //   title: `Successfully ${
-              //     mode === "edit" ? "edited" : "created"
-              //   } album.`,
-              //   type: "success",
-              // })
+              toast.show({
+                title: `Successfully ${
+                  mode === "edit" ? "edited" : "created"
+                } album.`,
+                type: "success",
+                onPress: () => {
+                  console.log("hiii")
+                },
+              })
             })
           },
         })

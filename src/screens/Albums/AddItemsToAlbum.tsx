@@ -86,11 +86,10 @@ export const AddItemsToAlbum = () => {
               return
             }
 
-            // TODO: Do we want toasts here? Feels faster without.
-            // toast.show({
-            //   title: "Successfully added to album.",
-            //   type: "success",
-            // })
+            toast.show({
+              title: "Successfully added to album.",
+              type: "success",
+            })
           })
         },
       })
