@@ -1,7 +1,8 @@
-import { Avatar, Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { NavigationScreens } from "Navigation"
 import { SearchResultQuery } from "__generated__/SearchResultQuery.graphql"
+import { Avatar } from "components/Avatar"
 import { intersectionBy, uniqBy } from "lodash"
 import { Suspense, useEffect } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
@@ -13,7 +14,6 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { extractNodes } from "utils/extractNodes"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
-import { imageSize } from "utils/imageSize"
 
 interface SearchResultProps {
   searchInput: string
@@ -56,7 +56,6 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
   const { data } = useSystemQueryLoader<SearchResultQuery>(searchResultQuery, {
     partnerID,
     searchInput,
-    imageSize,
   })
   const variant = isTablet() ? "sm" : "xs"
 
@@ -258,11 +257,7 @@ const SearchResultView = ({ searchInput }: SearchResultProps) => {
 }
 
 const searchResultQuery = graphql`
-  query SearchResultQuery(
-    $partnerID: String!
-    $searchInput: String!
-    $imageSize: Int!
-  ) {
+  query SearchResultQuery($partnerID: String!, $searchInput: String!) {
     partner(id: $partnerID) {
       showsSearchConnection(query: $searchInput) {
         edges {
@@ -271,7 +266,7 @@ const searchResultQuery = graphql`
             name
             slug
             coverImage {
-              resized(width: $imageSize, version: "normalized") {
+              resized(width: 100, height: 100) {
                 url
               }
             }
@@ -295,7 +290,7 @@ const searchResultQuery = graphql`
             title
             slug
             image {
-              resized(width: $imageSize, version: "normalized") {
+              resized(width: 100, height: 100) {
                 url
               }
             }

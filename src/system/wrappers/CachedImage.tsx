@@ -5,8 +5,9 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { ImagePlaceholder } from "components/ImagePlaceholder"
+import { MotiView } from "moti"
 import React, { useRef } from "react"
-import { Image, ImageProps, Platform } from "react-native"
+import { ActivityIndicator, Image, ImageProps, Platform } from "react-native"
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -99,6 +100,19 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
         alignContent="center"
         justifyContent="center"
       >
+        {!isDoneLoading.current && (
+          <Flex
+            width="100%"
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+            position="absolute"
+          >
+            <MotiView from={{ opacity: 0 }} animate={{ opacity: 0.5 }}>
+              <ActivityIndicator color={isDarkMode ? "white" : "black"} />
+            </MotiView>
+          </Flex>
+        )}
         <ImageWrapper
           backgroundColor={bgColor}
           {...restProps}

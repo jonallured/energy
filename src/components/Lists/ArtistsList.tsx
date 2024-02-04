@@ -77,6 +77,7 @@ export const ArtistsList: React.FC<ArtistsListProps> = ({
       numColumns={1}
       maxToRenderPerBatch={20}
       initialNumToRender={20}
+      windowSize={3}
       contentContainerStyle={
         isInTabs ? { paddingHorizontal: 20 } : contentContainerStyle
       }

@@ -3,10 +3,10 @@ import {
   BriefcaseIcon,
   Touchable,
   MoreIcon,
-  Flex,
   Screen,
   DEFAULT_HIT_SLOP,
   SCREEN_HORIZONTAL_PADDING,
+  Flex,
 } from "@artsy/palette-mobile"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import {
@@ -28,7 +28,6 @@ import {
   usePageableScreensContext,
 } from "components/PageableScreen/PageableScreensContext"
 import React, { Suspense, useEffect, useMemo, useRef } from "react"
-import { ActivityIndicator } from "react-native"
 import { graphql } from "react-relay"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
@@ -38,7 +37,6 @@ import {
   SelectedItem,
   SelectedItemArtwork,
 } from "system/store/Models/SelectModeModel"
-import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useMailComposer } from "utils/hooks/useMailComposer"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { ArtworkContent } from "./ArtworkContent/ArtworkContent"
@@ -235,7 +233,11 @@ export const Artwork_artworkProps = graphql`
     __typename
     artistNames
     artist {
-      imageUrl
+      image {
+        resized(width: 100, height: 100) {
+          url
+        }
+      }
     }
     availability
     date
@@ -275,8 +277,6 @@ export const Artwork_artworkProps = graphql`
 `
 
 export const SkeletonArtwork = () => {
-  const isDarkMode = useIsDarkMode()
-
   return (
     <BottomSheetModalProvider>
       <Screen safeArea={false}>
@@ -291,16 +291,7 @@ export const SkeletonArtwork = () => {
           }
         />
         <Screen.Body fullwidth>
-          <Flex
-            mt={-6}
-            backgroundColor="background"
-            flex={1}
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-          >
-            <ActivityIndicator color={isDarkMode ? "white" : "black"} />
-          </Flex>
+          <Flex flex={1} />
         </Screen.Body>
       </Screen>
 

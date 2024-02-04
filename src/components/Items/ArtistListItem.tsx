@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   FlexProps,
   Text,
@@ -10,6 +9,7 @@ import {
   ArtistListItem_artist$data,
   ArtistListItem_artist$key,
 } from "__generated__/ArtistListItem_artist.graphql"
+import { Avatar } from "components/Avatar"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -31,7 +31,8 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = ({
     artist
   )
   const variant = isTablet() ? "sm" : "xs"
-  const src = useLocalUri(data.imageUrl!)
+  // const src = useLocalUri(data.image?.resized?.url!)
+  const src = useLocalUri(data.image?.resized?.url!)
   const screenWidth = useWindowDimensions().width
   const space = useSpace()
   const width = isTablet() ? (screenWidth - 2 * space(2)) / 2 : undefined
@@ -63,7 +64,13 @@ const ArtistListItemFragment = graphql`
     internalID
     name
     slug
-    imageUrl
+    image {
+      resized(width: 100, height: 100) {
+        url
+        width
+        height
+      }
+    }
     initials
   }
 `

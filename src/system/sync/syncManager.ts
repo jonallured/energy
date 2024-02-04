@@ -776,7 +776,7 @@ const parsers = {
     const imageUrls = compact([
       ...(syncResults.artworkQuery ?? []).flatMap((artworkContent) => [
         artworkContent?.artwork?.image?.resized?.url!,
-        artworkContent?.artwork?.artist?.imageUrl!,
+        artworkContent?.artwork?.artist?.image?.resized?.url!,
       ]),
       ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map(
         (show) => {
