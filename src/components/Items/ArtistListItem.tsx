@@ -13,7 +13,7 @@ import { Avatar } from "components/Avatar"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
-import { useLocalUri } from "system/sync/fileCache/useLocalUri"
+import { useOfflineCachedURI } from "system/sync/fileCache/useOfflineCachedURI"
 
 export interface ArtistListItemProps extends FlexProps {
   artist: ArtistListItem_artist$key
@@ -30,10 +30,10 @@ export const ArtistListItem: React.FC<ArtistListItemProps> = ({
     ArtistListItemFragment,
     artist
   )
-  const variant = isTablet() ? "sm" : "xs"
-  // const src = useLocalUri(data.image?.resized?.url!)
-  const src = useLocalUri(data.image?.resized?.url!)
+  const src = useOfflineCachedURI(data.image?.resized?.url!)
   const screenWidth = useWindowDimensions().width
+
+  const variant = isTablet() ? "sm" : "xs"
   const space = useSpace()
   const width = isTablet() ? (screenWidth - 2 * space(2)) / 2 : undefined
 

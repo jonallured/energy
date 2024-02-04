@@ -24,6 +24,8 @@ export const DevMenu = () => {
 
   return (
     <Join separator={<Spacer y={1} />}>
+      <CodePushOptions />
+
       <Button
         block
         variant={isDarkMode ? "fillLight" : "fillDark"}
@@ -54,8 +56,6 @@ export const DevMenu = () => {
       >
         Switch to {currentEnvironment == "staging" ? "production" : "staging"}
       </Button>
-
-      <CodePushOptions />
 
       <Button
         block

@@ -11,7 +11,7 @@ import { ActivityIndicator } from "react-native"
 import FileViewer from "react-native-file-viewer"
 import { GlobalStore } from "system/store/GlobalStore"
 import { initDownloadFileToCache } from "system/sync/fileCache"
-import { useLocalUri } from "system/sync/fileCache/useLocalUri"
+import { useOfflineCachedURI } from "system/sync/fileCache/useOfflineCachedURI"
 import { formatBytes } from "utils/formatBytes"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
@@ -44,7 +44,7 @@ export const DocumentGridItem = ({
     (state) => state.auth.userAccessToken
   )!
 
-  const localUri = useLocalUri(document.url, "document")
+  const localUri = useOfflineCachedURI(document.url, "document")
 
   const { downloadFileToCache } = initDownloadFileToCache({
     onFileDownloadError: (file) => {
@@ -54,6 +54,7 @@ export const DocumentGridItem = ({
 
   const openFile = async () => {
     setIsOpening(true)
+
     const isFileCached = localUri !== undefined
 
     if (!isFileCached) {
@@ -111,9 +112,11 @@ export const DocumentGridItem = ({
             </Flex>
           )}
         </Flex>
+
         <Text italic variant="xs" color="onBackgroundMedium" mt={1}>
           {document.title}
         </Text>
+
         <Text variant="xs" color="onBackgroundMedium">
           {formattedSize}
         </Text>

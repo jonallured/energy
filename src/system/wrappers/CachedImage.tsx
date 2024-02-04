@@ -15,7 +15,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
-import { useLocalUri } from "system/sync/fileCache/useLocalUri"
+import { useOfflineCachedURI } from "system/sync/fileCache/useOfflineCachedURI"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface CachedImageProps extends Omit<ImageProps, "source"> {
@@ -54,14 +54,10 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
       () => ({ opacity: opacity.value }),
       []
     )
-    const localUri = useLocalUri(uri ?? "")
+    const imageUri = useOfflineCachedURI(uri as string)
 
     const handleOnLoad = () => {
       opacity.value = withTiming(1, { duration: 200, easing: Easing.ease })
-    }
-
-    if (uri === undefined || localUri === undefined) {
-      return <ImagePlaceholder height={restProps.placeholderHeight} />
     }
 
     if (opacity.value === 1) {
@@ -94,6 +90,10 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
       ? "#222"
       : color("black10")
 
+    if (!imageUri) {
+      return <ImagePlaceholder height={restProps.placeholderHeight} />
+    }
+
     return (
       <Flex
         width={width}
@@ -120,7 +120,7 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
           backgroundColor={bgColor}
           {...restProps}
           style={styleProps}
-          source={{ uri: localUri ?? uri }}
+          source={{ uri: imageUri }}
           onLoad={handleOnLoad}
         />
       </Flex>

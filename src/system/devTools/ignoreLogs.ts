@@ -1,11 +1,11 @@
 import { LogBox } from "react-native"
 
 const IGNORED_LOGS = [
-  "lineHeight",
   "borderRadius",
-  "fontSize",
-  "onBackground",
   "borderWidth",
+  "fontSize",
+  "lineHeight",
+  "onBackground",
   "react-native-flipper",
 ]
 
