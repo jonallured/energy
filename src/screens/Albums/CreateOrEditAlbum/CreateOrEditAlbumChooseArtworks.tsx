@@ -74,8 +74,9 @@ export const CreateOrEditAlbumChooseArtworks = () => {
         }}
         rightElements={
           <Button
-            mt={0.5}
+            variant={isDarkMode ? "fillLight" : "fillDark"}
             size="small"
+            mt={0.5}
             onPress={() => {
               if (allSelected) {
                 GlobalStore.actions.selectMode.clearSelectedItems()
@@ -121,6 +122,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
 
           <Button
             block
+            variant={isDarkMode ? "fillLight" : "fillDark"}
             onPress={selectArtworksToAddToAnAlbum}
             disabled={selectedItems.length <= 0}
           >
