@@ -1,5 +1,6 @@
 import {
   Flex,
+  FlexProps,
   useColor,
   useScreenDimensions,
   useSpace,
@@ -22,6 +23,7 @@ interface CachedImageProps extends Omit<ImageProps, "source"> {
   backgroundColor?: string
   fadeInOnLoad?: boolean
   height?: string | number | undefined
+  justifyContent?: FlexProps["justifyContent"]
   placeholderHeight?: number | undefined
   uri: string | undefined
   width?: string | number | undefined
@@ -33,6 +35,7 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
     backgroundColor,
     fadeInOnLoad = true,
     height,
+    justifyContent = "center",
     style,
     uri,
     width,
@@ -98,7 +101,7 @@ export const CachedImage: React.FC<CachedImageProps> = React.memo(
         backgroundColor={bgColor}
         flex={1}
         alignContent="center"
-        justifyContent="center"
+        justifyContent={justifyContent}
       >
         {!isDoneLoading.current && (
           <Flex

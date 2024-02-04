@@ -40,7 +40,6 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
             if (!artwork) {
               return null
             }
-            const imageWidth = artwork?.image?.resized?.width! / 3
 
             return (
               <Touchable
@@ -50,19 +49,20 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
                 }}
               >
                 <Flex
-                  width={imageWidth}
                   pr={1}
                   key={artwork.internalID}
                   height={230}
                   maxHeight={230}
-                  justifyContent="flex-end"
                 >
                   <CachedImage
                     uri={artwork.image?.resized?.url as string}
                     style={{ maxHeight: 230 }}
+                    height={230}
                     aspectRatio={artwork.image?.aspectRatio}
                     placeholderHeight={placeholderHeight}
-                    resizeMode="cover"
+                    backgroundColor="transparent"
+                    resizeMode="contain"
+                    justifyContent="flex-end"
                   />
                 </Flex>
               </Touchable>

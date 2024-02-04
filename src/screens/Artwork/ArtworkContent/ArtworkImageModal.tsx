@@ -5,7 +5,7 @@ import {
   ZINDEX,
   useColor,
 } from "@artsy/palette-mobile"
-import { ReactNativeZoomableView } from "@openspacelabs/react-native-zoomable-view"
+import { ReactNativeZoomableViewWithGestures } from "@openspacelabs/react-native-zoomable-view"
 import { ArtworkContent_artwork$data } from "__generated__/ArtworkContent_artwork.graphql"
 import { Modal, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -68,13 +68,16 @@ export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
         backgroundColor={backgroundColor}
       />
 
-      <Flex position="absolute" top={insets.top} px={2} py={2} zIndex={3}>
+      <Flex position="absolute" top={insets.top - 3} px={2} py={2} zIndex={3}>
         <BackButton showX onPress={onClose} hitSlop={DEFAULT_HIT_SLOP} />
       </Flex>
 
-      <ReactNativeZoomableView
+      <ReactNativeZoomableViewWithGestures
         maxZoom={3}
         onDoubleTapAfter={onClose}
+        onSwipeLeft={onClose}
+        swipeMaxZoom={1}
+        visualTouchFeedbackEnabled={false}
         style={{
           backgroundColor,
           ZINDEX: 100,
@@ -93,7 +96,7 @@ export const ArtworkImageModal: React.FC<ArtworkImageModalProps> = ({
             }}
           />
         </Flex>
-      </ReactNativeZoomableView>
+      </ReactNativeZoomableViewWithGestures>
     </Modal>
   )
 }

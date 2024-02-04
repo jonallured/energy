@@ -16,6 +16,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { Filters, SearchContext } from "screens/Search/SearchContext"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
+import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { SearchResult } from "./SearchResult"
 
 const SEARCH_THROTTLE_INTERVAL = 1000
@@ -35,6 +36,7 @@ export const SearchScreen = () => {
 
 export const Search = () => {
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const isDarkMode = useIsDarkMode()
 
   const { disableFilters, selectFilter } = SearchContext.useStoreActions(
     (actions) => actions
@@ -126,7 +128,11 @@ export const Search = () => {
                     key={item}
                     size="small"
                     variant={
-                      currentFilter === item ? "fillSuccess" : "outlineGray"
+                      currentFilter === item
+                        ? "fillSuccess"
+                        : isDarkMode
+                        ? "outlineLight"
+                        : "outlineGray"
                     }
                     onPress={() => selectFilter(item)}
                     disabled={
