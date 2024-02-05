@@ -4,7 +4,6 @@ import {
   Text,
   CheckCircleFillIcon,
   Touchable,
-  useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
 import { FadeIn } from "components/Animations/FadeIn"
@@ -14,6 +13,8 @@ import { useAlbum } from "screens/Albums/useAlbum"
 import { Album } from "system/store/Models/AlbumsModel"
 import { CachedImage } from "system/wrappers/CachedImage"
 import { getImageDimensions } from "utils/getImageDimensions"
+
+const MAX_IMAGE_HEIGHT = 230
 
 interface AlbumListItemProps {
   album: Album
@@ -29,7 +30,6 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
   const { artworks, installs } = useAlbum({
     albumId: album.id,
   })
-  const placeholderHeight = useScreenDimensions().height / 5
   const space = useSpace()
   const variant = isTablet() ? "sm" : "xs"
 
@@ -60,18 +60,11 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
                   onPress?.(album.id)
                 }}
               >
-                <Flex
-                  pr={1}
-                  key={artwork.internalID}
-                  height={230}
-                  maxHeight={230}
-                >
+                <Flex pr={1} key={artwork.internalID} height={MAX_IMAGE_HEIGHT}>
                   <CachedImage
                     uri={artwork.image?.resized?.url as string}
-                    style={{ maxHeight: 230 }}
-                    height={230}
+                    height={MAX_IMAGE_HEIGHT}
                     aspectRatio={artwork.image?.aspectRatio}
-                    placeholderHeight={placeholderHeight}
                     backgroundColor="transparent"
                     resizeMode="contain"
                     justifyContent="flex-end"
@@ -82,12 +75,10 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
           })}
 
           {installs.map((install, index) => {
-            const maxHeight = 230
-
-            const { width, height, aspectRatio } = getImageDimensions({
+            const { aspectRatio } = getImageDimensions({
               width: install.width as number,
               height: install.height as number,
-              maxHeight,
+              maxHeight: MAX_IMAGE_HEIGHT,
             })
 
             return (
@@ -97,16 +88,10 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
                   onPress?.(album.id)
                 }}
               >
-                <Flex
-                  pr={1}
-                  key={install.internalID}
-                  width={width}
-                  height={maxHeight}
-                >
+                <Flex pr={1} key={install.internalID} height={MAX_IMAGE_HEIGHT}>
                   <CachedImage
                     uri={install.url as string}
-                    width={width}
-                    height={height}
+                    height={MAX_IMAGE_HEIGHT}
                     aspectRatio={aspectRatio}
                     backgroundColor="transparent"
                     resizeMode="contain"
