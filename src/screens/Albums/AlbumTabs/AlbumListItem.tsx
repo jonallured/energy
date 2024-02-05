@@ -13,6 +13,7 @@ import { isTablet } from "react-native-device-info"
 import { useAlbum } from "screens/Albums/useAlbum"
 import { Album } from "system/store/Models/AlbumsModel"
 import { CachedImage } from "system/wrappers/CachedImage"
+import { getImageDimensions } from "utils/getImageDimensions"
 
 interface AlbumListItemProps {
   album: Album
@@ -25,10 +26,14 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
   selectedToAdd,
   onPress,
 }) => {
-  const { artworks } = useAlbum({ albumId: album.id })
+  const { artworks, installs } = useAlbum({
+    albumId: album.id,
+  })
   const placeholderHeight = useScreenDimensions().height / 5
   const space = useSpace()
   const variant = isTablet() ? "sm" : "xs"
+
+  const totalItemsInAlbum = album.items.length
 
   return (
     <>
@@ -75,6 +80,42 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
               </Touchable>
             )
           })}
+
+          {installs.map((install, index) => {
+            const maxHeight = 230
+
+            const { width, height, aspectRatio } = getImageDimensions({
+              width: install.width as number,
+              height: install.height as number,
+              maxHeight,
+            })
+
+            return (
+              <Touchable
+                key={index}
+                onPress={() => {
+                  onPress?.(album.id)
+                }}
+              >
+                <Flex
+                  pr={1}
+                  key={install.internalID}
+                  width={width}
+                  height={maxHeight}
+                >
+                  <CachedImage
+                    uri={install.url as string}
+                    width={width}
+                    height={height}
+                    aspectRatio={aspectRatio}
+                    backgroundColor="transparent"
+                    resizeMode="contain"
+                    justifyContent="flex-start"
+                  />
+                </Flex>
+              </Touchable>
+            )
+          })}
         </Flex>
       </ScrollView>
 
@@ -86,7 +127,7 @@ export const AlbumListItem: React.FC<AlbumListItemProps> = ({
         <Flex mt={1}>
           <Text variant="sm">{album.name}</Text>
           <Text variant={variant} color="onBackgroundMedium">
-            {artworks.length} {artworks.length === 1 ? "Item" : "Items"}
+            {totalItemsInAlbum} {totalItemsInAlbum === 1 ? "Item" : "Items"}
           </Text>
         </Flex>
       </Touchable>

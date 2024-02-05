@@ -37,7 +37,11 @@ describe("AlbumListItem", () => {
   const mockUseAlbum = useAlbum as jest.Mock
 
   beforeEach(() => {
-    mockUseAlbum.mockImplementation(() => ({ album, artworks: album.items }))
+    mockUseAlbum.mockImplementation(() => ({
+      album,
+      artworks: album.items,
+      installs: [],
+    }))
   })
 
   afterEach(() => {
@@ -68,7 +72,11 @@ describe("AlbumListItem", () => {
       name: "Empty Album",
       items: [],
     } as Album
-    mockUseAlbum.mockImplementation(() => ({ album: emptyAlbum, artworks: [] }))
+    mockUseAlbum.mockImplementation(() => ({
+      album: emptyAlbum,
+      artworks: [],
+      installs: [],
+    }))
     const { UNSAFE_queryAllByType } = renderWithWrappers(
       <AlbumListItem album={emptyAlbum} />
     )
@@ -85,6 +93,7 @@ describe("AlbumListItem", () => {
     mockUseAlbum.mockImplementation(() => ({
       album: albumWithOneArtwork,
       artworks: albumWithOneArtwork.items,
+      installs: [],
     }))
     const { UNSAFE_getAllByType, getByText } = renderWithWrappers(
       <AlbumListItem album={albumWithOneArtwork} />

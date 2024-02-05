@@ -23,10 +23,13 @@ export const InstallationsList: React.FC<ShowInstallationsProps> = ({
       data={images}
       renderItem={({ item, i }) => {
         const gridItem = item as SelectedItemInstall
+        const width = gridItem.width as number
+        const height = gridItem.height as number
 
         return (
           <ColumnItem index={i} numColumns={2} mb={2}>
             <ArtworkImageGridItem
+              aspectRatio={width / height}
               url={gridItem?.url ?? ""}
               onPress={() =>
                 GlobalStore.actions.selectMode.toggleSelectedItem(gridItem)

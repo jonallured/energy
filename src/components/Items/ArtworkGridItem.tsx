@@ -77,13 +77,17 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
       {!disable && !selectedToRemove && !!selectedToAdd && (
         <Flex
           position="absolute"
-          top={1}
-          right={1}
+          top={0.5}
+          right={0.5}
           alignItems="center"
           justifyContent="center"
         >
           <FadeIn>
-            <CheckCircleFillIcon height={30} width={30} fill="blue100" />
+            <CheckCircleFillIcon
+              height={30}
+              width={30}
+              fill={isDarkMode ? "black15" : "blue100"}
+            />
           </FadeIn>
         </Flex>
       )}

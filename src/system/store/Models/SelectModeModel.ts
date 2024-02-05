@@ -69,6 +69,7 @@ export const getSelectModeModel = (): SelectModeModel => ({
           (selectedItem) => selectedItem?.internalID !== item?.internalID
         )
     } else {
+      console.log("here", item)
       state.sessionState.selectedItems.push(item)
     }
   }),
