@@ -15,6 +15,7 @@ import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
+import { useSelectedItems } from "utils/hooks/useSelectedItems"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 
 type HomeTabsRoute = RouteProp<NavigationScreens, "AddItemsToAlbum">
@@ -38,9 +39,7 @@ export const AddItemsToAlbum = () => {
     (state) => state.selectMode.sessionState.isActive
   )
 
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
+  const { selectedItems } = useSelectedItems()
 
   const isAnalyticsVisualizerEnabled = GlobalStore.useAppState(
     (state) => state.artsyPrefs.isAnalyticsVisualizerEnabled

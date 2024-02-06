@@ -92,7 +92,7 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
         </Flex>
       )}
       {!!selectedToRemove && (
-        <Flex position="absolute" alignItems="center" top={1} right={1}>
+        <Flex position="absolute" alignItems="center" top={0.5} right={0.5}>
           <FadeIn>
             <Flex
               p={0.5}

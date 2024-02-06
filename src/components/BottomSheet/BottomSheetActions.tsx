@@ -26,6 +26,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useMailComposer } from "utils/hooks/useMailComposer"
+import { useSelectedItems } from "utils/hooks/useSelectedItems"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 
 export interface BottomSheetActionsProps {
@@ -41,9 +42,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const { saveNavigationHistory } = useSaveNavigationHistory()
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
+  const { selectedItems } = useSelectedItems()
   const { album } = useAlbum({ albumId: albumId ?? "" })
   const { sendMail } = useMailComposer()
   const { toast } = useToast()

@@ -16,6 +16,7 @@ import { GlobalStore } from "system/store/GlobalStore"
 import { extractNodes } from "utils/extractNodes"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { usePresentationFilteredArtworks } from "utils/hooks/usePresentationFilteredArtworks"
+import { useSelectedItems } from "utils/hooks/useSelectedItems"
 
 type CreateOrEditAlbumChooseArtworksRoute = RouteProp<
   NavigationScreens,
@@ -44,9 +45,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
 
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
+  const { selectedItems } = useSelectedItems()
 
   const presentedArtworks = usePresentationFilteredArtworks(
     extractNodes(data.partner?.artworksConnection)

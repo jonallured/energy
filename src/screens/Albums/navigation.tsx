@@ -1,7 +1,10 @@
 import { StackNav } from "Navigation"
 import { AddItemsToAlbum } from "screens/Albums/AddItemsToAlbum"
 import { AlbumTabs } from "screens/Albums/AlbumTabs/AlbumTabs"
-import { CreateOrEditAlbum } from "screens/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
+import {
+  AlbumEditMode,
+  CreateOrEditAlbum,
+} from "screens/Albums/CreateOrEditAlbum/CreateOrEditAlbum"
 import { CreateOrEditAlbumChooseArtist } from "screens/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtist"
 import { CreateOrEditAlbumChooseArtworks } from "screens/Albums/CreateOrEditAlbum/CreateOrEditAlbumChooseArtworks"
 import { SelectedItem } from "system/store/Models/SelectModeModel"
@@ -14,17 +17,17 @@ export type AlbumNavigationScreens = {
   }
   AlbumTabs: { albumId: string }
   CreateOrEditAlbum: {
-    mode: "create" | "edit"
+    mode: AlbumEditMode
     albumId?: string
     artworksToAdd?: SelectedItem[]
     closeBottomSheetModal?: () => void
   }
   CreateOrEditAlbumChooseArtist: {
-    mode: "create" | "edit"
+    mode: AlbumEditMode
     albumId?: string
   }
   CreateOrEditAlbumChooseArtworks: {
-    mode: "create" | "edit"
+    mode: AlbumEditMode
     albumId?: string
     slug: string
   }

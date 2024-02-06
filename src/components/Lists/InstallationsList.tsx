@@ -5,6 +5,7 @@ import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { isSelected } from "components/SelectMode/SelectMode"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemInstall } from "system/store/Models/SelectModeModel"
+import { useSelectedItems } from "utils/hooks/useSelectedItems"
 
 interface ShowInstallationsProps {
   images: SelectedItemInstall[]
@@ -13,9 +14,7 @@ interface ShowInstallationsProps {
 export const InstallationsList: React.FC<ShowInstallationsProps> = ({
   images = [],
 }) => {
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
+  const { selectedItems } = useSelectedItems()
 
   return (
     <MasonryList

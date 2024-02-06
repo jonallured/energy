@@ -8,6 +8,7 @@ import { HookWrapper } from "utils/test/renderWithWrappers"
 describe("useAlbum", () => {
   const album = {
     id: "123",
+    name: "Test Album",
     items: [
       { __typename: "Artwork", internalID: "abc" },
       { __typename: "PartnerDocument", internalID: "def" },
@@ -53,5 +54,39 @@ describe("useAlbum", () => {
     expect(result.current.artworks).toEqual([])
     expect(result.current.documents).toEqual([])
     expect(result.current.installs).toEqual([])
+  })
+
+  describe("#saveAlbum", () => {
+    it("should create a new album on save", () => {
+      const { result } = renderHook(() => useAlbum({ albumId: null }), {
+        wrapper: HookWrapper,
+      })
+
+      result.current.saveAlbum({
+        mode: "create",
+        values: { albumName: "test" },
+      })
+
+      const albumState =
+        __globalStoreTestUtils__?.getCurrentState().albums.albums
+
+      expect(albumState?.[1].name).toEqual("test")
+    })
+
+    it("should edit an existing album on save", () => {
+      const { result } = renderHook(() => useAlbum({ albumId: "123" }), {
+        wrapper: HookWrapper,
+      })
+
+      result.current.saveAlbum({
+        mode: "edit",
+        values: { albumName: "Updated Name" },
+      })
+
+      const albumState =
+        __globalStoreTestUtils__?.getCurrentState().albums.albums
+
+      expect(albumState?.[0].name).toEqual("Updated Name")
+    })
   })
 })

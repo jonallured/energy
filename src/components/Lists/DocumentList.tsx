@@ -5,15 +5,14 @@ import { ListEmptyComponent } from "components/ListEmptyComponent"
 import { isSelected } from "components/SelectMode/SelectMode"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemDocument } from "system/store/Models/SelectModeModel"
+import { useSelectedItems } from "utils/hooks/useSelectedItems"
 
 interface DocumentListProps {
   documents: SelectedItemDocument[]
 }
 
 export const DocumentList: React.FC<DocumentListProps> = ({ documents }) => {
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
-  )
+  const { selectedItems } = useSelectedItems()
 
   const selectDocumentHandler = (doc: (typeof documents)[0]) => {
     GlobalStore.actions.selectMode.toggleSelectedItem(doc)

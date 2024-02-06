@@ -18,11 +18,9 @@ import { NavigationScreens } from "Navigation"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { useToast } from "components/Toast/ToastContext"
 import { useFormik } from "formik"
-import { differenceBy, uniqBy } from "lodash"
-import React from "react"
+import React, { useEffect } from "react"
 import { Platform } from "react-native"
 import { useAlbum } from "screens/Albums/useAlbum"
-import { useAppTracking } from "system/hooks/useAppTracking"
 import { useNavigateToSavedHistory } from "system/hooks/useNavigationHistory"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -31,12 +29,15 @@ import {
   SelectedItemArtwork,
 } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
+import { useSelectedItems } from "utils/hooks/useSelectedItems"
 import { waitForScreenTransition } from "utils/waitForScreenTransition"
 import { object, string } from "yup"
 
-interface CreateAlbumValuesSchema {
+export interface CreateAlbumValuesSchema {
   albumName: string
 }
+
+export type AlbumEditMode = "create" | "edit"
 
 const createAlbumSchema = object().shape({
   albumName: string().required("Album name is required").trim(),
@@ -52,33 +53,29 @@ export const CreateOrEditAlbum = () => {
     mode: "create",
   }
 
-  const { trackCreatedAlbum } = useAppTracking()
   const { navigateToSavedHistory } = useNavigateToSavedHistory()
   const navigation = useNavigation<NavigationProp<NavigationScreens>>()
   const isDarkMode = useIsDarkMode()
   const { toast } = useToast()
-
-  const selectedItems = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.selectedItems
+  const { selectedItems } = useSelectedItems()
+  const queuedItemsToAdd = GlobalStore.useAppState(
+    (state) => state.albums.sessionState.queuedItemsToAdd
   )
 
-  const isSelectModeActive = GlobalStore.useAppState(
-    (state) => state.selectMode.sessionState.isActive
-  )
+  const { album, artworks, saveAlbum } = useAlbum({
+    albumId: albumId as string,
+  })
 
-  const { album, artworks } = useAlbum({ albumId: albumId as string })
-
-  // If we already have items in the album, merge them in
-  const albumItems = album?.items ?? []
-
-  // Assigning selected artworks
-  let artworksToSave: SelectedItem[] = []
-  if (artworksToAdd) {
-    // Selecting multiple artworks from choose artworks screen
-    artworksToSave = uniqBy([...artworksToAdd, ...albumItems], "internalID")
-  } else {
-    artworksToSave = [...(album?.items ?? [])]
-  }
+  /**
+   * We pass back selected artwork items from subsequent screens via the router.
+   * When changed, persist it to the queue before we save.
+   */
+  useEffect(() => {
+    GlobalStore.actions.albums.queueItemsToAdd({
+      items: artworksToAdd,
+      album,
+    })
+  }, [artworksToAdd, album?.items])
 
   const {
     handleSubmit,
@@ -95,32 +92,19 @@ export const CreateOrEditAlbum = () => {
     initialErrors: {},
     onSubmit: () => {
       try {
-        // Take the items to save and subtract selected items (items to delete)
-        // which returns final result.
-        const items = differenceBy(artworksToSave, selectedItems, "internalID")
-
-        if (mode === "edit" && albumId) {
-          GlobalStore.actions.albums.editAlbum({
-            albumId: albumId,
-            name: values.albumName,
-            items,
-          })
-        } else {
-          GlobalStore.actions.albums.addAlbum({
-            name: values.albumName.trim(),
-            items,
-          })
-
-          trackCreatedAlbum()
-        }
-
-        GlobalStore.actions.selectMode.cancelSelectMode()
+        saveAlbum({ mode, values })
 
         navigateToSavedHistory({
           lookupKey: "before-adding-to-album",
 
           onComplete: () => {
             waitForScreenTransition(() => {
+              // Don't want to clear before screen transition, because we dont
+              // want the presented items to disappear from the view during
+              // transition leading to layout thrash.
+              GlobalStore.actions.selectMode.cancelSelectMode()
+              GlobalStore.actions.albums.clearItemQueue()
+
               toast.show({
                 title: `Successfully ${
                   mode === "edit" ? "edited" : "created"
@@ -138,9 +122,7 @@ export const CreateOrEditAlbum = () => {
   })
 
   const isActionButtonEnabled =
-    isValid && !isSubmitting && artworksToSave.length > 0
-
-  const showAddMessage = isSelectModeActive || !artworksToAdd?.length
+    isValid && !isSubmitting && queuedItemsToAdd.length > 0
 
   const showRemoveMessage = mode === "edit" && artworks.length > 0
 
@@ -176,52 +158,44 @@ export const CreateOrEditAlbum = () => {
 
           <Spacer y={2} />
 
-          {!!showAddMessage && (
-            <Touchable
-              onPress={() =>
-                navigation.navigate("CreateOrEditAlbumChooseArtist", {
-                  mode,
-                  albumId,
-                })
-              }
-            >
-              <Flex
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Text>Add Items to Album</Text>
-                <ArrowRightIcon fill="onBackgroundHigh" />
-              </Flex>
-            </Touchable>
-          )}
+          <Touchable
+            onPress={() => {
+              navigation.navigate("CreateOrEditAlbumChooseArtist", {
+                mode,
+                albumId,
+              })
 
-          {/* TODO: Ensure that this is always visible, though doing so leads
-              to some unexpected behavior on the screen.
-
-              See: https://www.notion.so/artsy/c38e09c886f941759f16bee64144188e?v=805609c645ad4e4f9a80779094406d27&p=fd6a6b99fe5b4da8b04e166065c6af93&pm=s
-          */}
-          {/* <Touchable
-            onPress={() => navigation.navigate("CreateOrEditAlbumChooseArtist", { mode, albumId })}
+              waitForScreenTransition(() => {
+                GlobalStore.actions.selectMode.cancelSelectMode()
+              })
+            }}
           >
-            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Flex
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
               <Text>Add Items to Album</Text>
               <ArrowRightIcon fill="onBackgroundHigh" />
             </Flex>
-          </Touchable> */}
+          </Touchable>
 
           <Spacer y={1} />
 
           {!!showRemoveMessage && (
-            <Text my={2} variant="xs" color="onBackgroundMedium">
+            <Text variant="xs" color="onBackgroundMedium">
               Select artworks to remove from album
             </Text>
           )}
 
+          <Spacer y={2} />
+
           <ArtworksList
-            artworks={artworksToSave as SelectedItemArtwork[]}
+            artworks={queuedItemsToAdd as SelectedItemArtwork[]}
             onItemPress={(item) => {
-              GlobalStore.actions.selectMode.toggleSelectedItem(item)
+              if (mode === "edit") {
+                GlobalStore.actions.selectMode.toggleSelectedItem(item)
+              }
             }}
             checkIfSelectedToRemove={(item) => {
               return (
