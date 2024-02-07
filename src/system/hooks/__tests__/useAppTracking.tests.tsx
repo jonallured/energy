@@ -135,7 +135,7 @@ describe("useAppTracking", () => {
 
     expect(spy).toHaveBeenCalledWith({
       action: "addedToAlbum",
-      context_screen_owner_type: "artwork",
+      context_screen_owner_type: "album",
       context_screen_owner_id: "TestID",
       album_name: "TestAlbum",
       partner_id: undefined,

@@ -106,14 +106,9 @@ export const useAppTracking = () => {
       const event: SentContent = {
         action: ActionType.sentContent,
         context_screen_owner_type: OwnerType.artwork,
-        // TODO: Update cohesion
-        // @ts-ignore
         artwork_id: artworkIds,
-        // @ts-ignore
-        album_id: albumId,
+        album_id: albumId as string,
       }
-
-      console.log("tracking", event)
 
       trackEvent(event)
     },
@@ -130,7 +125,7 @@ export const useAppTracking = () => {
     trackAddedToAlbum: (album: Album) => {
       const event: AddedToAlbum = {
         action: ActionType.addedToAlbum,
-        context_screen_owner_type: OwnerType.artwork,
+        context_screen_owner_type: OwnerType.album,
         album_name: album.name,
         context_screen_owner_id: album.id,
       }
