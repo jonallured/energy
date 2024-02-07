@@ -73,7 +73,7 @@ export const AddItemsToAlbum = () => {
         const album = albums.find((album) => album.id === albumId)
 
         if (album) {
-          trackAddedToAlbum(album.name)
+          trackAddedToAlbum(album)
         }
       })
 

@@ -58,8 +58,8 @@ export const CreateOrEditAlbum = () => {
   const isDarkMode = useIsDarkMode()
   const { toast } = useToast()
   const { selectedItems } = useSelectedItems()
-  const queuedItemsToAdd = GlobalStore.useAppState(
-    (state) => state.albums.sessionState.queuedItemsToAdd
+  const itemQueue = GlobalStore.useAppState(
+    (state) => state.albums.sessionState.itemQueue
   )
 
   const { album, artworks, saveAlbum } = useAlbum({
@@ -71,7 +71,7 @@ export const CreateOrEditAlbum = () => {
    * When changed, persist it to the queue before we save.
    */
   useEffect(() => {
-    GlobalStore.actions.albums.queueItemsToAdd({
+    GlobalStore.actions.albums.addItemsToQueue({
       items: artworksToAdd,
       album,
     })
@@ -121,8 +121,7 @@ export const CreateOrEditAlbum = () => {
     validationSchema: createAlbumSchema,
   })
 
-  const isActionButtonEnabled =
-    isValid && !isSubmitting && queuedItemsToAdd.length > 0
+  const isActionButtonEnabled = isValid && !isSubmitting && itemQueue.length > 0
 
   const showRemoveMessage = mode === "edit" && artworks.length > 0
 
@@ -191,7 +190,7 @@ export const CreateOrEditAlbum = () => {
           <Spacer y={2} />
 
           <ArtworksList
-            artworks={queuedItemsToAdd as SelectedItemArtwork[]}
+            artworks={itemQueue as SelectedItemArtwork[]}
             onItemPress={(item) => {
               if (mode === "edit") {
                 GlobalStore.actions.selectMode.toggleSelectedItem(item)

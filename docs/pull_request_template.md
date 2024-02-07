@@ -1,4 +1,4 @@
-This PR resolves [] <!-- eg [PROJECT-XXXX] -->
+This PR resolves [AMBER-]
 
 ### Description
 

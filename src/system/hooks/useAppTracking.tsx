@@ -16,6 +16,7 @@ import { useTracking } from "react-tracking"
 import { segmentClient } from "system/analytics/initializeSegment"
 import { UseTrackScreenViewProps } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
+import { Album } from "system/store/Models/AlbumsModel"
 
 export const useAppTracking = () => {
   const tracking = useTracking()
@@ -101,11 +102,18 @@ export const useAppTracking = () => {
      * Main Events
      */
 
-    trackSentContent: () => {
+    trackSentContent: ({ artworkIds, albumId }: TrackSentContentProps) => {
       const event: SentContent = {
         action: ActionType.sentContent,
         context_screen_owner_type: OwnerType.artwork,
+        // TODO: Update cohesion
+        // @ts-ignore
+        artwork_id: artworkIds,
+        // @ts-ignore
+        album_id: albumId,
       }
+
+      console.log("tracking", event)
 
       trackEvent(event)
     },
@@ -119,11 +127,12 @@ export const useAppTracking = () => {
       trackEvent(event)
     },
 
-    trackAddedToAlbum: (albumnName: string) => {
+    trackAddedToAlbum: (album: Album) => {
       const event: AddedToAlbum = {
         action: ActionType.addedToAlbum,
         context_screen_owner_type: OwnerType.artwork,
-        album_name: albumnName,
+        album_name: album.name,
+        context_screen_owner_id: album.id,
       }
 
       trackEvent(event)
@@ -151,4 +160,9 @@ export const useAppTracking = () => {
       trackEvent(event)
     },
   }
+}
+
+export interface TrackSentContentProps {
+  artworkIds: string[]
+  albumId?: string
 }

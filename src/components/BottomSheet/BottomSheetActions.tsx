@@ -116,6 +116,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
       await sendMail({
         artworks,
         type: "Album",
+        albumId: album.id,
       })
     },
 

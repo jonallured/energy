@@ -37,7 +37,7 @@ export const useAlbum = ({ albumId }: UseAlbumProps): UseAlbumReturnType => {
 
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const queuedArtworksToAdd = GlobalStore.useAppState(
-    (state) => state.albums.sessionState.queuedItemsToAdd
+    (state) => state.albums.sessionState.itemQueue
   )
 
   const album = albums.find((album) => album.id === albumId)

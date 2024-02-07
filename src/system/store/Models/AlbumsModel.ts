@@ -13,7 +13,7 @@ export interface Album {
 
 export interface AlbumsModel {
   sessionState: {
-    queuedItemsToAdd: SelectedItem[]
+    itemQueue: SelectedItem[]
   }
   albums: Album[]
   addAlbum: Action<
@@ -23,7 +23,7 @@ export interface AlbumsModel {
       items: SelectedItem[]
     }
   >
-  queueItemsToAdd: Action<
+  addItemsToQueue: Action<
     this,
     { items?: SelectedItem[]; album?: Album | null | undefined }
   >
@@ -50,7 +50,7 @@ export interface AlbumsModel {
 
 export const getAlbumsModel = (): AlbumsModel => ({
   sessionState: {
-    queuedItemsToAdd: [],
+    itemQueue: [],
   },
 
   albums: [],
@@ -66,22 +66,22 @@ export const getAlbumsModel = (): AlbumsModel => ({
     state.albums.push(newAlbum)
   }),
 
-  queueItemsToAdd: action((state, { items, album }) => {
+  addItemsToQueue: action((state, { items, album }) => {
     const albumItems = album?.items ?? []
 
     // Selecting multiple artworks from choose artworks screen
     if (items) {
-      state.sessionState.queuedItemsToAdd = uniqBy(
-        [...items, ...albumItems, ...state.sessionState.queuedItemsToAdd],
+      state.sessionState.itemQueue = uniqBy(
+        [...items, ...albumItems, ...state.sessionState.itemQueue],
         "internalID"
       )
     } else {
-      state.sessionState.queuedItemsToAdd = albumItems
+      state.sessionState.itemQueue = albumItems
     }
   }),
 
   clearItemQueue: action((state) => {
-    state.sessionState.queuedItemsToAdd = []
+    state.sessionState.itemQueue = []
   }),
 
   removeAlbum: action((state, albumId) => {

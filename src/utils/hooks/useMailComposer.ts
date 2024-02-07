@@ -5,7 +5,10 @@ import { Alert, Platform } from "react-native"
 import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
 import { getEditionSetInfo } from "screens/Artwork/ArtworkContent/ArtworkContent"
-import { useAppTracking } from "system/hooks/useAppTracking"
+import {
+  TrackSentContentProps,
+  useAppTracking,
+} from "system/hooks/useAppTracking"
 import { ScreenTypes } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { EmailModel } from "system/store/Models/EmailModel"
@@ -33,6 +36,7 @@ export const useMailComposer = () => {
   const sendMail = async (props: {
     artworks: SelectedItemArtwork[]
     type: ScreenTypes
+    albumId?: string
   }) => {
     const artworksToMail = props.artworks
     const firstSelectedItem = artworksToMail[0]
@@ -74,6 +78,8 @@ export const useMailComposer = () => {
         isHTML: true,
         attachments,
         toast,
+        artworksToMail,
+        albumId: props.albumId,
         trackSentContent,
       })
 
@@ -178,6 +184,8 @@ export const useMailComposer = () => {
         isHTML: true,
         attachments,
         toast,
+        artworksToMail,
+        albumId: props.albumId,
         trackSentContent,
       })
     }
@@ -203,7 +211,9 @@ interface EmailComposerProps {
   isHTML: boolean
   attachments?: any[]
   toast: ReturnType<typeof useToast>["toast"]
-  trackSentContent: () => void
+  trackSentContent: (props: TrackSentContentProps) => void
+  artworksToMail: SelectedItemArtwork[]
+  albumId?: string
 }
 
 const emailComposer = ({
@@ -214,6 +224,8 @@ const emailComposer = ({
   attachments,
   toast,
   trackSentContent,
+  artworksToMail,
+  albumId,
 }: EmailComposerProps) => {
   Mailer.mail(
     {
@@ -235,38 +247,54 @@ const emailComposer = ({
         alertOnEmailFailure(error)
       }
 
+      const artworkIds = artworksToMail.map((artwork) => artwork.internalID)
+
       switch (event) {
-        case "sent":
+        case "sent": {
           toast.show({
             title: "Email sent.",
             type: "info",
           })
 
-          trackSentContent()
+          trackSentContent({
+            artworkIds,
+            albumId,
+          })
           break
-        case "saved":
+        }
+        case "saved": {
           toast.show({
             title: "Email saved for later.",
             type: "info",
           })
+
+          trackSentContent({
+            artworkIds,
+            albumId,
+          })
           break
-        case "cancelled":
+        }
+        case "cancelled": {
           toast.show({
             title: "Email cancelled",
             type: "info",
           })
           break
-        case "failed":
+        }
+        case "failed": {
           console.log(
             "[useMailComposer] Error sending email:",
             error,
             "event",
             event
           )
+
           alertOnEmailFailure(error)
           break
-        default:
+        }
+        default: {
           break
+        }
       }
     }
   )

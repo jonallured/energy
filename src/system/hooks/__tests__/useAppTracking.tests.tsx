@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import { useTracking } from "react-tracking"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { GlobalStore } from "system/store/GlobalStore"
+import { Album } from "system/store/Models/AlbumsModel"
 
 jest.mock("system/store/GlobalStore", () => ({
   GlobalStore: {
@@ -92,13 +93,18 @@ describe("useAppTracking", () => {
     mockUseTracking.mockReturnValue({ trackEvent: spy })
 
     const { result } = renderHook(() => useAppTracking())
-    result.current.trackSentContent()
+    result.current.trackSentContent({
+      artworkIds: ["foo", "bar"],
+      albumId: "albumId",
+    })
 
     expect(spy).toHaveBeenCalledWith({
       action: "sentContent",
       context_screen_owner_type: "artwork",
       partner_id: undefined,
       user_id: undefined,
+      artwork_id: ["foo", "bar"],
+      album_id: "albumId",
     })
   })
 
@@ -122,11 +128,15 @@ describe("useAppTracking", () => {
     mockUseTracking.mockReturnValue({ trackEvent: spy })
 
     const { result } = renderHook(() => useAppTracking())
-    result.current.trackAddedToAlbum("TestAlbum")
+    result.current.trackAddedToAlbum({
+      id: "TestID",
+      name: "TestAlbum",
+    } as Album)
 
     expect(spy).toHaveBeenCalledWith({
       action: "addedToAlbum",
       context_screen_owner_type: "artwork",
+      context_screen_owner_id: "TestID",
       album_name: "TestAlbum",
       partner_id: undefined,
       user_id: undefined,

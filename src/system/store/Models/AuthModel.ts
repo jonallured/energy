@@ -40,7 +40,6 @@ export interface AuthModel extends AuthModelState {
     this,
     { internalID: string; name: string; slug: string }
   >
-  getUserID: Thunk<this, void, {}, GlobalStoreModel>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -69,25 +68,6 @@ export const getAuthModel = (): AuthModel => ({
     state.activePartnerID = internalID
     state.activePartnerName = name
     state.activePartnerSlug = slug
-  }),
-
-  getUserID: thunk(async (actions, _payload, context) => {
-    try {
-      const user = await (
-        await actions.gravityUnauthenticatedRequest({
-          path: `/api/v1/me`,
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "X-ACCESS-TOKEN": context.getState().userAccessToken!,
-          },
-        })
-      ).json()
-
-      return user.id
-    } catch (error) {
-      fail(error)
-    }
   }),
 
   getXAppToken: thunk(async (actions, _payload, context) => {
@@ -168,15 +148,28 @@ export const getAuthModel = (): AuthModel => ({
         scope: "offline_access",
       },
     })
+
     const resJson = await result.json()
+
     // The user has successfully logged in
     if (result.status === 201) {
       const { expires_in, access_token } = resJson
-      const userId = await actions.getUserID()
+
+      const user = await (
+        await actions.gravityUnauthenticatedRequest({
+          path: `/api/v1/me`,
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "X-ACCESS-TOKEN": access_token,
+          },
+        })
+      ).json()
+
       actions.setState({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
-        userID: userId,
+        userID: user.id,
       })
       return {
         success: true,

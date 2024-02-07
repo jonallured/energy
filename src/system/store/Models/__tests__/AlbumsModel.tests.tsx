@@ -117,13 +117,12 @@ describe("AlbumsModel", () => {
       { internalID: "new-artwork-id-2" },
     ] as unknown as SelectedItem[]
 
-    GlobalStore.actions.albums.queueItemsToAdd({ items, album })
+    GlobalStore.actions.albums.addItemsToQueue({ items, album })
 
-    const queuedItemsToAdd =
-      __globalStoreTestUtils__?.getCurrentState().albums.sessionState
-        .queuedItemsToAdd
+    const itemQueue =
+      __globalStoreTestUtils__?.getCurrentState().albums.sessionState.itemQueue
 
-    expect(queuedItemsToAdd).toEqual([...items, ...album.items])
+    expect(itemQueue).toEqual([...items, ...album.items])
   })
 
   it("clears queued items", () => {
@@ -142,14 +141,13 @@ describe("AlbumsModel", () => {
       { internalID: "new-artwork-id-2" },
     ] as unknown as SelectedItem[]
 
-    GlobalStore.actions.albums.queueItemsToAdd({ items, album })
+    GlobalStore.actions.albums.addItemsToQueue({ items, album })
     GlobalStore.actions.albums.clearItemQueue()
 
-    const queuedItemsToAdd =
-      __globalStoreTestUtils__?.getCurrentState().albums.sessionState
-        .queuedItemsToAdd
+    const itemQueue =
+      __globalStoreTestUtils__?.getCurrentState().albums.sessionState.itemQueue
 
-    expect(queuedItemsToAdd).toEqual([])
+    expect(itemQueue).toEqual([])
   })
 
   it("removes items from albums", () => {
