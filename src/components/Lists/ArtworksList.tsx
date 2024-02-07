@@ -126,13 +126,6 @@ const MemoizedArtworkListItem: React.FC<MemoizedArtworkListItemProps> = memo(
       ? ArtworkGridItem
       : ArtworkGridItemFragmentContainer
 
-    // Typically used in create / edit album mode. If already added to an album
-    // return null so the user can't select it. A bit more clear than just
-    // disabling the item.
-    if (isDisabled) {
-      return null
-    }
-
     return (
       <ColumnItem index={index} numColumns={numColumns}>
         <GridItem

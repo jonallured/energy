@@ -5,6 +5,7 @@ import {
   NavigationContainer,
 } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { useUnleashClient } from "@unleash/proxy-client-react"
 import { StatusBar } from "components/StatusBar"
 import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
@@ -34,6 +35,7 @@ import {
   ShowsNavigation,
   ShowsNavigationScreens,
 } from "screens/Shows/navigation"
+import { useAppStatus } from "system/hooks/useAppStatus"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { useErrorReporting } from "system/hooks/useErrorReporting"
 import { useNetworkStatusListener } from "system/hooks/useNetworkStatusListener"
@@ -78,7 +80,7 @@ export type ScreenNames = keyof NavigationScreens
 
 export const StackNav = createNativeStackNavigator<NavigationScreens>()
 
-export const Main = () => {
+export const Main: React.FC = () => {
   const isLoggedIn =
     GlobalStore.useAppState((store) => store.auth.userAccessToken) !== null
 
@@ -89,11 +91,19 @@ export const Main = () => {
   const { maybeTrackFirstInstall } = useAppTracking()
   const isDoneBooting = useSystemIsDoneBooting()
   const isDarkMode = useIsDarkMode()
+  const unleashClient = useUnleashClient()
 
   useAndroidNavigationBarThemeListener()
   useErrorReporting()
   useNetworkStatusListener()
   useWebViewCookies()
+
+  // When the app goes in the background, refresh Unleash feature flags
+  useAppStatus({
+    onBackground: () => {
+      unleashClient.start()
+    },
+  })
 
   useEffect(() => {
     GlobalStore.actions.system.incrementLaunchCount()

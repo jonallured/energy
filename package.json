@@ -44,6 +44,7 @@
     "start": "DEBUG=true concurrently 'yarn relay:watch' 'react-native start'",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema ../energy/data/schema.graphql && cd -; yarn prettier --write --parser graphql data/schema.graphql",
+    "refresh-env-variables": "./scripts/utils/refresh-env-variables",
     "test": "jest",
     "trouble": "killall node ; yarn setup:artsy ; yarn install:all ; yarn relay ; yarn start",
     "type-check": "yarn relay; yarn tsc"
@@ -71,6 +72,7 @@
     "@sentry/react-native": "^5.14.1",
     "@styled-system/theme-get": "^5.1.2",
     "@supercharge/promise-pool": "^2.4.0",
+    "@unleash/proxy-client-react": "^4.1.2",
     "babel-plugin-import-graphql": "^2.8.1",
     "easy-peasy": "^6.0.0",
     "formik": "^2.2.9",
@@ -117,6 +119,7 @@
     "simple-markdown": "^0.7.3",
     "styled-components": "^5.3.6",
     "styled-system": "^5.1.5",
+    "unleash-proxy-client": "^3.3.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {

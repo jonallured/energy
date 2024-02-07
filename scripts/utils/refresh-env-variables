@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# Clear all XCode derived data caches and rebuild the app
+
+if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
+	rm -rf ~/Library/Developer/Xcode/DerivedData
+fi
+
+yarn ios

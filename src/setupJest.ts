@@ -26,8 +26,12 @@ jest.mock("react-tracking", () => ({
   }),
 }))
 
-jest.mock("system/analytics/AnalyticsProvider", () => ({
+jest.mock("system/providers/AnalyticsProvider", () => ({
   AnalyticsProvider: ({ children }: any) => children,
+}))
+
+jest.mock("system/providers/FeatureFlagProvider", () => ({
+  FeatureFlagProvider: ({ children }: any) => children,
 }))
 
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
