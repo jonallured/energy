@@ -1,4 +1,4 @@
-import { ScreenNames } from "Navigation"
+import { RouteNames } from "Navigation"
 import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ShowInstallsQuery$data } from "__generated__/ShowInstallsQuery.graphql"
@@ -7,7 +7,7 @@ import { GlobalStoreModel } from "system/store/Models/GlobalStoreModel"
 
 export interface SelectModeModel {
   sessionState: {
-    activeTab: ScreenNames | ""
+    activeTab: RouteNames | ""
     activeTabItems: Array<SelectedItem>
     isActive: boolean
     selectedItems: Array<SelectedItem>

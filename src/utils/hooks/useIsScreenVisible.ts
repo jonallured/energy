@@ -1,8 +1,8 @@
 import { useIsFocused } from "@react-navigation/native"
-import { ScreenNames } from "Navigation"
+import { RouteNames } from "Navigation"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 
-export const useIsScreenVisible = (screenName: ScreenNames) => {
+export const useIsScreenVisible = (screenName: RouteNames) => {
   const isRouteFocused = (() => {
     try {
       // Calling hook conditionally to guard against being outside of RouteContext

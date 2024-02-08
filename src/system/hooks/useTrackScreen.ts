@@ -1,4 +1,4 @@
-import { ScreenNames } from "Navigation"
+import { RouteNames } from "Navigation"
 import { useEffect } from "react"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { useIsScreenVisible } from "utils/hooks/useIsScreenVisible"
@@ -9,13 +9,14 @@ export type ScreenTypes =
   | "Artist"
   | "Artists"
   | "Artwork"
+  | "Conversation"
   | "Settings"
   | "Search"
   | "Show"
   | "Shows"
 
 export interface UseTrackScreenViewProps {
-  name: ScreenNames
+  name: RouteNames
   type?: ScreenTypes
   internalID?: string
   slug?: string

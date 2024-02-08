@@ -1,8 +1,5 @@
-import {
-  NavigationProp,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native"
+import { useRoute } from "@react-navigation/native"
+import { useRouter } from "system/hooks/useRouter"
 import { GlobalStore } from "system/store/GlobalStore"
 
 export function useSaveNavigationHistory() {
@@ -26,7 +23,7 @@ interface NavigateToSavedHistoryProps {
 }
 
 export function useNavigateToSavedHistory() {
-  const navigation = useNavigation<NavigationProp<any>>()
+  const { router } = useRouter()
   const navigationHistory = GlobalStore.useAppState(
     (state) => state.system.sessionState.navigationHistory
   )
@@ -36,15 +33,15 @@ export function useNavigateToSavedHistory() {
     onComplete,
   }: NavigateToSavedHistoryProps) => {
     if (!navigationHistory[lookupKey]) {
-      navigation.goBack()
+      router.goBack()
       onComplete?.()
       return
     }
 
-    const [name, params] = navigationHistory[lookupKey]
+    const [name, params] = navigationHistory[lookupKey] as any
 
     GlobalStore.actions.system.deleteNavigationHistory(lookupKey)
-    navigation.navigate(name, params)
+    router.navigate(name, params)
     onComplete?.()
   }
 

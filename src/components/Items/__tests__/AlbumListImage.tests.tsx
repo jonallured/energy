@@ -5,7 +5,7 @@ describe("AlbumListImage", () => {
 })
 
 // import { waitFor } from "@testing-library/react-native"
-// import { AlbumListImage } from "screens/Albums/AlbumTabs/AlbumListImage"
+// import { AlbumListImage } from "apps/Albums/AlbumTabs/AlbumListImage"
 // import { __globalStoreTestUtils__ } from "system/store/GlobalStore"
 // import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 // import { renderWithWrappers } from "utils/test/renderWithWrappers"

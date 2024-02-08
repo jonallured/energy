@@ -35,21 +35,24 @@ import {
   ShowTabsQuery,
   ShowTabsQuery$data,
 } from "__generated__/ShowTabsQuery.graphql"
-import { ShowsQuery, ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
+import {
+  ShowsTabQuery,
+  ShowsTabQuery$data,
+} from "__generated__/ShowsTabQuery.graphql"
+import { artistArtworksQuery } from "apps/Artists/routes/ArtistTabs/ArtistArtworks"
+import { artistDocumentsQuery } from "apps/Artists/routes/ArtistTabs/ArtistDocuments"
+import { artistShowsQuery } from "apps/Artists/routes/ArtistTabs/ArtistShows"
+import { artworkQuery } from "apps/Artwork/routes/Artwork/Artwork"
+import { showsTabQuery } from "apps/Shows/ShowsTab"
+import { showArtworksQuery } from "apps/Shows/routes/ShowTabs/ShowArtworks"
+import { showDocumentsQuery } from "apps/Shows/routes/ShowTabs/ShowDocuments"
+import { showInstallsQuery } from "apps/Shows/routes/ShowTabs/ShowInstalls"
+import { showTabsQuery } from "apps/Shows/routes/ShowTabs/ShowTabs"
 import { artistsListQuery } from "components/Lists/ArtistsList"
 import { compact, once } from "lodash"
 import { Alert } from "react-native"
 import { Disposable } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { artistArtworksQuery } from "screens/Artists/ArtistTabs/ArtistArtworks"
-import { artistDocumentsQuery } from "screens/Artists/ArtistTabs/ArtistDocuments"
-import { artistShowsQuery } from "screens/Artists/ArtistTabs/ArtistShows"
-import { artworkQuery } from "screens/Artwork/Artwork"
-import { showArtworksQuery } from "screens/Shows/ShowTabs/ShowArtworks"
-import { showDocumentsQuery } from "screens/Shows/ShowTabs/ShowDocuments"
-import { showInstallsQuery } from "screens/Shows/ShowTabs/ShowInstalls"
-import { showTabsQuery } from "screens/Shows/ShowTabs/ShowTabs"
-import { showsQuery } from "screens/Shows/Shows"
 import { RelayContextProps } from "system/relay/RelayProvider"
 import { GlobalStore } from "system/store/GlobalStore"
 import {
@@ -69,7 +72,7 @@ import { extractNodes } from "utils/extractNodes"
 
 export interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
-  showsQuery?: ShowsQuery$data
+  showsTabQuery?: ShowsTabQuery$data
   artistArtworksQuery?: ArtistArtworksQuery$data[]
   artworkQuery?: ArtworkQuery$data[]
   artistShowsQuery?: ArtistShowsQuery$rawResponse[]
@@ -89,7 +92,7 @@ export interface SyncResultsData {
  */
 const syncResults: SyncResultsData = {
   artistsListQuery: undefined,
-  showsQuery: undefined,
+  showsTabQuery: undefined,
   artistArtworksQuery: [],
   artworkQuery: [],
   artistShowsQuery: [],
@@ -319,13 +322,16 @@ export function initSyncManager({
 
     onProgressChange(0)
 
-    syncResults.showsQuery = await fetchOrCatch<ShowsQuery>(showsQuery, {
-      partnerID,
-    })
+    syncResults.showsTabQuery = await fetchOrCatch<ShowsTabQuery>(
+      showsTabQuery,
+      {
+        partnerID,
+      }
+    )
 
     onProgressChange(100)
 
-    log("Complete. `showsTabQuery`", syncResults.showsQuery)
+    log("Complete. `showsTabQuery`", syncResults.showsTabQuery)
   }
 
   /**
@@ -757,7 +763,9 @@ const parsers = {
   },
 
   getShowSlugs: (): string[] => {
-    const shows = extractNodes(syncResults.showsQuery?.partner?.showsConnection)
+    const shows = extractNodes(
+      syncResults.showsTabQuery?.partner?.showsConnection
+    )
 
     const showSlugs = compact(
       shows.map((show) => {
@@ -774,7 +782,7 @@ const parsers = {
         artworkContent?.artwork?.image?.resized?.url!,
         artworkContent?.artwork?.artist?.image?.resized?.url!,
       ]),
-      ...extractNodes(syncResults.showsQuery?.partner?.showsConnection).map(
+      ...extractNodes(syncResults.showsTabQuery?.partner?.showsConnection).map(
         (show) => {
           return show?.coverImage?.url
         }

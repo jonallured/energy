@@ -1,8 +1,8 @@
+import { artworkQuery } from "apps/Artwork/routes/Artwork/Artwork"
 import { ARTNativeModules } from "native_modules/ARTNativeModules"
 import { fetchQuery } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
-import { artworkQuery } from "screens/Artwork/Artwork"
 import { GlobalStore } from "system/store/GlobalStore"
 import { attemptAlbumMigration } from "utils/attemptAlbumMigration"
 

@@ -6,35 +6,21 @@ import {
 } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useUnleashClient } from "@unleash/proxy-client-react"
+import { AlbumsRouter, AlbumRoutes } from "apps/Albums/albumsRoutes"
+import { ArtistsRouter, ArtistRoutes } from "apps/Artists/artistsRoutes"
+import { ArtworkRouter, ArtworkRoutes } from "apps/Artwork/artworkRoutes"
+import { AuthRoutes, AuthRouter } from "apps/Auth/authRoutes"
+import {
+  ConversationsRouter,
+  ConversationsRoutes,
+} from "apps/Conversations/conversationsRoutes"
+import { HomeTabs } from "apps/HomeTabs"
+import { SearchRouter, SearchRoutes } from "apps/Search/searchRoutes"
+import { SettingsRouter, SettingsRoutes } from "apps/Settings/settingsRoutes"
+import { ShowsRouter, ShowsRoutes } from "apps/Shows/showsRoutes"
 import { StatusBar } from "components/StatusBar"
 import { useEffect } from "react"
 import SplashScreen from "react-native-splash-screen"
-import {
-  AlbumsNavigation,
-  AlbumNavigationScreens,
-} from "screens/Albums/navigation"
-import {
-  ArtistNavigation,
-  ArtistNavigationScreens,
-} from "screens/Artists/navigation"
-import {
-  ArtworkNavigation,
-  ArtworkNavigationScreens,
-} from "screens/Artwork/navigation"
-import { AuthNavigationScreens, AuthNavigation } from "screens/Auth/navigation"
-import { HomeTabs } from "screens/HomeTabs"
-import {
-  SearchNavigation,
-  SearchNavigationScreens,
-} from "screens/Search/navigation"
-import {
-  SettingsNavigation,
-  SettingsNavigationScreens,
-} from "screens/Settings/navigation"
-import {
-  ShowsNavigation,
-  ShowsNavigationScreens,
-} from "screens/Shows/navigation"
 import { useAppStatus } from "system/hooks/useAppStatus"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { useErrorReporting } from "system/hooks/useErrorReporting"
@@ -46,16 +32,17 @@ import { useAndroidNavigationBarThemeListener } from "utils/hooks/useAndroidNavi
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 import { useWebViewCookies } from "utils/hooks/useWebViewCookies"
 
-export type NavigationScreens = AuthNavigationScreens &
-  AlbumNavigationScreens &
-  ArtworkNavigationScreens &
-  ArtistNavigationScreens &
-  SettingsNavigationScreens &
-  SearchNavigationScreens &
-  ShowsNavigationScreens &
-  MiscScreens
+export type NavigationRoutes = AuthRoutes &
+  AlbumRoutes &
+  ArtworkRoutes &
+  ArtistRoutes &
+  ConversationsRoutes &
+  SettingsRoutes &
+  SearchRoutes &
+  ShowsRoutes &
+  OtherRoutes
 
-type MiscScreens = {
+type OtherRoutes = {
   Albums: {}
   AlbumArtworks: {}
   AlbumDocuments: {}
@@ -76,9 +63,9 @@ type MiscScreens = {
   ShowInstalls: {}
 }
 
-export type ScreenNames = keyof NavigationScreens
+export type RouteNames = keyof NavigationRoutes
 
-export const StackNav = createNativeStackNavigator<NavigationScreens>()
+export const StackNav = createNativeStackNavigator<NavigationRoutes>()
 
 export const Main: React.FC = () => {
   const isLoggedIn =
@@ -134,18 +121,19 @@ export const Main: React.FC = () => {
           }}
           initialRouteName="HomeTabs"
         >
-          {AuthNavigation({ isLoggedIn, selectedPartner })}
+          {AuthRouter({ isLoggedIn, selectedPartner })}
 
           {!!isLoggedIn && !!selectedPartner && (
             <>
               <StackNav.Screen name="HomeTabs" component={HomeTabs} />
 
-              {AlbumsNavigation()}
-              {ArtistNavigation()}
-              {ArtworkNavigation()}
-              {SearchNavigation()}
-              {SettingsNavigation()}
-              {ShowsNavigation()}
+              {AlbumsRouter()}
+              {ArtistsRouter()}
+              {ArtworkRouter()}
+              {ConversationsRouter()}
+              {SearchRouter()}
+              {SettingsRouter()}
+              {ShowsRouter()}
             </>
           )}
         </StackNav.Navigator>

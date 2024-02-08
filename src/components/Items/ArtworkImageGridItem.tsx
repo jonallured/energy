@@ -4,8 +4,8 @@ import {
   FlexProps,
   Touchable,
 } from "@artsy/palette-mobile"
+import { ArtworkImageModal } from "apps/Artwork/routes/Artwork/ArtworkContent/ArtworkImageModal"
 import { useState } from "react"
-import { ArtworkImageModal } from "screens/Artwork/ArtworkContent/ArtworkImageModal"
 import { GlobalStore } from "system/store/GlobalStore"
 import { CachedImage } from "system/wrappers/CachedImage"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"

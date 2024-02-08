@@ -1,9 +1,9 @@
 import { PromisePool } from "@supercharge/promise-pool"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
+import { artworkQuery } from "apps/Artwork/routes/Artwork/Artwork"
 import { ARTNativeModules } from "native_modules/ARTNativeModules"
 import { fetchQuery } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { artworkQuery } from "screens/Artwork/Artwork"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 

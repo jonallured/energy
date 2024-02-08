@@ -1,5 +1,6 @@
 import {
   BoxProps,
+  Button,
   Flex,
   ReloadIcon,
   Text,
@@ -9,6 +10,7 @@ import {
 import { debounce } from "lodash"
 import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
+import { useRouter } from "system/hooks/useRouter"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
 
 interface LoadFailureErrorViewProps {
@@ -19,6 +21,7 @@ interface LoadFailureErrorViewProps {
 export const LoadFailureErrorView: React.FC<
   LoadFailureErrorViewProps & BoxProps
 > = ({ error, onRetry, ...restProps }) => {
+  const { router } = useRouter()
   const color = useColor()
   const isDarkMode = useIsDarkMode()
   const spinAnimation = useRef(new Animated.Value(0)).current
@@ -39,6 +42,10 @@ export const LoadFailureErrorView: React.FC<
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
       <Text variant="lg-display">Unable to load</Text>
+      {/* TODO: Remove */}
+      <Button variant="outline" onPress={() => router.goBack()}>
+        Back
+      </Button>
       <Text variant="sm-display" mb={1}>
         Please try again
       </Text>

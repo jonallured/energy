@@ -1,10 +1,9 @@
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationScreens } from "Navigation"
 import { ShowListItem_show$key } from "__generated__/ShowListItem_show.graphql"
 import { useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
+import { useRouter } from "system/hooks/useRouter"
 import { GlobalStore } from "system/store/GlobalStore"
 import { CachedImage } from "system/wrappers/CachedImage"
 
@@ -23,7 +22,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
     (state) => state.selectMode.sessionState.isActive
   )
 
-  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const { router } = useRouter()
   const screenWidth = useWindowDimensions().width
 
   const margin = 20
@@ -31,7 +30,7 @@ export const ShowListItem: React.FC<ShowListItemProps> = (props) => {
   return (
     <Touchable
       onPress={() =>
-        navigation.navigate("ShowTabs", {
+        router.navigate("ShowTabs", {
           slug: show.slug,
         })
       }

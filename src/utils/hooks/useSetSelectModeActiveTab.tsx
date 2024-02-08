@@ -1,4 +1,4 @@
-import { ScreenNames } from "Navigation"
+import { RouteNames } from "Navigation"
 import { useEffect } from "react"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { GlobalStore } from "system/store/GlobalStore"
@@ -6,7 +6,7 @@ import { SelectedItem } from "system/store/Models/SelectModeModel"
 import { useIsScreenVisible } from "utils/hooks/useIsScreenVisible"
 
 interface UseActiveTabProps {
-  name: ScreenNames
+  name: RouteNames
   items?: SelectedItem[]
 }
 

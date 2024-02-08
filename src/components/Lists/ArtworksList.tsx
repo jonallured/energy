@@ -1,6 +1,4 @@
 import MasonryList from "@react-native-seoul/masonry-list"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationScreens } from "Navigation"
 import {
   ArtworkGridItem,
   ArtworkGridItemFragmentContainer,
@@ -12,6 +10,7 @@ import { isSelected } from "components/SelectMode/SelectMode"
 import { memo } from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { useRouter } from "system/hooks/useRouter"
 import { GlobalStore } from "system/store/GlobalStore"
 import {
   SelectedItem,
@@ -90,7 +89,7 @@ const MemoizedArtworkListItem: React.FC<MemoizedArtworkListItemProps> = memo(
     onItemPress,
     presentedArtworks,
   }) => {
-    const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+    const { router } = useRouter()
 
     const isSelectModeActive = GlobalStore.useAppState(
       (state) => state.selectMode.sessionState.isActive
@@ -109,7 +108,7 @@ const MemoizedArtworkListItem: React.FC<MemoizedArtworkListItemProps> = memo(
         if (isSelectModeActive) {
           GlobalStore.actions.selectMode.toggleSelectedItem(item)
         } else {
-          navigation.navigate("Artwork", {
+          router.navigate("Artwork", {
             slug: item.slug,
             contextArtworkSlugs: artworkSlugs,
           })

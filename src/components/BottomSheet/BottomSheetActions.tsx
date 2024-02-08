@@ -8,8 +8,7 @@ import {
   TrashIcon,
   SCREEN_TRANSITION_TIME,
 } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationScreens } from "Navigation"
+import { useAlbum } from "apps/Albums/hooks/useAlbum"
 import { SlideUpFromBottom } from "components/Animations/SlideUpFromBottom"
 import {
   BottomSheetModalRow,
@@ -20,8 +19,8 @@ import { useToast } from "components/Toast/ToastContext"
 import { useEffect, useRef } from "react"
 import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useAlbum } from "screens/Albums/useAlbum"
 import { useSaveNavigationHistory } from "system/hooks/useNavigationHistory"
+import { useRouter } from "system/hooks/useRouter"
 import { GlobalStore } from "system/store/GlobalStore"
 import { SelectedItemArtwork } from "system/store/Models/SelectModeModel"
 import { useIsDarkMode } from "utils/hooks/useIsDarkMode"
@@ -39,7 +38,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
   onSetRef,
 }) => {
   const safeAreaInsets = useSafeAreaInsets()
-  const navigation = useNavigation<NavigationProp<NavigationScreens>>()
+  const { router } = useRouter()
   const bottomSheetRef = useRef<BottomSheetRef>(null)
   const { saveNavigationHistory } = useSaveNavigationHistory()
   const { selectedItems } = useSelectedItems()
@@ -74,7 +73,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
     addArtworkToAlbum: () => {
       saveNavigationHistory("before-adding-to-album")
 
-      navigation.navigate("AddItemsToAlbum", {
+      router.navigate("AddItemsToAlbum", {
         artworksToAdd: selectedItems,
       })
 
@@ -97,7 +96,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
         return
       }
 
-      navigation.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
+      router.navigate("CreateOrEditAlbum", { mode: "edit", albumId })
 
       closeBottomSheet()
     },
@@ -138,7 +137,7 @@ export const BottomSheetActions: React.FC<BottomSheetActionsProps> = ({
             style: "destructive",
             onPress: () => {
               GlobalStore.actions.albums.removeAlbum(album.id)
-              navigation.goBack()
+              router.goBack()
 
               waitForScreenTransition(() => {
                 toast.show({

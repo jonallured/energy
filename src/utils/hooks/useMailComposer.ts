@@ -1,10 +1,10 @@
+import { getEditionSetInfo } from "apps/Artwork/routes/Artwork/ArtworkContent/ArtworkContent"
 import { useToast } from "components/Toast/ToastContext"
 import { FilterActionTypes, StateMapper } from "easy-peasy"
 import { uniq } from "lodash"
 import { Alert, Platform } from "react-native"
 import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Mailer from "react-native-mail"
-import { getEditionSetInfo } from "screens/Artwork/ArtworkContent/ArtworkContent"
 import {
   TrackSentContentProps,
   useAppTracking,

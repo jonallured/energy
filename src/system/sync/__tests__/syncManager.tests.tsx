@@ -3,7 +3,7 @@ import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.gr
 import { ArtistShowsQuery$rawResponse } from "__generated__/ArtistShowsQuery.graphql"
 import { ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
 import { ArtworkQuery$data } from "__generated__/ArtworkQuery.graphql"
-import { ShowsQuery$data } from "__generated__/ShowsQuery.graphql"
+import { ShowsTabQuery$data } from "__generated__/ShowsTabQuery.graphql"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import {
   JSON_FILES,
@@ -234,7 +234,7 @@ describe("syncManager", () => {
     })
 
     it("#getShowSlugs", () => {
-      syncResults.showsQuery = {
+      syncResults.showsTabQuery = {
         partner: {
           showsConnection: {
             edges: [
@@ -246,7 +246,7 @@ describe("syncManager", () => {
             ],
           },
         },
-      } as unknown as ShowsQuery$data
+      } as unknown as ShowsTabQuery$data
 
       expect(parsers.getShowSlugs()).toEqual(["show-1"])
     })

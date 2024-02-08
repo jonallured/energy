@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
+import { useRouter } from "system/hooks/useRouter"
 
 interface ErrorViewProps {
   error?: Error
@@ -10,12 +10,12 @@ export const ErrorView = ({
   error,
   withoutBackButton = false,
 }: ErrorViewProps) => {
-  const navigation = useNavigation()
+  const { router } = useRouter()
 
   return (
     <Flex flex={1} m={4} justifyContent="center" alignItems="center">
       {!withoutBackButton && (
-        <Button variant="outline" block onPress={() => navigation.goBack()}>
+        <Button variant="outline" block onPress={() => router.goBack()}>
           Back
         </Button>
       )}
