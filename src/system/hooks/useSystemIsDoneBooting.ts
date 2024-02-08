@@ -8,7 +8,7 @@ export const useSystemIsDoneBooting = () => {
   const [isDoneBooting, setIsDoneBooting] = useState(false)
 
   useEffect(() => {
-    if (isStoreRehydrated && flagsReady) {
+    if (isStoreRehydrated) {
       console.log("[system]: Booted.")
 
       setIsDoneBooting(true)
