@@ -1,0 +1,21 @@
+#!/bin/bash
+# source-release-vars: Script to source environment variables from .env.releases
+
+ENV_FILE="./.env.releases"
+
+if [ -f "$ENV_FILE" ]; then
+    set -a # automatically export all variables
+    { set +x; } 2>/dev/null # Temporarily turn off debug mode to suppress verbose output
+    
+    while IFS= read -r line; do
+        if [[ $line =~ ^[[:alnum:]_]+=.*$ ]]; then
+            export "$line"
+        fi
+    done < <(grep -E '^[[:alnum:]_]+=.*' "$ENV_FILE")
+    
+    { set -x; } 2>/dev/null # Turn debug mode back on, if desired
+    set +a # stop automatically exporting
+else
+    echo "Error: Environment file '$ENV_FILE' not found."
+    exit 1
+fi
