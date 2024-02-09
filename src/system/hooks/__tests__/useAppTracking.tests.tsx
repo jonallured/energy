@@ -52,7 +52,7 @@ describe("useAppTracking", () => {
     mockGlobalStore.useAppState.mockReturnValue("testUserID")
 
     const { result } = renderHook(() => useAppTracking())
-    result.current.trackLoginSuccess()
+    result.current.trackLoginSuccess("testUserID")
 
     expect(spy).toHaveBeenCalledWith({
       action: "successfullyLoggedIn",

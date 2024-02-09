@@ -78,7 +78,7 @@ export const LoginScreen = () => {
     initialErrors: {},
     onSubmit: async ({ email, password, otp }, { setErrors, validateForm }) => {
       validateForm()
-      const { success, message } =
+      const { success, message, userID } =
         await GlobalStore.actions.auth.signInUsingEmail({
           email,
           password,
@@ -91,7 +91,7 @@ export const LoginScreen = () => {
       }
 
       if (success) {
-        trackLoginSuccess()
+        trackLoginSuccess(userID)
         attemptAlbumMigration(relayEnvironment)
         return
       }
