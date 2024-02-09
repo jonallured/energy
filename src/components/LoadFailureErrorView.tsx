@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   ReloadIcon,
+  Spacer,
   Text,
   Touchable,
   useColor,
@@ -42,13 +43,24 @@ export const LoadFailureErrorView: React.FC<
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
       <Text variant="lg-display">Unable to load</Text>
-      {/* TODO: Remove */}
-      <Button variant="outline" onPress={() => router.goBack()}>
-        Back
-      </Button>
+
+      {!!router.canGoBack && (
+        <Button
+          variant="outline"
+          my={2}
+          size="small"
+          onPress={() => {
+            router.goBack()
+          }}
+        >
+          Go back
+        </Button>
+      )}
+
       <Text variant="sm-display" mb={1}>
-        Please try again
+        Reload
       </Text>
+
       <Touchable
         onPress={debounce(() => {
           if (!isAnimating) {
