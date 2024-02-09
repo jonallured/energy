@@ -366,6 +366,9 @@ jobs:
       - store_artifacts:
           path: xcode_test_raw.log
           prefix: tests
+      - run:
+          name: Export circle env var
+          command: echo 'export CIRCLECI_API_KEY=$CIRCLE_TOKEN' >> $BASH_ENV
       - await-previous-builds:
           branch: beta-ios
       - run:
@@ -379,6 +382,9 @@ jobs:
     resource_class: large
     steps:
       - prep-android-env
+      - run:
+          name: Export circle env var
+          command: echo 'export CIRCLECI_API_KEY=$CIRCLE_TOKEN' >> $BASH_ENV
       - await-previous-builds:
           branch: beta-android
       - build-app-android
@@ -419,8 +425,7 @@ workflows:
               ignore:
                 - main
 
-      - check-code:
-          context: danger-github-oss
+      - check-code
 
       - check-and-deploy:
           filters:
@@ -442,6 +447,7 @@ workflows:
                 - beta-android
 
       - build-test-app-ios:
+          context: circleci-api
           filters:
             branches:
               ignore:
@@ -453,6 +459,7 @@ workflows:
             - horizon/block
 
       - build-test-app-android:
+          context: circleci-api
           filters:
             branches:
               ignore:
