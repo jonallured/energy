@@ -174,6 +174,7 @@ export const getAuthModel = (): AuthModel => ({
       return {
         success: true,
         message: null,
+        userID: user.id,
       }
     }
 

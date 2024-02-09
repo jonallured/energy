@@ -71,7 +71,7 @@ export const useAppTracking = () => {
       trackEvent(event)
     },
 
-    trackLoginSuccess: () => {
+    trackLoginSuccess: (userID: string) => {
       const event: SuccessfullyLoggedIn = {
         action: ActionType.successfullyLoggedIn,
         auth_redirect: "",
@@ -80,7 +80,7 @@ export const useAppTracking = () => {
         type: AuthModalType.login,
         service: "email",
         trigger: "click",
-        user_id: userID as string,
+        user_id: userID,
       }
 
       trackEvent(event)
