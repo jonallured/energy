@@ -264,7 +264,7 @@ export const ArtworkContent: React.FC<ArtworkContentProps> = ({ artwork }) => {
                 </Flex>
               )}
 
-              <Flex>
+              <Flex m={1} style={{ flexShrink: 1 }}>
                 <Text>{artistNames}</Text>
                 <Text italic color="onBackgroundMedium">
                   {title}
