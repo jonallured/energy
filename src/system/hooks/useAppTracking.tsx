@@ -103,6 +103,21 @@ export const useAppTracking = () => {
        */
       if (segmentClient) {
         segmentClient.screen(props.type as string, event)
+
+        if (isAnalyticsVisualizerEnabled) {
+          toast.show({
+            hideTimeout: 3500,
+            message: (
+              <JSONTree
+                data={{
+                  context_screen_owner_type: props.type,
+                  ...event,
+                }}
+              />
+            ),
+            title: "",
+          })
+        }
       }
     },
 
