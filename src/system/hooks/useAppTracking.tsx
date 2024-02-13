@@ -13,7 +13,7 @@ import {
 import { useToast } from "components/Toast/ToastContext"
 import JSONTree from "react-native-json-tree"
 import { useTracking } from "react-tracking"
-import { segmentClient } from "system/analytics/initializeSegment"
+import { getSegmentClient } from "system/analytics/initializeSegment"
 import { UseTrackScreenViewProps } from "system/hooks/useTrackScreen"
 import { GlobalStore } from "system/store/GlobalStore"
 import { Album } from "system/store/Models/AlbumsModel"
@@ -34,6 +34,8 @@ export const useAppTracking = () => {
   const isAnalyticsVisualizerEnabled = GlobalStore.useAppState(
     (store) => store.artsyPrefs.isAnalyticsVisualizerEnabled
   )
+
+  const segmentClient = getSegmentClient()
 
   const trackEvent = (event: any) => {
     const payload = {
@@ -90,12 +92,18 @@ export const useAppTracking = () => {
       const event = {
         action: ActionType.screen,
         context_screen: props.name,
-        context_screen_owner_type: props.type,
         context_screen_owner_slug: props.slug,
         context_screen_owner_id: props.internalID,
       }
 
-      trackEvent(event)
+      /**
+       * For segment screen tracking, we don't use the normal track api, but
+       * rather the screen api.
+       * @see https://segment.com/docs/connections/spec/screen/
+       */
+      if (segmentClient) {
+        segmentClient.screen(props.type as string, event)
+      }
     },
 
     /**

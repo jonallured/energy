@@ -2,7 +2,9 @@ import { Platform } from "react-native"
 import Config from "react-native-config"
 import type { SegmentClient } from "@segment/analytics-react-native"
 
-export let segmentClient = null as unknown as SegmentClient
+let segmentClient = null as unknown as SegmentClient
+
+export const getSegmentClient = () => segmentClient
 
 export const initializeSegment = (): SegmentClient | null => {
   const { createClient } = require("@segment/analytics-react-native")

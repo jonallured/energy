@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { useTracking } from "react-tracking"
+import { getSegmentClient } from "system/analytics/initializeSegment"
 import { useAppTracking } from "system/hooks/useAppTracking"
 import { GlobalStore } from "system/store/GlobalStore"
 import { Album } from "system/store/Models/AlbumsModel"
@@ -10,9 +11,14 @@ jest.mock("system/store/GlobalStore", () => ({
   },
 }))
 
+jest.mock("system/analytics/initializeSegment", () => ({
+  getSegmentClient: jest.fn(),
+}))
+
 describe("useAppTracking", () => {
   const mockUseTracking = useTracking as jest.Mock
   const mockGlobalStore = GlobalStore as jest.Mocked<typeof GlobalStore>
+  const mockGetSegmentClient = getSegmentClient as jest.Mock
 
   beforeEach(() => {
     jest.resetAllMocks()
@@ -69,7 +75,10 @@ describe("useAppTracking", () => {
 
   it("#trackScreenView", () => {
     const spy = jest.fn()
-    mockUseTracking.mockReturnValue({ trackEvent: spy })
+
+    mockGetSegmentClient.mockReturnValue({
+      screen: spy,
+    })
 
     const { result } = renderHook(() => useAppTracking())
     result.current.trackScreenView({
@@ -79,10 +88,9 @@ describe("useAppTracking", () => {
       slug: "slug",
     })
 
-    expect(spy).toHaveBeenCalledWith({
+    expect(spy).toHaveBeenCalledWith("Album", {
       action: "screen",
       context_screen: "AddItemsToAlbum",
-      context_screen_owner_type: "Album",
       context_screen_owner_slug: "slug",
       context_screen_owner_id: "internalID",
     })

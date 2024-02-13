@@ -17,6 +17,7 @@ export type ScreenTypes =
 
 export interface UseTrackScreenViewProps {
   name: RouteNames
+  /** Corresponds to context_screen_owner_type */
   type?: ScreenTypes
   internalID?: string
   slug?: string
