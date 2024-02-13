@@ -132,7 +132,7 @@ lane :sentry_slack_ios do |options|
   sentry_url = "https://artsynet.sentry.io/releases/ios-#{version}-#{build_number}/?project=1382627"
   message = <<~MSG
                 :apple: :iphone: :tada:
-                iOS #{version} (#{build_number}) was submitted to the app store!
+                Folio iOS #{version} (#{build_number}) was submitted to the app store!
                 Monitor [here](#{sentry_url})
               MSG
 
@@ -151,7 +151,7 @@ lane :sentry_slack_android do |options|
   sentry_url = "https://artsynet.sentry.io/releases/android-#{version}-#{build_number}/?project=1382627"
   message = <<~MSG
                 :android-2: :tada:
-                Android #{version} (#{build_number}) was submitted to the app store!
+                Folio Android #{version} (#{build_number}) was submitted to the app store!
                 Monitor [here](#{sentry_url})
               MSG
 
