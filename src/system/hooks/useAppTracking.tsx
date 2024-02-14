@@ -94,6 +94,8 @@ export const useAppTracking = () => {
         context_screen: props.name,
         context_screen_owner_slug: props.slug,
         context_screen_owner_id: props.internalID,
+        partner_id: partnerID,
+        user_id: userID,
       }
 
       /**
