@@ -2,6 +2,7 @@ import CookieManager from "@react-native-cookies/cookies"
 import { action, Action, thunk, Thunk } from "easy-peasy"
 import { stringify } from "qs"
 import Config from "react-native-config"
+import { getSegmentClient } from "system/analytics/initializeSegment"
 import { getUserAgent } from "utils/getUserAgent"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
@@ -171,6 +172,12 @@ export const getAuthModel = (): AuthModel => ({
         userAccessTokenExpiresIn: expires_in,
         userID: user.id,
       })
+
+      const segmentClient = getSegmentClient()
+      if (segmentClient) {
+        segmentClient.identify(user.id, { is_temporary_user: 0 })
+      }
+
       return {
         success: true,
         message: null,
