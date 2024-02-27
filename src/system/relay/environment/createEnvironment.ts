@@ -25,20 +25,17 @@ const createNetworkLayer = () => {
 
   const network = new RelayNetworkLayer(
     [
-      // Default to size 100 and ttl 900000 (15 minutes)
       cacheMiddleware({
         size: 100, // max 100 requests
         ttl: 900000, // 15 minutes
       }),
       metaphysicsUrlMiddleware(),
-      // @ts-ignore
       errorMiddleware(),
       __DEV__ && !__TEST__
         ? showLoggerMiddleware
           ? loggerMiddleware()
           : null
         : null,
-      // __DEV__ ? relayErrorMiddleware() : null,
       __DEV__ ? (showPerfMiddleware ? perfMiddleware() : null) : null,
       authMiddleware(),
       checkAuthenticationMiddleware(),

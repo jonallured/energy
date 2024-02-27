@@ -52,7 +52,11 @@ export const ArtworkGridItem: React.FC<ArtworkGridItemProps> = ({
   })()
 
   return (
-    <Touchable disabled={disable} onPress={onPress}>
+    <Touchable
+      disabled={disable}
+      onPress={onPress}
+      data-testID="ArtworkGridItem"
+    >
       <Flex {...flexProps} mb={2} opacity={selectedOpacity} style={style}>
         <CachedImage
           uri={artwork.image?.resized?.url}

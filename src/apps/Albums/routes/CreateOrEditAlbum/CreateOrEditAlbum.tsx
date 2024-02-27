@@ -186,6 +186,7 @@ export const CreateOrEditAlbum = () => {
           <Spacer y={2} />
 
           <ArtworksList
+            isInTabs={false}
             artworks={itemQueue as SelectedItemArtwork[]}
             onItemPress={(item) => {
               if (mode === "edit") {

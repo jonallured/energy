@@ -1,5 +1,5 @@
 import { RouteNames } from "Navigation"
-import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
+import { ArtistArtworksOfflineQuery$data } from "__generated__/ArtistArtworksOfflineQuery.graphql"
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ShowInstallsQuery$data } from "__generated__/ShowInstallsQuery.graphql"
 import { action, Action, Thunk, thunk, thunkOn, ThunkOn } from "easy-peasy"
@@ -109,7 +109,9 @@ export type SelectedItem =
   | NonNullable<
       NonNullable<
         NonNullable<
-          NonNullable<ArtistArtworksQuery$data["partner"]>["artworksConnection"]
+          NonNullable<
+            ArtistArtworksOfflineQuery$data["partner"]
+          >["artworksConnection"]
         >["edges"]
       >[0]
     >["node"]

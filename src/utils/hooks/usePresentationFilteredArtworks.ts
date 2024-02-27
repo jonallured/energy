@@ -13,7 +13,7 @@ export const usePresentationFilteredArtworks = <T extends SelectedItemArtwork>(
     (state) => state.presentationMode.hiddenItems.worksNotForSale
   )
 
-  return useMemo(() => {
+  const filteredArtworks = useMemo(() => {
     if (isNotForSaleHidden && isUnpublishedWorksHidden) {
       return artworks.filter(
         (artwork) => artwork.availability === "for sale" && artwork.published
@@ -26,4 +26,6 @@ export const usePresentationFilteredArtworks = <T extends SelectedItemArtwork>(
       return artworks
     }
   }, [artworks, isNotForSaleHidden, isUnpublishedWorksHidden])
+
+  return filteredArtworks
 }

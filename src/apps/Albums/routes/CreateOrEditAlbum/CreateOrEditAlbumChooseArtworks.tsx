@@ -2,9 +2,14 @@ import { Screen, Button, Text, Spacer, useSpace } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { NavigationRoutes } from "Navigation"
 import { ArtistArtworksQuery } from "__generated__/ArtistArtworksQuery.graphql"
-import { artistArtworksQuery } from "apps/Artists/routes/ArtistTabs/ArtistArtworks"
+import { ArtistArtworks_artworksConnection$key } from "__generated__/ArtistArtworks_artworksConnection.graphql"
+import {
+  artistArtworksConnectionFragment,
+  artistArtworksQuery,
+} from "apps/Artists/routes/ArtistTabs/ArtistArtworks"
 import { ArtworksList } from "components/Lists/ArtworksList"
 import { isAllSelected } from "components/SelectMode/SelectMode"
+import { usePaginationFragment } from "react-relay"
 import { useRouter } from "system/hooks/useRouter"
 import { useTrackScreen } from "system/hooks/useTrackScreen"
 import { useSystemQueryLoader } from "system/relay/useSystemQueryLoader"
@@ -30,7 +35,7 @@ export const CreateOrEditAlbumChooseArtworks = () => {
   const partnerID = GlobalStore.useAppState(
     (state) => state.auth.activePartnerID
   )!
-  const { data } = useSystemQueryLoader<ArtistArtworksQuery>(
+  const { data: queryData } = useSystemQueryLoader<ArtistArtworksQuery>(
     artistArtworksQuery,
     {
       partnerID,
@@ -38,13 +43,18 @@ export const CreateOrEditAlbumChooseArtworks = () => {
     }
   )
 
+  const { data } = usePaginationFragment<
+    ArtistArtworksQuery,
+    ArtistArtworks_artworksConnection$key
+  >(artistArtworksConnectionFragment, queryData.partner)
+
   const albums = GlobalStore.useAppState((state) => state.albums.albums)
   const album = albums.find((album) => album.id === albumId)
 
   const { selectedItems } = useSelectedItems()
 
   const presentedArtworks = usePresentationFilteredArtworks(
-    extractNodes(data.partner?.artworksConnection)
+    extractNodes(data?.artworksConnection)
   )
 
   const selectArtworksToAddToAnAlbum = () => {

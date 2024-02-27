@@ -1,4 +1,5 @@
-import MasonryList from "@react-native-seoul/masonry-list"
+import { Tabs } from "@artsy/palette-mobile"
+import { MasonryFlashList } from "@shopify/flash-list"
 import {
   ArtworkGridItem,
   ArtworkGridItemFragmentContainer,
@@ -6,8 +7,9 @@ import {
 } from "components/Items/ArtworkGridItem"
 import { ColumnItem } from "components/Items/ColumnItem"
 import { ListEmptyComponent } from "components/ListEmptyComponent"
+import { MasonryListFooterComponent } from "components/MasonryListFooterComponent"
 import { isSelected } from "components/SelectMode/SelectMode"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useRouter } from "system/hooks/useRouter"
@@ -16,6 +18,11 @@ import {
   SelectedItem,
   SelectedItemArtwork,
 } from "system/store/Models/SelectModeModel"
+import {
+  MASONRY_ESTIMATED_ITEM_SIZE,
+  MASONRY_ON_END_REACHED_THRESHOLD,
+  LIST_PAGE_SIZE,
+} from "utils/constants"
 import { usePresentationFilteredArtworks } from "utils/hooks/usePresentationFilteredArtworks"
 
 interface ArtworksListProps {
@@ -23,38 +30,60 @@ interface ArtworksListProps {
   checkIfDisabled?: (item: SelectedItemArtwork) => boolean
   checkIfSelectedToRemove?: (item: SelectedItemArtwork) => boolean
   contentContainerStyle?: StyleProp<ViewStyle>
-  isStatic?: boolean
-  onItemPress?: (item: SelectedItemArtwork) => void
   gridItemProps?: ArtworkGridItemProps
+  hasNext?: boolean
+  isInTabs?: boolean
+  isLoadingNext?: boolean
+  isStatic?: boolean
+  loadMore?: (pageSize: number) => void
+  onItemPress?: (item: SelectedItemArtwork) => void
+  pageSize?: number
+  refreshControl?: JSX.Element
 }
 
 export const ArtworksList: React.FC<ArtworksListProps> = ({
   artworks,
   checkIfDisabled,
   checkIfSelectedToRemove,
-  contentContainerStyle = {},
+  contentContainerStyle = { paddingHorizontal: 20 },
+  hasNext,
+  isInTabs = false,
+  isLoadingNext,
   isStatic = true,
+  loadMore,
   onItemPress,
+  pageSize = LIST_PAGE_SIZE,
+  refreshControl,
 }) => {
   const presentedArtworks = usePresentationFilteredArtworks(artworks)
 
   const numColumns = isTablet() ? 3 : 2
 
+  const shouldDisplaySpinner = !!artworks.length && !!isLoadingNext && !!hasNext
+
+  const onEndReached = useCallback(() => {
+    if (!!hasNext && !isLoadingNext && !!loadMore) {
+      loadMore?.(pageSize)
+    }
+  }, [hasNext, isLoadingNext])
+
+  const MasonryList = isInTabs ? Tabs.Masonry : MasonryFlashList
+
   return (
     <MasonryList
       testID="ArtworksList"
-      contentContainerStyle={contentContainerStyle as object}
       numColumns={numColumns}
+      contentContainerStyle={contentContainerStyle as any}
       data={presentedArtworks}
-      renderItem={({ item, i }) => {
+      renderItem={({ item, index }) => {
         return (
           <MemoizedArtworkListItem
             checkIfDisabled={checkIfDisabled}
             checkIfSelectedToRemove={checkIfSelectedToRemove}
-            index={i}
+            index={index}
             isStatic={isStatic}
             item={item as SelectedItemArtwork}
-            key={i}
+            key={index}
             numColumns={numColumns}
             presentedArtworks={presentedArtworks}
             onItemPress={onItemPress}
@@ -62,7 +91,16 @@ export const ArtworksList: React.FC<ArtworksListProps> = ({
         )
       }}
       keyExtractor={(item) => item.internalID}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={MASONRY_ON_END_REACHED_THRESHOLD}
+      estimatedItemSize={MASONRY_ESTIMATED_ITEM_SIZE}
+      refreshControl={refreshControl}
       ListEmptyComponent={<ListEmptyComponent text="No artworks" />}
+      ListFooterComponent={
+        <MasonryListFooterComponent
+          shouldDisplaySpinner={shouldDisplaySpinner}
+        />
+      }
     />
   )
 }

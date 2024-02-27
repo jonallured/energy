@@ -1,8 +1,8 @@
 import { PromisePool, OnProgressCallback } from "@supercharge/promise-pool"
 import {
-  ArtistArtworksQuery,
-  ArtistArtworksQuery$data,
-} from "__generated__/ArtistArtworksQuery.graphql"
+  ArtistArtworksOfflineQuery,
+  ArtistArtworksOfflineQuery$data,
+} from "__generated__/ArtistArtworksOfflineQuery.graphql"
 import {
   ArtistDocumentsQuery,
   ArtistDocumentsQuery$data,
@@ -20,9 +20,9 @@ import {
   ArtworkQuery$data,
 } from "__generated__/ArtworkQuery.graphql"
 import {
-  ShowArtworksQuery,
-  ShowArtworksQuery$data,
-} from "__generated__/ShowArtworksQuery.graphql"
+  ShowArtworksOfflineQuery,
+  ShowArtworksOfflineQuery$data,
+} from "__generated__/ShowArtworksOfflineQuery.graphql"
 import {
   ShowDocumentsQuery,
   ShowDocumentsQuery$data,
@@ -39,12 +39,12 @@ import {
   ShowsTabQuery,
   ShowsTabQuery$data,
 } from "__generated__/ShowsTabQuery.graphql"
-import { artistArtworksQuery } from "apps/Artists/routes/ArtistTabs/ArtistArtworks"
+import { artistArtworksOfflineQuery } from "apps/Artists/routes/ArtistTabs/ArtistArtworks"
 import { artistDocumentsQuery } from "apps/Artists/routes/ArtistTabs/ArtistDocuments"
 import { artistShowsQuery } from "apps/Artists/routes/ArtistTabs/ArtistShows"
 import { artworkQuery } from "apps/Artwork/routes/Artwork/Artwork"
 import { showsTabQuery } from "apps/Shows/ShowsTab"
-import { showArtworksQuery } from "apps/Shows/routes/ShowTabs/ShowArtworks"
+import { showArtworksOfflineQuery } from "apps/Shows/routes/ShowTabs/ShowArtworks"
 import { showDocumentsQuery } from "apps/Shows/routes/ShowTabs/ShowDocuments"
 import { showInstallsQuery } from "apps/Shows/routes/ShowTabs/ShowInstalls"
 import { showTabsQuery } from "apps/Shows/routes/ShowTabs/ShowTabs"
@@ -73,13 +73,13 @@ import { extractNodes } from "utils/extractNodes"
 export interface SyncResultsData {
   artistsListQuery?: ArtistsListQuery$data
   showsTabQuery?: ShowsTabQuery$data
-  artistArtworksQuery?: ArtistArtworksQuery$data[]
+  artistArtworksQuery?: ArtistArtworksOfflineQuery$data[]
   artworkQuery?: ArtworkQuery$data[]
   artistShowsQuery?: ArtistShowsQuery$rawResponse[]
   showTabsQuery?: ShowTabsQuery$data[]
   artistDocumentsQuery?: ArtistDocumentsQuery$data[]
   partnerShowTabsQuery?: ShowTabsQuery$data[]
-  showArtworksQuery?: ShowArtworksQuery$data[]
+  showArtworksQuery?: ShowArtworksOfflineQuery$data[]
   showInstallsQuery?: ShowInstallsQuery$data[]
   showDocumentsQuery?: ShowDocumentsQuery$data[]
   queryErrors: FetchError[]
@@ -350,10 +350,13 @@ export function initSyncManager({
           return
         }
 
-        return await fetchOrCatch<ArtistArtworksQuery>(artistArtworksQuery, {
-          partnerID,
-          slug,
-        })
+        return await fetchOrCatch<ArtistArtworksOfflineQuery>(
+          artistArtworksOfflineQuery,
+          {
+            partnerID,
+            slug,
+          }
+        )
       })
 
     syncResults.artistArtworksQuery = compact(results)
@@ -481,9 +484,12 @@ export function initSyncManager({
           return
         }
 
-        return await fetchOrCatch<ShowArtworksQuery>(showArtworksQuery, {
-          slug,
-        })
+        return await fetchOrCatch<ShowArtworksOfflineQuery>(
+          showArtworksOfflineQuery,
+          {
+            slug,
+          }
+        )
       })
 
     syncResults.showArtworksQuery = compact(results)

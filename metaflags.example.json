@@ -1,4 +1,4 @@
 {
-  "showLoggerMiddleware": false,
+  "showLoggerMiddleware": true,
   "showPerfMiddleware": false
 }

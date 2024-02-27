@@ -1,4 +1,4 @@
-import { ArtistArtworksQuery$data } from "__generated__/ArtistArtworksQuery.graphql"
+import { ArtistArtworksOfflineQuery$data } from "__generated__/ArtistArtworksOfflineQuery.graphql"
 import { ArtistDocumentsQuery$data } from "__generated__/ArtistDocumentsQuery.graphql"
 import { ArtistShowsQuery$rawResponse } from "__generated__/ArtistShowsQuery.graphql"
 import { ArtistsListQuery$data } from "__generated__/ArtistsListQuery.graphql"
@@ -208,7 +208,7 @@ describe("syncManager", () => {
             },
           },
         },
-      ] as unknown as ArtistArtworksQuery$data[]
+      ] as unknown as ArtistArtworksOfflineQuery$data[]
 
       expect(parsers.getArtistArtworkSlugs()).toEqual(["artist-artwork-1"])
     })

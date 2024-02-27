@@ -232,6 +232,7 @@ jest.mock("@artsy/palette-mobile", () => {
       ...palette.Tabs,
       ScrollView: React.ScrollView,
       FlatList: React.FlatList,
+      Masonry: React.FlatList,
     },
   }
 })
